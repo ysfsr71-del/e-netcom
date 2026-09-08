@@ -59,4 +59,4 @@ const server=http.createServer((req,res)=>{
   }
   staticFile(req,res);
 });
-server.listen(PORT,()=>console.log(`e-NetCoM FINAL hazır: http://localhost:${PORT}`));
+server.listen(PORT,'0.0.0.0',()=>console.log(`e-NetCoM FINAL hazır: http://0.0.0.0:${PORT}`));
