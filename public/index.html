@@ -1,36 +1,250 @@
-<!DOCTYPE html>
-<html lang="tr"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>e-NetCoM | Doğanın Enerjileri Bizimle</title>
-<style>
-:root{--ink:#062f27;--deep:#063f32;--green:#087a5c;--green2:#12a777;--lime:#c8f58e;--mint:#eaf8f1;--paper:#f7fbf8;--line:#d9e7e0;--muted:#5d716a;--white:#fff;--blue:#2f72c6;--orange:#c47b2e;--purple:#8a4aa5;--shadow:0 18px 55px rgba(6,47,39,.09)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,Segoe UI,Arial,sans-serif}a{text-decoration:none;color:inherit}button,input,textarea{font:inherit}.wrap{max-width:1320px;margin:auto;padding:0 34px}.topline{background:var(--deep);color:#dff7e9;font-size:12px}.topline .wrap{display:flex;justify-content:space-between;padding-top:8px;padding-bottom:8px}.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}.navin{height:78px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:12px;font-weight:950;font-size:22px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,#b8ec72,#39a978);display:grid;place-items:center;font-size:23px}.brand small{display:block;font-size:9px;letter-spacing:2px;color:#638078}.links{display:flex;gap:20px;align-items:center;font-size:13px;font-weight:850}.links a:hover{color:var(--green)}.btn{border:0;border-radius:14px;padding:12px 17px;font-weight:900;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px}.primary{background:var(--green);color:#fff}.lime{background:var(--lime);color:#08382d}.ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}.hero{position:relative;overflow:hidden;background:radial-gradient(circle at 75% 25%,rgba(74,190,139,.35),transparent 33%),linear-gradient(120deg,#043e31,#08775a 58%,#0b916e);color:#fff}.hero:after{content:"";position:absolute;inset:auto -10% -150px;height:260px;background:#fff;border-radius:50% 50% 0 0/45% 45% 0 0;opacity:.96}.hero .wrap{position:relative;z-index:2}.hero-grid{min-height:650px;display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center}.eyebrow{font-size:11px;letter-spacing:2px;font-weight:950;text-transform:uppercase;color:#6dffbf}.hero h1{font-size:clamp(48px,6vw,86px);line-height:.94;letter-spacing:-4px;margin:16px 0 22px}.hero p{font-size:18px;line-height:1.7;max-width:670px;color:#d8f4e8}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.hero-card{background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.22);border-radius:30px;padding:28px;box-shadow:0 30px 90px rgba(0,0,0,.16)}.hero-card h3{font-size:28px;margin:0 0 8px}.hero-card p{font-size:14px;margin:0 0 22px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{background:rgba(255,255,255,.12);border-radius:18px;padding:17px}.stat b{display:block;font-size:30px}.stat span{font-size:11px;color:#cfeee1}.section{padding:105px 0}.section.alt{background:#fff}.section-head{display:flex;justify-content:space-between;gap:40px;align-items:end;margin-bottom:34px}.section-head h2{font-size:clamp(38px,4.5vw,64px);letter-spacing:-2.5px;margin:6px 0 0}.section-head p{max-width:570px;color:var(--muted);line-height:1.7}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:25px;box-shadow:0 8px 30px rgba(7,50,40,.04);transition:.2s}.card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:#b8d7ca}.tag{display:inline-flex;padding:6px 10px;border-radius:999px;background:#edf7f2;color:var(--green);font-size:10px;font-weight:950;letter-spacing:.7px}.card h3{font-size:23px;margin:16px 0 9px}.card p{color:var(--muted);line-height:1.65;font-size:14px}.arrow{font-weight:900;color:var(--green);font-size:13px}.activity-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:20px}.activity-main{background:linear-gradient(145deg,#063f32,#0c8a67);color:#fff;border-radius:30px;padding:32px;min-height:360px;position:relative;overflow:hidden}.activity-main:after{content:"✦";position:absolute;right:30px;bottom:-20px;font-size:190px;color:rgba(255,255,255,.06)}.activity-main h3{font-size:35px;max-width:600px}.activity-main p{color:#d8f4e8;line-height:1.75;max-width:650px}.activity-side{display:grid;gap:14px}.activity-side .item{background:#fff;border:1px solid var(--line);border-radius:20px;padding:21px}.item b{font-size:16px}.item span{display:block;color:var(--muted);font-size:13px;line-height:1.55;margin-top:6px}.map-wrap{background:#fff;border:1px solid var(--line);border-radius:30px;padding:18px;box-shadow:var(--shadow)}.map-tools{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}.filter{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-weight:850;cursor:pointer}.filter.active{background:var(--green);color:#fff}.search{border:1px solid var(--line);border-radius:999px;padding:10px 15px;min-width:210px;outline:0}.map-grid{display:grid;grid-template-columns:1fr 340px;gap:16px}.mapbox{background:linear-gradient(160deg,#eaf7f0,#f4fbf7);border-radius:25px;min-height:580px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}.mapbox:before{content:"81 İL · EĞİTİM AĞI";position:absolute;left:22px;top:18px;font-size:10px;font-weight:950;letter-spacing:1.4px;color:#558073}.map-svg{width:95%;height:560px}.turkey-shape{fill:#d7e7df;stroke:#fff;stroke-width:5}.marker{cursor:pointer}.marker circle{fill:#b5cfc4;stroke:#fff;stroke-width:3;transition:.15s}.marker.active.face circle{fill:#13a577}.marker.active.online circle{fill:#3d7bd0}.marker:hover circle,.marker.selected circle{r:10;stroke:#073c2e;stroke-width:4}.marker text{font-size:9px;font-weight:900;fill:#31564c;pointer-events:none}.map-info{border:1px solid var(--line);border-radius:25px;padding:20px;background:#fff}.map-info h3{margin:4px 0 8px;font-size:28px}.info-box{background:var(--mint);border-radius:19px;padding:18px}.info-row{display:flex;justify-content:space-between;border-bottom:1px solid rgba(6,47,39,.09);padding:10px 0;font-size:13px}.info-row:last-child{border:0}.city-list{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:16px;max-height:260px;overflow:auto}.city-btn{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px;text-align:left;font-size:11px;font-weight:800;cursor:pointer}.city-btn:hover{border-color:var(--green);color:var(--green)}.media-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.featured-video{background:linear-gradient(145deg,#062f27,#0a7458);border-radius:28px;padding:30px;color:#fff;min-height:340px;display:flex;flex-direction:column;justify-content:end}.featured-video h3{font-size:35px;margin:8px 0}.playlist-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.playlist{border-radius:22px;padding:22px;min-height:160px;color:#fff;display:flex;flex-direction:column;justify-content:end}.p1{background:linear-gradient(145deg,#078363,#21b27f)}.p2{background:linear-gradient(145deg,#245c9d,#3d83d3)}.p3{background:linear-gradient(145deg,#92561e,#d18b3c)}.p4{background:linear-gradient(145deg,#6a347d,#9e55b8)}.playlist b{font-size:20px}.playlist small{opacity:.88;margin:7px 0 13px}.video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:18px}.video{background:#fff;border:1px solid var(--line);border-radius:19px;padding:18px}.video .thumb{height:130px;border-radius:15px;background:linear-gradient(145deg,#b9e9c5,#247d60);display:grid;place-items:center;color:#fff;font-size:36px;margin-bottom:13px}.leaflet-container{font:inherit;background:#eaf7f0}.mapbox{min-height:650px!important;display:block!important;padding:0!important}.map-grid{grid-template-columns:minmax(0,1fr) 360px!important}.map-info{min-height:650px}.mapbox:before{z-index:800}.leaflet-control-zoom a{color:#062f27!important}.legend{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0 15px}.legend span{font-size:11px;display:flex;align-items:center;gap:6px}.dot{width:10px;height:10px;border-radius:50%;display:inline-block}.dot.face{background:#10a77a}.dot.online{background:#3979cf}.dot.none{background:#c9d9d2}.video-grid{grid-template-columns:repeat(3,1fr);gap:18px;margin-top:20px}.video{padding:0 0 16px;overflow:hidden}.video .thumb{height:200px;margin:0 0 14px;border-radius:18px 18px 0 0;overflow:hidden;background:#dceee6;position:relative}.video .thumb img{width:100%;height:100%;object-fit:cover;display:block}.video .play{position:absolute;left:16px;bottom:14px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.94);color:#087a5c;display:grid;place-items:center;font-weight:900}.video .inner{padding:0 18px}.video .watch{margin-top:10px}.media-tabs{display:flex;gap:9px;flex-wrap:wrap}.media-note{margin-top:20px;background:#eaf8f1;border:1px solid #d9e7e0;border-radius:20px;padding:18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}.media-note span{color:#5d716a;flex:1;min-width:240px}.network-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:18px}.table-wrap{background:#fff;border:1px solid var(--line);border-radius:25px;overflow:auto}.table{width:100%;border-collapse:collapse;min-width:680px}.table th,.table td{text-align:left;padding:16px;border-bottom:1px solid var(--line);font-size:13px}.table th{background:#eff7f2;color:#31564c}.network-cards{display:grid;gap:13px}.network-card{background:#fff;border:1px solid var(--line);border-radius:21px;padding:22px}.network-card:hover{border-color:var(--green)}.social-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.social-card{border-radius:28px;padding:27px;background:#fff;border:1px solid var(--line);min-height:300px}.social-card.x{background:#061b18;color:#fff}.social-card.ig{background:linear-gradient(145deg,#642a65,#f08b50 80%);color:#fff}.social-card h3{font-size:29px;margin:10px 0}.social-card p{line-height:1.65;opacity:.85}.social-btn{background:#fff;color:#092e26;border-radius:13px;padding:11px 14px;font-weight:900;display:inline-flex;margin-top:12px}.workshop{background:linear-gradient(145deg,#082f27,#0b8c69);border-radius:32px;padding:34px;color:#fff}.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.tool{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);border-radius:21px;padding:20px}.tool b{font-size:18px}.tool textarea{width:100%;min-height:100px;border:0;border-radius:12px;padding:12px;margin:14px 0;resize:vertical;background:#fff;color:var(--ink)}.tool .btn{width:100%}.workout{margin-top:18px;background:#fff;color:var(--ink);border-radius:20px;padding:22px;white-space:pre-wrap;line-height:1.7}.chat{background:#fff;border:1px solid var(--line);border-radius:28px;padding:18px;box-shadow:var(--shadow)}.messages{height:340px;overflow:auto;background:#f2f8f5;border-radius:20px;padding:18px}.msg{max-width:82%;padding:13px 16px;border-radius:17px;margin-bottom:10px;line-height:1.6;font-size:14px}.bot{background:#dcefe7}.me{background:var(--green);color:#fff;margin-left:auto}.chatbar{display:flex;gap:10px;margin-top:12px}.chatbar input{flex:1;border:1px solid var(--line);border-radius:14px;padding:13px 15px}.contact{display:grid;grid-template-columns:1fr 1fr;gap:18px}.contact-card{background:#fff;border:1px solid var(--line);border-radius:25px;padding:26px}.contact-card h3{font-size:24px}.contact-line{padding:13px 0;border-bottom:1px solid var(--line)}footer{background:#062f27;color:#d7f2e7;padding:55px 0}.footer-grid{display:grid;grid-template-columns:1.4fr .8fr .8fr;gap:30px}.footer-grid a{display:block;margin:8px 0;color:#d7f2e7}.modal{position:fixed;inset:0;background:rgba(1,20,16,.55);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}.modal.open{display:flex}.modal-box{max-width:900px;max-height:88vh;overflow:auto;background:#fff;border-radius:28px;padding:30px;box-shadow:0 30px 100px rgba(0,0,0,.3)}.modal-box h2{font-size:36px;margin-top:0}.close{float:right;border:0;background:#eef6f1;border-radius:50%;width:40px;height:40px;cursor:pointer;font-size:20px}.prose{color:#4f6961;line-height:1.8}.pill-row{display:flex;gap:8px;flex-wrap:wrap}.notice{padding:13px 15px;background:#fff8e8;border:1px solid #f0dfb6;border-radius:13px;color:#765d22;font-size:13px;margin-top:12px}.fade{animation:fade .7s ease both}@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}@media(max-width:1000px){.links{display:none}.hero-grid,.activity-grid,.map-grid,.media-grid,.network-grid,.social-grid,.contact{grid-template-columns:1fr}.cards,.video-grid,.tools{grid-template-columns:1fr 1fr}.mapbox{min-height:470px}.map-svg{height:460px}}@media(max-width:650px){.wrap{padding:0 17px}.topline .wrap{display:none}.hero-grid{min-height:auto;padding:70px 0 100px}.hero h1{font-size:48px;letter-spacing:-2px}.stats,.cards,.video-grid,.tools,.playlist-grid{grid-template-columns:1fr}.section{padding:72px 0}.section-head{display:block}.section-head h2{font-size:40px}.mapbox{min-height:400px}.map-svg{height:390px}.chatbar{flex-direction:column}.footer-grid{grid-template-columns:1fr}}
+Erasmus+ KA220-YOU · 2024-1-TR01-KA220-YOU-0002453321 Aralık 2024 – 30 Kasım 2027
+🌱e-NetCoMDOĞANIN ENERJİLERİ BİZİMLE
+ProjeFaaliyetler81 İlYolculukEtkiMedyaNetworkAkademiİyi UygulamalarAstra
+◎ Instagram𝕏 XAstra
+ERASMUS+ · GENÇLİK · ÇEVRESEL İLETİŞİM
+Genç liderler.
+Yeşil beceriler.
+Güçlü ağ.
+Doğanın Enerjileri Bizimle: Genç Liderler, Çevresel İletişim ve Medya Ağı. Eğitim, medya, dijital içerik, akran öğrenmesi ve gençlerin çevresel liderliğini tek bir dijital merkezde buluşturuyor.
+Projeyi keşfet →Astra Atölye
+81 İL EĞİTİM AĞI
+Türkiye'nin her yerinde.
+30 büyükşehirde yüz yüze, diğer 51 ilde çevrimiçi model. Gerçekleşen eğitimleri ve katılımcıları harita üzerinden keşfedin.
+22gerçekleşen eğitim
+1.149katılımcı
+81il ağı
+ 
+Erasmus+Cooperation Partnerships in Youth
+ Koordinatör Türkiye · Kayseri Avusturya · Viyana Romanya · Bükreş Türkiye · İstanbul
+PROJE MERKEZİ
+e-NetCoM proje merkezi.
+PROJE
+Proje Hakkında
+Çevresel sürdürülebilirlik, iklim değişikliği, bireysel ve yerel dinamikler ile eğitim yaklaşımı.
+e-NetCoM; çevresel sürdürülebilirlik ve iklim değişikliğiyle mücadelede eğitim, insan kaynağı ve kurumsal kapasiteyi güçlendiren ulus ötesi bir işbirliği yaklaşımıdır. Proje bireysel ve yerel boyutları öne çıkarırken farklı kültür ve toplumlarda sürdürülebilirlik etkisini anlamaya ve sosyal sürdürülebilirliği güçlendirmeye odaklanır.
+HEDEFLER
+Proje Hedefleri
+İnsan kaynağı, kurumsal kapasite, yerel boyut, kültürlerarası etki ve sosyal sürdürülebilirlik.
+•	İnsan kaynağı potansiyelini geliştirmek.
+•	İlgili tarafların ve kurumların kapasitesini desteklemek.
+•	Çevre ve iklim değişikliğinin bireysel ve yerel boyutlarını öne çıkarmak.
+•	Farklı kültür ve toplumlarda sürdürülebilir eğitim etkisini anlamak.
+•	Sürdürülebilirliğin sosyal boyutunu güçlendirmek.
+KONSORSİYUM
+5 ortaklı yapı
+RTÜK koordinatörlüğünde Türkiye, Avusturya ve Romanya'dan kurumların işbirliği.
+Koordinatör: RTÜK · Türkiye / Ankara
+Ortaklar: Erciyes Üniversitesi · Türkiye Gençlik Vakfı · Universität Wien · SNSPA
+YÖNETİM
+Proje Yönetimi
+Akış, izleme, çalışma paketleri ve uygulama mantığını inceleyin.
+WP2: Dijital öğrenme araçları, etkileşimli eğitim/farkındalık videoları, 1 Dakikada serisi ve e-Merkez.
+WP3: Doğanın Enerjileri akran eğitimcisi gelişim ve akran destekli eğitim programı.
+WP4: Çevresel sürdürülebilirlik bilim, iletişim ve medya ağı, çalıştaylar, yaygınlaştırma ve politika yapıcı ağları.
+PROJE KAPSAMI
+36 aylık yolculuk
+Aralık 2024 – Kasım 2027 döneminde eğitim, medya, ağ ve yaygınlaştırma faaliyetleri.
+Proje dönemi 1 Aralık 2024 – 30 Kasım 2027. Eğitim, medya üretimi, akran eğitimleri, çevresel iletişim-medya ağı ve yaygınlaştırma faaliyetleri birbirini tamamlayan bir yapı içinde yürütülür.
+RESMÎ
+İletişim
+RTÜK, Ankara · enetcom@rtuk.gov.tr · +90 312 297 52 05 / 297 54 58
+E-posta: enetcom@rtuk.gov.tr
+Telefon: +90 312 297 52 05 / 297 54 58
+FAALİYETLER
+Bütün çalışmalar.
+WP2 · WP3 · WP4
+Eğitimden medya ağına, tek bir çalışma ekosistemi.
+Çoklu öğrenme tasarımları, akran eğitim programı, çevresel sürdürülebilirlik bilim-iletişim-medya ağı, kısa filmler, yeni medya serisi, eğitimler ve dijital kampanyalar aynı çatı altında.
+Tüm faaliyetleri incele →
+WP2, WP3 ve WP4 kapsamındaki faaliyetler; dijital öğrenme araçları, akran eğitimleri, medya ağı, kısa filmler, yeni medya serisi, e-Merkez, çalıştaylar ve yaygınlaştırma çalışmalarını kapsar.
+Çevresel Genç Liderliği için Çoklu Öğrenme Tasarımları
+Kısa filmler, 1 Dakikada Çevre ve Sürdürülebilirlik yeni medya serisi ve öğrenme materyallerini çoklu öğrenme yaklaşımında bir araya getirir.
+Doğanın Enerjileri – Akran Eğitim Programı
+Sürdürülebilirlik ve yeşil beceriler alanında akran eğitimcilerinin gelişimini ve akran destekli eğitimi hedefleyen WP3 çalışmasıdır. Hedef grup: 15–25 yaş gençler.
+Çevresel Sürdürülebilirlik Bilim, İletişim ve Medya Ağı
+Bilim, iletişim ve medya çalışmalarını; konferans, bildiri, çalıştay, yaygınlaştırma ve ortak üretim faaliyetlerini bir araya getiren WP4 çalışma alanıdır.
+Yürütülen çalışma alanları
+Kısa filmler · e-Merkez · e-NetCoM Network · Eğitim Programları · Hashtag kampanyaları projenin başlıca çalışma alanlarıdır.
+PROJE YOLCULUĞU
+36 ay, tek bir hikâye.
+24
+2024 · Başlangıç
+Proje 1 Aralık 2024'te başladı. Ortaklık yapısı, çalışma paketleri ve uygulama çerçevesi oluşturuldu.
+25
+2025 · Tasarım
+Dijital öğrenme araçları, medya içerikleri, ağ çalışmaları ve eğitim tasarımlarının geliştirilmesi.
+26
+2026 · Uygulama
+Akran eğitimleri, 81 il ağı, yeni medya serileri, yaygınlaştırma ve gençlik odaklı uygulamalar.
+27
+2027 · Sürdürülebilirlik
+Yaygınlaştırma, ortak üretimler, politika yapıcı ağı ve proje sonuçlarının sürdürülebilirliği.
+81 İL EĞİTİM AĞI
+Türkiye'nin her yerinde.
+Veri güncellemesi: 30 Mayıs 2026 rapor kesitine göre 14 yüz yüze + 7 çevrimiçi il ve 1.098 katılımcı; 11 Temmuz 2026 Tunceli çevrimiçi eğitimiyle 22 il ve 1.149 katılımcıya güncellendi.
+TümüYüz yüzeÇevrimiçiGerçekleşen
+Yüz yüze Çevrimiçi Henüz gerçekleşen kayıt yokİlin üzerine tıklayın
+81 il · tam görünüm · tıklanabilir il sınırları
+SEÇİLİ İL
+Türkiye
+Bir ile tıklayın
+Haritadaki il işaretlerinden birine tıklayarak eğitim bilgilerini görüntüleyin.
+ETKİ GÖSTERGELERİ
+Projenin sahadaki izi.
+1.09830 Mayıs 2026 itibarıyla eğitim katılımcısı
+1.149Tunceli güncellemesiyle toplam katılımcı
+11.0771 Dakikada serisi görüntülenme
+1 Dakikada
+11.077
+İnteraktif eğitim / farkındalık
+21.696
+Kamu spotları
+6.251
+HAZİRAN 2026 RAPORU + 11 TEMMUZ GÜNCELLEMESİ
+Güncel faaliyet özeti
+30 Mayıs 2026 itibarıyla 30 büyükşehirden 14 ilde yüz yüze, büyükşehir statüsü dışındaki 51 ilden 7 ilde çevrimiçi eğitim gerçekleştirildi. Bu eğitimlere toplam 1.098 genç katıldı. 11 Temmuz 2026'da Tunceli'de 51 katılımcıyla bir çevrimiçi eğitim daha gerçekleştirildi.
+22 ilde gerçekleşen eğitim kaydı bulunuyor · 1.149 katılımcı · 81 il ağı
+Temel rapor kesiti: 30 Mayıs 2026 · rapor tarihi: Haziran 2026
+E-NETCOM AKADEMİ
+Öğren, uygula, paylaş.
+YEŞİL BECERİLER
+Sürdürülebilir yaşam
+Günlük yaşam, kaynak verimliliği, tüketim alışkanlıkları ve çevresel sorumluluk.
+Astra ile çalışma hazırla ↗İLETİŞİM
+Çevresel iletişim
+Mesaj tasarımı, hedef kitle, dijital hikâye anlatımı ve çevre odaklı medya üretimi.
+Öğrenme alanını keşfet ↗GENÇLİK
+Akran eğitimi
+15–25 yaş gençlere yönelik akran eğitimcisi gelişimi ve akran destekli öğrenme yaklaşımı.
+Programı incele ↗DİJİTAL
+Dijital aktivizm
+Hashtag kampanyaları, kısa video, sosyal medya içerikleri ve çevrimiçi farkındalık.
+Astra Atölye'ye geç ↗
+RESMÎ SOSYAL KANALLAR
+Projeyi sosyal medyada takip edin.
 
-.map-stage{position:relative;width:100%;aspect-ratio:16/9;min-height:520px;border-radius:22px;overflow:hidden;background:#eef7f2;border:1px solid #d9e7e0}.map-stage img.real-map{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:16px}.map-hotspot{position:absolute;transform:translate(-50%,-50%);width:17px;height:17px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.2);cursor:pointer;z-index:5}.map-hotspot.face{background:#10a77a}.map-hotspot.online{background:#3979cf}.map-hotspot.none{background:#b7cbc2}.map-hotspot:hover,.map-hotspot.selected{width:25px;height:25px;border-color:#063f32}.map-hotspot .map-label{display:none;position:absolute;left:50%;bottom:24px;transform:translateX(-50%);white-space:nowrap;background:#063f32;color:#fff;border-radius:8px;padding:5px 8px;font-size:10px;font-weight:900}.map-hotspot:hover .map-label{display:block}.map-credit{position:absolute;right:10px;bottom:8px;background:rgba(255,255,255,.9);padding:5px 8px;border-radius:8px;font-size:9px;color:#5d716a;z-index:6}.map-fallback{position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;color:#5d716a;background:#eef7f2;z-index:4}.video .thumb{height:210px!important}.video .thumb img{width:100%;height:100%;object-fit:cover}.video .watch{display:inline-flex!important;margin-top:12px}
+◎ Instagram
+@enetcomproje · Görsel hikâyeler, etkinlikler, gençlik ve sürdürülebilirlik içerikleri.
+Instagram hesabını aç ↗
 
-/* V12 refinements */
-.social-quick{background:#fff;border-bottom:1px solid var(--line);padding:14px 0}.social-quick .wrap{display:flex;align-items:center;justify-content:space-between;gap:18px}.social-quick .label{font-size:11px;font-weight:950;letter-spacing:1.4px;color:#5d716a;text-transform:uppercase}.social-quick .social-links{display:flex;gap:9px;flex-wrap:wrap}.social-quick a{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 14px;font-size:12px;font-weight:950;display:inline-flex;align-items:center;gap:7px}.social-quick a:hover{border-color:var(--green);color:var(--green);transform:translateY(-1px)}
-.map-stage{aspect-ratio:auto;min-height:520px;background:#eef7f2}.map-stage object.real-map{position:absolute;inset:0;width:100%;height:100%;padding:10px;border:0}.map-stage #mapHotspots{display:none}.map-stage .map-fallback{z-index:10}.map-credit{z-index:20}.map-path{cursor:pointer;transition:fill .15s,stroke .15s,stroke-width .15s}.map-path.none{fill:#dce9e3!important}.map-path.face{fill:#19a879!important}.map-path.online{fill:#4a83d2!important}.map-path.selected{stroke:#063f32!important;stroke-width:2.8!important;filter:drop-shadow(0 2px 2px rgba(6,47,39,.22))}.map-path:hover{stroke:#063f32!important;stroke-width:2.3!important}.map-tip{position:absolute;display:none;z-index:30;background:#063f32;color:#fff;padding:7px 10px;border-radius:9px;font-size:11px;font-weight:900;pointer-events:none;box-shadow:0 8px 20px rgba(0,0,0,.16)}
-.video .thumb.youtube-thumb{background:#dceee6}.video .thumb.youtube-thumb img{object-fit:cover}.video .thumb .yt-badge{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.72);color:#fff;border-radius:7px;padding:5px 7px;font-size:10px;font-weight:900}.social-feature{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}.social-feature a{min-height:180px;border-radius:28px;padding:28px;display:flex;flex-direction:column;justify-content:space-between;transition:.2s}.social-feature a:hover{transform:translateY(-4px);box-shadow:var(--shadow)}.social-feature .ig{background:linear-gradient(135deg,#fff,#fff1f7);border:1px solid #f0d9e5}.social-feature .x{background:#071a17;color:#fff;border:1px solid #163d36}.social-feature .big{font-size:30px;font-weight:950}.social-feature .small{font-size:13px;line-height:1.6;opacity:.78}.social-feature .cta{font-size:12px;font-weight:950}
-@media(max-width:900px){.social-quick .wrap{align-items:flex-start;flex-direction:column}.social-feature{grid-template-columns:1fr}.map-stage{min-height:430px}.map-grid{grid-template-columns:1fr!important}.map-info{min-height:auto}}
+𝕏 X
+@eNetCoMProje · Duyurular, proje gelişmeleri ve güncel paylaşımlar.
+X hesabını aç ↗
 
-/* V15 map/video/network upgrades */
-.map-stage{min-height:600px!important;height:600px!important;display:flex;align-items:center;justify-content:center}
-.map-stage object.real-map{transform:none!important;transform-origin:center center;width:100%;height:100%;padding:0!important;display:block}
-.map-credit{z-index:20}
-.map-tip{z-index:30}
-.video .thumb{background:#dceee6!important}
-.video .thumb img{background:#dceee6;object-fit:cover}
-.yt-badge{position:absolute;right:12px;top:12px;background:rgba(255,255,255,.95);color:#d21f2b;border-radius:999px;padding:5px 8px;font-size:9px;font-weight:950;letter-spacing:.4px}
-.network-expanded{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
-.network-expanded .network-card{min-height:180px}
-.network-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
-.network-kpi{background:#eaf8f1;border:1px solid var(--line);border-radius:18px;padding:18px}.network-kpi b{display:block;font-size:27px}.network-kpi span{font-size:12px;color:var(--muted)}
-.best-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.best-card{background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;min-height:360px;transition:.2s}.best-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:#b8d7ca}.best-cover{height:150px;display:flex;align-items:flex-end;padding:18px;color:#fff;font-weight:950;font-size:22px}.best-card:nth-child(4n+1) .best-cover{background:linear-gradient(145deg,#086f55,#18a879)}.best-card:nth-child(4n+2) .best-cover{background:linear-gradient(145deg,#2f72c6,#66a5ee)}.best-card:nth-child(4n+3) .best-cover{background:linear-gradient(145deg,#a96722,#df9b4c)}.best-card:nth-child(4n+4) .best-cover{background:linear-gradient(145deg,#71428e,#aa6bc5)}.best-body{padding:18px;display:flex;flex-direction:column;flex:1}.best-body h3{margin:9px 0 8px;font-size:19px}.best-body p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}.best-body .source{margin-top:auto;padding-top:14px;color:var(--green);font-weight:900;font-size:12px}.best-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.best-filter{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 13px;font-weight:850;cursor:pointer}.best-filter.active{background:var(--green);color:#fff}.best-note{margin-top:18px;background:#eff8f3;border:1px solid var(--line);border-radius:20px;padding:16px;color:var(--muted);font-size:13px;line-height:1.6}
-@media(max-width:1000px){.best-grid{grid-template-columns:repeat(2,1fr)}.network-expanded{grid-template-columns:1fr 1fr}.network-kpis{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:650px){.best-grid,.network-expanded{grid-template-columns:1fr}.network-kpis{grid-template-columns:1fr 1fr}.map-stage{height:440px!important;min-height:440px!important}.map-stage object.real-map{transform:none!important}}
+YOUTUBE · DİJİTAL MEDYA MERKEZİ
+e-NetCoM YouTube.
+e-NetCoM – Doğanın EnerjileriResmî YouTube kanalı · eğitim, kısa filmler, kampanyalar ve proje içerikleri
+YouTube kanalını aç ↗
+1 DAKİKADA ÇEVRE VE SÜRDÜRÜLEBİLİRLİK
+Kısa ve etkili çevre mesajları.
+Oynatma listesini aç ↗
+Bölüm 1Bölüm 2Bölüm 3Bölüm 4Bölüm 5Bölüm 6Bölüm 7Bölüm 8Bölüm 9Bölüm 10
+KAMU SPOTLARI
+3R Hareketi kamu spotları.
+Oynatma listesini aç ↗
+Bölüm 1Bölüm 2Bölüm 3Bölüm 4Bölüm 5
+OYnatma listeleri
+Kanaldaki içerik serileri.
+Tüm oynatma listelerini aç ↗
+E-NETCOM NETWORK
+Bilim, iletişim ve medya ağı.
+2025–2027Ağ dönemi
+ICETOLUluslararası bilimsel görünürlük
+BilimAraştırma ve bildiri üretimi
+Medyaİletişim ve yaygınlaştırma
+Tarih	Etkinlik / çalışma	Çıktı
+26–29 Ağustos 2025	5. Uluslararası Eğitim Teknolojileri ve Çevrimiçi Öğrenme Konferansı (ICETOL 2025)	e-NetCoM bildirisi
+2025–2027	Çevresel Sürdürülebilirlik Bilim, İletişim ve Medya Ağı	Ağ / yaygınlaştırma
+2025–2027	Ortak içerik ve bilgi üretimi	İletişim materyalleri
+2025–2027	Konferans, çalıştay, bildiri ve uzman etkileşimi	Bilgi paylaşımı
+AĞ
+Ortak üretimler
+Bilim, medya, iletişim ve eğitim eksenindeki çalışmaların görünür, erişilebilir ve paylaşılabilir hale getirilmesi.
+YAYGINLAŞTIRMA
+Bilgiyi genişletmek
+Konferanslar, bildiriler, dijital içerikler ve eğitim çıktıları üzerinden projenin etki alanını büyütmek.
+VERİTABANI
+e-NetCoM Veritabanı
+Çevre ve sürdürülebilirlik okuryazarlığı e-Merkezi. Haziran 2026 raporunda toplam 2.449 yerli ve yabancı kaynak yer aldığı belirtiliyor. Veritabanına git ↗
+BİLİMSEL İLETİŞİM
+Bildiri ve yayınlar
+e-NetCoM'nin çevresel sürdürülebilirlik, iklim değişikliği ve yapay zekâ destekli eğitim yaklaşımını görünür kılan bilimsel üretimler.
+MEDYA
+İçerik ekosistemi
+Kısa filmler, 1 Dakikada serisi, kamu spotları ve gençlerin üreteceği yeni medya içerikleri aynı ekosistemde buluşuyor.
+GENÇLİK
+Gençlerin sesi
+Akran öğrenmesi ve genç liderliği, çevresel iletişimin yalnızca anlatılmasını değil, gençler tarafından üretilmesini hedefliyor.
+İYİ UYGULAMA ÖRNEKLERİ
+Dünyadan ilham, yerelden etki.
+TümüTürkiyeDünyaEğitim & Gençlikİletişim & Medya
+Neden bu bölüm? İyi uygulamalar, e-NetCoM Network için yalnızca örnek göstermek amacıyla değil; eğitim tasarımı, gençlik katılımı, çevresel iletişim, dijital içerik ve yerel etki açısından karşılaştırılabilir fikirler sunmak amacıyla seçiliyor.
+HABERLER
+Projenin hikâyesi.
+DUYURU
+e-NetCoM Projesi Erasmus+ KA220-YOU kapsamında desteklenmeye hak kazanmıştır.
+RTÜK koordinatörlüğünde yürütülen projenin çevresel sürdürülebilirliğin bireysel ve yerel boyutlarına, gençlerin çevresel liderliğine ve akran eğitimine odaklandığı duyuruldu.
+PROGRAM
+Sürdürülebilirlik ve Yeşil Beceriler Akran Eğitimcisi Gelişim Programı
+Akran eğitimcisi gelişimi ve akran destekli eğitim programı, e-NetCoM'nin temel faaliyetlerinden biri olarak yürütülüyor.
+BİLDİRİ
+Çevresel Sürdürülebilirlik ve İklim Değişikliği İçin Yapay Zekâ Destekli Eğitim Stratejileri
+ICETOL 2025 kapsamında e-NetCoM projesinin yapay zekâ destekli eğitim stratejileri üzerine bildirisi yayımlandı.
+ASTRA ATÖLYE · İÇERİK ÜRETİM MERKEZİ
+Fikirden yayınlanabilir içeriğe.
+Hashtag kampanyası, sosyal medya paketi, kısa video senaryosu, eğitim tasarımı, haber metni ve 30 günlük içerik takvimi üretin.
+# Hashtag kampanyasıAstra ile üret
+📣 Sosyal medya paketiAstra ile üret
+🎬 Kısa video senaryosuAstra ile üret
+🎓 Eğitim tasarımıAstra ile üret
+📰 Haber / basın metniAstra ile üret
+🗓️ 30 günlük içerik takvimiAstra ile üret
+ASTRA · YAPAY ZEKÂ
+e-NetCoM'nin akıllı asistanı.
+Merhaba! Ben Astra. Proje, faaliyetler, 81 il eğitim ağı, dijital içerikler ve Astra Atölye hakkında soru sorabilirsiniz.
+Gönder
+KONSORSİYUM
+Beş ortak, ortak bir yön.
+RT
+RTÜK
+Koordinatör kurum · Türkiye / Ankara
+EU
+Erciyes Üniversitesi
+Türkiye · Kayseri
+UW
+University of Vienna
+Avusturya · Viyana
+SNS
+SNSPA
+Romanya · Bükreş
+TG
+Türkiye Gençlik Vakfı
+Türkiye · İstanbul
 
-.map-stage{min-height:560px!important;height:560px!important;display:flex!important;align-items:center;justify-content:center;background:linear-gradient(145deg,#edf8f3,#f8fcfa)!important}.map-stage #turkeyMapMount{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:18px}.map-stage #turkeyMapMount svg{width:100%!important;height:100%!important;max-width:100%;max-height:100%;display:block}.map-stage #turkeyMapMount svg [id^="TR"]{stroke:#fff;stroke-width:1.4;vector-effect:non-scaling-stroke;cursor:pointer;transition:filter .15s,stroke-width .15s}.map-stage #turkeyMapMount svg [id^="TR"].face{fill:#18a879!important}.map-stage #turkeyMapMount svg [id^="TR"].online{fill:#4b82d1!important}.map-stage #turkeyMapMount svg [id^="TR"].none{fill:#dce9e3!important}.map-stage #turkeyMapMount svg [id^="TR"]:hover,.map-stage #turkeyMapMount svg [id^="TR"].selected{stroke:#063f32!important;stroke-width:3!important;filter:drop-shadow(0 2px 2px rgba(6,47,39,.18))}.map-stage #turkeyMapMount svg text{pointer-events:none}.map-v15-note{position:absolute;left:18px;bottom:12px;background:rgba(255,255,255,.92);border:1px solid #d9e7e0;padding:6px 10px;border-radius:9px;font-size:9px;color:#5d716a;z-index:8}.map-stage .map-fallback{z-index:20}
-.video .thumb.yt-preview{background:#dceee6;position:relative}.video .thumb.yt-preview .fallback-thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}.video .thumb.yt-preview .play{z-index:3}.video .thumb.yt-preview .yt-badge{z-index:4}
+Resmî proje sitesiProje haberleri, çalışmalar ve kaynaklar
+↗
+e-NetCoM VeritabanıÇevre ve sürdürülebilirlik e-Merkezi
+↗
+YouTube kanalıVideolar, Shorts ve oynatma listeleri
+↗
+İLETİŞİM
+e-NetCoM proje iletişimi
+Adres
+Radyo ve Televizyon Üst Kurulu 1597. Cad. No:13 Bilkent, 06800 Çankaya / Ankara
+E-posta
+enetcom@rtuk.gov.tr
+Telefon
++90 312 297 52 05 · +90 312 297 54 58
+SOSYAL MEDYA
+Güncel kanallar
+YouTube ↗ Instagram ↗ X ↗
+🌱e-NetCoMDOĞANIN ENERJİLERİ BİZİMLE
+Genç liderler, çevresel iletişim ve medya ağı.
+PlatformProjeFaaliyetler81 İlMedyaSosyal Medyaİyi UygulamalarAstra AtölyeProje YolculuğuEtki Göstergelerie-NetCoM AkademiOrtaklar
+Resmî kanallarYouTubeInstagramXe-NetCoM Veritabanı
 
+<<<<<<< HEAD
 .media-cover{position:relative;overflow:hidden}
 .media-cover .cover-art{width:100%;height:100%;object-fit:cover;display:block}
 .media-cover .cover-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,.18));pointer-events:none}
@@ -195,3 +409,5 @@ async function sendChat(){
 document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendChat()});
 async function workshop(btn,type){const area=btn.parentElement.querySelector('textarea'),prompt=area.value.trim()||'e-NetCoM için çevresel sürdürülebilirlik';const out=document.getElementById('workout');out.innerHTML='<div class="workout">Astra içeriği hazırlıyor…</div>';try{const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:`${type} hazırla. Konu: ${prompt}. e-NetCoM projesinin amacı ve çevresel sürdürülebilirlik bağlamıyla uyumlu, yayınlanabilir ve somut bir çıktı üret.`,history:[]})});const d=await r.json();out.innerHTML=`<div class="workout"><b>ASTRA ÇIKTISI · ${esc(type.toUpperCase())}</b><br><br>${renderAstraMarkdown(d.reply||'Çıktı üretilemedi.')}</div>`}catch(e){out.innerHTML='<div class="workout">Astra şu anda çevrimdışı. Lütfen birkaç saniye sonra tekrar deneyin.</div>'}}
 </script></body></html>
+=======
+>>>>>>> 57759e63a4b6aab4a99705007e468e246e6c18d3
