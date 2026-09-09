@@ -1,48 +1,39 @@
-const http = require("http");
-const https = require("https");
+const http = require('http');
+const https = require('https');
 
 const PORT = process.env.PORT || 10000;
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
-const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-6-astra";
-
-/* =========================================================
-   e-NetCoM EĞİTİM VERİLERİ
-   ========================================================= */
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
+const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-6-astra';
 
 const TRAININGS = [
-  { date: "31 Ocak 2026", city: "Sakarya", type: "Yüz yüze", participants: 34, youthWorkers: 3, total: 37 },
-  { date: "14 Şubat 2026", city: "İstanbul", type: "Yüz yüze", participants: 32, youthWorkers: 3, total: 35 },
-  { date: "3 Mart 2026", city: "Ankara", type: "Yüz yüze", participants: 33, youthWorkers: 2, total: 35 },
-  { date: "3 Nisan 2026", city: "Konya", type: "Yüz yüze", participants: 45, youthWorkers: null, total: 45 },
-  { date: "9 Nisan 2026", city: "Aydın", type: "Yüz yüze", participants: 104, youthWorkers: null, total: 104 },
-  { date: "15 Nisan 2026", city: "Kahramanmaraş", type: "Yüz yüze", participants: 35, youthWorkers: null, total: 35 },
-  { date: "22 Nisan 2026", city: "Şanlıurfa", type: "Yüz yüze", participants: 78, youthWorkers: null, total: 78 },
-  { date: "24 Nisan 2026", city: "Gaziantep", type: "Yüz yüze", participants: 90, youthWorkers: null, total: 90 },
-  { date: "6 Mayıs 2026", city: "Muğla", type: "Yüz yüze", participants: 72, youthWorkers: null, total: 72 },
-  { date: "8 Mayıs 2026", city: "Denizli", type: "Yüz yüze", participants: 32, youthWorkers: null, total: 32 },
-  { date: "13 Mayıs 2026", city: "Adana", type: "Yüz yüze", participants: 35, youthWorkers: null, total: 35 },
-  { date: "15 Mayıs 2026", city: "Mersin", type: "Yüz yüze", participants: 120, youthWorkers: null, total: 120 },
-  { date: "20 Mayıs 2026", city: "Samsun", type: "Yüz yüze", participants: 53, youthWorkers: null, total: 53 },
-  { date: "22 Mayıs 2026", city: "Ordu", type: "Yüz yüze", participants: 54, youthWorkers: null, total: 54 },
-
-  { date: "28 Mart 2026", city: "Uşak", type: "Çevrimiçi", participants: 36, youthWorkers: null, total: 36 },
-  { date: "4 Nisan 2026", city: "Malatya", type: "Çevrimiçi", participants: 26, youthWorkers: null, total: 26 },
-  { date: "11 Nisan 2026", city: "Burdur", type: "Çevrimiçi", participants: 33, youthWorkers: null, total: 33 },
-  { date: "18 Nisan 2026", city: "Afyonkarahisar", type: "Çevrimiçi", participants: 37, youthWorkers: null, total: 37 },
-  { date: "2 Mayıs 2026", city: "Kütahya", type: "Çevrimiçi", participants: 24, youthWorkers: null, total: 24 },
-  { date: "9 Mayıs 2026", city: "Bilecik", type: "Çevrimiçi", participants: 37, youthWorkers: null, total: 37 },
-  { date: "23 Mayıs 2026", city: "Karaman", type: "Çevrimiçi", participants: 93, youthWorkers: null, total: 93 },
-  { date: "11 Temmuz 2026", city: "Tunceli", type: "Çevrimiçi", participants: 51, youthWorkers: null, total: 51 }
+  { date: '31 Ocak 2026', city: 'Sakarya', type: 'Yüz yüze', participants: 34, youthWorkers: 3, total: 37 },
+  { date: '14 Şubat 2026', city: 'İstanbul', type: 'Yüz yüze', participants: 32, youthWorkers: 3, total: 35 },
+  { date: '3 Mart 2026', city: 'Ankara', type: 'Yüz yüze', participants: 33, youthWorkers: 2, total: 35 },
+  { date: '28 Mart 2026', city: 'Uşak', type: 'Çevrimiçi', participants: 36, youthWorkers: null, total: 36 },
+  { date: '3 Nisan 2026', city: 'Konya', type: 'Yüz yüze', participants: 45, youthWorkers: null, total: 45 },
+  { date: '4 Nisan 2026', city: 'Malatya', type: 'Çevrimiçi', participants: 26, youthWorkers: null, total: 26 },
+  { date: '9 Nisan 2026', city: 'Aydın', type: 'Yüz yüze', participants: 104, youthWorkers: null, total: 104 },
+  { date: '11 Nisan 2026', city: 'Burdur', type: 'Çevrimiçi', participants: 33, youthWorkers: null, total: 33 },
+  { date: '15 Nisan 2026', city: 'Kahramanmaraş', type: 'Yüz yüze', participants: 35, youthWorkers: null, total: 35 },
+  { date: '18 Nisan 2026', city: 'Afyonkarahisar', type: 'Çevrimiçi', participants: 37, youthWorkers: null, total: 37 },
+  { date: '22 Nisan 2026', city: 'Şanlıurfa', type: 'Yüz yüze', participants: 78, youthWorkers: null, total: 78 },
+  { date: '24 Nisan 2026', city: 'Gaziantep', type: 'Yüz yüze', participants: 90, youthWorkers: null, total: 90 },
+  { date: '2 Mayıs 2026', city: 'Kütahya', type: 'Çevrimiçi', participants: 24, youthWorkers: null, total: 24 },
+  { date: '6 Mayıs 2026', city: 'Muğla', type: 'Yüz yüze', participants: 72, youthWorkers: null, total: 72 },
+  { date: '8 Mayıs 2026', city: 'Denizli', type: 'Yüz yüze', participants: 32, youthWorkers: null, total: 32 },
+  { date: '9 Mayıs 2026', city: 'Bilecik', type: 'Çevrimiçi', participants: 37, youthWorkers: null, total: 37 },
+  { date: '13 Mayıs 2026', city: 'Adana', type: 'Yüz yüze', participants: 35, youthWorkers: null, total: 35 },
+  { date: '15 Mayıs 2026', city: 'Mersin', type: 'Yüz yüze', participants: 120, youthWorkers: null, total: 120 },
+  { date: '20 Mayıs 2026', city: 'Samsun', type: 'Yüz yüze', participants: 53, youthWorkers: null, total: 53 },
+  { date: '22 Mayıs 2026', city: 'Ordu', type: 'Yüz yüze', participants: 54, youthWorkers: null, total: 54 },
+  { date: '23 Mayıs 2026', city: 'Karaman', type: 'Çevrimiçi', participants: 93, youthWorkers: null, total: 93 },
+  { date: '11 Temmuz 2026', city: 'Tunceli', type: 'Çevrimiçi', participants: 51, youthWorkers: null, total: 51 }
 ];
-
-/* =========================================================
-   PROJE BİLGİLERİ
-   ========================================================= */
 
 const PROJECT_CONTEXT = `
 Sen Astra'sın. e-NetCoM projesinin yapay zekâ destekli asistanısın.
 
-PROJE:
+Proje adı:
 Doğanın Enerjileri Bizimle: Genç Liderler, Çevresel İletişim ve Medya Ağı (e-NetCoM)
 
 Proje ID:
@@ -72,318 +63,308 @@ Temel konular:
 - Sürdürülebilir tüketim
 - Atık yönetimi ve geri dönüşüm
 
-30 Mayıs 2026 rapor dönemindeki temel göstergeler:
+30 Mayıs 2026 raporundaki temel göstergeler:
 - 14 yüz yüze il
 - 7 çevrimiçi il
 - Toplam 1.098 katılımcı
 - 24 interaktif eğitim/farkındalık videosu
-- 21.696 video görüntülenmesi
+- 21.696 görüntülenme
 - 10 "1 Dakikada Çevre ve Sürdürülebilirlik" içeriği
 - 11.077 görüntülenme
 - 2 kamu spotu
 - 6.251 görüntülenme
 - e-NetCoM veritabanında 2.449 yerli ve yabancı kaynak
 
-11 Temmuz 2026'da Tunceli'de çevrimiçi eğitim gerçekleştirilmiştir:
-- 51 katılımcı
-- Böylece kayıtlı eğitim ağı 22 ile ulaşmıştır.
+11 Temmuz 2026 tarihinde Tunceli'de çevrimiçi eğitim yapılmış ve 51 katılımcı kaydedilmiştir.
 `;
 
-/* =========================================================
-   YARDIMCI FONKSİYONLAR
-   ========================================================= */
-
 function normalize(text) {
-  return String(text || "")
-    .toLocaleLowerCase("tr-TR")
-    .replace(/ı/g, "i")
-    .replace(/ğ/g, "g")
-    .replace(/ü/g, "u")
-    .replace(/ş/g, "s")
-    .replace(/ö/g, "o")
-    .replace(/ç/g, "c");
+  return String(text || '')
+    .toLocaleLowerCase('tr-TR')
+    .replace(/ı/g, 'i')
+    .replace(/ğ/g, 'g')
+    .replace(/ü/g, 'u')
+    .replace(/ş/g, 's')
+    .replace(/ö/g, 'o')
+    .replace(/ç/g, 'c');
 }
 
 function isGreeting(message) {
   const m = normalize(message).trim();
 
-  return [
-    "merhaba",
-    "merhaba astra",
-    "selam",
-    "selam astra",
-    "hey",
-    "hey astra",
-    "nasilsin",
-    "nasilsin astra"
-  ].includes(m);
+  return (
+    /^(merhaba|selam|hey)( astra)?$/.test(m) ||
+    /^(nasilsin)( astra)?$/.test(m)
+  );
 }
 
 function isTrainingQuestion(message) {
   const m = normalize(message);
 
-  const words = [
-    "egitim",
-    "egitimler",
-    "katilimci",
-    "katilim",
-    "genclik calisani",
-    "hangi iller",
-    "hangi il",
-    "sehirlerde",
-    "sakarya",
-    "istanbul",
-    "ankara",
-    "konya",
-    "aydin",
-    "kahramanmaras",
-    "sanliurfa",
-    "gaziantep",
-    "mugla",
-    "denizli",
-    "adana",
-    "mersin",
-    "samsun",
-    "ordu",
-    "usak",
-    "malatya",
-    "burdur",
-    "afyonkarahisar",
-    "kutahya",
-    "bilecik",
-    "karaman",
-    "tunceli",
-    "2026"
+  const terms = [
+    'egitim',
+    'egitimler',
+    'katilimci',
+    'katilim',
+    'genclik calisani',
+    'hangi iller',
+    'hangi il',
+    'hangi sehir',
+    'sehirlerde',
+    '2026',
+    'sakarya',
+    'istanbul',
+    'ankara',
+    'konya',
+    'aydin',
+    'kahramanmaras',
+    'sanliurfa',
+    'gaziantep',
+    'mugla',
+    'denizli',
+    'adana',
+    'mersin',
+    'samsun',
+    'ordu',
+    'usak',
+    'malatya',
+    'burdur',
+    'afyonkarahisar',
+    'kutahya',
+    'bilecik',
+    'karaman',
+    'tunceli'
   ];
 
-  return words.some(word => m.includes(word));
+  return terms.some(term => m.includes(term));
 }
 
 function wantsTable(message) {
   const m = normalize(message);
-  return m.includes("tablo") ||
-         m.includes("listele") ||
-         m.includes("liste halinde") ||
-         m.includes("liste halinde goster");
+
+  return (
+    m.includes('tablo') ||
+    m.includes('listele') ||
+    m.includes('liste halinde')
+  );
 }
 
 function wantsAllTrainings(message) {
   const m = normalize(message);
 
   return (
-    (m.includes("tum") || m.includes("hepsi") || m.includes("butun")) &&
-    (m.includes("egitim") || m.includes("il"))
-  ) ||
-  m.includes("hangi illerde") ||
-  m.includes("hangi illerde egitim") ||
-  m.includes("2026 yilinda yapilan egitimler")
+    (
+      (m.includes('tum') ||
+       m.includes('hepsi') ||
+       m.includes('butun')) &&
+      (m.includes('egitim') || m.includes('il'))
+    ) ||
+    m.includes('hangi illerde') ||
+    m.includes('hangi illerde egitim') ||
+    m.includes('2026 yilinda yapilan egitim') ||
+    m.includes('2026 yilinda hangi illerde')
   );
 }
 
 function findTraining(message) {
   const m = normalize(message);
 
-  return TRAININGS.find(t =>
-    m.includes(normalize(t.city))
+  return TRAININGS.find(training =>
+    m.includes(normalize(training.city))
   );
 }
 
-/* =========================================================
-   EĞİTİM SORULARINA DOĞRUDAN CEVAP
-   ========================================================= */
-
-function trainingAnswer(message) {
-  const m = normalize(message);
-
-  /* Tüm eğitimler / iller */
+function directTrainingAnswer(message) {
 
   if (wantsAllTrainings(message)) {
 
     if (wantsTable(message)) {
-      let answer =
-        "| Tarih | İl | Eğitim Türü | Katılımcı |\n" +
-        "|---|---|---|---:|\n";
 
-      for (const t of TRAININGS) {
-        answer +=
-          `| ${t.date} | ${t.city} | ${t.type} | ${t.total} |\n`;
+      let output =
+        '| Tarih | İl | Eğitim Türü | Katılımcı |\n' +
+        '|---|---|---|---:|\n';
+
+      for (const training of TRAININGS) {
+        output +=
+          `| ${training.date} | ${training.city} | ${training.type} | ${training.total} |\n`;
       }
 
-      answer +=
-        `\n**Toplam kayıt:** ${TRAININGS.length} eğitim / il.`;
-
-      return answer;
+      return output;
     }
-
-    const cities = TRAININGS.map(t => t.city);
 
     return (
       `2026 yılında kayıtlı eğitimler **${TRAININGS.length} ilde** gerçekleştirilmiştir.\n\n` +
-      cities.map((city, i) => `${i + 1}. ${city}`).join("\n")
+      TRAININGS
+        .map(
+          (training, index) =>
+            `${index + 1}. **${training.city}** — ${training.date} — ${training.total} kişi`
+        )
+        .join('\n')
     );
   }
-
-  /* Belirli il */
 
   const training = findTraining(message);
 
   if (training) {
 
-    let answer =
+    let output =
       `**${training.city} – ${training.date}**\n\n` +
       `- Eğitim türü: **${training.type}**\n` +
       `- Katılımcı: **${training.participants} kişi**`;
 
     if (training.youthWorkers !== null) {
-      answer +=
+
+      output +=
         `\n- Gençlik çalışanı: **${training.youthWorkers} kişi**` +
         `\n- Gençlik çalışanları dahil toplam: **${training.total} kişi**`;
+
     } else {
-      answer +=
+
+      output +=
         `\n- Gençlik çalışanı sayısı: **kayıtlı değil**` +
         `\n- Toplam kayıtlı katılım: **${training.total} kişi**`;
     }
 
-    return answer;
+    return output;
   }
 
-  /* Genel eğitim sorusu */
+  if (
+    normalize(message).includes('egitim') ||
+    normalize(message).includes('katilimci')
+  ) {
 
-  if (m.includes("egitim") || m.includes("katilimci")) {
-
-    let answer =
-      `e-NetCoM kapsamında 2026 yılı için sistemde **${TRAININGS.length} eğitim kaydı** bulunmaktadır.\n\n`;
-
-    answer += TRAININGS
-      .map(t => `- **${t.date} – ${t.city}:** ${t.total} kişi`)
-      .join("\n");
-
-    return answer;
+    return TRAININGS
+      .map(
+        training =>
+          `- **${training.date} – ${training.city}:** ${training.total} kişi`
+      )
+      .join('\n');
   }
 
   return null;
 }
-
-/* =========================================================
-   OPENAI
-   ========================================================= */
 
 function askOpenAI(message, history) {
 
   return new Promise((resolve, reject) => {
 
     if (!OPENAI_API_KEY) {
-      reject(new Error("OPENAI_API_KEY bulunamadı."));
+      reject(new Error('OPENAI_API_KEY bulunamadı.'));
       return;
     }
 
     const input = [
       {
-        role: "system",
-        content: PROJECT_CONTEXT + `
+        role: 'system',
+        content:
+          PROJECT_CONTEXT +
+          `
 
-ASTRA DAVRANIŞ KURALLARI:
-
+Kurallar:
 1. Türkçe cevap ver.
 2. Kullanıcının sorusuna doğrudan cevap ver.
 3. Bilmediğin bilgiyi uydurma.
-4. e-NetCoM projesiyle ilgili sorularda verilen proje bağlamını esas al.
+4. e-NetCoM ile ilgili verilen proje bağlamını esas al.
 5. Kullanıcı tablo isterse Markdown tablo kullan.
-6. Kısa ve anlaşılır cevaplar ver.
-7. Gereksiz şekilde "kaynaklara bakıyorum" veya "düşünüyorum" deme.
-`
+6. Kısa, anlaşılır ve profesyonel cevaplar ver.`
       }
     ];
 
     if (Array.isArray(history)) {
+
       for (const item of history.slice(-4)) {
-        if (!item || !item.role || !item.content) continue;
+
+        if (!item || !item.content) {
+          continue;
+        }
 
         input.push({
-          role: item.role === "assistant" ? "assistant" : "user",
+          role: item.role === 'assistant' ? 'assistant' : 'user',
           content: String(item.content)
         });
       }
     }
 
     input.push({
-      role: "user",
+      role: 'user',
       content: message
     });
 
-    const body = JSON.stringify({
+    const requestBody = JSON.stringify({
       model: OPENAI_MODEL,
       input,
       reasoning: {
-        effort: "low"
+        effort: 'low'
       },
       max_output_tokens: 1200
     });
 
-    const req = https.request(
+    const request = https.request(
       {
-        hostname: "api.openai.com",
-        path: "/v1/responses",
-        method: "POST",
+        hostname: 'api.openai.com',
+        path: '/v1/responses',
+        method: 'POST',
         headers: {
-          "Authorization": `Bearer ${OPENAI_API_KEY}`,
-          "Content-Type": "application/json",
-          "Content-Length": Buffer.byteLength(body)
+          Authorization: `Bearer ${OPENAI_API_KEY}`,
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(requestBody)
         },
         timeout: 25000
       },
       response => {
 
-        let data = "";
+        let data = '';
 
-        response.on("data", chunk => {
+        response.on('data', chunk => {
           data += chunk;
         });
 
-        response.on("end", () => {
+        response.on('end', () => {
 
           try {
 
             const json = JSON.parse(data);
 
             if (response.statusCode < 200 || response.statusCode >= 300) {
+
               reject(
                 new Error(
                   `OpenAI HTTP ${response.statusCode}: ` +
                   (json.error?.message || data.slice(0, 500))
                 )
               );
+
               return;
             }
 
-            let text = "";
-
-            if (typeof json.output_text === "string") {
-              text = json.output_text;
-            }
+            let text =
+              typeof json.output_text === 'string'
+                ? json.output_text
+                : '';
 
             if (!text && Array.isArray(json.output)) {
 
               for (const item of json.output) {
 
-                if (!Array.isArray(item.content)) continue;
+                if (!Array.isArray(item.content)) {
+                  continue;
+                }
 
                 for (const content of item.content) {
 
                   if (
                     content &&
-                    content.type === "output_text" &&
-                    typeof content.text === "string"
+                    content.type === 'output_text' &&
+                    typeof content.text === 'string'
                   ) {
                     text += content.text;
                   }
-
                 }
               }
             }
 
             if (!text) {
-              reject(new Error("OpenAI boş cevap döndürdü."));
+              reject(new Error('OpenAI boş cevap döndürdü.'));
               return;
             }
 
@@ -396,177 +377,172 @@ ASTRA DAVRANIŞ KURALLARI:
       }
     );
 
-    req.on("timeout", () => {
-      req.destroy(new Error("OpenAI zaman aşımına uğradı."));
+    request.on('timeout', () => {
+      request.destroy(
+        new Error('OpenAI zaman aşımına uğradı.')
+      );
     });
 
-    req.on("error", error => {
+    request.on('error', error => {
       reject(error);
     });
 
-    req.write(body);
-    req.end();
+    request.write(requestBody);
+    request.end();
   });
 }
 
-/* =========================================================
-   HTTP SUNUCUSU
-   ========================================================= */
+function sendJson(res, status, payload) {
 
-const server = http.createServer(async (req, res) => {
+  res.writeHead(status, {
+    'Content-Type': 'application/json; charset=utf-8'
+  });
 
-  /* CORS */
+  res.end(JSON.stringify(payload));
+}
 
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+const server = http.createServer((req, res) => {
 
-  if (req.method === "OPTIONS") {
+  res.setHeader(
+    'Access-Control-Allow-Origin',
+    '*'
+  );
+
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Content-Type'
+  );
+
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, OPTIONS'
+  );
+
+  if (req.method === 'OPTIONS') {
+
     res.writeHead(204);
     res.end();
     return;
   }
 
-  /* HEALTH */
+  if (
+    req.method === 'GET' &&
+    req.url === '/api/health'
+  ) {
 
-  if (req.method === "GET" && req.url === "/api/health") {
-
-    const response = {
+    sendJson(res, 200, {
       ok: !!OPENAI_API_KEY,
       knowledgeBase: !!process.env.OPENAI_VECTOR_STORE_ID,
       model: OPENAI_MODEL,
-      astraVersion: "V5-DIRECT"
-    };
-
-    res.writeHead(200, {
-      "Content-Type": "application/json; charset=utf-8"
+      astraVersion: 'V5-DIRECT'
     });
 
-    res.end(JSON.stringify(response));
     return;
   }
 
-  /* CHAT */
+  if (
+    req.method === 'POST' &&
+    req.url === '/api/chat'
+  ) {
 
-  if (req.method === "POST" && req.url === "/api/chat") {
+    let body = '';
 
-    let body = "";
-
-    req.on("data", chunk => {
+    req.on('data', chunk => {
       body += chunk;
     });
 
-    req.on("end", async () => {
+    req.on('end', async () => {
 
       try {
 
-        const data = JSON.parse(body || "{}");
+        const data = JSON.parse(body || '{}');
 
-        const message = String(data.message || "").trim();
-        const history = Array.isArray(data.history)
-          ? data.history
-          : [];
+        const message =
+          String(data.message || '').trim();
+
+        const history =
+          Array.isArray(data.history)
+            ? data.history
+            : [];
 
         if (!message) {
-          res.writeHead(400, {
-            "Content-Type": "application/json; charset=utf-8"
-          });
 
-          res.end(JSON.stringify({
-            reply: "Lütfen bir soru yazın."
-          }));
+          sendJson(res, 400, {
+            reply: 'Lütfen bir soru yazın.'
+          });
 
           return;
         }
 
-        console.log("ASTRA SORU:", message);
+        console.log('ASTRA SORU:', message);
 
-        /* -----------------------------------------
-           1. SELAMLAMA
-           ----------------------------------------- */
+        /* Selamlama */
 
         if (isGreeting(message)) {
 
-          res.writeHead(200, {
-            "Content-Type": "application/json; charset=utf-8"
-          });
-
-          res.end(JSON.stringify({
+          sendJson(res, 200, {
             reply:
-              "Merhaba! Ben **Astra**, e-NetCoM projesinin yapay zekâ destekli asistanıyım. 🌱\n\n" +
-              "Proje, eğitimler, katılımcı sayıları, iller, sürdürülebilirlik ve çevresel iletişim hakkında bana soru sorabilirsiniz."
-          }));
+              'Merhaba! Ben **Astra**, e-NetCoM projesinin yapay zekâ destekli asistanıyım. 🌱\n\n' +
+              'Proje, eğitimler, katılımcı sayıları, iller, sürdürülebilirlik ve çevresel iletişim hakkında bana soru sorabilirsiniz.'
+          });
 
           return;
         }
 
-        /* -----------------------------------------
-           2. EĞİTİM SORULARI
-           ----------------------------------------- */
+        /* Eğitim soruları */
 
         if (isTrainingQuestion(message)) {
 
-          const directAnswer = trainingAnswer(message);
+          const answer =
+            directTrainingAnswer(message);
 
-          if (directAnswer) {
+          if (answer) {
 
-            res.writeHead(200, {
-              "Content-Type": "application/json; charset=utf-8"
+            sendJson(res, 200, {
+              reply: answer
             });
-
-            res.end(JSON.stringify({
-              reply: directAnswer
-            }));
 
             return;
           }
         }
 
-        /* -----------------------------------------
-           3. GENEL ASTRA / OPENAI
-           ----------------------------------------- */
+        /* Genel Astra soruları */
 
-        const answer = await askOpenAI(message, history);
+        const answer =
+          await askOpenAI(message, history);
 
-        res.writeHead(200, {
-          "Content-Type": "application/json; charset=utf-8"
-        });
-
-        res.end(JSON.stringify({
+        sendJson(res, 200, {
           reply: answer
-        }));
+        });
 
       } catch (error) {
 
-        console.error("ASTRA HATA:", error);
+        console.error(
+          'ASTRA HATA:',
+          error
+        );
 
-        res.writeHead(200, {
-          "Content-Type": "application/json; charset=utf-8"
-        });
-
-        res.end(JSON.stringify({
+        sendJson(res, 200, {
           reply:
-            "Astra şu anda yanıt oluştururken bir sorun yaşadı. " +
-            "Lütfen birkaç saniye sonra tekrar deneyin."
-        }));
+            'Astra şu anda yanıt oluştururken bir sorun yaşadı. Lütfen birkaç saniye sonra tekrar deneyin.'
+        });
       }
-
     });
 
     return;
   }
 
-  /* 404 */
-
-  res.writeHead(404, {
-    "Content-Type": "application/json; charset=utf-8"
+  sendJson(res, 404, {
+    error: 'Not found'
   });
-
-  res.end(JSON.stringify({
-    error: "Not found"
-  }));
 });
 
-server.listen(PORT, "0.0.0.0", () => {
-  console.log(`e-NetCoM Astra V5-DIRECT ${PORT} portunda çalışıyor.`);
-});
+server.listen(
+  PORT,
+  '0.0.0.0',
+  () => {
+    console.log(
+      `e-NetCoM Astra V5-DIRECT ${PORT} portunda çalışıyor.`
+    );
+  }
+);
