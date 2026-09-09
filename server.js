@@ -1,680 +1,495 @@
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
-const https = require('https');
-
-function loadEnv() {
-  const p = path.join(__dirname, '.env');
-  if (!fs.existsSync(p)) return;
-
-  for (const line of fs.readFileSync(p, 'utf8').split(/\r?\n/)) {
-    const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
-    if (!m) continue;
-
-    let v = m[2];
-
-    if (
-      (v.startsWith('"') && v.endsWith('"')) ||
-      (v.startsWith("'") && v.endsWith("'"))
-    ) {
-      v = v.slice(1, -1);
-    }
-
-    if (!process.env[m[1]]) {
-      process.env[m[1]] = v;
-    }
-  }
-}
-
-loadEnv();
+const http = require("http");
+const fs = require("fs");
+const path = require("path");
+const https = require("https");
 
 const PORT = Number(process.env.PORT || 3000);
-const ROOT = path.join(__dirname, 'public');
+const ROOT = path.join(__dirname, "public");
 
 const mime = {
-  '.html': 'text/html; charset=utf-8',
-  '.js': 'text/javascript; charset=utf-8',
-  '.css': 'text/css; charset=utf-8',
-  '.json': 'application/json; charset=utf-8',
-  '.svg': 'image/svg+xml',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.jpeg': 'image/jpeg',
-  '.webp': 'image/webp'
+  ".html": "text/html; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+  ".css": "text/css; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".svg": "image/svg+xml",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".webp": "image/webp"
 };
+
+
+/* =========================================================
+   E-NETCOM EĞİTİM VERİLERİ
+   ========================================================= */
+
+const TRAININGS = [
+  ["31 Ocak 2026","Sakarya","Yüz yüze",34,3,37],
+  ["14 Şubat 2026","İstanbul","Yüz yüze",32,3,35],
+  ["3 Mart 2026","Ankara","Yüz yüze",33,2,35],
+  ["3 Nisan 2026","Konya","Yüz yüze",45,null,45],
+  ["9 Nisan 2026","Aydın","Yüz yüze",104,null,104],
+  ["15 Nisan 2026","Kahramanmaraş","Yüz yüze",35,null,35],
+  ["22 Nisan 2026","Şanlıurfa","Yüz yüze",78,null,78],
+  ["24 Nisan 2026","Gaziantep","Yüz yüze",90,null,90],
+  ["6 Mayıs 2026","Muğla","Yüz yüze",72,null,72],
+  ["8 Mayıs 2026","Denizli","Yüz yüze",32,null,32],
+  ["13 Mayıs 2026","Adana","Yüz yüze",35,null,35],
+  ["15 Mayıs 2026","Mersin","Yüz yüze",120,null,120],
+  ["20 Mayıs 2026","Samsun","Yüz yüze",53,null,53],
+  ["22 Mayıs 2026","Ordu","Yüz yüze",54,null,54],
+
+  ["28 Mart 2026","Uşak","Çevrimiçi",36,null,36],
+  ["4 Nisan 2026","Malatya","Çevrimiçi",26,null,26],
+  ["11 Nisan 2026","Burdur","Çevrimiçi",33,null,33],
+  ["18 Nisan 2026","Afyonkarahisar","Çevrimiçi",37,null,37],
+  ["2 Mayıs 2026","Kütahya","Çevrimiçi",24,null,24],
+  ["9 Mayıs 2026","Bilecik","Çevrimiçi",37,null,37],
+  ["23 Mayıs 2026","Karaman","Çevrimiçi",93,null,93],
+  ["11 Temmuz 2026","Tunceli","Çevrimiçi",51,null,51]
+];
+
+
+/* =========================================================
+   TEMEL PROJE BİLGİLERİ
+   ========================================================= */
+
+const PROJECT_CONTEXT = `
+e-NetCoM projesi:
+
+Proje adı:
+Doğanın Enerjileri Bizimle: Genç Liderler, Çevresel İletişim ve Medya Ağı (e-NetCoM)
+
+Erasmus+ KA220-YOU Cooperation Partnerships in Youth projesidir.
+
+Proje numarası:
+2024-1-TR01-KA220-YOU-000245332
+
+Proje dönemi:
+1 Aralık 2024 - 30 Kasım 2027
+
+Koordinatör:
+RTÜK
+
+Ortaklar:
+Erciyes Üniversitesi
+Universität Wien
+SNSPA
+Türkiye Gençlik Vakfı
+
+Ana konular:
+- çevresel sürdürülebilirlik
+- iklim değişikliği
+- gençlik
+- iletişim
+- medya
+- yeşil beceriler
+- dijital öğrenme
+- çevresel yurttaşlık
+- akran eğitimi
+
+Projenin temel çalışma alanları:
+- 81 il eğitim ağı
+- e-NetCoM veri tabanı
+- e-NetCoM Network
+- eğitim programları
+- kısa filmler
+- 1 Dakikada Çevre ve Sürdürülebilirlik içerikleri
+- kamu spotları
+- hashtag kampanyaları
+- e-Merkez
+- Astra dijital asistanı
+
+Mayıs 2026 sonu itibarıyla raporlanan temel göstergeler:
+- 22 tamamlanan il
+- 1.098 katılımcı 30 Mayıs 2026 rapor kesiti
+- 11 Temmuz 2026 Tunceli çevrimiçi eğitimiyle 1.149 katılımcı
+- 81 il eğitim ağı
+- 24 interaktif eğitim/farkındalık videosu
+- 10 "1 Dakikada..." içeriği
+- 2 kamu spotu
+- e-NetCoM veri tabanında 2.449 kaynak
+`;
+
+
+/* =========================================================
+   YARDIMCI FONKSİYONLAR
+   ========================================================= */
 
 function send(res, status, type, body) {
   res.writeHead(status, {
-    'Content-Type': type,
-    'Cache-Control': 'no-store'
+    "Content-Type": type,
+    "Cache-Control": "no-store"
   });
-
   res.end(body);
 }
 
+
 function staticFile(req, res) {
-  let u = decodeURIComponent((req.url || '/').split('?')[0]);
 
-  if (u === '/') {
-    u = '/index.html';
+  let url = decodeURIComponent(
+    (req.url || "/").split("?")[0]
+  );
+
+  if (url === "/") {
+    url = "/index.html";
   }
 
-  const fp = path.normalize(path.join(ROOT, u));
+  const filePath = path.normalize(
+    path.join(ROOT, url)
+  );
 
-  if (!fp.startsWith(ROOT)) {
-    return send(res, 403, 'text/plain', 'Forbidden');
+  if (!filePath.startsWith(ROOT)) {
+    return send(
+      res,
+      403,
+      "text/plain",
+      "Forbidden"
+    );
   }
 
-  fs.readFile(fp, (e, b) => {
-    if (e) {
-      return send(res, 404, 'text/plain', 'Not found');
+  fs.readFile(filePath, (err, data) => {
+
+    if (err) {
+      return send(
+        res,
+        404,
+        "text/plain",
+        "Not found"
+      );
     }
 
     send(
       res,
       200,
-      mime[path.extname(fp)] || 'application/octet-stream',
-      b
+      mime[path.extname(filePath)] ||
+      "application/octet-stream",
+      data
     );
+
   });
 }
 
-function extractText(obj) {
-  if (!obj) return '';
 
-  if (typeof obj === 'string') {
-    return obj;
+function extractText(response) {
+
+  if (!response) return "";
+
+  if (
+    typeof response.output_text === "string" &&
+    response.output_text.trim()
+  ) {
+    return response.output_text;
   }
 
-  if (Array.isArray(obj)) {
-    return obj
-      .map(extractText)
-      .filter(Boolean)
-      .join('\n');
+  if (Array.isArray(response.output)) {
+
+    for (const item of response.output) {
+
+      if (!item) continue;
+
+      if (
+        typeof item.text === "string" &&
+        item.text.trim()
+      ) {
+        return item.text;
+      }
+
+      if (Array.isArray(item.content)) {
+
+        for (const content of item.content) {
+
+          if (
+            typeof content.text === "string" &&
+            content.text.trim()
+          ) {
+            return content.text;
+          }
+
+        }
+
+      }
+
+    }
+
   }
 
-  if (typeof obj === 'object') {
-    if (typeof obj.text === 'string') {
-      return obj.text;
-    }
-
-    if (
-      obj.type === 'output_text' &&
-      typeof obj.text === 'string'
-    ) {
-      return obj.text;
-    }
-
-    if (obj.output_text) {
-      return extractText(obj.output_text);
-    }
-
-    if (obj.content) {
-      return extractText(obj.content);
-    }
-
-    if (obj.output) {
-      return extractText(obj.output);
-    }
-  }
-
-  return '';
+  return "";
 }
 
 
 /* =========================================================
-   OPENAI REQUEST
+   OPENAI
    ========================================================= */
 
-function openaiRequest(payload) {
-  return new Promise((resolve, reject) => {
-    const key = process.env.OPENAI_API_KEY;
+function askOpenAI(input) {
 
-    if (!key) {
+  return new Promise((resolve, reject) => {
+
+    const apiKey = process.env.OPENAI_API_KEY;
+
+    if (!apiKey) {
       return reject(
-        new Error('Astra API anahtarı yapılandırılmamış.')
+        new Error("OPENAI_API_KEY bulunamadı.")
       );
     }
 
-    const data = JSON.stringify(payload);
+    const payload = JSON.stringify({
+      model:
+        process.env.OPENAI_MODEL ||
+        "gpt-6-astra",
 
-    let settled = false;
+      input: input,
 
-    const finish = (fn, value) => {
-      if (settled) return;
+      reasoning: {
+        effort: "low"
+      },
 
-      settled = true;
-      fn(value);
-    };
+      max_output_tokens: 1600
+    });
 
-    const req = https.request(
-      'https://api.openai.com/v1/responses',
+
+    const request = https.request(
       {
-        method: 'POST',
+        hostname: "api.openai.com",
+        path: "/v1/responses",
+        method: "POST",
 
-        timeout: 30000,
+        timeout: 25000,
 
         headers: {
-          'Authorization': `Bearer ${key}`,
-          'Content-Type': 'application/json',
-          'Content-Length': Buffer.byteLength(data)
+          "Authorization":
+            "Bearer " + apiKey,
+
+          "Content-Type":
+            "application/json",
+
+          "Content-Length":
+            Buffer.byteLength(payload)
         }
       },
 
-      r => {
-        let out = '';
+      response => {
 
-        r.setEncoding('utf8');
+        let body = "";
 
-        r.on('data', c => {
-          out += c;
+        response.setEncoding("utf8");
+
+        response.on("data", chunk => {
+          body += chunk;
         });
 
-        r.on('end', () => {
+        response.on("end", () => {
+
+          let json;
+
           try {
-            const j = JSON.parse(out);
-
-            if (r.statusCode >= 400) {
-              return finish(
-                reject,
-                new Error(
-                  j?.error?.message ||
-                  `OpenAI API ${r.statusCode}`
-                )
-              );
-            }
-
-            finish(resolve, j);
-
+            json = JSON.parse(body);
           } catch (e) {
-            finish(reject, e);
+            return reject(
+              new Error(
+                "OpenAI yanıtı JSON olarak okunamadı."
+              )
+            );
           }
+
+          if (response.statusCode >= 400) {
+
+            return reject(
+              new Error(
+                json?.error?.message ||
+                "OpenAI API hatası: " +
+                response.statusCode
+              )
+            );
+
+          }
+
+          resolve(json);
+
         });
+
       }
     );
 
-    req.on('timeout', () => {
-      req.destroy(
+
+    request.on("timeout", () => {
+
+      request.destroy(
         new Error(
-          'Astra isteği 30 saniyede yanıt vermedi.'
+          "OpenAI isteği 25 saniyede tamamlanmadı."
         )
       );
+
     });
 
-    req.on('error', e => {
-      finish(reject, e);
+
+    request.on("error", error => {
+      reject(error);
     });
 
-    req.write(data);
-    req.end();
+
+    request.write(payload);
+    request.end();
+
   });
-}
-
-
-/* =========================================================
-   DOĞRULANMIŞ E-NETCOM EĞİTİM VERİLERİ
-   ========================================================= */
-
-const VERIFIED_TRAINING_DATA = [
-
-  {
-    date: '31 Ocak 2026',
-    city: 'Sakarya',
-    type: 'Yüz yüze',
-    participants: 34,
-    youthWorkers: 3,
-    total: 37,
-    place: 'TÜGVA Sakarya İl Temsilciliği'
-  },
-
-  {
-    date: '14 Şubat 2026',
-    city: 'İstanbul',
-    type: 'Yüz yüze',
-    participants: 32,
-    youthWorkers: 3,
-    total: 35,
-    place: 'TÜGVA Genel Merkezi'
-  },
-
-  {
-    date: '3 Mart 2026',
-    city: 'Ankara',
-    type: 'Yüz yüze',
-    participants: 33,
-    youthWorkers: 2,
-    total: 35,
-    place: 'TÜGVA Ankara İl Temsilciliği'
-  },
-
-  {
-    date: '3 Nisan 2026',
-    city: 'Konya',
-    type: 'Yüz yüze',
-    participants: 45,
-    youthWorkers: null,
-    total: 45,
-    place: 'Konya Büyükşehir Belediyesi Sosyal İnovasyon Merkezi'
-  },
-
-  {
-    date: '9 Nisan 2026',
-    city: 'Aydın',
-    type: 'Yüz yüze',
-    participants: 104,
-    youthWorkers: null,
-    total: 104,
-    place: 'Aydın Adnan Menderes Üniversitesi İletişim Fakültesi'
-  },
-
-  {
-    date: '15 Nisan 2026',
-    city: 'Kahramanmaraş',
-    type: 'Yüz yüze',
-    participants: 35,
-    youthWorkers: null,
-    total: 35,
-    place: 'Çukurova Elektrik Anadolu Lisesi'
-  },
-
-  {
-    date: '22 Nisan 2026',
-    city: 'Şanlıurfa',
-    type: 'Yüz yüze',
-    participants: 78,
-    youthWorkers: null,
-    total: 78,
-    place: 'CEASE Şanlıurfa Anadolu İmam Hatip Lisesi'
-  },
-
-  {
-    date: '24 Nisan 2026',
-    city: 'Gaziantep',
-    type: 'Yüz yüze',
-    participants: 90,
-    youthWorkers: null,
-    total: 90,
-    place: 'Vehbi Dinçerler Science High School'
-  },
-
-  {
-    date: '6 Mayıs 2026',
-    city: 'Muğla',
-    type: 'Yüz yüze',
-    participants: 72,
-    youthWorkers: null,
-    total: 72,
-    place: 'Jurgutreis Anadolu High School'
-  },
-
-  {
-    date: '8 Mayıs 2026',
-    city: 'Denizli',
-    type: 'Yüz yüze',
-    participants: 32,
-    youthWorkers: null,
-    total: 32,
-    place: 'İbrahim Cinkaya Social Science High School'
-  },
-
-  {
-    date: '13 Mayıs 2026',
-    city: 'Adana',
-    type: 'Yüz yüze',
-    participants: 35,
-    youthWorkers: null,
-    total: 35,
-    place: 'Seyhan Rotary Anadolu High School'
-  },
-
-  {
-    date: '15 Mayıs 2026',
-    city: 'Mersin',
-    type: 'Yüz yüze',
-    participants: 120,
-    youthWorkers: null,
-    total: 120,
-    place: 'Korukent Anadolu High School'
-  },
-
-  {
-    date: '20 Mayıs 2026',
-    city: 'Samsun',
-    type: 'Yüz yüze',
-    participants: 53,
-    youthWorkers: null,
-    total: 53,
-    place: 'Aziz Atık Science High School'
-  },
-
-  {
-    date: '22 Mayıs 2026',
-    city: 'Ordu',
-    type: 'Yüz yüze',
-    participants: 54,
-    youthWorkers: null,
-    total: 54,
-    place: 'Ordu Science High School'
-  },
-
-  {
-    date: '28 Mart 2026',
-    city: 'Uşak',
-    type: 'Çevrimiçi',
-    participants: 36,
-    youthWorkers: null,
-    total: 36,
-    place: 'Dijital Eğitim'
-  },
-
-  {
-    date: '4 Nisan 2026',
-    city: 'Malatya',
-    type: 'Çevrimiçi',
-    participants: 26,
-    youthWorkers: null,
-    total: 26,
-    place: 'Dijital Eğitim'
-  },
-
-  {
-    date: '11 Nisan 2026',
-    city: 'Burdur',
-    type: 'Çevrimiçi',
-    participants: 33,
-    youthWorkers: null,
-    total: 33,
-    place: 'Dijital Eğitim'
-  },
-
-  {
-    date: '18 Nisan 2026',
-    city: 'Afyonkarahisar',
-    type: 'Çevrimiçi',
-    participants: 37,
-    youthWorkers: null,
-    total: 37,
-    place: 'Dijital Eğitim'
-  },
-
-  {
-    date: '2 Mayıs 2026',
-    city: 'Kütahya',
-    type: 'Çevrimiçi',
-    participants: 24,
-    youthWorkers: null,
-    total: 24,
-    place: 'Dijital Eğitim'
-  },
-
-  {
-    date: '9 Mayıs 2026',
-    city: 'Bilecik',
-    type: 'Çevrimiçi',
-    participants: 37,
-    youthWorkers: null,
-    total: 37,
-    place: 'Dijital Eğitim'
-  },
-
-  {
-    date: '23 Mayıs 2026',
-    city: 'Karaman',
-    type: 'Çevrimiçi',
-    participants: 93,
-    youthWorkers: null,
-    total: 93,
-    place: 'Dijital Eğitim'
-  },
-
-  {
-    date: '11 Temmuz 2026',
-    city: 'Tunceli',
-    type: 'Çevrimiçi',
-    participants: 51,
-    youthWorkers: null,
-    total: 51,
-    place: 'Dijital Eğitim'
-  }
-
-];
-
-
-/* =========================================================
-   EĞİTİM SORUSU ALGILAMA
-   ========================================================= */
-
-function isTrainingQuery(msg) {
-
-  return /eğitim|katılımcı|gençlik çalışanı|81 il|hangi il|hangi şehir|sakarya|istanbul|ankara|konya|aydın|kahramanmaraş|şanlıurfa|gaziantep|muğla|denizli|adana|mersin|samsun|ordu|uşak|malatya|burdur|afyonkarahisar|kütahya|bilecik|karaman|tunceli/i.test(msg);
 
 }
 
 
 /* =========================================================
-   EĞİTİM VERİSİNİ ASTRA'YA AKTAR
+   EĞİTİM VERİSİ
    ========================================================= */
 
 function trainingContext() {
 
-  const rows = VERIFIED_TRAINING_DATA
-    .map(x =>
-      `${x.date} | ${x.city} | ${x.type} | ${x.participants} | ${x.youthWorkers === null ? 'belirtilmemiş' : x.youthWorkers} | ${x.total} | ${x.place}`
-    )
-    .join('\n');
+  return TRAININGS.map(row => {
 
-  return `
+    const youth =
+      row[4] === null
+        ? "belirtilmemiş"
+        : row[4];
 
-DOĞRULANMIŞ 81 İL EĞİTİM AĞI VERİSİ
-(site üzerinde kullanılan güncel kayıt):
+    return (
+      `${row[0]} | ${row[1]} | ${row[2]} | ` +
+      `Katılımcı: ${row[3]} | ` +
+      `Gençlik çalışanı: ${youth} | ` +
+      `Toplam: ${row[5]}`
+    );
 
-Sütunlar:
-Tarih | İl | Eğitim türü | Katılımcı | Gençlik çalışanı | Toplam | Yer
+  }).join("\n");
 
-${rows}
+}
 
-ÖNEMLİ:
 
-Gençlik çalışanı sayısı yalnızca kaynakta açıkça verilen ilk üç kayıtta biliniyor.
+function isTrainingQuestion(message) {
 
-Diğer kayıtlarda "belirtilmemiş" de.
+  return /eğitim|katılımcı|gençlik çalışanı|81 il|hangi il|hangi şehir|sakarya|istanbul|ankara|konya|aydın|kahramanmaraş|şanlıurfa|gaziantep|muğla|denizli|adana|mersin|samsun|ordu|uşak|malatya|burdur|afyonkarahisar|kütahya|bilecik|karaman|tunceli/i
+    .test(message);
 
-Katılımcı sayısı ile toplamı birbirine karıştırma.
-`;
 }
 
 
 /* =========================================================
-   ASTRA CHAT
+   ASTRA
    ========================================================= */
 
 async function chat(body, res) {
 
-  const msg = String(body?.message || '').trim();
+  const message =
+    String(body?.message || "").trim();
 
-  if (!msg) {
+  if (!message) {
+
     return send(
       res,
       400,
-      'application/json; charset=utf-8',
+      "application/json; charset=utf-8",
       JSON.stringify({
-        error: 'Mesaj boş.'
+        error: "Mesaj boş."
       })
     );
+
   }
+
 
   const history =
     Array.isArray(body?.history)
       ? body.history.slice(-4)
       : [];
 
-  const trainingQuery = isTrainingQuery(msg);
 
-  const tools = [];
+  let systemPrompt = `
 
-  /*
-   * EĞİTİM SORULARINDA FILE SEARCH KULLANMIYORUZ.
-   *
-   * Çünkü eğitim verileri zaten bu dosyada
-   * doğrulanmış yapılandırılmış veri olarak mevcut.
-   */
+Sen Astra'sın.
 
-  if (
-    !trainingQuery &&
-    process.env.OPENAI_VECTOR_STORE_ID
-  ) {
+Sen e-NetCoM projesinin resmi dijital asistanısın.
 
-    tools.push({
-      type: 'file_search',
+Türkçe konuş.
 
-      vector_store_ids: [
-        process.env.OPENAI_VECTOR_STORE_ID
-      ],
+Kısa, açık, doğal ve güvenilir cevaplar ver.
 
-      max_num_results: 6
-    });
+Asla bilgi uydurma.
 
-  }
+Bilgi kaynakların:
+1. Bu sistem mesajında verilen e-NetCoM bilgileri.
+2. Doğrulanmış eğitim kayıtları.
+3. Kullanıcının mesajı.
 
+Bir bilgi burada yoksa kesinmiş gibi söyleme.
 
-  const prompt = `
-
-Sen Astra'sın; e-NetCoM projesinin resmi dijital asistanısın.
-
-Türkçe konuş ve kullanıcıya doğrudan, anlaşılır ve kurumsal bir dille yardımcı ol.
-
-
-TEMEL GÖREVİN
-
-- e-NetCoM projesi, faaliyetleri, eğitim ağı, dijital içerikleri, medya çalışmaları, ortakları ve proje belgeleri hakkında güvenilir bilgi verm.
-
-- Öncelik sırası:
-
-1. Bu sistem mesajındaki açıkça verilmiş doğrulanmış yapılandırılmış veriler.
-2. e-NetCoM bilgi tabanındaki doğrulanmış proje belgeleri.
-3. Kullanıcı tarafından verilen bilgiler.
-
-- Bu kaynaklarda açıkça bulunmayan bir bilgiyi tahmin etme, uydurma veya başka bir bilgiyle doldurma.
-
-
-SAYISAL VERİ VE EĞİTİM KURALLARI
-
-- Tarih, il, eğitim türü, katılımcı, gençlik çalışanı ve toplam sayılarını ayrı alanlar olarak değerlendir.
-
-- Kaynakta gençlik çalışanı sayısı belirtilmiyorsa "belirtilmemiş" de.
-
-- Katılımcı sayısını gençlik çalışanı sayısı gibi gösterme.
-
-- Bir il için kayıt yapılandırılmış veride varsa, özellikle il/tarih/katılımcı sorularında önce bu kaydı kullan.
-
-- Kullanıcı birden fazla eğitim isterse mümkün olduğunca tüm ilgili kayıtları eksiksiz listele.
-
-- Kullanıcı tablo isterse gerçek Markdown tablo üret.
-
-Varsayılan tablo sütunları:
-
-Tarih | İl | Eğitim türü | Katılımcı sayısı
-
-Gençlik çalışanı istenirse ayrı sütun ekle.
-
-- Bir toplam hesaplaman gerekiyorsa hangi alanları topladığını belirt.
-
-- Kaynakta verilen toplam ile kendi hesapladığın toplamı karıştırma.
-
-- Bilgi tabanı ile yapılandırılmış site verisi arasında açık bir uyuşmazlık görürsen sessizce birini diğerine dönüştürme.
-
-- Uyuşmazlığı kısa ve açık biçimde belirt.
-
-
-KAYNAK VE DOĞRULUK KURALLARI
-
-- Proje belgeleri ve bilgi tabanı birincil kaynaklardır.
-
-- Sayılar, tarihler, il adları, katılımcı sayıları, faaliyet adları, proje ortakları ve proje dönemi gibi somut bilgileri doğrulamaya çalış.
-
-- Kullanıcı "kaynağı nedir?" veya "nereden biliyorsun?" derse bilginin hangi tür e-NetCoM kaynağından geldiğini açıkla.
-
-- Yapılandırılmış eğitim verisi kullanıldıysa bunu da belirt.
-
-- Kaynak yeterli değilse açıkça söyle.
-
-
-CEVAP BİÇİMİ
-
-- Basit sorulara kısa ve doğrudan cevap ver.
-
-- Çoklu kayıt/listelerde tablo veya madde işaretleri kullan.
-
-- Gereksiz uzun açıklamalardan kaçın.
-
-- Türkçe yazım ve noktalama kurallarına dikkat et.
-
-- Kurumsal ama doğal bir dil kullan.
-
-- "Sayın kullanıcı" deme.
-
-- Markdown kullanabilirsin.
-
-- Özellikle tabloları gerçek Markdown biçiminde üret.
-
-
-PROJE BAĞLAMI
-
-- e-NetCoM; çevresel sürdürülebilirlik, iklim değişikliği, gençlik, iletişim, medya ve yeşil beceriler ekseninde yürütülen Erasmus+ projesidir.
-
-- Faaliyetler, 81 il eğitim ağı, dijital öğrenme araçları, medya içerikleri, ağ oluşturma ve proje ortaklıkları hakkında yardımcı ol.
-
-
-İÇERİK ÜRETİMİ
-
-- Haber, sosyal medya metni, duyuru, başlık, kısa açıklama, sunum metni veya benzeri içerik istenirse yayınlanabilir ve somut bir taslak üret.
-
-- Gerçek proje verilerini değiştirme.
-
-- Olmayan etkinlik, sayı, tarih, ortak veya sonuç icat etme.
-
-
-SINIRLAR
-
-- e-NetCoM adına resmi karar, taahhüt veya politika oluşturuyormuş gibi davranma.
-
-- Gizli, kişisel veya kamuya açık olmayan proje bilgilerini ifşa etme.
-
-- Güncel dış web veya sosyal medya verisine erişimin yoksa varmış gibi davranma.
-
-
-AMAÇ
-
-Kullanıcıya belgelerine dayanan ve sayısal verilerde dikkatli davranan güvenilir bir e-NetCoM proje asistanı gibi cevap ver.
+${PROJECT_CONTEXT}
 
 `;
 
 
-  const enrichedPrompt =
-    prompt +
-    (trainingQuery ? trainingContext() : '');
+  if (isTrainingQuestion(message)) {
+
+    systemPrompt += `
+
+DOĞRULANMIŞ EĞİTİM KAYITLARI:
+
+Tarih | İl | Eğitim türü | Katılımcı | Gençlik çalışanı | Toplam
+
+${trainingContext()}
+
+EĞİTİM KURALLARI:
+
+- Katılımcı sayısı ile toplam sayıyı birbirine karıştırma.
+- Gençlik çalışanı sayısı "belirtilmemiş" ise bunu açıkça söyle.
+- Sakarya kaydı: 34 katılımcı + 3 gençlik çalışanı = 37 toplam.
+- İstanbul kaydı: 32 katılımcı + 3 gençlik çalışanı = 35 toplam.
+- Ankara kaydı: 33 katılımcı + 2 gençlik çalışanı = 35 toplam.
+- Kullanıcı tüm eğitimleri isterse tablo oluştur.
+- Tablo istenirse Markdown tablo kullan.
+- Tarihleri değiştirme.
+- Verilmeyen sayıları tahmin etme.
+
+`;
+
+  }
+
+
+  systemPrompt += `
+
+CEVAP BİÇİMİ:
+
+Basit sorular:
+1-3 cümle.
+
+Çoklu kayıtlar:
+Markdown tablo veya madde listesi.
+
+Kullanıcı "kaynak" sorarsa:
+Bilginin e-NetCoM proje kayıtlarından veya yapılandırılmış eğitim verisinden geldiğini açıkla.
+
+Kurumsal ama doğal bir dil kullan.
+
+"Sayın kullanıcı" deme.
+
+`;
 
 
   const input = [
 
     {
-      role: 'system',
-      content: enrichedPrompt
+      role: "system",
+      content: systemPrompt
     },
 
-    ...history.map(x => ({
+    ...history.map(item => ({
       role:
-        x.role === 'assistant'
-          ? 'assistant'
-          : 'user',
+        item.role === "assistant"
+          ? "assistant"
+          : "user",
 
       content:
-        String(x.content || '')
+        String(item.content || "")
     })),
 
     {
-      role: 'user',
-      content: msg
+      role: "user",
+      content: message
     }
 
   ];
@@ -682,51 +497,62 @@ Kullanıcıya belgelerine dayanan ve sayısal verilerde dikkatli davranan güven
 
   try {
 
-    const r = await openaiRequest({
-
-      model:
-        process.env.OPENAI_MODEL ||
-        'gpt-6-astra',
-
-      input,
-
-      tools,
-
-      reasoning: {
-        effort: 'low'
-      },
-
-      max_output_tokens: 2200
-
-    });
+    console.log(
+      "Astra isteği:",
+      message
+    );
 
 
-    send(
+    const response =
+      await askOpenAI(input);
+
+
+    const reply =
+      extractText(response);
+
+
+    if (!reply) {
+
+      throw new Error(
+        "OpenAI boş yanıt döndürdü."
+      );
+
+    }
+
+
+    return send(
       res,
       200,
-      'application/json; charset=utf-8',
+      "application/json; charset=utf-8",
       JSON.stringify({
-        reply:
-          extractText(r) ||
-          'Yanıt üretilemedi.'
+        reply: reply
       })
     );
 
 
-  } catch (e) {
+  } catch (error) {
 
-    console.error(e);
+    console.error(
+      "ASTRA HATASI:",
+      error.message
+    );
 
-    send(
+
+    return send(
       res,
       200,
-      'application/json; charset=utf-8',
+      "application/json; charset=utf-8",
       JSON.stringify({
 
         reply:
-          'Astra şu anda yanıt veremiyor. Lütfen birkaç saniye sonra tekrar deneyin.',
+          "Astra şu anda yanıt veremiyor. Lütfen birkaç saniye sonra tekrar deneyin.",
 
-        degraded: true
+        degraded: true,
+
+        error:
+          process.env.NODE_ENV === "development"
+            ? error.message
+            : undefined
 
       })
     );
@@ -740,102 +566,132 @@ Kullanıcıya belgelerine dayanan ve sayısal verilerde dikkatli davranan güven
    SERVER
    ========================================================= */
 
-const server = http.createServer(
-  (req, res) => {
-
-    if (
-      req.method === 'GET' &&
-      req.url.startsWith('/api/health')
-    ) {
-
-      return send(
-        res,
-        200,
-        'application/json; charset=utf-8',
-        JSON.stringify({
-
-          ok:
-            !!process.env.OPENAI_API_KEY,
-
-          knowledgeBase:
-            !!process.env.OPENAI_VECTOR_STORE_ID,
-
-          model:
-            process.env.OPENAI_MODEL ||
-            'gpt-6-astra',
-
-          astraVersion:
-            'V3'
-
-        })
-      );
-
-    }
+const server =
+  http.createServer(
+    (req, res) => {
 
 
-    if (
-      req.method === 'POST' &&
-      req.url === '/api/chat'
-    ) {
+      /* HEALTH */
 
-      let raw = '';
+      if (
+        req.method === "GET" &&
+        req.url.startsWith(
+          "/api/health"
+        )
+      ) {
 
-      req.on(
-        'data',
-        c => raw += c
-      );
+        return send(
+          res,
+          200,
+          "application/json; charset=utf-8",
 
-      req.on(
-        'end',
-        async () => {
+          JSON.stringify({
 
-          try {
+            ok:
+              !!process.env.OPENAI_API_KEY,
 
-            await chat(
-              JSON.parse(raw || '{}'),
-              res
-            );
+            knowledgeBase:
+              !!process.env.OPENAI_VECTOR_STORE_ID,
 
-          } catch (e) {
+            model:
+              process.env.OPENAI_MODEL ||
+              "gpt-6-astra",
 
-            console.error(e);
+            astraVersion:
+              "V4-DIRECT"
 
-            send(
-              res,
-              200,
-              'application/json; charset=utf-8',
-              JSON.stringify({
+          })
 
-                reply:
-                  'Astra bağlantısı geçici olarak kullanılamıyor.',
+        );
 
-                degraded: true
+      }
 
-              })
-            );
+
+      /* CHAT */
+
+      if (
+        req.method === "POST" &&
+        req.url === "/api/chat"
+      ) {
+
+        let body = "";
+
+        req.on(
+          "data",
+          chunk => {
+            body += chunk;
+          }
+        );
+
+
+        req.on(
+          "end",
+          async () => {
+
+            try {
+
+              const json =
+                JSON.parse(
+                  body || "{}"
+                );
+
+              await chat(
+                json,
+                res
+              );
+
+            } catch (error) {
+
+              console.error(
+                error
+              );
+
+              send(
+                res,
+                200,
+                "application/json; charset=utf-8",
+
+                JSON.stringify({
+
+                  reply:
+                    "Astra bağlantısında geçici bir sorun oluştu.",
+
+                  degraded: true
+
+                })
+
+              );
+
+            }
 
           }
+        );
 
-        }
+        return;
+
+      }
+
+
+      /* SITE */
+
+      staticFile(
+        req,
+        res
       );
 
-      return;
     }
-
-
-    staticFile(req, res);
-
-  }
-);
+  );
 
 
 server.listen(
   PORT,
-  '0.0.0.0',
+  "0.0.0.0",
   () => {
 
     console.log(
-      `e-NetCoM Astra V3 hazır: http://0.0.0.0:${PORT}`
+      "e-NetCoM Astra V4-DIRECT çalışıyor: " +
+      "http://0.0.0.0:" +
+      PORT
     );
 
   }
