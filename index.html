@@ -180,17 +180,101 @@ function renderAstraMarkdown(text){
   return html+'</div>';
 }
 async function sendChat(){
-  const input=document.getElementById('chatInput'),msg=input.value.trim();if(!msg)return;
-  const box=document.getElementById('messages');
-  box.innerHTML+=`<div class="msg me">${esc(msg)}</div>`;input.value='';
-  box.innerHTML+=`<div class="msg bot" id="typing">Astra düşünüyor…</div>`;box.scrollTop=box.scrollHeight;
-  try{
-    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,history:chatHistory.slice(-4)})});
-    const d=await r.json();const reply=d.reply||'Şu anda yanıt veremiyorum.';
-    const typing=document.getElementById('typing');if(typing)typing.outerHTML=`<div class="msg bot">${renderAstraMarkdown(reply)}</div>`;
-    chatHistory.push({role:'user',content:msg},{role:'assistant',content:reply});if(chatHistory.length>4)chatHistory.splice(0,chatHistory.length-4);
-  }catch(e){const typing=document.getElementById('typing');if(typing)typing.textContent='Astra şu anda çevrimdışı. Site içeriğini kullanmaya devam edebilirsiniz.'}
-  box.scrollTop=box.scrollHeight;
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+
+  if(!msg) return;
+
+  const box = document.getElementById('messages');
+
+  box.innerHTML += `<div class="msg me">${esc(msg)}</div>`;
+  input.value = '';
+
+  box.innerHTML += `<div class="msg bot" id="typing">Astra düşünüyor...</div>`;
+
+  box.scrollTop = box.scrollHeight;
+
+  const controller = new AbortController();
+
+  const timeout = setTimeout(() => {
+    controller.abort();
+  }, 15000);
+
+  try {
+
+    console.log('Astra isteği gönderiliyor:', msg);
+
+    const r = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: msg,
+        history: chatHistory.slice(-4)
+      }),
+      signal: controller.signal
+    });
+
+    clearTimeout(timeout);
+
+    console.log('Astra sunucu cevabı:', r.status);
+
+    if(!r.ok){
+      throw new Error('Sunucu HTTP hatası: ' + r.status);
+    }
+
+    const d = await r.json();
+
+    console.log('Astra cevabı:', d);
+
+    const reply =
+      d.reply ||
+      'Astra şu anda yanıt veremiyor.';
+
+    const typing =
+      document.getElementById('typing');
+
+    if(typing){
+      typing.outerHTML =
+        `<div class="msg bot">${renderAstraMarkdown(reply)}</div>`;
+    }
+
+    chatHistory.push({
+      role: 'user',
+      content: msg
+    });
+
+    chatHistory.push({
+      role: 'assistant',
+      content: reply
+    });
+
+    chatHistory = chatHistory.slice(-4);
+
+  } catch(e) {
+
+    clearTimeout(timeout);
+
+    console.error('Astra bağlantı hatası:', e);
+
+    const typing =
+      document.getElementById('typing');
+
+    if(typing){
+
+      if(e.name === 'AbortError'){
+        typing.textContent =
+          'Astra yanıt vermek için çok uzun süre bekledi. Lütfen tekrar deneyin.';
+      } else {
+        typing.textContent =
+          'Astra şu anda bağlantı kuramadı. Lütfen tekrar deneyin.';
+      }
+    }
+
+  }
+
+  box.scrollTop = box.scrollHeight;
 }
 document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendChat()});
 async function workshop(btn,type){const area=btn.parentElement.querySelector('textarea'),prompt=area.value.trim()||'e-NetCoM için çevresel sürdürülebilirlik';const out=document.getElementById('workout');out.innerHTML='<div class="workout">Astra içeriği hazırlıyor…</div>';try{const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:`${type} hazırla. Konu: ${prompt}. e-NetCoM projesinin amacı ve çevresel sürdürülebilirlik bağlamıyla uyumlu, yayınlanabilir ve somut bir çıktı üret.`,history:[]})});const d=await r.json();out.innerHTML=`<div class="workout"><b>ASTRA ÇIKTISI · ${esc(type.toUpperCase())}</b><br><br>${renderAstraMarkdown(d.reply||'Çıktı üretilemedi.')}</div>`}catch(e){out.innerHTML='<div class="workout">Astra şu anda çevrimdışı. Lütfen birkaç saniye sonra tekrar deneyin.</div>'}}
