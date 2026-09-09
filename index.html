@@ -185,6 +185,15 @@ async function sendChat(){
 
   if(!msg) return;
 
+ if(/^merhaba( astra)?$/i.test(msg.trim())) {
+  const box = document.getElementById('messages');
+  box.innerHTML += `<div class="msg me">${esc(msg)}</div>`;
+  input.value = '';
+  box.innerHTML += `<div class="msg bot">Merhaba! Ben <b>Astra</b>, e-NetCoM projesinin yapay zekâ destekli asistanıyım. 🌱 Size proje, eğitimler, katılımcılar ve çevresel sürdürülebilirlik hakkında yardımcı olabilirim.</div>`;
+  box.scrollTop = box.scrollHeight;
+  return;
+}
+ 
   const box = document.getElementById('messages');
 
   box.innerHTML += `<div class="msg me">${esc(msg)}</div>`;
