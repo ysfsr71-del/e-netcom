@@ -49,6 +49,9 @@
 
 /* V18 · Erasmus+ ve ortak kurum kimlik şeridi */
 .identity-band{background:#fff;border-bottom:1px solid var(--line);padding:18px 0;position:relative;z-index:3}.identity-wrap{display:flex;align-items:center;gap:28px;justify-content:space-between}.erasmus-lockup{display:flex;align-items:center;gap:14px;min-width:275px}.erasmus-img{width:112px;height:48px;object-fit:contain;border-radius:6px;background:#fff}.erasmus-lockup b{display:block;font-size:24px;line-height:1;color:#174a9a}.erasmus-lockup span{display:block;font-size:10px;color:#5d716a;margin-top:5px}.partner-logo-row{display:grid;grid-template-columns:repeat(5,minmax(110px,1fr));gap:10px;flex:1}.mini-logo{min-height:76px;border:1px solid var(--line);border-radius:15px;background:#fbfdfc;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 10px;transition:.18s;text-align:center;flex-direction:column}.mini-logo:hover{transform:translateY(-2px);border-color:#b7d8ca;box-shadow:0 8px 20px rgba(6,47,39,.07)}.mini-logo img{width:100%;height:44px;object-fit:contain;display:block}.mini-logo small{font-size:8px;color:#70827c;font-weight:800}.mini-logo:first-child img{max-width:105px}.mini-logo:nth-child(2) img{max-width:105px}.mini-logo:nth-child(3) img{max-width:115px}.mini-logo:nth-child(4) img{max-width:62px}.mini-logo:nth-child(5) img{max-width:105px}@media(max-width:1000px){.identity-wrap{align-items:stretch;flex-direction:column}.erasmus-lockup{justify-content:center}.partner-logo-row{width:100%}}@media(max-width:650px){.partner-logo-row{grid-template-columns:repeat(2,1fr)}.partner-logo-row .mini-logo:last-child{grid-column:1/-1}.identity-band{padding:14px 0}.erasmus-lockup{justify-content:flex-start}.erasmus-lockup{min-width:0}.erasmus-img{width:100px}}
+
+/* Astra V3 response formatting */
+.astra-rich{line-height:1.65}.astra-rich p{margin:0 0 10px}.astra-rich p:last-child{margin-bottom:0}.astra-rich strong{font-weight:900}.astra-rich ul{margin:8px 0 12px 20px;padding:0}.astra-rich li{margin:4px 0}.astra-rich .astra-table-wrap{overflow:auto;margin:12px 0;border:1px solid var(--line);border-radius:14px;background:#fff}.astra-rich table{width:100%;border-collapse:collapse;min-width:520px}.astra-rich th,.astra-rich td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;font-size:13px;vertical-align:top}.astra-rich th{background:#edf7f2;color:var(--deep);font-weight:900}.astra-rich tr:last-child td{border-bottom:0}.astra-rich code{background:#eef6f1;border-radius:6px;padding:2px 5px;font-size:.92em}.astra-rich h3{font-size:17px;margin:10px 0 6px}.astra-source-note{margin-top:12px;padding-top:10px;border-top:1px solid rgba(6,47,39,.08);font-size:11px;color:var(--muted)}
 </style><meta content="e-NetCoM – Doğanın Enerjileri Bizimle: genç liderler, çevresel iletişim ve medya ağı." name="description"/></head><body>
 <div class="topline"><div class="wrap"><span>Erasmus+ KA220-YOU · 2024-1-TR01-KA220-YOU-000245332</span><span>1 Aralık 2024 – 30 Kasım 2027</span></div></div>
 <nav class="nav"><div class="wrap navin"><a class="brand" href="#top"><span class="logo">🌱</span><span>e-NetCoM<small>DOĞANIN ENERJİLERİ BİZİMLE</small></span></a><div class="links"><a href="#proje">Proje</a><a href="#faaliyetler">Faaliyetler</a><a href="#iller">81 İl</a><a href="#yolculuk">Yolculuk</a><a href="#etki">Etki</a><a href="#medya">Medya</a><a href="#network">Network</a><a href="#akademi">Akademi</a><a href="#iyi">İyi Uygulamalar</a><a href="#astra">Astra</a></div><div style="display:flex;gap:7px;align-items:center"><a class="btn ghost" href="https://www.instagram.com/enetcomproje/" style="padding:10px 12px" target="_blank">◎ Instagram</a><a class="btn ghost" href="https://x.com/eNetCoMProje" style="padding:10px 12px" target="_blank">𝕏 X</a><a class="btn primary" href="#astra">Astra</a></div></div></nav>
@@ -142,7 +145,53 @@ function openModal(kind){const c=document.getElementById('modalContent');const d
 function closeModal(){document.getElementById('modal').classList.remove('open')}document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
 document.querySelectorAll('[data-video-filter]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-video-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderVideos(b.dataset.videoFilter)}));
 renderVideos('all');
-async function sendChat(){const input=document.getElementById('chatInput'),msg=input.value.trim();if(!msg)return;const box=document.getElementById('messages');box.innerHTML+=`<div class="msg me">${esc(msg)}</div>`;input.value='';box.innerHTML+=`<div class="msg bot" id="typing">Astra düşünüyor…</div>`;box.scrollTop=box.scrollHeight;try{const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,history:[]})});const d=await r.json();document.getElementById('typing').textContent=d.reply||'Şu anda yanıt veremiyorum.'}catch(e){document.getElementById('typing').textContent='Astra şu anda çevrimdışı. Site içeriğini kullanmaya devam edebilirsiniz.'}box.scrollTop=box.scrollHeight}
+const chatHistory=[];
+function inlineAstra(text){
+  let x=esc(text);
+  x=x.replace(/`([^`]+)`/g,'<code>$1</code>');
+  x=x.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+  x=x.replace(/__([^_]+)__/g,'<strong>$1</strong>');
+  return x;
+}
+function splitAstraRow(line){
+  let x=line.trim(); if(x.startsWith('|'))x=x.slice(1); if(x.endsWith('|'))x=x.slice(0,-1);
+  return x.split('|').map(c=>c.trim());
+}
+function isAstraSeparator(line){
+  const cells=splitAstraRow(line); return cells.length>0 && cells.every(c=>/^:?-{3,}:?$/.test(c));
+}
+function renderAstraMarkdown(text){
+  const lines=String(text||'').replace(/\r/g,'').split('\n');
+  let html='<div class="astra-rich">';
+  for(let i=0;i<lines.length;i++){
+    const raw=lines[i].trim();
+    if(!raw) continue;
+    if(raw.startsWith('|') && i+1<lines.length && isAstraSeparator(lines[i+1])){
+      const head=splitAstraRow(raw); i+=2; const rows=[];
+      while(i<lines.length && lines[i].trim().startsWith('|')){rows.push(splitAstraRow(lines[i]));i++;}
+      i--;
+      html+='<div class="astra-table-wrap"><table><thead><tr>'+head.map(c=>`<th>${inlineAstra(c)}</th>`).join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+head.map((_,j)=>`<td>${inlineAstra(r[j]||'')}</td>`).join('')+'</tr>').join('')+'</tbody></table></div>'; continue;
+    }
+    if(/^#{1,3}\s+/.test(raw)){html+=`<h3>${inlineAstra(raw.replace(/^#{1,3}\s+/,''))}</h3>`;continue;}
+    if(/^[-*]\s+/.test(raw)){let items=[];while(i<lines.length && /^[-*]\s+/.test(lines[i].trim())){items.push(lines[i].trim().replace(/^[-*]\s+/,''));i++;}i--;html+='<ul>'+items.map(x=>`<li>${inlineAstra(x)}</li>`).join('')+'</ul>';continue;}
+    if(/^\d+\.\s+/.test(raw)){let items=[];while(i<lines.length && /^\d+\.\s+/.test(lines[i].trim())){items.push(lines[i].trim().replace(/^\d+\.\s+/,''));i++;}i--;html+='<ol>'+items.map(x=>`<li>${inlineAstra(x)}</li>`).join('')+'</ol>';continue;}
+    html+=`<p>${inlineAstra(raw)}</p>`;
+  }
+  return html+'</div>';
+}
+async function sendChat(){
+  const input=document.getElementById('chatInput'),msg=input.value.trim();if(!msg)return;
+  const box=document.getElementById('messages');
+  box.innerHTML+=`<div class="msg me">${esc(msg)}</div>`;input.value='';
+  box.innerHTML+=`<div class="msg bot" id="typing">Astra düşünüyor…</div>`;box.scrollTop=box.scrollHeight;
+  try{
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,history:chatHistory.slice(-4)})});
+    const d=await r.json();const reply=d.reply||'Şu anda yanıt veremiyorum.';
+    const typing=document.getElementById('typing');if(typing)typing.outerHTML=`<div class="msg bot">${renderAstraMarkdown(reply)}</div>`;
+    chatHistory.push({role:'user',content:msg},{role:'assistant',content:reply});if(chatHistory.length>4)chatHistory.splice(0,chatHistory.length-4);
+  }catch(e){const typing=document.getElementById('typing');if(typing)typing.textContent='Astra şu anda çevrimdışı. Site içeriğini kullanmaya devam edebilirsiniz.'}
+  box.scrollTop=box.scrollHeight;
+}
 document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')sendChat()});
-async function workshop(btn,type){const area=btn.parentElement.querySelector('textarea'),prompt=area.value.trim()||'e-NetCoM için çevresel sürdürülebilirlik';const out=document.getElementById('workout');out.innerHTML='<div class="workout">Astra içeriği hazırlıyor…</div>';try{const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:`${type} hazırla. Konu: ${prompt}. e-NetCoM projesinin amacı ve çevresel sürdürülebilirlik bağlamıyla uyumlu, yayınlanabilir ve somut bir çıktı üret.`,history:[]})});const d=await r.json();out.innerHTML=`<div class="workout"><b>ASTRA ÇIKTISI · ${esc(type.toUpperCase())}</b><br><br>${esc(d.reply||'Çıktı üretilemedi.')}</div>`}catch(e){out.innerHTML='<div class="workout">Astra şu anda çevrimdışı. Lütfen birkaç saniye sonra tekrar deneyin.</div>'}}
+async function workshop(btn,type){const area=btn.parentElement.querySelector('textarea'),prompt=area.value.trim()||'e-NetCoM için çevresel sürdürülebilirlik';const out=document.getElementById('workout');out.innerHTML='<div class="workout">Astra içeriği hazırlıyor…</div>';try{const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:`${type} hazırla. Konu: ${prompt}. e-NetCoM projesinin amacı ve çevresel sürdürülebilirlik bağlamıyla uyumlu, yayınlanabilir ve somut bir çıktı üret.`,history:[]})});const d=await r.json();out.innerHTML=`<div class="workout"><b>ASTRA ÇIKTISI · ${esc(type.toUpperCase())}</b><br><br>${renderAstraMarkdown(d.reply||'Çıktı üretilemedi.')}</div>`}catch(e){out.innerHTML='<div class="workout">Astra şu anda çevrimdışı. Lütfen birkaç saniye sonra tekrar deneyin.</div>'}}
 </script></body></html>
