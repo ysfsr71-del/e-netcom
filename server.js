@@ -1,9 +1,17 @@
 const http = require('http');
 const https = require('https');
+const fs = require('fs');
+const path = require('path');
 
 const PORT = process.env.PORT || 10000;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
 const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-6-astra';
+
+const PUBLIC_DIR = path.join(__dirname, 'public');
+
+/* =========================================================
+   EĞİTİM VERİLERİ
+   ========================================================= */
 
 const TRAININGS = [
   { date: '31 Ocak 2026', city: 'Sakarya', type: 'Yüz yüze', participants: 34, youthWorkers: 3, total: 37 },
@@ -29,6 +37,10 @@ const TRAININGS = [
   { date: '23 Mayıs 2026', city: 'Karaman', type: 'Çevrimiçi', participants: 93, youthWorkers: null, total: 93 },
   { date: '11 Temmuz 2026', city: 'Tunceli', type: 'Çevrimiçi', participants: 51, youthWorkers: null, total: 51 }
 ];
+
+/* =========================================================
+   PROJE BİLGİLERİ
+   ========================================================= */
 
 const PROJECT_CONTEXT = `
 Sen Astra'sın. e-NetCoM projesinin yapay zekâ destekli asistanısın.
@@ -77,6 +89,10 @@ Temel konular:
 
 11 Temmuz 2026 tarihinde Tunceli'de çevrimiçi eğitim yapılmış ve 51 katılımcı kaydedilmiştir.
 `;
+
+/* =========================================================
+   YARDIMCI FONKSİYONLAR
+   ========================================================= */
 
 function normalize(text) {
   return String(text || '')
@@ -174,6 +190,10 @@ function findTraining(message) {
   );
 }
 
+/* =========================================================
+   DOĞRUDAN EĞİTİM CEVAPLARI
+   ========================================================= */
+
 function directTrainingAnswer(message) {
 
   if (wantsAllTrainings(message)) {
@@ -228,21 +248,12 @@ function directTrainingAnswer(message) {
     return output;
   }
 
-  if (
-    normalize(message).includes('egitim') ||
-    normalize(message).includes('katilimci')
-  ) {
-
-    return TRAININGS
-      .map(
-        training =>
-          `- **${training.date} – ${training.city}:** ${training.total} kişi`
-      )
-      .join('\n');
-  }
-
   return null;
 }
+
+/* =========================================================
+   OPENAI
+   ========================================================= */
 
 function askOpenAI(message, history) {
 
@@ -279,7 +290,9 @@ Kurallar:
         }
 
         input.push({
-          role: item.role === 'assistant' ? 'assistant' : 'user',
+          role: item.role === 'assistant'
+            ? 'assistant'
+            : 'user',
           content: String(item.content)
         });
       }
@@ -325,12 +338,16 @@ Kurallar:
 
             const json = JSON.parse(data);
 
-            if (response.statusCode < 200 || response.statusCode >= 300) {
+            if (
+              response.statusCode < 200 ||
+              response.statusCode >= 300
+            ) {
 
               reject(
                 new Error(
                   `OpenAI HTTP ${response.statusCode}: ` +
-                  (json.error?.message || data.slice(0, 500))
+                  (json.error?.message ||
+                   data.slice(0, 500))
                 )
               );
 
@@ -364,7 +381,9 @@ Kurallar:
             }
 
             if (!text) {
-              reject(new Error('OpenAI boş cevap döndürdü.'));
+              reject(
+                new Error('OpenAI boş cevap döndürdü.')
+              );
               return;
             }
 
@@ -392,14 +411,97 @@ Kurallar:
   });
 }
 
+/* =========================================================
+   JSON CEVABI
+   ========================================================= */
+
 function sendJson(res, status, payload) {
 
   res.writeHead(status, {
-    'Content-Type': 'application/json; charset=utf-8'
+    'Content-Type':
+      'application/json; charset=utf-8'
   });
 
   res.end(JSON.stringify(payload));
 }
+
+/* =========================================================
+   STATİK WEB SİTESİ
+   ========================================================= */
+
+function serveStatic(req, res) {
+
+  let requestedPath =
+    decodeURIComponent(
+      req.url.split('?')[0]
+    );
+
+  if (requestedPath === '/') {
+    requestedPath = '/index.html';
+  }
+
+  const safePath =
+    path.normalize(
+      path.join(PUBLIC_DIR, requestedPath)
+    );
+
+  if (
+    safePath !== PUBLIC_DIR &&
+    !safePath.startsWith(PUBLIC_DIR + path.sep)
+  ) {
+    sendJson(res, 403, {
+      error: 'Forbidden'
+    });
+    return;
+  }
+
+  fs.readFile(safePath, (error, data) => {
+
+    if (error) {
+
+      if (error.code === 'ENOENT') {
+        sendJson(res, 404, {
+          error: 'Not found'
+        });
+      } else {
+        sendJson(res, 500, {
+          error: 'Server error'
+        });
+      }
+
+      return;
+    }
+
+    const extension =
+      path.extname(safePath).toLowerCase();
+
+    const contentTypes = {
+      '.html': 'text/html; charset=utf-8',
+      '.css': 'text/css; charset=utf-8',
+      '.js': 'application/javascript; charset=utf-8',
+      '.json': 'application/json; charset=utf-8',
+      '.svg': 'image/svg+xml',
+      '.png': 'image/png',
+      '.jpg': 'image/jpeg',
+      '.jpeg': 'image/jpeg',
+      '.webp': 'image/webp',
+      '.ico': 'image/x-icon',
+      '.mp4': 'video/mp4'
+    };
+
+    res.writeHead(200, {
+      'Content-Type':
+        contentTypes[extension] ||
+        'application/octet-stream'
+    });
+
+    res.end(data);
+  });
+}
+
+/* =========================================================
+   SUNUCU
+   ========================================================= */
 
 const server = http.createServer((req, res) => {
 
@@ -419,11 +521,12 @@ const server = http.createServer((req, res) => {
   );
 
   if (req.method === 'OPTIONS') {
-
     res.writeHead(204);
     res.end();
     return;
   }
+
+  /* HEALTH */
 
   if (
     req.method === 'GET' &&
@@ -432,13 +535,16 @@ const server = http.createServer((req, res) => {
 
     sendJson(res, 200, {
       ok: !!OPENAI_API_KEY,
-      knowledgeBase: !!process.env.OPENAI_VECTOR_STORE_ID,
+      knowledgeBase:
+        !!process.env.OPENAI_VECTOR_STORE_ID,
       model: OPENAI_MODEL,
       astraVersion: 'V5-DIRECT'
     });
 
     return;
   }
+
+  /* CHAT */
 
   if (
     req.method === 'POST' &&
@@ -455,7 +561,8 @@ const server = http.createServer((req, res) => {
 
       try {
 
-        const data = JSON.parse(body || '{}');
+        const data =
+          JSON.parse(body || '{}');
 
         const message =
           String(data.message || '').trim();
@@ -474,7 +581,10 @@ const server = http.createServer((req, res) => {
           return;
         }
 
-        console.log('ASTRA SORU:', message);
+        console.log(
+          'ASTRA SORU:',
+          message
+        );
 
         /* Selamlama */
 
@@ -506,10 +616,13 @@ const server = http.createServer((req, res) => {
           }
         }
 
-        /* Genel Astra soruları */
+        /* Genel yapay zekâ */
 
         const answer =
-          await askOpenAI(message, history);
+          await askOpenAI(
+            message,
+            history
+          );
 
         sendJson(res, 200, {
           reply: answer
@@ -529,6 +642,13 @@ const server = http.createServer((req, res) => {
       }
     });
 
+    return;
+  }
+
+  /* Web sitesini göster */
+
+  if (req.method === 'GET') {
+    serveStatic(req, res);
     return;
   }
 
