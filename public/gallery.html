@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>e-NetCoM · Sahadan Kareler</title>
+<style>
+:root{--g:#087c61;--dark:#063f32;--bg:#f2f8f5;--line:#d5e7df}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:#073228}.wrap{max-width:1180px;margin:0 auto;padding:32px 20px}.ey{font-size:11px;font-weight:800;letter-spacing:1.5px;color:var(--g)}h1{font-size:42px;margin:8px 0 24px}.viewer{background:var(--dark);border-radius:24px;padding:18px;box-shadow:0 16px 40px rgba(7,50,40,.14)}.stage{position:relative;background:#fff;border-radius:18px;min-height:60vh;display:flex;align-items:center;justify-content:center;overflow:hidden}.slide{display:none;width:100%;height:68vh;max-height:760px;object-fit:contain;background:#fff}.slide.active{display:block}.nav{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border:0;border-radius:50%;background:rgba(255,255,255,.94);font-size:34px;color:var(--dark);cursor:pointer;box-shadow:0 5px 18px rgba(0,0,0,.15);z-index:2}.nav:hover{transform:translateY(-50%) scale(1.05)}.prev{left:16px}.next{right:16px}.counter{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);background:rgba(6,63,50,.88);color:#fff;padding:8px 14px;border-radius:999px;font-weight:800;font-size:13px}.thumbs{display:flex;gap:10px;overflow-x:auto;padding:14px 2px 2px}.thumb{border:2px solid transparent;background:#fff;padding:3px;border-radius:12px;cursor:pointer;flex:0 0 100px}.thumb.active{border-color:#bdf47c}.thumb img{display:block;width:100%;height:72px;object-fit:cover;border-radius:8px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.btn{display:inline-block;text-decoration:none;font-weight:800;padding:12px 18px;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--dark)}.primary{background:#bdf47c;color:var(--dark);border-color:#bdf47c}.notice{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;margin-top:18px;line-height:1.6}.loading{padding:40px;text-align:center;color:#cfe8df;font-weight:700}.poster{background:#fff;border-radius:20px;padding:18px}.poster img{display:block;width:100%;max-height:78vh;object-fit:contain;border-radius:12px}.hidden{display:none}@media(max-width:700px){h1{font-size:32px}.slide{height:52vh}.stage{min-height:52vh}.nav{width:44px;height:44px;font-size:28px}}
+</style></head><body><main class="wrap"><div class="ey" id="eyebrow">E-NETCOM · SAHADAN KARELER</div><h1 id="title">Eğitim Programı</h1><section id="content" class="viewer"><div class="loading">Görseller yükleniyor…</div></section><div id="actions" class="actions hidden"></div></main>
+<script>
+const params=new URLSearchParams(location.search),city=params.get('city')||'',view=params.get('view')||'photos',back=params.get('back')||'';
+const slugify=s=>s.toLocaleLowerCase('tr-TR').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ı/g,'i').replace(/ğ/g,'g').replace(/ü/g,'u').replace(/ş/g,'s').replace(/ö/g,'o').replace(/ç/g,'c').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const slug=slugify(city),base='/'+slug+'/',rawBase='https://raw.githubusercontent.com/ysfsr71-del/e-netcom/main/public/'+slug+'/';
+const internationalCities=new Set(['viyana','bukres']);
+const isInternational=back==='international'||internationalCities.has(slug);
+const content=document.getElementById('content'),title=document.getElementById('title'),actions=document.getElementById('actions'),eyebrow=document.getElementById('eyebrow');
+title.textContent=city?(city+' Eğitim Programı'):'e-NetCoM Eğitim Programı';
+eyebrow.textContent=view==='poster'?'E-NETCOM · PROGRAM AFİŞİ':'E-NETCOM · SAHADAN KARELER';
+function home(){return isInternational?'/#uluslararasi':'/#iller'}
+function backLabel(){return isInternational?'← Uluslararası Faaliyetlere Dön':'← Haritadaki ile dön'}
+function posterLabel(){return isInternational?'📋 Program Afişi':'📋 Program Akışı'}
+function galleryUrl(){return '/gallery.html?city='+encodeURIComponent(city)+(isInternational?'&back=international':'')}
+function posterUrl(){return '/gallery.html?city='+encodeURIComponent(city)+'&view=poster'+(isInternational?'&back=international':'')}
+function showError(msg){
+  content.className='viewer';
+  content.innerHTML='<div class="notice">'+esc(msg)+'</div>';
+  actions.classList.remove('hidden');
+  if(view==='poster'){
+    actions.innerHTML='<a class="btn primary" href="'+galleryUrl()+'">📸 Sahadan Kareler</a><a class="btn" href="'+home()+'">'+backLabel()+'</a>';
+  }else{
+    actions.innerHTML='<a class="btn" href="'+posterUrl()+'">'+posterLabel()+'</a><a class="btn" href="'+home()+'">'+backLabel()+'</a>';
+  }
+}
+function imgUrl(n){return rawBase+String(n).padStart(2,'0')+'.jpg'}
+function discoverPhotos(done){
+ const found=[];let finished=0,total=60;
+ for(let n=1;n<=total;n++){
+   const im=new Image(); im.onload=()=>{found.push({n,src:imgUrl(n)});if(++finished===total)done(found.sort((a,b)=>a.n-b.n))};
+   im.onerror=()=>{if(++finished===total)done(found.sort((a,b)=>a.n-b.n))}; im.src=imgUrl(n)+'?v='+Date.now();
+ }
+}
+function loadPoster(){
+ const src=rawBase+'afis.jpg?v='+Date.now(),im=new Image();
+ im.onload=()=>{content.className='poster';content.innerHTML='<div class="ey" style="margin:2px 0 10px">'+(isInternational?'PROGRAM AFİŞİ':'PROGRAM AKIŞI')+'</div><img src="'+src+'" alt="'+esc(city)+(isInternational?' program afişi':' etkinlik afişi')+'">';actions.classList.remove('hidden');
+    actions.innerHTML='<a class="btn primary" href="'+galleryUrl()+'">📸 Sahadan Kareler</a><a class="btn" href="'+home()+'">'+backLabel()+'</a>';};
+ im.onerror=()=>showError('Bu il için henüz afiş yüklenmemiş.'); im.src=src;
+}
+function renderPhotos(photos){
+ if(!photos.length){showError('Bu il için henüz fotoğraf yüklenmemiş.');return}
+ content.className='viewer';content.innerHTML='<div class="stage">'+photos.map((p,i)=>'<img class="slide" data-i="'+i+'" src="'+p.src+'" alt="'+esc(city)+' · Fotoğraf '+(i+1)+'">').join('')+'<button class="nav prev" aria-label="Önceki fotoğraf">‹</button><button class="nav next" aria-label="Sonraki fotoğraf">›</button><div class="counter" id="counter"></div></div><div class="thumbs">'+photos.map((p,i)=>'<button class="thumb" data-i="'+i+'"><img src="'+p.src+'" alt="'+esc(city)+' · Fotoğraf '+(i+1)+'"></button>').join('')+'</div>';
+ const slides=[...content.querySelectorAll('.slide')],thumbs=[...content.querySelectorAll('.thumb')],counter=document.getElementById('counter');let i=0;
+ function show(k){i=(k+slides.length)%slides.length;slides.forEach((x,j)=>x.classList.toggle('active',j===i));thumbs.forEach((x,j)=>x.classList.toggle('active',j===i));counter.textContent=(i+1)+' / '+slides.length}
+ content.querySelector('.prev').onclick=()=>show(i-1);content.querySelector('.next').onclick=()=>show(i+1);thumbs.forEach((x,j)=>x.onclick=()=>show(j));
+ document.onkeydown=e=>{if(e.key==='ArrowLeft')show(i-1);if(e.key==='ArrowRight')show(i+1)};show(0);
+ actions.classList.remove('hidden');
+  actions.innerHTML='<a class="btn" href="'+posterUrl()+'">'+posterLabel()+'</a><a class="btn" href="'+home()+'">'+backLabel()+'</a>';
+}
+if(!city){showError('İl bilgisi bulunamadı.');}
+else if(view==='poster'){loadPoster();}
+else{discoverPhotos(renderPhotos);}
+</script></body></html>
