@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>e-NetCoM · Uluslararası Etkinlik</title>
+<style>
+:root{--g:#087c61;--dark:#063f32;--bg:#f2f8f5;--line:#d5e7df}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:#073228}.wrap{max-width:1180px;margin:0 auto;padding:32px 20px}.ey{font-size:11px;font-weight:800;letter-spacing:1.5px;color:var(--g)}h1{font-size:42px;margin:8px 0 24px}.viewer{background:var(--dark);border-radius:24px;padding:18px;box-shadow:0 16px 40px rgba(7,50,40,.14)}.stage{position:relative;background:#fff;border-radius:18px;min-height:60vh;display:flex;align-items:center;justify-content:center;overflow:hidden}.slide{display:none;width:100%;height:68vh;max-height:760px;object-fit:contain;background:#fff}.slide.active{display:block}.nav{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border:0;border-radius:50%;background:rgba(255,255,255,.94);font-size:34px;color:var(--dark);cursor:pointer;box-shadow:0 5px 18px rgba(0,0,0,.15);z-index:2}.nav:hover{transform:translateY(-50%) scale(1.05)}.prev{left:16px}.next{right:16px}.counter{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);background:rgba(6,63,50,.88);color:#fff;padding:8px 14px;border-radius:999px;font-weight:800;font-size:13px}.thumbs{display:flex;gap:10px;overflow-x:auto;padding:14px 2px 2px}.thumb{border:2px solid transparent;background:#fff;padding:3px;border-radius:12px;cursor:pointer;flex:0 0 100px}.thumb.active{border-color:#bdf47c}.thumb img{display:block;width:100%;height:72px;object-fit:cover;border-radius:8px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.btn{display:inline-block;text-decoration:none;font-weight:800;padding:12px 18px;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--dark)}.primary{background:#bdf47c;color:var(--dark);border-color:#bdf47c}.notice{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;margin-top:18px;line-height:1.6}.loading{padding:40px;text-align:center;color:#cfe8df;font-weight:700}.poster{background:#fff;border-radius:20px;padding:18px}.poster img{display:block;width:100%;max-height:78vh;object-fit:contain;border-radius:12px}.hidden{display:none}@media(max-width:700px){h1{font-size:32px}.slide{height:52vh}.stage{min-height:52vh}.nav{width:44px;height:44px;font-size:28px}}
+</style></head><body><main class="wrap"><div class="ey" id="eyebrow">E-NETCOM · ULUSLARARASI ETKİNLİK</div><h1 id="title">Eğitim Programı</h1><section id="content" class="viewer"><div class="loading" id="loading">Görseller yükleniyor…</div></section><div id="actions" class="actions hidden"></div></main>
+<script>
+const params = new URLSearchParams(location.search);
+const city = params.get('city') || '';
+const view = params.get('view') || 'photos';
+const lang = localStorage.getItem('enetcom_lang') || 'tr';
+
+const esc = s => String(s).replace(/[&<>"']/g,m=>({
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+}[m]));
+
+const slugify = s => String(s).toLocaleLowerCase('tr-TR')
+  .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+  .replace(/ı/g,'i').replace(/ğ/g,'g').replace(/ü/g,'u')
+  .replace(/ş/g,'s').replace(/ö/g,'o').replace(/ç/g,'c')
+  .replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+
+const citySlug = slugify(city);
+
+const L = {
+  tr:{
+    ey:'E-NETCOM · ETKİNLİK GALERİSİ',
+    photo:'📸 Sahadan Kareler',
+    poster:'📋 Program Akışı',
+    back:'← Haritadaki ile dön',
+    photos:'Sahadan kareler',
+    posters:'Program afişi',
+    loading:'Görseller yükleniyor…',
+    noPhoto:'Bu etkinlik için henüz fotoğraf yüklenmemiş.',
+    noPoster:'Bu etkinlik için henüz program afişi yüklenmemiş.',
+    apiError:'Galeri dosyaları okunamadı. Lütfen birkaç saniye sonra tekrar deneyin.',
+    previous:'Önceki fotoğraf',
+    next:'Sonraki fotoğraf'
+  },
+  en:{
+    ey:'E-NETCOM · EVENT GALLERY',
+    photo:'📸 Field Photos',
+    poster:'📋 Programme',
+    back:'← Back to the map',
+    photos:'Field photos',
+    posters:'Programme poster',
+    loading:'Loading visuals…',
+    noPhoto:'No photos have been uploaded for this event yet.',
+    noPoster:'No programme poster has been uploaded for this event yet.',
+    apiError:'The gallery files could not be read. Please try again in a few seconds.',
+    previous:'Previous photo',
+    next:'Next photo'
+  },
+  de:{
+    ey:'E-NETCOM · VERANSTALTUNGSGALERIE',
+    photo:'📸 Fotos vor Ort',
+    poster:'📋 Programmablauf',
+    back:'← Zurück zur Karte',
+    photos:'Fotos vor Ort',
+    posters:'Programmplakat',
+    loading:'Bilder werden geladen…',
+    noPhoto:'Für diese Veranstaltung wurden noch keine Fotos hochgeladen.',
+    noPoster:'Für diese Veranstaltung wurde noch kein Programmplakat hochgeladen.',
+    apiError:'Die Galeriedateien konnten nicht gelesen werden. Bitte versuchen Sie es in einigen Sekunden erneut.',
+    previous:'Vorheriges Foto',
+    next:'Nächstes Foto'
+  }
+}[lang] || null;
+
+const content = document.getElementById('content');
+const title = document.getElementById('title');
+const eyebrow = document.getElementById('eyebrow');
+const actions = document.getElementById('actions');
+
+eyebrow.textContent = L.ey;
+
+function backUrl(){
+  const back = params.get('back');
+  return back === 'international' ? '/#uluslararasi' : '/#iller';
+}
+
+function showError(msg){
+  content.className='viewer';
+  content.innerHTML='<div class="notice">'+esc(msg)+'</div>';
+  actions.classList.remove('hidden');
+  actions.innerHTML='<a class="btn" href="'+backUrl()+'">'+L.back+'</a>';
+}
+
+function renderSlides(list){
+  if(!list.length){ showError(L.noPhoto); return; }
+
+  content.className='viewer';
+  content.innerHTML =
+    '<div class="stage">'+
+      list.map((p,i)=>
+        '<img class="slide" data-i="'+i+'" src="'+p.src+'" alt="'+esc(city)+' · '+esc(L.photos)+' '+(i+1)+'">'
+      ).join('')+
+      '<button class="nav prev" aria-label="'+esc(L.previous)+'">‹</button>'+
+      '<button class="nav next" aria-label="'+esc(L.next)+'">›</button>'+
+      '<div class="counter" id="counter"></div>'+
+    '</div>'+
+    '<div class="thumbs">'+
+      list.map((p,i)=>
+        '<button class="thumb" data-i="'+i+'"><img src="'+p.src+'" alt="'+esc(city)+' · '+(i+1)+'"></button>'
+      ).join('')+
+    '</div>';
+
+  const slides=[...content.querySelectorAll('.slide')];
+  const thumbs=[...content.querySelectorAll('.thumb')];
+  const counter=document.getElementById('counter');
+  let i=0;
+
+  function show(k){
+    i=(k+slides.length)%slides.length;
+    slides.forEach((x,j)=>x.classList.toggle('active',j===i));
+    thumbs.forEach((x,j)=>x.classList.toggle('active',j===i));
+    counter.textContent=(i+1)+' / '+slides.length;
+  }
+
+  content.querySelector('.prev').onclick=()=>show(i-1);
+  content.querySelector('.next').onclick=()=>show(i+1);
+  thumbs.forEach((x,j)=>x.onclick=()=>show(j));
+  document.onkeydown=e=>{
+    if(e.key==='ArrowLeft') show(i-1);
+    if(e.key==='ArrowRight') show(i+1);
+  };
+  show(0);
+
+  actions.classList.remove('hidden');
+  actions.innerHTML =
+    '<a class="btn" href="/gallery.html?city='+encodeURIComponent(city)+'&view=poster&back='+encodeURIComponent(params.get('back')||'')+'">'+L.poster+'</a>'+
+    '<a class="btn" href="'+backUrl()+'">'+L.back+'</a>';
+}
+
+function renderPoster(src){
+  content.className='poster';
+  if(/\.pdf(?:\?|$)/i.test(src)){
+    content.innerHTML =
+      '<iframe src="'+src+'" title="'+esc(city)+' · '+esc(L.posters)+'" '+
+      'style="display:block;width:100%;height:78vh;min-height:600px;border:0;border-radius:12px;background:#fff"></iframe>';
+  }else{
+    content.innerHTML='<img src="'+src+'" alt="'+esc(city)+' · '+esc(L.posters)+'">';
+  }
+
+  actions.classList.remove('hidden');
+  actions.innerHTML =
+    '<a class="btn primary" href="/gallery.html?city='+encodeURIComponent(city)+'&back='+encodeURIComponent(params.get('back')||'')+'">'+L.photo+'</a>'+
+    '<a class="btn" href="'+backUrl()+'">'+L.back+'</a>';
+}
+
+/* Existing international folders keep their current structure.
+   Turkish provinces are discovered automatically from their public/<il>/ folder. */
+const folderOverrides = {
+  'viyana':'assets/international/vienna',
+  'bucharest':'assets/international/bucharest',
+  'bükreş':'assets/international/bucharest'
+};
+
+const titleOverrides = {
+  'viyana':{tr:'Viyana · University of Vienna',en:'Vienna · University of Vienna',de:'Wien · Universität Wien'},
+  'bükreş':{tr:'Bükreş · SNSPA',en:'Bucharest · SNSPA',de:'Bukarest · SNSPA'}
+};
+
+function sourceFolder(){
+  return folderOverrides[citySlug] || citySlug;
+}
+
+async function githubContents(folder){
+  const api='https://api.github.com/repos/ysfsr71-del/e-netcom/contents/public/'+
+    folder.split('/').map(encodeURIComponent).join('/')+
+    '?ref=main';
+
+  const r=await fetch(api,{headers:{Accept:'application/vnd.github+json'}});
+  if(!r.ok) throw new Error('GitHub contents '+r.status);
+  const data=await r.json();
+  if(!Array.isArray(data)) throw new Error('Folder is not a directory');
+  return data.filter(x=>x.type==='file');
+}
+
+function isImage(name){
+  return /\.(jpe?g|png|webp|gif|avif)$/i.test(name);
+}
+
+function isPdf(name){
+  return /\.pdf$/i.test(name);
+}
+
+function isPosterName(name){
+  return /(afis|poster|program|programme|plakat|etkinlik)/i.test(name);
+}
+
+function fileUrl(item,folder){
+  /* GitHub's API download_url is preferred. If absent, build a raw URL safely. */
+  if(item.download_url) return item.download_url;
+  return 'https://raw.githubusercontent.com/ysfsr71-del/e-netcom/main/public/'+
+    folder.split('/').map(encodeURIComponent).join('/')+'/'+
+    encodeURIComponent(item.name);
+}
+
+function sortFiles(a,b){
+  const na=a.name.toLocaleLowerCase('tr-TR');
+  const nb=b.name.toLocaleLowerCase('tr-TR');
+  const pa=/(^|[^0-9])0*([0-9]+)/.exec(na);
+  const pb=/(^|[^0-9])0*([0-9]+)/.exec(nb);
+  if(pa && pb && Number(pa[2])!==Number(pb[2])) return Number(pa[2])-Number(pb[2]);
+  if(pa && !pb) return -1;
+  if(!pa && pb) return 1;
+  return na.localeCompare(nb,'tr');
+}
+
+async function discover(){
+  if(!city) throw new Error('no city');
+  const folder=sourceFolder();
+  const files=await githubContents(folder);
+
+  const images=files.filter(x=>isImage(x.name) && !isPosterName(x.name))
+    .sort(sortFiles)
+    .map(x=>({src:fileUrl(x,folder),name:x.name}));
+
+  const poster=files.filter(x=>isPdf(x.name))
+    .sort((a,b)=>{
+      const aa=isPosterName(a.name)?0:1, bb=isPosterName(b.name)?0:1;
+      return aa-bb || sortFiles(a,b);
+    })[0] || files.filter(x=>isImage(x.name) && isPosterName(x.name)).sort(sortFiles)[0] || null;
+
+  return {images,poster:poster ? fileUrl(poster,folder) : null};
+}
+
+async function legacyDiscover(){
+  /* Fallback for deployments where GitHub API is temporarily unavailable.
+     It preserves the original 01.jpg / afis.jpg convention. */
+  const base='https://raw.githubusercontent.com/ysfsr71-del/e-netcom/main/public/'+
+    encodeURIComponent(citySlug)+'/';
+
+  const urls=[];
+  for(let n=1;n<=60;n++){
+    const nn=String(n).padStart(2,'0');
+    urls.push(base+nn+'.jpg');
+    urls.push(base+nn+'.jpeg');
+    urls.push(base+nn+'.png');
+  }
+
+  const found=[];
+  await Promise.all(urls.map(src=>new Promise(resolve=>{
+    const im=new Image();
+    im.onload=()=>{found.push(src);resolve()};
+    im.onerror=resolve;
+    im.src=src+'?v='+Date.now();
+  })));
+
+  let poster=null;
+  for(const name of ['afis.jpg','afis.jpeg','afis.png','poster.jpg','poster.jpeg','poster.png']){
+    const src=base+name;
+    const ok=await new Promise(resolve=>{
+      const im=new Image(); im.onload=()=>resolve(true); im.onerror=()=>resolve(false);
+      im.src=src+'?v='+Date.now();
+    });
+    if(ok){poster=src;break;}
+  }
+  return {images:found.sort().map(src=>({src})),poster};
+}
+
+async function main(){
+  if(!city){
+    showError(lang==='en'?'Event information not found.':lang==='de'?'Veranstaltungsinformationen nicht gefunden.':'Etkinlik bilgisi bulunamadı.');
+    return;
+  }
+
+  if(titleOverrides[citySlug]){
+    title.textContent=titleOverrides[citySlug][lang] || titleOverrides[citySlug].tr;
+  }else{
+    title.textContent=city+' · '+(lang==='en'?'Event Gallery':lang==='de'?'Veranstaltungsgalerie':'Etkinlik Galerisi');
+  }
+
+  content.innerHTML='<div class="loading">'+L.loading+'</div>';
+
+  let data;
+  try{
+    data=await discover();
+  }catch(e){
+    try{ data=await legacyDiscover(); }
+    catch(_){ showError(L.apiError); return; }
+  }
+
+  if(view==='poster'){
+    if(data.poster) renderPoster(data.poster);
+    else showError(L.noPoster);
+  }else{
+    renderSlides(data.images);
+  }
+}
+
+main();
+</script></body></html>
