@@ -119,6 +119,227 @@ app.post("/api/chat", async (req,res) => {
   }
 });
 
+// ==================== YOUTUBE API ====================
+
+const youtubeApiKey = process.env.YOUTUBE_API_KEY?.trim() || null;
+const youtubeChannelHandle =
+  (process.env.YOUTUBE_CHANNEL_HANDLE || '@e-NeTCoMProje').trim();
+
+let youtubeStatsCache = {
+  data: null,
+  expiresAt: 0
+};
+
+async function youtubeGet(resource, params = {}) {
+  if (!youtubeApiKey) {
+    throw new Error("YOUTUBE_API_KEY tanımlı değil.");
+  }
+
+  const query = new URLSearchParams({
+    ...params,
+    key: youtubeApiKey
+  });
+
+  const response = await fetch(
+    `https://www.googleapis.com/youtube/v3/${resource}?${query}`
+  );
+
+  const body = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    const reason =
+      body?.error?.errors?.[0]?.reason ||
+      body?.error?.message ||
+      `HTTP ${response.status}`;
+
+    throw new Error(`YouTube API: ${reason}`);
+  }
+
+  return body;
+}
+
+async function getChannel() {
+  const data = await youtubeGet("channels", {
+    part: "id,statistics",
+    forHandle: youtubeChannelHandle
+  });
+
+  const channel = data.items?.[0];
+
+  if (!channel) {
+    throw new Error(
+      `YouTube kanalı bulunamadı: ${youtubeChannelHandle}`
+    );
+  }
+
+  return channel;
+}
+
+async function getChannelPlaylists(channelId) {
+  const playlists = [];
+  let pageToken = "";
+
+  do {
+    const params = {
+      part: "snippet",
+      channelId,
+      maxResults: "50"
+    };
+
+    if (pageToken) params.pageToken = pageToken;
+
+    const data = await youtubeGet("playlists", params);
+
+    playlists.push(...(data.items || []));
+    pageToken = data.nextPageToken || "";
+  } while (pageToken);
+
+  return playlists;
+}
+
+function findPlaylist(playlists, words) {
+  return playlists.find(playlist => {
+    const title =
+      String(playlist.snippet?.title || "").toLowerCase();
+
+    return words.every(word =>
+      title.includes(word.toLowerCase())
+    );
+  });
+}
+
+async function getPlaylistViews(playlistId) {
+  if (!playlistId) return 0;
+
+  const videoIds = [];
+  let pageToken = "";
+
+  do {
+    const params = {
+      part: "contentDetails",
+      playlistId,
+      maxResults: "50"
+    };
+
+    if (pageToken) params.pageToken = pageToken;
+
+    const data = await youtubeGet("playlistItems", params);
+
+    for (const item of data.items || []) {
+      const videoId = item.contentDetails?.videoId;
+
+      if (videoId) {
+        videoIds.push(videoId);
+      }
+    }
+
+    pageToken = data.nextPageToken || "";
+  } while (pageToken);
+
+  const uniqueIds = [...new Set(videoIds)];
+
+  let totalViews = 0;
+
+  for (let i = 0; i < uniqueIds.length; i += 50) {
+    const ids = uniqueIds.slice(i, i + 50).join(",");
+
+    const data = await youtubeGet("videos", {
+      part: "statistics",
+      id: ids
+    });
+
+    for (const video of data.items || []) {
+      totalViews += Number(
+        video.statistics?.viewCount || 0
+      );
+    }
+  }
+
+  return totalViews;
+}
+
+app.get("/api/youtube-stats", async (req, res) => {
+  res.set("Cache-Control", "no-store");
+
+  if (!youtubeApiKey) {
+    return res.status(503).json({
+      error: "YOUTUBE_API_KEY tanımlı değil."
+    });
+  }
+
+  const now = Date.now();
+
+  // 30 dakikalık önbellek
+  if (
+    youtubeStatsCache.data &&
+    youtubeStatsCache.expiresAt > now
+  ) {
+    return res.json(youtubeStatsCache.data);
+  }
+
+  try {
+    const channel = await getChannel();
+
+    const playlists =
+      await getChannelPlaylists(channel.id);
+
+    const oneMinutePlaylist = findPlaylist(
+      playlists,
+      ["1 dakikada"]
+    );
+
+    const publicSpotsPlaylist = findPlaylist(
+      playlists,
+      ["kamu spot"]
+    );
+
+    const interactivePlaylist =
+      findPlaylist(playlists, ["interaktif"]);
+
+    const [
+      oneMinute,
+      publicSpots,
+      interactive
+    ] = await Promise.all([
+      getPlaylistViews(oneMinutePlaylist?.id),
+      getPlaylistViews(publicSpotsPlaylist?.id),
+      getPlaylistViews(interactivePlaylist?.id)
+    ]);
+
+    const result = {
+      totalViews: Number(
+        channel.statistics?.viewCount || 0
+      ),
+
+      oneMinute,
+      interactive,
+      publicSpots,
+
+      updatedAt: new Date().toISOString()
+    };
+
+    youtubeStatsCache = {
+      data: result,
+      expiresAt: now + 30 * 60 * 1000
+    };
+
+    res.json(result);
+
+  } catch (error) {
+
+    console.error(
+      "YouTube stats error:",
+      error
+    );
+
+    res.status(502).json({
+      error:
+        `YouTube istatistikleri alınamadı: ${error.message}`
+    });
+  }
+});
+
+// ==================== YOUTUBE API SON ====================
 
 app.listen(port, () => {
   console.log(`e-NetCoM Astra running on http://localhost:${port}`);
