@@ -517,20 +517,22 @@ function buildAnalyticsStats(range = "30d") {
   const now = Date.now();
   const events = analyticsEvents.filter(e => Number(e.ts) >= start && Number(e.ts) <= now);
 
-  const sessions = new Map();
-  const visitors = new Set();
-  const activeSessions = new Set();
+  // Bir ziyaret = bir anonim oturum. Pageview/event sayısını ziyaretçi sayısı olarak kullanma.
+  const sessionMap = new Map();
+  const visitorSet = new Set();
+  const activeVisitorSet = new Set();
   let durationTotal = 0;
   let durationCount = 0;
 
   for (const event of events) {
-    if (event.visitorId) visitors.add(event.visitorId);
+    if (event.visitorId) visitorSet.add(event.visitorId);
     if (event.sessionId) {
-      if (!sessions.has(event.sessionId)) sessions.set(event.sessionId, []);
-      sessions.get(event.sessionId).push(event);
-      if (event.type === "session_heartbeat" && now - event.ts <= 5 * 60 * 1000) {
-        activeSessions.add(event.sessionId);
-      }
+      if (!sessionMap.has(event.sessionId)) sessionMap.set(event.sessionId, []);
+      sessionMap.get(event.sessionId).push(event);
+    }
+
+    if (event.type === "session_heartbeat" && now - event.ts <= 5 * 60 * 1000) {
+      if (event.visitorId) activeVisitorSet.add(event.visitorId);
     }
 
     if (event.type === "session_end") {
@@ -542,29 +544,58 @@ function buildAnalyticsStats(range = "30d") {
     }
   }
 
+  const sessions = [...sessionMap.entries()]
+    .map(([sessionId, sessionEvents]) => ({
+      sessionId,
+      events: sessionEvents,
+      first: sessionEvents.reduce((a, b) => Number(a.ts) < Number(b.ts) ? a : b)
+    }));
+
+  // Oturum başlangıcını pageview olarak kabul ediyoruz. Böylece aynı oturumdaki
+  // section_view/click/language event'leri ziyaret sayısını şişirmiyor.
+  const sessionStarts = sessions.filter(s => s.events.some(e => e.type === "pageview"));
+  const sessionStartEvents = sessionStarts.map(s => s.first);
+
+  function countSessionStarts(key, filterFn = () => true) {
+    const map = new Map();
+    for (const event of sessionStartEvents) {
+      if (!filterFn(event)) continue;
+      const value = safeString(event[key] || "unknown", 120);
+      map.set(value, (map.get(value) || 0) + 1);
+    }
+    return [...map.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 12)
+      .map(([name, count]) => ({ name, count }));
+  }
+
   const pageviews = events.filter(e => e.type === "pageview").length;
   const sections = countBy(events.filter(e => e.type === "section_view"), "section");
-  const languages = countBy(events, "lang");
-  const devices = countBy(events, "device");
-  const referrers = countBy(
-    events.filter(e => e.referrer && e.referrer !== "direct"),
-    "referrer"
+  const languages = countSessionStarts("lang");
+  const devices = countSessionStarts("device");
+  const referrers = countSessionStarts(
+    "referrer",
+    e => e.referrer && e.referrer !== "direct"
   );
 
+  const dailyDays = range === "24h" ? 1 : range === "7d" ? 7 : 30;
   const dayMap = new Map();
-  for (let i = 29; i >= 0; i--) {
+  for (let i = dailyDays - 1; i >= 0; i--) {
     const date = new Date(now - i * 86400000);
     const key = date.toISOString().slice(0, 10);
     dayMap.set(key, { date: key, visits: 0, pageviews: 0 });
   }
 
+  for (const session of sessionStarts) {
+    const key = new Date(session.first.ts).toISOString().slice(0, 10);
+    if (!dayMap.has(key)) continue;
+    dayMap.get(key).visits++;
+  }
+
   for (const event of events) {
     const key = new Date(event.ts).toISOString().slice(0, 10);
     if (!dayMap.has(key)) continue;
-    if (event.type === "pageview") {
-      dayMap.get(key).pageviews++;
-      dayMap.get(key).visits++;
-    }
+    if (event.type === "pageview") dayMap.get(key).pageviews++;
   }
 
   const eventCounts = countBy(events, "type");
@@ -573,9 +604,10 @@ function buildAnalyticsStats(range = "30d") {
     generatedAt: new Date().toISOString(),
     range,
     totalEvents: events.length,
-    visits: pageviews,
-    uniqueVisitors: visitors.size,
-    activeVisitors: activeSessions.size,
+    visits: sessionStarts.length,
+    pageviews,
+    uniqueVisitors: visitorSet.size,
+    activeVisitors: activeVisitorSet.size,
     averageSessionSeconds: durationCount
       ? Math.round(durationTotal / durationCount)
       : 0,
