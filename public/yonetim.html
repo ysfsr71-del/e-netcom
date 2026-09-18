@@ -71,6 +71,16 @@ h2{font-size:17px;margin:0 0 14px}.list{display:grid;gap:9px}.row{display:grid;g
     <div class="card"><h2>YouTube</h2><div class="list" id="youtube"><div class="row"><span>Yükleniyor…</span></div></div></div>
   </section>
 
+  <section class="two">
+    <div class="card"><h2>İl bazlı ilgi</h2><div class="small" style="margin-top:-8px;margin-bottom:12px">81 il haritasında açılan il detayları.</div><div class="list" id="provinceViews"></div></div>
+    <div class="card"><h2>En çok açılan videolar</h2><div class="small" style="margin-top:-8px;margin-bottom:12px">Video ve oynatma kontrolleri.</div><div class="list" id="videoOpens"></div></div>
+  </section>
+
+  <section class="two">
+    <div class="card"><h2>İndirilen içerikler</h2><div class="small" style="margin-top:-8px;margin-bottom:12px">PDF, program ve indirilebilir içerik etkileşimleri.</div><div class="list" id="downloads"></div></div>
+    <div class="card"><h2>e-Merkez kullanımı</h2><div class="num" id="eCenterInteractions">—</div><div class="small">e-Merkez alanındaki toplam etkileşim</div></div>
+  </section>
+
   <div class="note">Bu panel anonim site etkileşimleri üzerinden çalışır. IP adresi kaydedilmez. Tekil ziyaretçi ölçümü tarayıcıdaki anonim ziyaretçi kimliğine dayanır ve yaklaşık bir metriktir.</div>
 </main>
 
@@ -114,6 +124,10 @@ async function load(){
     renderList("languages",d.languages);
     renderList("devices",d.devices);
     renderList("referrers",d.referrers);
+    renderList("provinceViews",d.provinceViews);
+    renderList("videoOpens",d.videoOpens);
+    renderList("downloads",d.downloads);
+    $("eCenterInteractions").textContent=fmt(d.eCenterInteractions);
     renderYouTube(d.youtube);
     showApp();
   }catch(e){

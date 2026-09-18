@@ -3525,12 +3525,16 @@ document.addEventListener("click",function(e){
     if(!el)return;
     const href=el.getAttribute("href")||"";
     const text=(el.innerText||el.getAttribute("aria-label")||"").trim().replace(/\s+/g," ").slice(0,120);
-    const isVideo=/youtube|youtu\.be|video/i.test(href+" "+text);
+    const onclick=el.getAttribute("onclick")||"";
+    const isVideo=/youtube|youtu\.be|video|playContent|playPlaylistIndex/i.test(href+" "+text+" "+onclick);
     const isDownload=/download|indir|pdf|docx|xlsx|pptx/i.test(href+" "+text);
-    const isMap=/map|harita|province|il-/i.test(el.id+" "+el.className+" "+text);
+    const isMap=/map|harita|province|il-|city-btn/i.test(el.id+" "+el.className+" "+text) || el.matches(".city-btn");
+    const mapCity=el.getAttribute("data-city")||el.closest(".city-btn")?.getAttribute("data-city")||"";
+    const target=(isMap && mapCity)?mapCity:(href||text).slice(0,180);
     send(isMap?"map_click":isVideo?"video_open":isDownload?"download":"click",{
       section:el.closest("[id]")?.id||"",
-      target:(href||text).slice(0,180)
+      target,
+      meta:isVideo?text:""
     });
   },{passive:true});
 
