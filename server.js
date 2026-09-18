@@ -293,18 +293,43 @@ app.get("/api/youtube-stats", async (req, res) => {
       ["kamu spot"]
     );
 
-    const interactivePlaylist =
-      findPlaylist(playlists, ["interaktif"]);
+   const interactivePlaylists = playlists.filter(playlist => {
+  const title = String(
+    playlist.snippet?.title || ""
+  ).toLowerCase();
 
-    const [
-      oneMinute,
-      publicSpots,
-      interactive
-    ] = await Promise.all([
-      getPlaylistViews(oneMinutePlaylist?.id),
-      getPlaylistViews(publicSpotsPlaylist?.id),
-      getPlaylistViews(interactivePlaylist?.id)
-    ]);
+  return [
+    "iklim krizi ve medya",
+    "iklim krizi ile mücadele projeleri",
+    "çevresel yurttaşlık",
+    "sürdürülebilir gıda",
+    "sürdürülebilir tüketim",
+    "atık yönetimi ve geri dönüşüm",
+    "enerji ve kaynak verimliliği"
+  ].some(name => title.includes(name));
+});
+
+const [
+  oneMinute,
+  publicSpots,
+  interactiveViews
+] = await Promise.all([
+  getPlaylistViews(oneMinutePlaylist?.id),
+  getPlaylistViews(publicSpotsPlaylist?.id),
+
+  Promise.all(
+    interactivePlaylists.map(
+      playlist => getPlaylistViews(playlist.id)
+    )
+  ).then(values =>
+    values.reduce(
+      (total, value) => total + value,
+      0
+    )
+  )
+]);
+
+const interactive = interactiveViews;
 
     const result = {
       totalViews: Number(
