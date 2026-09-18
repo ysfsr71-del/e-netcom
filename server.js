@@ -600,6 +600,25 @@ function buildAnalyticsStats(range = "30d") {
 
   const eventCounts = countBy(events, "type");
 
+  // Proje yöneticisi için içerik/etkileşim göstergeleri.
+  // map_click olayları city-btn üzerinden il adıyla, video_open olayları
+  // buton/video başlığıyla, download olayları hedef bağlantıyla tutulur.
+  const provinceViews = countBy(
+    events.filter(e => e.type === "map_click" && e.section === "iller"),
+    "target"
+  );
+  const videoOpens = countBy(
+    events.filter(e => e.type === "video_open"),
+    "target"
+  );
+  const downloads = countBy(
+    events.filter(e => e.type === "download"),
+    "target"
+  );
+  const eCenterEvents = events.filter(e =>
+    e.section === "veritabani" || /e-merkez|e\s*merkez/i.test(e.target || "")
+  );
+
   return {
     generatedAt: new Date().toISOString(),
     range,
@@ -616,6 +635,10 @@ function buildAnalyticsStats(range = "30d") {
     devices,
     referrers,
     eventCounts,
+    provinceViews,
+    videoOpens,
+    downloads,
+    eCenterInteractions: eCenterEvents.length,
     daily: [...dayMap.values()]
   };
 }
