@@ -1119,7 +1119,7 @@ img{decoding:async}
 </details>
 <a href="#medya">Medya</a>
 <details class="nav-more"><summary>Daha Fazla</summary><div class="nav-dropdown">
-<a href="#network">Network</a><a href="#akademi">Akademi</a><a href="#iyi">İyi Uygulamalar</a><a href="#ortaklar">Ortaklar</a><a href="#veritabani">Veritabanı</a><a href="/#iletisim" data-contact-link>İletişim</a>
+<a href="#network">Network</a><a href="#akademi">Akademi</a><a href="#iyi">İyi Uygulamalar</a><a href="#ortaklar">Ortaklar</a><a href="#veritabani">Veritabanı</a><a href="#iletisim">İletişim</a>
 </div></details>
 <a class="nav-workshop" href="#atolye">✦ Atölye</a>
 </div>
@@ -1148,7 +1148,7 @@ img{decoding:async}
       <a href="#akademi" class="mobile-sub">Akademi</a>
       <a href="#iyi" class="mobile-sub">İyi Uygulamalar</a>
       <a href="#ortaklar" class="mobile-sub">Ortaklar</a>
-      <a href="/#iletisim" class="mobile-sub">İletişim</a>
+      <a href="#iletisim" class="mobile-sub">İletişim</a>
       <a href="#atolye" class="mobile-workshop">✦ Atölye</a>
     </nav>
   </div>
@@ -2642,14 +2642,6 @@ document.addEventListener('keydown', function(e){
     if(moreSummary){
       e.preventDefault(); e.stopPropagation();
       toggle(moreSummary.parentElement);
-      return;
-    }
-    const contactLink=e.target.closest('.nav-more .nav-dropdown a[data-contact-link]');
-    if(contactLink){
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      closeMenus();
-      window.location.href='/#iletisim';
       return;
     }
     if(e.target.closest('.nav-more .nav-dropdown a')){
