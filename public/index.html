@@ -1087,7 +1087,7 @@ img{decoding:async}
       });
       target.style.display='';
       requestAnimationFrame(function(){
-        target.scrollIntoView({behavior:'smooth',block:'start'});
+        window.scrollTo({top:Math.max(0,target.getBoundingClientRect().top+window.scrollY-100),behavior:'auto'});
         history.replaceState(null,'','#iletisim');
       });
     }
@@ -2675,7 +2675,7 @@ document.addEventListener('keydown', function(e){
       const target=document.getElementById('iletisim');
       if(target){
         requestAnimationFrame(function(){
-          target.scrollIntoView({behavior:'smooth',block:'start'});
+          window.scrollTo({top:Math.max(0,target.getBoundingClientRect().top+window.scrollY-100),behavior:'auto'});
           history.replaceState(null,'','#iletisim');
         });
       }
