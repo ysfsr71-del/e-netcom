@@ -1069,30 +1069,7 @@ img{decoding:async}
 
 
 </head><body id="main-content">
-<script id="v60-contact-direct-fix">
-(function(){
-  document.addEventListener('click',function(e){
-    const link=e.target.closest('a[href="#iletisim"]');
-    if(!link)return;
-    e.preventDefault();
-    e.stopImmediatePropagation();
 
-    document.querySelectorAll('details[open]').forEach(function(d){d.removeAttribute('open');});
-
-    const target=document.getElementById('iletisim');
-    if(!target)return;
-
-    const oldBehavior=document.documentElement.style.scrollBehavior;
-    document.documentElement.style.scrollBehavior='auto';
-    requestAnimationFrame(function(){
-      const top=Math.max(0,target.getBoundingClientRect().top+window.pageYOffset-100);
-      window.scrollTo(0,top);
-      history.replaceState(null,'','#iletisim');
-      requestAnimationFrame(function(){document.documentElement.style.scrollBehavior=oldBehavior;});
-    });
-  },true);
-})();
-</script>
 <a class="a11y-skip" href="#main-content" id="a11ySkip">Ana içeriğe geç</a>
 <button class="a11y-fab" id="a11yFab" type="button" aria-label="Erişilebilirlik araçlarını aç" aria-expanded="false" aria-controls="a11yPanel" title="Erişilebilirlik">♿</button>
 <div class="a11y-panel-wrap" id="a11yPanel" aria-hidden="true">
@@ -1142,7 +1119,7 @@ img{decoding:async}
 </details>
 <a href="#medya">Medya</a>
 <details class="nav-more"><summary>Daha Fazla</summary><div class="nav-dropdown">
-<a href="#network">Network</a><a href="#akademi">Akademi</a><a href="#iyi">İyi Uygulamalar</a><a href="#ortaklar">Ortaklar</a><a href="#veritabani">Veritabanı</a><a href="#iletisim" data-contact-link>İletişim</a>
+<a href="#network">Network</a><a href="#akademi">Akademi</a><a href="#iyi">İyi Uygulamalar</a><a href="#ortaklar">Ortaklar</a><a href="#veritabani">Veritabanı</a><a href="/#iletisim" data-contact-link>İletişim</a>
 </div></details>
 <a class="nav-workshop" href="#atolye">✦ Atölye</a>
 </div>
@@ -1171,7 +1148,7 @@ img{decoding:async}
       <a href="#akademi" class="mobile-sub">Akademi</a>
       <a href="#iyi" class="mobile-sub">İyi Uygulamalar</a>
       <a href="#ortaklar" class="mobile-sub">Ortaklar</a>
-      <a href="#iletisim" class="mobile-sub">İletişim</a>
+      <a href="/#iletisim" class="mobile-sub">İletişim</a>
       <a href="#atolye" class="mobile-workshop">✦ Atölye</a>
     </nav>
   </div>
@@ -2669,15 +2646,10 @@ document.addEventListener('keydown', function(e){
     }
     const contactLink=e.target.closest('.nav-more .nav-dropdown a[data-contact-link]');
     if(contactLink){
-      e.preventDefault(); e.stopImmediatePropagation();
+      e.preventDefault();
+      e.stopImmediatePropagation();
       closeMenus();
-      const target=document.getElementById('iletisim');
-      if(target){
-        requestAnimationFrame(function(){
-          window.scrollTo({top:Math.max(0,target.getBoundingClientRect().top+window.scrollY-100),behavior:'auto'});
-          history.replaceState(null,'','#iletisim');
-        });
-      }
+      window.location.href='/#iletisim';
       return;
     }
     if(e.target.closest('.nav-more .nav-dropdown a')){
