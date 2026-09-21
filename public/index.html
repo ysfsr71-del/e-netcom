@@ -892,6 +892,7 @@ html[data-lang="de"] .mobile-nav-links a{overflow-wrap:anywhere}
 }
 .nav-activities-dropdown a{white-space:nowrap}
 #faaliyetler,#iller,#uluslararasi{scroll-margin-top:92px}
+#iletisim{scroll-margin-top:110px!important}
 </style>
 <style id="v55-activities-flow">
 .activities-flow-marker{
@@ -1068,29 +1069,27 @@ img{decoding:async}
 
 
 </head><body id="main-content">
-<script id="v57-contact-hard-fix">
+<script id="v60-contact-direct-fix">
 (function(){
   document.addEventListener('click',function(e){
-    const link=e.target.closest('.nav-more .nav-dropdown a[href="#iletisim"]');
+    const link=e.target.closest('a[href="#iletisim"]');
     if(!link)return;
     e.preventDefault();
     e.stopImmediatePropagation();
-    const more=link.closest('.nav-more');
-    if(more)more.removeAttribute('open');
+
+    document.querySelectorAll('details[open]').forEach(function(d){d.removeAttribute('open');});
+
     const target=document.getElementById('iletisim');
-    if(target){
-      document.body.classList.remove('site-page');
-      document.body.classList.add('site-home');
-      document.querySelectorAll('.route-page').forEach(function(el){
-        el.classList.remove('route-active');
-        if(el.id!=='iletisim')el.style.display='';
-      });
-      target.style.display='';
-      requestAnimationFrame(function(){
-        window.scrollTo({top:Math.max(0,target.getBoundingClientRect().top+window.scrollY-100),behavior:'auto'});
-        history.replaceState(null,'','#iletisim');
-      });
-    }
+    if(!target)return;
+
+    const oldBehavior=document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior='auto';
+    requestAnimationFrame(function(){
+      const top=Math.max(0,target.getBoundingClientRect().top+window.pageYOffset-100);
+      window.scrollTo(0,top);
+      history.replaceState(null,'','#iletisim');
+      requestAnimationFrame(function(){document.documentElement.style.scrollBehavior=oldBehavior;});
+    });
   },true);
 })();
 </script>
@@ -1499,7 +1498,7 @@ img{decoding:async}
 <section class="section alt" id="iyi"><div class="wrap"><div class="section-head"><div><div class="eyebrow" style="color:var(--green)">İYİ UYGULAMA ÖRNEKLERİ</div><h2>Dünyadan ilham, yerelden etki.</h2></div></div><div class="best-filters"><button class="best-filter active" data-best="all">Tümü</button><button class="best-filter" data-best="turkiye">Türkiye</button><button class="best-filter" data-best="dunya">Dünya</button><button class="best-filter" data-best="egitim">Eğitim &amp; Gençlik</button><button class="best-filter" data-best="iletisim">İletişim &amp; Medya</button></div><div class="best-grid" id="bestGrid"></div><div class="zero-waste-resource"><div class="zero-waste-icon">♻</div><div class="zero-waste-copy"><span class="tag">RESMÎ KAYNAK</span><h3>Sıfır Atık · İyi Uygulama Örnekleri</h3><p>Türkiye genelinden sıfır atık, geri dönüşüm, döngüsel ekonomi, eğitim ve çevre alanındaki uygulamaları Sıfır Atık'ın resmi kütüphanesinde keşfedin.</p></div><a class="btn primary" href="https://sifiratik.gov.tr/kutuphane/sifir-atik-iyi-uygulama-ornekleri" target="_blank" rel="noopener">Kütüphaneyi incele ↗</a></div><div class="practice-cta"><div><span class="tag">UYGULAMA KÜTÜPHANESİ</span><h3>Bir örnekten fikre, fikirden uygulamaya.</h3><p>İlham veren çalışmaları filtreleyin ve eğitim, gençlik, iletişim ve medya alanlarında kullanılabilecek fikirleri keşfedin.</p></div><a class="btn primary" href="#atolye">Bu fikri atölyede geliştir ↗</a></div></div></section>
 <section class="section alt" id="ortaklar"><div class="wrap"><div class="section-head"><div><div class="eyebrow" style="color:var(--green)">KONSORSİYUM</div><h2>Beş ortak, ortak bir yön.</h2></div></div><div class="partners-grid"><article class="partner"><div class="monogram">RT</div><h3>RTÜK</h3><p>Koordinatör kurum · Türkiye / Ankara</p><span class="partner-role">Koordinasyon · görünürlük · politika iletişimi</span></article><article class="partner"><div class="monogram">EU</div><h3>Erciyes Üniversitesi</h3><p>Türkiye · Kayseri</p><span class="partner-role">Eğitim · araştırma · e-Merkez</span></article><article class="partner"><div class="monogram">UW</div><h3>University of Vienna</h3><p>Avusturya · Viyana</p><span class="partner-role">Uluslararası eğitim · ortak öğrenme</span></article><article class="partner"><div class="monogram">SNS</div><h3>SNSPA</h3><p>Romanya · Bükreş</p><span class="partner-role">İyi uygulama · uluslararası paylaşım</span></article><article class="partner"><div class="monogram">TG</div><h3>Türkiye Gençlik Vakfı</h3><p>Türkiye · İstanbul</p><span class="partner-role">Gençlik · saha çalışmaları · katılım</span></article></div><div style="height:18px"></div></div></section>
 
-<section class="section" id="iletisim" style="scroll-margin-top:110px"><div class="wrap"><div class="section-head"><div><div class="eyebrow" style="color:var(--green)">İLETİŞİM</div><h2>Projeye ulaşın.</h2></div><p class="section-lead">Sorularınız, iş birlikleri ve proje hakkında daha fazla bilgi için e-NetCoM ekibiyle iletişime geçin.</p></div><div class="contact"><div class="eyebrow" style="color:var(--green)">İLETİŞİM</div><h3>e-NetCoM proje iletişimi</h3><div class="contact-line"><b>Adres</b><br/>Radyo ve Televizyon Üst Kurulu 1597. Cad. No:13 Bilkent, 06800 Çankaya / Ankara</div><div class="contact-line"><b>E-posta</b><br/><a href="mailto:enetcom@rtuk.gov.tr" style="color:var(--green);font-weight:900">enetcom@rtuk.gov.tr</a></div><div class="contact-line"><b>Telefon</b><br/>+90 312 297 52 05 · +90 312 297 54 58</div></div><div class="contact-card"><div class="eyebrow" style="color:var(--green)">PROJE BİLGİSİ</div><h3>Hızlı erişim</h3><div class="contact-quick"><a href="mailto:enetcom@rtuk.gov.tr"><span>✉</span><div><b>E-posta gönder</b><small>enetcom@rtuk.gov.tr</small></div></a><a href="#ortaklar"><span>🤝</span><div><b>Ortakları tanıyın</b><small>Konsorsiyum ve proje ağı</small></div></a></div></div></div></div></section>
+<section class="section" id="iletisim" style="scroll-margin-top:110px"><div class="wrap"><div class="section-head"><div><div class="eyebrow" style="color:var(--green)">İLETİŞİM</div><h2>Projeye ulaşın.</h2></div><p class="section-lead">Sorularınız, iş birlikleri ve proje hakkında daha fazla bilgi için e-NetCoM ekibiyle iletişime geçin.</p></div><div class="contact"><div class="contact-card"><div class="eyebrow" style="color:var(--green)">İLETİŞİM</div><h3>e-NetCoM proje iletişimi</h3><div class="contact-line"><b>Adres</b><br/>Radyo ve Televizyon Üst Kurulu 1597. Cad. No:13 Bilkent, 06800 Çankaya / Ankara</div><div class="contact-line"><b>E-posta</b><br/><a href="mailto:enetcom@rtuk.gov.tr" style="color:var(--green);font-weight:900">enetcom@rtuk.gov.tr</a></div><div class="contact-line"><b>Telefon</b><br/>+90 312 297 52 05 · +90 312 297 54 58</div></div><div class="contact-card"><div class="eyebrow" style="color:var(--green)">PROJE BİLGİSİ</div><h3>Hızlı erişim</h3><div class="contact-quick"><a href="mailto:enetcom@rtuk.gov.tr"><span>✉</span><div><b>E-posta gönder</b><small>enetcom@rtuk.gov.tr</small></div></a><a href="#ortaklar"><span>🤝</span><div><b>Ortakları tanıyın</b><small>Konsorsiyum ve proje ağı</small></div></a></div></div></div></div></section>
 <footer><div class="wrap footer-grid"><div><div class="brand"><span class="logo">🌱</span><span>e-NetCoM<small style="color:#8db4a7">DOĞANIN ENERJİLERİ BİZİMLE</small></span></div><p>Genç liderler, çevresel iletişim ve medya ağı.</p></div><div><b>Platform</b><a href="#proje">Proje</a><a href="#faaliyetler">Faaliyetler</a><a href="#medya">Medya</a><a href="#iyi">İyi Uygulamalar</a><a href="#atolye">Yeşil Zekâ Atölyesi</a><a href="#proje">Proje Merkezi</a><a href="#etki">Etki Göstergeleri</a><a href="#akademi">e-NetCoM Akademi</a><a href="#ciktilar">Proje Çıktıları</a><a href="#ortaklar">Ortaklar</a><a href="#haberler">Haberler</a><a href="#iletisim">İletişim</a><a href="#uluslararasi">Uluslararası Buluşmalar</a></div><div><b>Resmî kanallar</b><a href="https://www.youtube.com/@e-NeTCoMProje" target="_blank" rel="noopener">YouTube</a><a href="https://www.instagram.com/enetcomproje/" target="_blank" rel="noopener">Instagram</a><a href="https://x.com/eNetCoMProje" target="_blank" rel="noopener">X</a><a href="#veritabani">e-NetCoM Veritabanı</a></div><div><b>İlgili kurumlar</b><a href="https://sifiratik.gov.tr/" target="_blank" rel="noopener">Sıfır Atık</a><a href="https://csb.gov.tr/" target="_blank" rel="noopener">Çevre, Şehircilik ve İklim Değişikliği Bakanlığı</a><a href="https://iklim.gov.tr/" target="_blank" rel="noopener">İklim Değişikliği Başkanlığı</a><a href="https://www.ua.gov.tr/" target="_blank" rel="noopener">Türkiye Ulusal Ajansı</a><a href="https://yesiladimlar.erciyes.edu.tr/" target="_blank" rel="noopener">Erciyes Üniversitesi (Yeşil Adımlar)</a><a href="https://www.univie.ac.at/" target="_blank" rel="noopener">University of Vienna</a><a href="https://snspa.ro/" target="_blank" rel="noopener">SNSPA</a><a href="https://tugva.org/" target="_blank" rel="noopener">Türkiye Gençlik Vakfı</a></div></div>
 
 <div class="eu-support" aria-label="Avrupa Birliği desteği">
