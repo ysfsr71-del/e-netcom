@@ -503,13 +503,74 @@ function getRangeStart(range) {
 function countBy(events, key) {
   const map = new Map();
   for (const event of events) {
-    const value = safeString(event[key] || "unknown", 120);
+    const value = safeString(event[key] || "unknown", 120).trim();
+    if (!value || value === "unknown") continue;
     map.set(value, (map.get(value) || 0) + 1);
   }
   return [...map.entries()]
     .sort((a, b) => b[1] - a[1])
     .slice(0, 12)
     .map(([name, count]) => ({ name, count }));
+}
+
+function firstNonEmpty(...values) {
+  for (const value of values) {
+    const text = safeString(value, 300).trim();
+    if (text) return text;
+  }
+  return "";
+}
+
+function eventTargetName(event) {
+  return firstNonEmpty(event.target, event.meta);
+}
+
+function getSessionStarts(events) {
+  const starts = new Map();
+  for (const event of events) {
+    if (!event.sessionId) continue;
+    const current = starts.get(event.sessionId);
+    if (!current || Number(event.ts) < Number(current.ts)) {
+      starts.set(event.sessionId, event);
+    }
+  }
+  return [...starts.values()].sort((a, b) => Number(a.ts) - Number(b.ts));
+}
+
+function countEventTargets(events, type) {
+  const named = events
+    .filter(event => event.type === type)
+    .map(event => ({ ...event, _name: eventTargetName(event) }))
+    .filter(event => event._name);
+
+  const map = new Map();
+  for (const event of named) {
+    map.set(event._name, (map.get(event._name) || 0) + 1);
+  }
+
+  return [...map.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 12)
+    .map(([name, count]) => ({ name, count }));
+}
+
+const TURKEY_PROVINCES = new Set([
+  "Adana","Adıyaman","Afyonkarahisar","Ağrı","Amasya","Ankara","Antalya","Artvin","Aydın","Balıkesir","Bilecik","Bingöl","Bitlis","Bolu","Burdur","Bursa","Çanakkale","Çankırı","Çorum","Denizli","Diyarbakır","Edirne","Elazığ","Erzincan","Erzurum","Eskişehir","Gaziantep","Giresun","Gümüşhane","Hakkâri","Hatay","Isparta","Mersin","İstanbul","İzmir","Kars","Kastamonu","Kayseri","Kırklareli","Kırşehir","Kocaeli","Konya","Kütahya","Malatya","Manisa","Kahramanmaraş","Mardin","Muğla","Muş","Nevşehir","Niğde","Ordu","Rize","Sakarya","Samsun","Siirt","Sinop","Sivas","Tekirdağ","Tokat","Trabzon","Tunceli","Şanlıurfa","Uşak","Van","Yalova","Yozgat","Zonguldak","Aksaray","Bayburt","Karaman","Kırıkkale","Batman","Şırnak","Bartın","Ardahan","Iğdır","Kilis","Osmaniye","Düzce"
+]);
+
+function isEMerkezEvent(event) {
+  const haystack = `${event.section || ""} ${event.target || ""} ${event.meta || ""}`.toLocaleLowerCase("tr-TR");
+  return (
+    haystack.includes("veritabani") ||
+    haystack.includes("veritabanı") ||
+    haystack.includes("e-merkez") ||
+    haystack.includes("e-merkezi") ||
+    haystack.includes("e-centre") ||
+    haystack.includes("e-centre") ||
+    haystack.includes("database") ||
+    haystack.includes("local-db") ||
+    haystack.includes("localdb")
+  );
 }
 
 function buildAnalyticsStats(range = "30d") {
@@ -528,7 +589,9 @@ function buildAnalyticsStats(range = "30d") {
     if (event.sessionId) {
       if (!sessions.has(event.sessionId)) sessions.set(event.sessionId, []);
       sessions.get(event.sessionId).push(event);
-      if (event.type === "session_heartbeat" && now - event.ts <= 5 * 60 * 1000) {
+
+      // A visitor is active if there has been any analytics activity in the last 5 minutes.
+      if (now - Number(event.ts) <= 5 * 60 * 1000) {
         activeSessions.add(event.sessionId);
       }
     }
@@ -542,55 +605,63 @@ function buildAnalyticsStats(range = "30d") {
     }
   }
 
-  const pageviews = events.filter(e => e.type === "pageview").length;
+  const sessionStarts = getSessionStarts(events);
+  const visits = sessionStarts.length;
   const sections = countBy(events.filter(e => e.type === "section_view"), "section");
-  const languages = countBy(events, "lang");
-  const devices = countBy(events, "device");
+  const languages = countBy(sessionStarts, "lang");
+  const devices = countBy(sessionStarts, "device");
   const referrers = countBy(
-    events.filter(e => e.referrer && e.referrer !== "direct"),
+    sessionStarts.filter(e => e.referrer && e.referrer !== "direct"),
     "referrer"
   );
 
+  // Province clicks: use meta when present, otherwise target. Blank/unknown map events are ignored.
+  const provinceViews = countEventTargets(
+    events.filter(e => {
+      const name = eventTargetName(e);
+      return e.type === "map_click" && (e.section === "iller" || TURKEY_PROVINCES.has(name));
+    }),
+    "map_click"
+  );
+
+  // Video and download metrics are based on their explicit event types.
+  const videoOpens = countEventTargets(events, "video_open");
+  const downloads = countEventTargets(events, "download");
+
+  // e-Merkez interactions are clicks/video opens/downloads inside the database/e-Merkez area.
+  const eCenterInteractions = events.filter(e =>
+    ["click", "video_open", "download"].includes(e.type) && isEMerkezEvent(e)
+  ).length;
+
+  // Daily traffic follows the selected range instead of always returning 30 days.
+  const dayCount = range === "24h" ? 1 : range === "7d" ? 7 : 30;
   const dayMap = new Map();
-  for (let i = 29; i >= 0; i--) {
+  for (let i = dayCount - 1; i >= 0; i--) {
     const date = new Date(now - i * 86400000);
     const key = date.toISOString().slice(0, 10);
     dayMap.set(key, { date: key, visits: 0, pageviews: 0 });
   }
 
-  for (const event of events) {
-    const key = new Date(event.ts).toISOString().slice(0, 10);
+  for (const session of sessionStarts) {
+    const key = new Date(Number(session.ts)).toISOString().slice(0, 10);
     if (!dayMap.has(key)) continue;
-    if (event.type === "pageview") {
-      dayMap.get(key).pageviews++;
-      dayMap.get(key).visits++;
-    }
+    dayMap.get(key).visits++;
+  }
+
+  for (const event of events) {
+    if (event.type !== "pageview") continue;
+    const key = new Date(Number(event.ts)).toISOString().slice(0, 10);
+    if (!dayMap.has(key)) continue;
+    dayMap.get(key).pageviews++;
   }
 
   const eventCounts = countBy(events, "type");
-  const provinceViews = countBy(
-    events.filter(e => e.type === "map_click" && (e.meta || e.target)),
-    "meta"
-  );
-  const videoOpens = countBy(
-    events.filter(e => e.type === "video_open" && (e.target || e.meta)),
-    "target"
-  );
-  const downloads = countBy(
-    events.filter(e => e.type === "download" && (e.target || e.meta)),
-    "target"
-  );
-  const eCenterInteractions = events.filter(e => {
-    if (!["click", "video_open", "download"].includes(e.type)) return false;
-    const haystack = `${e.section || ""} ${e.target || ""} ${e.meta || ""}`.toLowerCase();
-    return haystack.includes("e-merkez") || haystack.includes("yesiladimlar-db");
-  }).length;
 
   return {
     generatedAt: new Date().toISOString(),
     range,
     totalEvents: events.length,
-    visits: pageviews,
+    visits,
     uniqueVisitors: visitors.size,
     activeVisitors: activeSessions.size,
     averageSessionSeconds: durationCount
