@@ -517,22 +517,20 @@ function buildAnalyticsStats(range = "30d") {
   const now = Date.now();
   const events = analyticsEvents.filter(e => Number(e.ts) >= start && Number(e.ts) <= now);
 
-  // Bir ziyaret = bir anonim oturum. Pageview/event sayısını ziyaretçi sayısı olarak kullanma.
-  const sessionMap = new Map();
-  const visitorSet = new Set();
-  const activeVisitorSet = new Set();
+  const sessions = new Map();
+  const visitors = new Set();
+  const activeSessions = new Set();
   let durationTotal = 0;
   let durationCount = 0;
 
   for (const event of events) {
-    if (event.visitorId) visitorSet.add(event.visitorId);
+    if (event.visitorId) visitors.add(event.visitorId);
     if (event.sessionId) {
-      if (!sessionMap.has(event.sessionId)) sessionMap.set(event.sessionId, []);
-      sessionMap.get(event.sessionId).push(event);
-    }
-
-    if (event.type === "session_heartbeat" && now - event.ts <= 5 * 60 * 1000) {
-      if (event.visitorId) activeVisitorSet.add(event.visitorId);
+      if (!sessions.has(event.sessionId)) sessions.set(event.sessionId, []);
+      sessions.get(event.sessionId).push(event);
+      if (event.type === "session_heartbeat" && now - event.ts <= 5 * 60 * 1000) {
+        activeSessions.add(event.sessionId);
+      }
     }
 
     if (event.type === "session_end") {
@@ -544,89 +542,57 @@ function buildAnalyticsStats(range = "30d") {
     }
   }
 
-  const sessions = [...sessionMap.entries()]
-    .map(([sessionId, sessionEvents]) => ({
-      sessionId,
-      events: sessionEvents,
-      first: sessionEvents.reduce((a, b) => Number(a.ts) < Number(b.ts) ? a : b)
-    }));
-
-  // Oturum başlangıcını pageview olarak kabul ediyoruz. Böylece aynı oturumdaki
-  // section_view/click/language event'leri ziyaret sayısını şişirmiyor.
-  const sessionStarts = sessions.filter(s => s.events.some(e => e.type === "pageview"));
-  const sessionStartEvents = sessionStarts.map(s => s.first);
-
-  function countSessionStarts(key, filterFn = () => true) {
-    const map = new Map();
-    for (const event of sessionStartEvents) {
-      if (!filterFn(event)) continue;
-      const value = safeString(event[key] || "unknown", 120);
-      map.set(value, (map.get(value) || 0) + 1);
-    }
-    return [...map.entries()]
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 12)
-      .map(([name, count]) => ({ name, count }));
-  }
-
   const pageviews = events.filter(e => e.type === "pageview").length;
   const sections = countBy(events.filter(e => e.type === "section_view"), "section");
-  const languages = countSessionStarts("lang");
-  const devices = countSessionStarts("device");
-  const referrers = countSessionStarts(
-    "referrer",
-    e => e.referrer && e.referrer !== "direct"
+  const languages = countBy(events, "lang");
+  const devices = countBy(events, "device");
+  const referrers = countBy(
+    events.filter(e => e.referrer && e.referrer !== "direct"),
+    "referrer"
   );
 
-  const dailyDays = range === "24h" ? 1 : range === "7d" ? 7 : 30;
   const dayMap = new Map();
-  for (let i = dailyDays - 1; i >= 0; i--) {
+  for (let i = 29; i >= 0; i--) {
     const date = new Date(now - i * 86400000);
     const key = date.toISOString().slice(0, 10);
     dayMap.set(key, { date: key, visits: 0, pageviews: 0 });
   }
 
-  for (const session of sessionStarts) {
-    const key = new Date(session.first.ts).toISOString().slice(0, 10);
-    if (!dayMap.has(key)) continue;
-    dayMap.get(key).visits++;
-  }
-
   for (const event of events) {
     const key = new Date(event.ts).toISOString().slice(0, 10);
     if (!dayMap.has(key)) continue;
-    if (event.type === "pageview") dayMap.get(key).pageviews++;
+    if (event.type === "pageview") {
+      dayMap.get(key).pageviews++;
+      dayMap.get(key).visits++;
+    }
   }
 
   const eventCounts = countBy(events, "type");
-
-  // Proje yöneticisi için içerik/etkileşim göstergeleri.
-  // map_click olayları city-btn üzerinden il adıyla, video_open olayları
-  // buton/video başlığıyla, download olayları hedef bağlantıyla tutulur.
   const provinceViews = countBy(
-    events.filter(e => e.type === "map_click" && e.section === "iller"),
-    "target"
+    events.filter(e => e.type === "map_click" && (e.meta || e.target)),
+    "meta"
   );
   const videoOpens = countBy(
-    events.filter(e => e.type === "video_open"),
+    events.filter(e => e.type === "video_open" && (e.target || e.meta)),
     "target"
   );
   const downloads = countBy(
-    events.filter(e => e.type === "download"),
+    events.filter(e => e.type === "download" && (e.target || e.meta)),
     "target"
   );
-  const eCenterEvents = events.filter(e =>
-    e.section === "veritabani" || /e-merkez|e\s*merkez/i.test(e.target || "")
-  );
+  const eCenterInteractions = events.filter(e => {
+    if (!["click", "video_open", "download"].includes(e.type)) return false;
+    const haystack = `${e.section || ""} ${e.target || ""} ${e.meta || ""}`.toLowerCase();
+    return haystack.includes("e-merkez") || haystack.includes("yesiladimlar-db");
+  }).length;
 
   return {
     generatedAt: new Date().toISOString(),
     range,
     totalEvents: events.length,
-    visits: sessionStarts.length,
-    pageviews,
-    uniqueVisitors: visitorSet.size,
-    activeVisitors: activeVisitorSet.size,
+    visits: pageviews,
+    uniqueVisitors: visitors.size,
+    activeVisitors: activeSessions.size,
     averageSessionSeconds: durationCount
       ? Math.round(durationTotal / durationCount)
       : 0,
@@ -634,11 +600,11 @@ function buildAnalyticsStats(range = "30d") {
     languages,
     devices,
     referrers,
-    eventCounts,
     provinceViews,
     videoOpens,
     downloads,
-    eCenterInteractions: eCenterEvents.length,
+    eCenterInteractions,
+    eventCounts,
     daily: [...dayMap.values()]
   };
 }
