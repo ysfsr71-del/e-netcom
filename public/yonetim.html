@@ -102,11 +102,11 @@ h2{font-size:17px;margin:0 0 14px}.list{display:grid;gap:9px}.row{display:grid;g
 
 <script>
 let currentRange="30d";
+const $=id=>document.getElementById(id);
 const pad=n=>String(n).padStart(2,"0");
 function dateValue(d){return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;}
 function setDefaultDates(){const now=new Date();const from=new Date(now);from.setDate(now.getDate()-29);$("fromDate").value=dateValue(from);$("toDate").value=dateValue(now);}
 setDefaultDates();
-const $=id=>document.getElementById(id);
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
 function fmt(n){return Number(n||0).toLocaleString("tr-TR");}
 function duration(sec){sec=Number(sec||0);if(sec<60)return sec+" sn";const m=Math.floor(sec/60),s=sec%60;return m+" dk "+(s? s+" sn":"");}
