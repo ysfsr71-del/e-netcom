@@ -19,6 +19,14 @@ h2{font-size:17px;margin:0 0 14px}.list{display:grid;gap:9px}.row{display:grid;g
 @media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}.two,.three{grid-template-columns:1fr}}
 @media(max-width:600px){.wrap{padding:16px}.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.num{font-size:27px}}
 </style>
+
+<style id="province-panel-ui">
+.province-card .list{max-height:430px;overflow-y:auto;padding-right:6px;scrollbar-width:thin;}
+.province-search{width:100%;box-sizing:border-box;border:1px solid #26394d;background:#0c1b2a;color:#fff;border-radius:10px;padding:10px 12px;margin:0 0 12px;font:inherit;outline:none;}
+.province-search::placeholder{color:#8fa3b8;}
+.province-search:focus{border-color:#6ea8fe;box-shadow:0 0 0 2px rgba(110,168,254,.12);}
+.province-empty{padding:12px 4px;color:#8fa3b8;font-size:13px;}
+</style>
 </head>
 <body>
 <div id="login" class="login">
@@ -72,7 +80,7 @@ h2{font-size:17px;margin:0 0 14px}.list{display:grid;gap:9px}.row{display:grid;g
   </section>
 
   <section class="two">
-    <div class="card"><h2>İl bazlı ilgi</h2><div class="small" style="margin-top:-8px;margin-bottom:12px">81 il haritasında açılan il detayları.</div><div class="list" id="provinceViews"></div></div>
+    <div class="card province-card"><h2>İl bazlı ilgi</h2><div class="small" style="margin-top:-8px;margin-bottom:12px">81 il haritasında açılan il detayları.</div><input class="province-search" id="provinceSearch" type="search" placeholder="İl ara…" autocomplete="off"/><div class="list" id="provinceViews"></div></div>
     <div class="card"><h2>En çok açılan videolar</h2><div class="small" style="margin-top:-8px;margin-bottom:12px">Video ve oynatma kontrolleri.</div><div class="list" id="videoOpens"></div></div>
   </section>
 
@@ -94,14 +102,28 @@ async function api(url,opt){const r=await fetch(url,opt);if(r.status===401){show
 function showLogin(){$("login").classList.remove("hidden");$("app").classList.add("hidden");}
 function showApp(){$("login").classList.add("hidden");$("app").classList.remove("hidden");}
 function renderList(id,items,total){
-  const el=$(id); if(!items?.length){el.innerHTML='<div class="small">Henüz veri yok.</div>';return;}
-  const max=Math.max(...items.map(x=>x.count),1);
-  el.innerHTML=items.map(x=>`<div><div class="row"><span>${esc(x.name)}</span><b>${fmt(x.count)}</b></div><div class="bar"><i style="width:${Math.round(x.count/max*100)}%"></i></div></div>`).join("");
+  const el=$(id);
+  if(id==="provinceViews") el._items=Array.isArray(items)?items:[];
+  const source=(id==="provinceViews" && Array.isArray(el._items))?el._items:(Array.isArray(items)?items:[]);
+  if(!source.length){el.innerHTML='<div class="small">Henüz veri yok.</div>';return;}
+  const max=Math.max(...source.map(x=>x.count),1);
+  el.innerHTML=source.map(x=>`<div><div class="row"><span>${esc(x.name)}</span><b>${fmt(x.count)}</b></div><div class="bar"><i style="width:${Math.round(x.count/max*100)}%"></i></div></div>`).join("");
 }
 function renderChart(items){
   const el=$("chart"), vals=(items||[]).slice(-30), max=Math.max(...vals.map(x=>x.visits),1);
   el.innerHTML=vals.map(x=>`<div class="col" title="${esc(x.date)}: ${fmt(x.visits)} ziyaret" style="height:${Math.max(3,Math.round(x.visits/max*100))}%"><span>${esc(x.date.slice(5))}</span></div>`).join("");
 }
+function filterProvinceList(){
+  const el=$("provinceViews");
+  const q=String($("provinceSearch")?.value||"").trim().toLocaleLowerCase("tr-TR");
+  const items=Array.isArray(el._items)?el._items:[];
+  if(!items.length){el.innerHTML='<div class="small">Henüz veri yok.</div>';return;}
+  const filtered=q?items.filter(x=>String(x.name||"").toLocaleLowerCase("tr-TR").includes(q)):items;
+  if(!filtered.length){el.innerHTML='<div class="province-empty">Bu ada ait il bulunamadı.</div>';return;}
+  const max=Math.max(...items.map(x=>x.count),1);
+  el.innerHTML=filtered.map(x=>`<div><div class="row"><span>${esc(x.name)}</span><b>${fmt(x.count)}</b></div><div class="bar"><i style="width:${Math.round(x.count/max*100)}%"></i></div></div>`).join("");
+}
+
 function renderYouTube(y){
   if(!y){$("youtube").innerHTML='<div class="small">YouTube API verisi alınamadı.</div>';return;}
   $("youtube").innerHTML=[
@@ -140,6 +162,7 @@ $("loginForm").addEventListener("submit",async e=>{
   catch(e){$("loginError").textContent=e.message;}
 });
 document.querySelectorAll("[data-range]").forEach(b=>b.addEventListener("click",()=>{currentRange=b.dataset.range;document.querySelectorAll("[data-range]").forEach(x=>x.classList.toggle("active",x===b));load();}));
+$("provinceSearch").addEventListener("input",filterProvinceList);
 $("refresh").addEventListener("click",load);
 $("logout").addEventListener("click",async()=>{try{await api("/api/admin/logout",{method:"POST"});}finally{showLogin();}});
 load();
