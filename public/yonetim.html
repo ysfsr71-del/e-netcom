@@ -10,7 +10,7 @@
 .wrap{max-width:1400px;margin:auto;padding:28px}.top{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:24px}.brand{font-size:25px;font-weight:800}.brand span{color:var(--accent)}.sub{color:var(--muted);margin-top:5px}
 button,input{font:inherit}button{border:0;border-radius:12px;padding:11px 16px;cursor:pointer;background:var(--accent);color:#062017;font-weight:800}.ghost{background:#17273a;color:#dce7f2;border:1px solid var(--line)}
 .login{min-height:100vh;display:grid;place-items:center}.loginbox{width:min(420px,92vw);background:rgba(16,29,44,.96);border:1px solid var(--line);border-radius:22px;padding:30px;box-shadow:0 25px 80px #0008}.loginbox h1{margin-top:0}.loginbox input{width:100%;padding:13px 14px;background:#0a1522;color:white;border:1px solid var(--line);border-radius:12px;margin:12px 0}.error{color:#ff9b9b;min-height:22px}.hidden{display:none!important}
-.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.range button.active{background:var(--accent2);color:white}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.range button.active{background:var(--accent2);color:white}.date-filter{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.date-filter label{color:var(--muted);font-size:12px;font-weight:700}.date-filter input{background:#0c1b2a;color:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 10px}.date-filter button{padding:10px 13px}
 .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.card{background:rgba(16,29,44,.9);border:1px solid var(--line);border-radius:18px;padding:19px}.label{color:var(--muted);font-size:13px}.num{font-size:30px;font-weight:850;margin-top:8px}.small{color:var(--muted);font-size:12px;margin-top:6px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.three{display:grid;grid-template-columns:1.2fr .8fr .8fr;gap:14px;margin-top:14px}
 h2{font-size:17px;margin:0 0 14px}.list{display:grid;gap:9px}.row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}.bar{height:7px;background:#1b2b3d;border-radius:99px;overflow:hidden;margin-top:5px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:99px}
@@ -47,9 +47,17 @@ h2{font-size:17px;margin:0 0 14px}.list{display:grid;gap:9px}.row{display:grid;g
     </div>
     <div class="toolbar">
       <div class="range">
-        <button class="ghost active" data-range="30d">30 gün</button>
-        <button class="ghost" data-range="7d">7 gün</button>
         <button class="ghost" data-range="24h">24 saat</button>
+        <button class="ghost" data-range="7d">7 gün</button>
+        <button class="ghost active" data-range="30d">30 gün</button>
+        <button class="ghost" data-range="90d">90 gün</button>
+        <button class="ghost" data-range="1y">1 yıl</button>
+        <button class="ghost" data-range="all">TÜMÜ</button>
+      </div>
+      <div class="date-filter">
+        <label for="fromDate">Başlangıç</label><input id="fromDate" type="date">
+        <label for="toDate">Bitiş</label><input id="toDate" type="date">
+        <button class="ghost" id="applyDates">Uygula</button>
       </div>
       <button class="ghost" id="refresh">↻ Yenile</button>
       <button class="ghost" id="logout">Çıkış</button>
@@ -94,6 +102,10 @@ h2{font-size:17px;margin:0 0 14px}.list{display:grid;gap:9px}.row{display:grid;g
 
 <script>
 let currentRange="30d";
+const pad=n=>String(n).padStart(2,"0");
+function dateValue(d){return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;}
+function setDefaultDates(){const now=new Date();const from=new Date(now);from.setDate(now.getDate()-29);$("fromDate").value=dateValue(from);$("toDate").value=dateValue(now);}
+setDefaultDates();
 const $=id=>document.getElementById(id);
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
 function fmt(n){return Number(n||0).toLocaleString("tr-TR");}
@@ -136,7 +148,9 @@ function renderYouTube(y){
 async function load(){
   document.body.classList.add("loading");
   try{
-    const d=await api("/api/admin/stats?range="+currentRange);
+    const qs=new URLSearchParams({range:currentRange});
+    if(currentRange==="custom"){qs.set("from",$("fromDate").value);qs.set("to",$("toDate").value);}
+    const d=await api("/api/admin/stats?"+qs.toString());
     $("visits").textContent=fmt(d.visits);
     $("unique").textContent=fmt(d.uniqueVisitors);
     $("active").textContent=fmt(d.activeVisitors);
@@ -162,6 +176,13 @@ $("loginForm").addEventListener("submit",async e=>{
   catch(e){$("loginError").textContent=e.message;}
 });
 document.querySelectorAll("[data-range]").forEach(b=>b.addEventListener("click",()=>{currentRange=b.dataset.range;document.querySelectorAll("[data-range]").forEach(x=>x.classList.toggle("active",x===b));load();}));
+$("applyDates").addEventListener("click",()=>{
+  const from=$("fromDate").value, to=$("toDate").value;
+  if(!from||!to||from>to){alert("Başlangıç ve bitiş tarihlerini doğru seçin.");return;}
+  currentRange="custom";
+  document.querySelectorAll("[data-range]").forEach(x=>x.classList.remove("active"));
+  load();
+});
 $("provinceSearch").addEventListener("input",filterProvinceList);
 $("refresh").addEventListener("click",load);
 $("logout").addEventListener("click",async()=>{try{await api("/api/admin/logout",{method:"POST"});}finally{showLogin();}});
