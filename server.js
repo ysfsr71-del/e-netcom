@@ -573,6 +573,19 @@ function isEMerkezEvent(event) {
   );
 }
 
+function normalizeReferrer(value) {
+  const raw = safeString(value, 500).trim();
+  if (!raw || raw === "direct") return "Doğrudan";
+  try {
+    const url = new URL(raw);
+    const host = url.hostname.replace(/^www\./i, "");
+    if (!host) return "Doğrudan";
+    return host;
+  } catch {
+    return raw.slice(0, 120);
+  }
+}
+
 function buildAnalyticsStats(range = "30d") {
   const start = getRangeStart(range);
   const now = Date.now();
@@ -683,7 +696,6 @@ function buildAnalyticsStats(range = "30d") {
 ensureAnalyticsStore();
 
 app.post("/api/analytics/event", (req, res) => {
-  res.set("Cache-Control", "no-store");
   const event = normalizeAnalyticsEvent(req.body);
   if (!event) return res.status(400).json({ error: "Geçersiz analytics olayı." });
   if (!event.sessionId || !event.visitorId) {
@@ -727,6 +739,7 @@ app.get("/api/admin/stats", requireAdmin, async (req, res) => {
   res.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
   res.set("Pragma", "no-cache");
   res.set("Expires", "0");
+
   const range = ["24h", "7d", "30d"].includes(req.query.range)
     ? req.query.range
     : "30d";
