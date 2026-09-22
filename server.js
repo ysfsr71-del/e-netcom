@@ -581,7 +581,6 @@ function buildAnalyticsStats(range = "30d") {
   const sessions = new Map();
   const visitors = new Set();
   const activeSessions = new Set();
-  const activeVisitorIds = new Set();
   let durationTotal = 0;
   let durationCount = 0;
 
@@ -594,7 +593,6 @@ function buildAnalyticsStats(range = "30d") {
       // A visitor is active if there has been any analytics activity in the last 5 minutes.
       if (now - Number(event.ts) <= 5 * 60 * 1000) {
         activeSessions.add(event.sessionId);
-        if (event.visitorId) activeVisitorIds.add(event.visitorId);
       }
     }
 
@@ -665,7 +663,7 @@ function buildAnalyticsStats(range = "30d") {
     totalEvents: events.length,
     visits,
     uniqueVisitors: visitors.size,
-    activeVisitors: activeVisitorIds.size,
+    activeVisitors: activeSessions.size,
     averageSessionSeconds: durationCount
       ? Math.round(durationTotal / durationCount)
       : 0,
@@ -685,6 +683,7 @@ function buildAnalyticsStats(range = "30d") {
 ensureAnalyticsStore();
 
 app.post("/api/analytics/event", (req, res) => {
+  res.set("Cache-Control", "no-store");
   const event = normalizeAnalyticsEvent(req.body);
   if (!event) return res.status(400).json({ error: "Geçersiz analytics olayı." });
   if (!event.sessionId || !event.visitorId) {
@@ -725,6 +724,9 @@ app.post("/api/admin/logout", requireAdmin, (req, res) => {
 });
 
 app.get("/api/admin/stats", requireAdmin, async (req, res) => {
+  res.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+  res.set("Pragma", "no-cache");
+  res.set("Expires", "0");
   const range = ["24h", "7d", "30d"].includes(req.query.range)
     ? req.query.range
     : "30d";
