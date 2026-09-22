@@ -581,6 +581,7 @@ function buildAnalyticsStats(range = "30d") {
   const sessions = new Map();
   const visitors = new Set();
   const activeSessions = new Set();
+  const activeVisitorIds = new Set();
   let durationTotal = 0;
   let durationCount = 0;
 
@@ -593,6 +594,7 @@ function buildAnalyticsStats(range = "30d") {
       // A visitor is active if there has been any analytics activity in the last 5 minutes.
       if (now - Number(event.ts) <= 5 * 60 * 1000) {
         activeSessions.add(event.sessionId);
+        if (event.visitorId) activeVisitorIds.add(event.visitorId);
       }
     }
 
@@ -663,7 +665,7 @@ function buildAnalyticsStats(range = "30d") {
     totalEvents: events.length,
     visits,
     uniqueVisitors: visitors.size,
-    activeVisitors: activeSessions.size,
+    activeVisitors: activeVisitorIds.size,
     averageSessionSeconds: durationCount
       ? Math.round(durationTotal / durationCount)
       : 0,
