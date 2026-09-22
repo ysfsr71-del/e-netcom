@@ -768,6 +768,198 @@ app.post("/api/admin/logout", requireAdmin, (req, res) => {
   res.json({ ok: true });
 });
 
+
+function xmlEscape(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+function crc32(buffer) {
+  let crc = 0xffffffff;
+  for (const byte of buffer) {
+    crc ^= byte;
+    for (let i = 0; i < 8; i++) crc = (crc >>> 1) ^ (0xedb88320 & -(crc & 1));
+  }
+  return (crc ^ 0xffffffff) >>> 0;
+}
+
+function u16(n) { const b = Buffer.alloc(2); b.writeUInt16LE(n, 0); return b; }
+function u32(n) { const b = Buffer.alloc(4); b.writeUInt32LE(n >>> 0, 0); return b; }
+
+function zipStore(files) {
+  const parts = [];
+  const central = [];
+  let offset = 0;
+  const now = new Date();
+  const dosTime = (now.getHours() << 11) | (now.getMinutes() << 5) | Math.floor(now.getSeconds() / 2);
+  const dosDate = ((now.getFullYear() - 1980) << 9) | ((now.getMonth() + 1) << 5) | now.getDate();
+
+  for (const file of files) {
+    const name = Buffer.from(file.name, "utf8");
+    const data = Buffer.isBuffer(file.data) ? file.data : Buffer.from(file.data, "utf8");
+    const crc = crc32(data);
+    const local = Buffer.concat([
+      Buffer.from([0x50,0x4b,0x03,0x04]), u16(20), u16(0), u16(0), u16(dosTime), u16(dosDate),
+      u32(crc), u32(data.length), u32(data.length), u16(name.length), u16(0), name, data
+    ]);
+    parts.push(local);
+    central.push(Buffer.concat([
+      Buffer.from([0x50,0x4b,0x01,0x02]), u16(20), u16(20), u16(0), u16(0), u16(dosTime), u16(dosDate),
+      u32(crc), u32(data.length), u32(data.length), u16(name.length), u16(0), u16(0), u16(0), u16(0), u32(0), u32(offset), name
+    ]));
+    offset += local.length;
+  }
+
+  const centralBuf = Buffer.concat(central);
+  const body = Buffer.concat(parts);
+  const end = Buffer.concat([
+    Buffer.from([0x50,0x4b,0x05,0x06]), Buffer.alloc(2), Buffer.alloc(2),
+    u16(files.length), u16(files.length), u32(centralBuf.length), u32(body.length), u16(0)
+  ]);
+  return Buffer.concat([body, centralBuf, end]);
+}
+
+function xlsxSheet(rows) {
+  const safeRows = Array.isArray(rows) ? rows : [];
+  let xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>';
+  safeRows.forEach((row, r) => {
+    xml += `<row r="${r + 1}">`;
+    (Array.isArray(row) ? row : [row]).forEach((value, c) => {
+      const col = (() => { let n=c+1, out=""; while(n){ const rem=(n-1)%26; out=String.fromCharCode(65+rem)+out; n=Math.floor((n-1)/26);} return out; })();
+      xml += `<c r="${col}${r + 1}" t="inlineStr"><is><t xml:space="preserve">${xmlEscape(value)}</t></is></c>`;
+    });
+    xml += '</row>';
+  });
+  xml += '</sheetData></worksheet>';
+  return xml;
+}
+
+function countAll(events, key) {
+  const map = new Map();
+  for (const event of events) {
+    const value = safeString(event[key] || "", 300).trim();
+    if (!value) continue;
+    map.set(value, (map.get(value) || 0) + 1);
+  }
+  return [...map.entries()].sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0], "tr"));
+}
+
+function countTargetsAll(events, type) {
+  const map = new Map();
+  for (const event of events) {
+    if (event.type !== type) continue;
+    const name = eventTargetName(event);
+    if (!name) continue;
+    map.set(name, (map.get(name) || 0) + 1);
+  }
+  return [...map.entries()].sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0], "tr"));
+}
+
+function buildReportWorkbook(range, fromDate, toDate) {
+  const bounds = getRangeBounds(range, fromDate, toDate);
+  const start = bounds.start, end = bounds.end;
+  const events = analyticsEvents.filter(e => Number(e.ts) >= start && Number(e.ts) <= end);
+  const sessions = getSessionStarts(events);
+  const visitors = new Set(events.map(e => e.visitorId).filter(Boolean));
+  let durationTotal = 0, durationCount = 0;
+  for (const e of events) {
+    if (e.type === "session_end") {
+      const sec = Number(e.meta);
+      if (Number.isFinite(sec) && sec >= 0 && sec <= 86400) { durationTotal += sec; durationCount++; }
+    }
+  }
+
+  const sectionCounts = countAll(events.filter(e => e.type === "section_view"), "section");
+  const languageEvents = [];
+  const seenLang = new Set();
+  for (const e of events) {
+    if (e.type === "language" && e.lang) {
+      const k=`${e.sessionId}|${e.lang}`; if(!seenLang.has(k)){seenLang.add(k);languageEvents.push(e);}
+    }
+  }
+  for (const e of sessions) { if(e.lang){const k=`${e.sessionId}|${e.lang}`;if(!seenLang.has(k)){seenLang.add(k);languageEvents.push(e);}} }
+  const languageCounts = countAll(languageEvents, "lang");
+  const deviceCounts = countAll(sessions, "device");
+  const refCounts = new Map();
+  for (const e of sessions) {
+    const raw=String(e.referrer||"direct").trim();
+    let name="Doğrudan";
+    if(raw && raw!=="direct"){
+      try{
+        const u=new URL(raw); const host=u.hostname.toLowerCase().replace(/^www\./,"");
+        const current=String(process.env.PUBLIC_HOST||"enetcomproject.com").toLowerCase().replace(/^www\./,"");
+        name=(host===current||host.endsWith("."+current))?"Site içi geçiş":host;
+      }catch{name=raw.slice(0,120);}
+    }
+    refCounts.set(name,(refCounts.get(name)||0)+1);
+  }
+  const referrerCounts=[...refCounts.entries()].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],"tr"));
+  const provinceCounts = countTargetsAll(events.filter(e=>e.type==="map_click" && (e.section==="iller" || TURKEY_PROVINCES.has(eventTargetName(e)))), "map_click");
+  const videoCounts = countTargetsAll(events, "video_open");
+  const downloadCounts = countTargetsAll(events, "download");
+  const eCenter = events.filter(e=>["click","video_open","download"].includes(e.type)&&isEMerkezEvent(e)).length;
+
+  const dayMap=new Map();
+  const dayCount=Math.max(1,Math.floor((end-start)/86400000)+1);
+  for(let i=dayCount-1;i>=0;i--){const d=new Date(end-i*86400000),k=d.toISOString().slice(0,10);dayMap.set(k,{date:k,visits:0,pageviews:0});}
+  for(const e of sessions){const k=new Date(Number(e.ts)).toISOString().slice(0,10);if(dayMap.has(k))dayMap.get(k).visits++;}
+  for(const e of events){if(e.type!=="pageview")continue;const k=new Date(Number(e.ts)).toISOString().slice(0,10);if(dayMap.has(k))dayMap.get(k).pageviews++;}
+
+  const labelRange = range==="custom" ? `${fromDate} – ${toDate}` : range==="all" ? "Tüm kayıtlar" : ({"24h":"Son 24 saat","7d":"Son 7 gün","30d":"Son 30 gün","90d":"Son 90 gün","1y":"Son 1 yıl"}[range]||range);
+  const summary=[
+    ["e-NetCoM ANALİTİK RAPORU"],
+    ["Rapor dönemi",labelRange],
+    ["Başlangıç",new Date(start).toLocaleString("tr-TR")],
+    ["Bitiş",new Date(end).toLocaleString("tr-TR")],
+    ["Toplam ziyaret (oturum)",sessions.length],
+    ["Tekil ziyaretçi",visitors.size],
+    ["Ortalama oturum (sn)",durationCount?Math.round(durationTotal/durationCount):0],
+    ["Toplam analytics olayı",events.length],
+    ["e-Merkez etkileşimi",eCenter]
+  ];
+  const daily=[["Tarih","Ziyaret (oturum)","Sayfa görüntüleme"],...dayMap.values()].map(x=>Array.isArray(x)?x:[x.date,x.visits,x.pageviews]);
+  const twoCol=(title,items)=>[[title,"Sayım"],...items.map(([n,c])=>[n,c])];
+  const sheets=[
+    ["Genel Özet",summary],
+    ["Günlük Trafik",daily],
+    ["Bölümler",twoCol("Bölüm",sectionCounts)],
+    ["81 İl",twoCol("İl",provinceCounts)],
+    ["Videolar",twoCol("Video",videoCounts)],
+    ["İndirilenler",twoCol("İçerik",downloadCounts)],
+    ["Diller",twoCol("Dil",languageCounts)],
+    ["Cihazlar",twoCol("Cihaz",deviceCounts)],
+    ["Giriş Kaynakları",twoCol("Kaynak",referrerCounts)],
+    ["Olay Türleri",twoCol("Olay",countAll(events,"type"))]
+  ];
+
+  const workbookSheets=sheets.map((_,i)=>`<sheet name="${xmlEscape(sheets[i][0])}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join("");
+  const files=[
+    {name:"[Content_Types].xml",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>${sheets.map((_,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join("")}</Types>`},
+    {name:"_rels/.rels",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`},
+    {name:"xl/workbook.xml",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${workbookSheets}</sheets></workbook>`},
+    {name:"xl/_rels/workbook.xml.rels",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((_,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join("")}</Relationships>`}
+  ];
+  sheets.forEach((sh,i)=>files.push({name:`xl/worksheets/sheet${i+1}.xml`,data:xlsxSheet(sh[1])}));
+  return zipStore(files);
+}
+
+
+app.get("/api/admin/report.xlsx", requireAdmin, (req, res) => {
+  const range = ["24h","7d","30d","90d","1y","all","custom"].includes(req.query.range) ? req.query.range : "30d";
+  const fromDate = String(req.query.from || "");
+  const toDate = String(req.query.to || "");
+  const workbook = buildReportWorkbook(range, fromDate, toDate);
+  const stamp = new Date().toISOString().slice(0,10);
+  res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+  res.setHeader("Content-Disposition", `attachment; filename="e-NetCoM_Analitik_Raporu_${stamp}.xlsx"`);
+  res.setHeader("Cache-Control", "no-store");
+  res.send(workbook);
+});
+
 app.get("/api/admin/stats", requireAdmin, async (req, res) => {
   const range = ["24h", "7d", "30d", "90d", "1y", "all", "custom"].includes(req.query.range)
     ? req.query.range
