@@ -493,11 +493,25 @@ function normalizeAnalyticsEvent(body) {
   };
 }
 
-function getRangeStart(range) {
+function getRangeBounds(range, fromDate, toDate) {
   const now = Date.now();
-  if (range === "24h") return now - 24 * 60 * 60 * 1000;
-  if (range === "7d") return now - 7 * 24 * 60 * 60 * 1000;
-  return now - 30 * 24 * 60 * 60 * 1000;
+  if (range === "all") {
+    return { start: analyticsEvents.length ? Math.min(...analyticsEvents.map(e => Number(e.ts) || now)) : now, end: now };
+  }
+  if (range === "custom") {
+    const from = /^\d{4}-\d{2}-\d{2}$/.test(String(fromDate || "")) ? Date.parse(`${fromDate}T00:00:00`) : NaN;
+    const to = /^\d{4}-\d{2}-\d{2}$/.test(String(toDate || "")) ? Date.parse(`${toDate}T23:59:59.999`) : NaN;
+    if (Number.isFinite(from) && Number.isFinite(to) && from <= to) return { start: from, end: to };
+  }
+  if (range === "24h") return { start: now - 24 * 60 * 60 * 1000, end: now };
+  if (range === "7d") return { start: now - 7 * 24 * 60 * 60 * 1000, end: now };
+  if (range === "90d") return { start: now - 90 * 24 * 60 * 60 * 1000, end: now };
+  if (range === "1y") return { start: now - 365 * 24 * 60 * 60 * 1000, end: now };
+  return { start: now - 30 * 24 * 60 * 60 * 1000, end: now };
+}
+
+function getRangeStart(range) {
+  return getRangeBounds(range).start;
 }
 
 function countBy(events, key) {
@@ -573,9 +587,10 @@ function isEMerkezEvent(event) {
   );
 }
 
-function buildAnalyticsStats(range = "30d") {
-  const start = getRangeStart(range);
-  const now = Date.now();
+function buildAnalyticsStats(range = "30d", fromDate = "", toDate = "") {
+  const bounds = getRangeBounds(range, fromDate, toDate);
+  const start = bounds.start;
+  const now = bounds.end;
   const events = analyticsEvents.filter(e => Number(e.ts) >= start && Number(e.ts) <= now);
 
   const sessions = new Map();
@@ -664,8 +679,8 @@ function buildAnalyticsStats(range = "30d") {
     ["click", "video_open", "download"].includes(e.type) && isEMerkezEvent(e)
   ).length;
 
-  // Daily traffic follows the selected range instead of always returning 30 days.
-  const dayCount = range === "24h" ? 1 : range === "7d" ? 7 : 30;
+  // Daily traffic follows the selected range.
+  const dayCount = Math.max(1, Math.floor((now - start) / 86400000) + 1);
   const dayMap = new Map();
   for (let i = dayCount - 1; i >= 0; i--) {
     const date = new Date(now - i * 86400000);
@@ -754,9 +769,11 @@ app.post("/api/admin/logout", requireAdmin, (req, res) => {
 });
 
 app.get("/api/admin/stats", requireAdmin, async (req, res) => {
-  const range = ["24h", "7d", "30d"].includes(req.query.range)
+  const range = ["24h", "7d", "30d", "90d", "1y", "all", "custom"].includes(req.query.range)
     ? req.query.range
     : "30d";
+  const fromDate = String(req.query.from || "");
+  const toDate = String(req.query.to || "");
 
   let youtube = null;
   try {
@@ -809,7 +826,7 @@ app.get("/api/admin/stats", requireAdmin, async (req, res) => {
   }
 
   res.json({
-    ...buildAnalyticsStats(range),
+    ...buildAnalyticsStats(range, fromDate, toDate),
     youtube,
     storageFile: ANALYTICS_FILE
   });
