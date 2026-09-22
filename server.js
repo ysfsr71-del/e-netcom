@@ -509,7 +509,6 @@ function countBy(events, key) {
   }
   return [...map.entries()]
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 12)
     .map(([name, count]) => ({ name, count }));
 }
 
@@ -550,7 +549,6 @@ function countEventTargets(events, type) {
 
   return [...map.entries()]
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 12)
     .map(([name, count]) => ({ name, count }));
 }
 
