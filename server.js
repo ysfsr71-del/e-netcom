@@ -509,6 +509,7 @@ function countBy(events, key) {
   }
   return [...map.entries()]
     .sort((a, b) => b[1] - a[1])
+    .slice(0, 12)
     .map(([name, count]) => ({ name, count }));
 }
 
@@ -549,6 +550,7 @@ function countEventTargets(events, type) {
 
   return [...map.entries()]
     .sort((a, b) => b[1] - a[1])
+    .slice(0, 12)
     .map(([name, count]) => ({ name, count }));
 }
 
@@ -569,19 +571,6 @@ function isEMerkezEvent(event) {
     haystack.includes("local-db") ||
     haystack.includes("localdb")
   );
-}
-
-function normalizeReferrer(value) {
-  const raw = safeString(value, 500).trim();
-  if (!raw || raw === "direct") return "Doğrudan";
-  try {
-    const url = new URL(raw);
-    const host = url.hostname.replace(/^www\./i, "");
-    if (!host) return "Doğrudan";
-    return host;
-  } catch {
-    return raw.slice(0, 120);
-  }
 }
 
 function buildAnalyticsStats(range = "30d") {
@@ -619,11 +608,42 @@ function buildAnalyticsStats(range = "30d") {
   const sessionStarts = getSessionStarts(events);
   const visits = sessionStarts.length;
   const sections = countBy(events.filter(e => e.type === "section_view"), "section");
-  const languages = countBy(sessionStarts, "lang");
+  const languageEvents = [];
+  const seenLanguageSessions = new Set();
+  for (const event of events) {
+    if (event.type !== "language" || !event.lang) continue;
+    const key = `${event.sessionId || ""}|${event.lang}`;
+    if (seenLanguageSessions.has(key)) continue;
+    seenLanguageSessions.add(key);
+    languageEvents.push(event);
+  }
+  for (const event of sessionStarts) {
+    if (!event.lang) continue;
+    const key = `${event.sessionId || ""}|${event.lang}`;
+    if (seenLanguageSessions.has(key)) continue;
+    seenLanguageSessions.add(key);
+    languageEvents.push(event);
+  }
+  const languages = countBy(languageEvents, "lang");
   const devices = countBy(sessionStarts, "device");
+  const referrerEvents = sessionStarts.map(event => {
+    const raw = String(event.referrer || "direct").trim();
+    if (!raw || raw === "direct") return { ...event, _referrer: "Doğrudan" };
+    try {
+      const url = new URL(raw);
+      const host = url.hostname.toLowerCase().replace(/^www\./, "");
+      const currentHost = String(process.env.PUBLIC_HOST || "enetcomproject.com").toLowerCase().replace(/^www\./, "");
+      if (host === currentHost || host.endsWith("." + currentHost)) {
+        return { ...event, _referrer: "Site içi geçiş" };
+      }
+      return { ...event, _referrer: host };
+    } catch {
+      return { ...event, _referrer: raw.slice(0, 120) };
+    }
+  });
   const referrers = countBy(
-    sessionStarts.filter(e => e.referrer && e.referrer !== "direct"),
-    "referrer"
+    referrerEvents,
+    "_referrer"
   );
 
   // Province clicks: use meta when present, otherwise target. Blank/unknown map events are ignored.
@@ -734,10 +754,6 @@ app.post("/api/admin/logout", requireAdmin, (req, res) => {
 });
 
 app.get("/api/admin/stats", requireAdmin, async (req, res) => {
-  res.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
-  res.set("Pragma", "no-cache");
-  res.set("Expires", "0");
-
   const range = ["24h", "7d", "30d"].includes(req.query.range)
     ? req.query.range
     : "30d";
