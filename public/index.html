@@ -6,7 +6,7 @@
 
 /* V12 refinements */
 .social-quick{background:#fff;border-bottom:1px solid var(--line);padding:14px 0}.social-quick .wrap{display:flex;align-items:center;justify-content:space-between;gap:18px}.social-quick .label{font-size:11px;font-weight:950;letter-spacing:1.4px;color:#5d716a;text-transform:uppercase}.social-quick .social-links{display:flex;gap:9px;flex-wrap:wrap}.social-quick a{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 14px;font-size:12px;font-weight:950;display:inline-flex;align-items:center;gap:7px}.social-quick a:hover{border-color:var(--green);color:var(--green);transform:translateY(-1px)}
-.map-stage{aspect-ratio:auto;min-height:520px;background:#eef7f2}.map-stage object.real-map{position:absolute;inset:0;width:100%;height:100%;padding:10px;border:0}.map-stage #mapHotspots{display:none}.map-stage .map-fallback{z-index:10}.map-credit{z-index:20}.map-path{cursor:pointer;transition:fill .15s,stroke .15s,stroke-width .15s}.map-path.none{fill:#dce9e3!important}.map-path.face{fill:#19a879!important}.map-path.online{fill:#4a83d2!important}.map-path.selected{stroke:#063f32!important;stroke-width:2.8!important;filter:drop-shadow(0 2px 2px rgba(6,47,39,.22))}.map-path:hover{stroke:#063f32!important;stroke-width:2.3!important}.map-tip{position:absolute;display:none;z-index:30;background:#063f32;color:#fff;padding:7px 10px;border-radius:9px;font-size:11px;font-weight:900;pointer-events:none;box-shadow:0 8px 20px rgba(0,0,0,.16);white-space:nowrap;max-width:150px;overflow:hidden;text-overflow:ellipsis}
+.map-stage{aspect-ratio:auto;min-height:520px;background:#eef7f2}.map-stage object.real-map{position:absolute;inset:0;width:100%;height:100%;padding:10px;border:0}.map-stage #mapHotspots{display:none}.map-stage .map-fallback{z-index:10}.map-credit{z-index:20}.map-path{cursor:pointer;transition:fill .15s,stroke .15s,stroke-width .15s}.map-path.none{fill:#dce9e3!important}.map-path.face{fill:#19a879!important}.map-path.online{fill:#4a83d2!important}.map-path.selected{stroke:#063f32!important;stroke-width:2.8!important;filter:drop-shadow(0 2px 2px rgba(6,47,39,.22))}.map-path:hover{stroke:#063f32!important;stroke-width:2.3!important}.map-tip{position:absolute;display:none;z-index:30;background:#063f32;color:#fff;padding:7px 10px;border-radius:9px;font-size:11px;font-weight:900;pointer-events:none;box-shadow:0 8px 20px rgba(0,0,0,.16)}
 .video .thumb.youtube-thumb{background:#dceee6}.video .thumb.youtube-thumb img{object-fit:cover}.video .thumb .yt-badge{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.72);color:#fff;border-radius:7px;padding:5px 7px;font-size:10px;font-weight:900}.social-feature{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}.social-feature a{min-height:180px;border-radius:28px;padding:28px;display:flex;flex-direction:column;justify-content:space-between;transition:.2s}.social-feature a:hover{transform:translateY(-4px);box-shadow:var(--shadow)}.social-feature .ig{background:linear-gradient(135deg,#fff,#fff1f7);border:1px solid #f0d9e5}.social-feature .x{background:#071a17;color:#fff;border:1px solid #163d36}.social-feature .big{font-size:30px;font-weight:950}.social-feature .small{font-size:13px;line-height:1.6;opacity:.78}.social-feature .cta{font-size:12px;font-weight:950}
 @media(max-width:900px){.social-quick .wrap{align-items:flex-start;flex-direction:column}.social-feature{grid-template-columns:1fr}.map-stage{min-height:430px}.map-grid{grid-template-columns:1fr!important}.map-info{min-height:auto}}
 
@@ -1678,27 +1678,9 @@ function cityInfo(city){
  }
  const svg=mapSvg();if(svg)[...svg.querySelectorAll('[id^="TR"]')].forEach(x=>x.classList.toggle('selected',x.dataset.city===city));
  document.querySelectorAll('.city-btn').forEach(x=>x.classList.toggle('selected',x.dataset.city===city));
- positionSelectedMapTip();
 }
 function pathStatus(city){const a=completedActivities(city);return a.length?(a[0].mode==='Yüz yüze'?'face':a[0].mode==='Çevrimiçi'?'online':'none'):'none'}
-function positionMapTip(el){
- const tip=document.getElementById('mapTip'), mount=document.getElementById('turkeyMapMount');
- if(!tip||!mount||!el||typeof el.getBoundingClientRect!=='function')return;
- const b=el.getBoundingClientRect(), m=mount.getBoundingClientRect();
- let left=b.left-m.left+b.width/2, top=b.top-m.top-8;
- const pad=8, tw=tip.offsetWidth||80, th=tip.offsetHeight||28;
- left=Math.max(tw/2+pad,Math.min(m.width-tw/2-pad,left));
- top=Math.max(th+pad,top);
- tip.style.left=left+'px'; tip.style.top=top+'px'; tip.style.transform='translate(-50%,-100%)';
-}
-function positionSelectedMapTip(){
- const city=selectedCity; if(!city)return;
- const el=document.querySelector('#turkeyMapMount [id^="TR"].selected');
- const tip=document.getElementById('mapTip'); if(!el||!tip)return;
- tip.textContent=city; tip.style.display='block';
- requestAnimationFrame(()=>positionMapTip(el));
-}
-async function buildMap(){const mount=document.getElementById('turkeyMapMount');if(!mount)return;try{const txt=await fetch('/turkey.svg').then(r=>{if(!r.ok)throw new Error('map');return r.text()});mount.innerHTML=txt;const svg=mount.querySelector('svg');if(!svg)throw new Error('svg');svg.setAttribute('preserveAspectRatio','xMidYMid meet');svg.setAttribute('role','img');svg.setAttribute('aria-label','Türkiye 81 il eğitim ağı');let matched=0;Object.entries(codeToCity).forEach(([code,city])=>{const el=svg.querySelector('#'+code);if(!el)return;matched++;el.dataset.city=city;el.classList.add(pathStatus(city));el.addEventListener('click',()=>{cityInfo(city);if(typeof window.enetcomTrack==='function')window.enetcomTrack('map_click',{section:'iller',target:city,meta:city});});el.addEventListener('mouseenter',()=>{const tip=document.getElementById('mapTip');tip.textContent=city;positionMapTip(el);tip.style.display='block'});el.addEventListener('mouseleave',()=>{const tip=document.getElementById('mapTip');if(!document.querySelector('#turkeyMapMount [id^="TR"].selected'))tip.style.display='none'});});document.getElementById('mapFallback').style.display=matched<75?'flex':'none';applyMapFilter(document.querySelector('.filter[data-filter].active')?.dataset.filter||'all');}catch(e){console.error(e);document.getElementById('mapFallback').style.display='flex'}}
+async function buildMap(){const mount=document.getElementById('turkeyMapMount');if(!mount)return;try{const txt=await fetch('/turkey.svg').then(r=>{if(!r.ok)throw new Error('map');return r.text()});mount.innerHTML=txt;const svg=mount.querySelector('svg');if(!svg)throw new Error('svg');svg.setAttribute('preserveAspectRatio','xMidYMid meet');svg.setAttribute('role','img');svg.setAttribute('aria-label','Türkiye 81 il eğitim ağı');let matched=0;Object.entries(codeToCity).forEach(([code,city])=>{const el=svg.querySelector('#'+code);if(!el)return;matched++;el.dataset.city=city;el.classList.add(pathStatus(city));el.addEventListener('click',()=>cityInfo(city));el.addEventListener('mouseenter',()=>{const tip=document.getElementById('mapTip');tip.textContent=city;tip.style.display='block'});el.addEventListener('mouseleave',()=>{document.getElementById('mapTip').style.display='none'});});document.getElementById('mapFallback').style.display=matched<75?'flex':'none';applyMapFilter(document.querySelector('.filter[data-filter].active')?.dataset.filter||'all');}catch(e){console.error(e);document.getElementById('mapFallback').style.display='flex'}}
 function applyMapFilter(f){const svg=mapSvg();if(!svg)return;[...svg.querySelectorAll('[id^="TR"]')].forEach(p=>{const c=p.dataset.city;if(!c)return;const a=completedActivities(c);let show=true;if(f==='face')show=a.some(x=>x.mode==='Yüz yüze');if(f==='online')show=a.some(x=>x.mode==='Çevrimiçi');if(f==='done')show=a.length>0;p.style.opacity=show?'1':'.24';p.style.pointerEvents=show?'auto':'none';});}
 function buildCityList(){const box=document.getElementById('cityList');const lang=document.documentElement.dataset.lang||'tr';const suffix=lang==='de'?'Aktivität':lang==='en'?'activity':'faaliyet';box.innerHTML=provinces.map(c=>`<button class="city-btn" data-city="${esc(c)}">${esc(c)}${completedActivities(c).length?' • '+completedActivities(c).length+' '+suffix:''}</button>`).join('');box.querySelectorAll('.city-btn').forEach(b=>b.addEventListener('click',()=>cityInfo(b.dataset.city)))}
 document.querySelectorAll('.filter[data-filter]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.filter[data-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');applyMapFilter(b.dataset.filter)}));
@@ -3535,6 +3517,13 @@ document.addEventListener("click",function(e){
   }
   window.enetcomTrack=send;
   send('pageview');
+  send('language',{meta:lang()});
+  var lastLang=lang();
+  function trackLanguageChange(){
+    var now=lang();
+    if(now!==lastLang){lastLang=now;send('language',{meta:now});}
+  }
+  new MutationObserver(trackLanguageChange).observe(document.documentElement,{attributes:true,attributeFilter:['data-lang','lang']});
   if('IntersectionObserver' in window){
     var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting&&e.target.id&&!seen[e.target.id]){seen[e.target.id]=1;send('section_view',{section:e.target.id});}})},{rootMargin:'0px 0px -20% 0px',threshold:.05});
     document.querySelectorAll('section[id],main[id]').forEach(function(el){io.observe(el)});
@@ -3542,13 +3531,14 @@ document.addEventListener("click",function(e){
   document.addEventListener('click',function(e){
     var t=e.target.closest&&e.target.closest('[data-city],a[href$=".pdf"],a[href*="/assets/"],button[onclick*="playContent"],button[onclick*="playPlaylistIndex"],a');
     if(!t)return;
-    var mapPath=t.closest&&t.closest('#turkeyMapMount [id^="TR"]');
-    if(mapPath){return;}
     var city=t.dataset&&t.dataset.city;
+    if(!city){
+      var mapPath=t.closest&&t.closest('#turkeyMapMount [id^="TR"]');
+      city=mapPath&&mapPath.dataset&&mapPath.dataset.city;
+    }
+    if(city){send('map_click',{section:'iller',target:city,meta:city});return}
     var href=t.getAttribute('href')||'';
-    var label=(t.textContent||'').trim().replace(/\s+/g,' ').slice(0,120);
-    var fileLike=/\.(pdf|zip|docx?|xlsx?|pptx?)($|[?#])/i.test(href)||t.hasAttribute('download')||/\b(pdf|indir|download|program akışı|programi|çıktı|cikti)\b/i.test(label);
-    if(fileLike){send('download',{section:t.closest('#network,#ciktilar,#veritabani')?.id||'',target:(href||label).slice(0,180),meta:label});return}
+    if(/\\.(pdf|zip|docx?|xlsx?)($|[?#])/i.test(href)){send('download',{section:t.closest('#network,#ciktilar,#veritabani')?.id||'',target:href,meta:t.textContent.trim().slice(0,120)});return}
     var oc=t.getAttribute('onclick')||'';
     if(oc.indexOf('playContent')>-1||oc.indexOf('playPlaylistIndex')>-1){send('video_open',{section:t.closest('section[id]')?.id||'medya',target:t.textContent.trim().slice(0,120),meta:oc.slice(0,180)});return}
     var db=t.closest&&t.closest('#veritabani');
@@ -3557,6 +3547,5 @@ document.addEventListener("click",function(e){
   var hb=setInterval(function(){send('session_heartbeat')},90000);
   function end(){clearInterval(hb);send('session_end',{meta:String(Math.round((Date.now()-started)/1000))},true)}
   window.addEventListener('pagehide',end,{once:true});
-  window.addEventListener('resize',function(){positionSelectedMapTip()});
 })();
 </script>\n</body></html>
