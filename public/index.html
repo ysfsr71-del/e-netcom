@@ -2001,6 +2001,16 @@ const _v27ExtraTranslations={
     if(E){
       const set=(sel,val)=>{const el=document.querySelector(sel);if(el)el.textContent=val;};
       set('#iller .section-head .eyebrow',E.map);
+      const intl={
+        tr:{eyebrow:'ULUSLARARASI BULUŞMALAR',title:"Avrupa'da ortak öğrenme.",desc:"e-NetCoM'nin uluslararası workshopları, proje ortaklarıyla bilgi paylaşımını ve gençlerin Avrupa boyutundaki öğrenme deneyimini görünür kılar."},
+        en:{eyebrow:'INTERNATIONAL GATHERINGS',title:'Shared learning across Europe.',desc:"e-NetCoM's international workshops highlight knowledge exchange with project partners and young people's European learning experience."},
+        de:{eyebrow:'INTERNATIONALE BEGEGNUNGEN',title:'Gemeinsames Lernen in Europa.',desc:'Die internationalen Workshops von e-NetCoM machen den Wissensaustausch mit Projektpartnern und die europäische Lernerfahrung junger Menschen sichtbar.'}
+      }[lang];
+      if(intl){
+        set('#uluslararasi .section-head .eyebrow',intl.eyebrow);
+        set('#uluslararasi .section-head h2',intl.title);
+        set('#uluslararasi .section-head > p',intl.desc);
+      }
       set('#etki .impact-v2-kpi:nth-child(1) span',E.total);
       set('#etki .impact-v2-kpi:nth-child(2) span',E.records);
       set('#etki .impact-v2-kpi:nth-child(3) span',E.provinces);
