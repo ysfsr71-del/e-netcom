@@ -1991,6 +1991,28 @@ const _v27ExtraTranslations={
     if(minis[1]){const h=minis[1].querySelector('h3'),d=minis[1].querySelector('p');if(h)h.textContent=L.newsMini2Title;if(d)d.textContent=L.newsMini2Desc;}
     const footer=document.querySelector('.news-footer span');if(footer)footer.textContent=L.newsFooter;
     applyPracticeTranslations(lang);
+
+    // Explicitly translate sections whose labels are rendered/updated independently.
+    const E={
+      tr:{map:'81 İL · EĞİTİM AĞI',total:'Toplam eğitim katılımcısı',records:'Gerçekleşen eğitim kaydı',provinces:'Eğitim gerçekleştirilen il',resources:'e-Merkez kaynağı',distribution:'EĞİTİM DAĞILIMI',network:'81 il ağı',networkDesc:"Projenin yaygınlaştırma ve iletişim ağı Türkiye'nin tamamına uzanıyor.",field:'Sahadan kareler',fieldDesc:'81 il faaliyetlerinden fotoğraflar',intl:'Uluslararası buluşmalar',intlDesc:'Viyana ve Bükreş'},
+      en:{map:'81 PROVINCES · EDUCATION NETWORK',total:'Total training participants',records:'Completed training records',provinces:'Provinces with training activities',resources:'e-Centre resources',distribution:'TRAINING DISTRIBUTION',network:'81-province network',networkDesc:"The project's dissemination and communication network extends across Türkiye.",field:'Field photos',fieldDesc:'Photos from activities across 81 provinces',intl:'International gatherings',intlDesc:'Vienna and Bucharest'},
+      de:{map:'81 PROVINZEN · BILDUNGSNETZWERK',total:'Gesamte Schulungsteilnehmende',records:'Durchgeführte Schulungsaufzeichnungen',provinces:'Provinzen mit Bildungsaktivitäten',resources:'e-Zentrum-Quellen',distribution:'AUSBILDUNGSVERTEILUNG',network:'Netzwerk in 81 Provinzen',networkDesc:'Das Verbreitungs- und Kommunikationsnetzwerk des Projekts erstreckt sich über die gesamte Türkei.',field:'Fotos von Aktivitäten',fieldDesc:'Fotos aus Aktivitäten in 81 Provinzen',intl:'Internationale Begegnungen',intlDesc:'Wien und Bukarest'}
+    }[lang]||null;
+    if(E){
+      const set=(sel,val)=>{const el=document.querySelector(sel);if(el)el.textContent=val;};
+      set('#iller .section-head .eyebrow',E.map);
+      set('#etki .impact-v2-kpi:nth-child(1) span',E.total);
+      set('#etki .impact-v2-kpi:nth-child(2) span',E.records);
+      set('#etki .impact-v2-kpi:nth-child(3) span',E.provinces);
+      set('#etki .impact-v2-kpi:nth-child(4) span',E.resources);
+      set('#etki .impact-v2-label',E.distribution);
+      set('#etki .impact-v2-network-note strong',E.network);
+      set('#etki .impact-v2-network-note span',E.networkDesc);
+      const hubs=document.querySelectorAll('.media-hub-links-compact a');
+      if(hubs[0]){setNode(hubs[0].querySelector('b'),E.field);setNode(hubs[0].querySelector('small'),E.fieldDesc);}
+      if(hubs[1]){setNode(hubs[1].querySelector('b'),E.intl);setNode(hubs[1].querySelector('small'),E.intlDesc);}
+    }
+    function setNode(el,val){if(el)el.textContent=val;}
   }
   
   function applyHeroTranslations(lang){
