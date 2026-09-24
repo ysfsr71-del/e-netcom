@@ -1068,7 +1068,27 @@ img{decoding:async}
 
 
 
-</head><body id="main-content">
+<style id="mobile-refinements-v1">
+@media(max-width:650px){
+  /* Mobile map: keep the interactive map visible without a very tall empty panel. */
+  .map-stage{height:420px!important;min-height:420px!important}
+  .map-stage #turkeyMapMount{padding:10px!important}
+  .map-stage #turkeyMapMount svg{width:100%!important;height:100%!important}
+  /* Network events: turn the wide desktop table into readable cards. */
+  #networkEventsTable{min-width:0!important;width:100%!important}
+  #networkEventsTable thead{display:none}
+  #networkEventsTable tbody,#networkEventsTable tr,#networkEventsTable td{display:block;width:100%}
+  #networkEventsTable tr{background:#fff;border-bottom:1px solid var(--line);padding:15px 16px}
+  #networkEventsTable tr:last-child{border-bottom:0}
+  #networkEventsTable td{border:0!important;padding:4px 0!important;text-align:left!important;white-space:normal!important;overflow-wrap:anywhere}
+  #networkEventsTable td::before{content:attr(data-label);display:block;font-size:10px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+  #networkEventsTable td:nth-child(1){font-weight:850;color:var(--ink);padding-bottom:10px!important}
+  #networkEventsTable td:nth-child(2){font-size:14px;line-height:1.45;padding-bottom:8px!important}
+  #networkEventsTable td:nth-child(3) a{display:inline-flex!important;margin-top:2px}
+  /* Keep the accessibility control clear of the mobile browser's bottom area. */
+  .a11y-fab{right:15px!important;bottom:72px!important}
+}
+</style></head><body id="main-content">
 
 <a class="a11y-skip" href="#main-content" id="a11ySkip">Ana içeriğe geç</a>
 <button class="a11y-fab" id="a11yFab" type="button" aria-label="Erişilebilirlik araçlarını aç" aria-expanded="false" aria-controls="a11yPanel" title="Erişilebilirlik">♿</button>
@@ -3099,7 +3119,7 @@ document.addEventListener("click",function(e){
     table.querySelector('[data-network-head="date"]').textContent=l.date;
     table.querySelector('[data-network-head="event"]').textContent=l.event;
     table.querySelector('[data-network-head="file"]').textContent=l.file;
-    table.querySelector('tbody').innerHTML=rows.map(r=>{const lcode=lang(); const d=(typeof r.date==='object'?(r.date[lcode]||r.date.tr):r.date); return `<tr><td>${d}</td><td>${r[lang()]||r.tr}</td><td><a href="${r.url}" target="_blank" rel="noopener" class="network-pdf-link">${l.pdf} ↗</a></td></tr>`;}).join('');
+    table.querySelector('tbody').innerHTML=rows.map(r=>{const lcode=lang(); const d=(typeof r.date==='object'?(r.date[lcode]||r.date.tr):r.date); return `<tr><td data-label="${l.date}">${d}</td><td data-label="${l.event}">${r[lang()]||r.tr}</td><td data-label="${l.file}"><a href="${r.url}" target="_blank" rel="noopener" class="network-pdf-link">${l.pdf} ↗</a></td></tr>`;}).join('');
   }
   window.renderNetworkEventsTable=render;
   document.addEventListener('click',function(e){
