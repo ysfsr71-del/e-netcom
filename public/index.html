@@ -210,9 +210,15 @@ html[data-lang="de"] .stat span{font-size:10px}
 .hero-carousel-caption small{font-size:9px;color:#d9f4e8}
 .hero-carousel-arrow{position:absolute;z-index:4;top:50%;transform:translateY(-50%);width:34px;height:34px;border:0;border-radius:50%;background:rgba(255,255,255,.92);color:#073e31;font-size:27px;line-height:1;cursor:pointer;box-shadow:0 7px 18px rgba(0,0,0,.15)}
 .hero-carousel-prev{left:8px}.hero-carousel-next{right:8px}
-.hero-carousel-dots{position:absolute;z-index:5;left:50%;bottom:10px;transform:translateX(-50%);display:flex;gap:7px;padding:5px 8px;border-radius:999px;background:rgba(3,48,39,.52);backdrop-filter:blur(5px)}
-.hero-carousel-dots button{width:8px;height:8px;border:0;border-radius:50%;padding:0;background:rgba(255,255,255,.58);cursor:pointer}
-.hero-carousel-dots button.active{background:#c9f58d;width:10px;height:10px}
+.hero-carousel-dots{position:relative;z-index:5;left:auto;bottom:auto;transform:none;display:flex;justify-content:center;gap:7px;margin:7px 0 0;padding:0;background:none}
+.hero-carousel-dots span{width:8px;height:8px;border-radius:50%;display:block;background:rgba(255,255,255,.45)}
+.hero-carousel-dots span.active{background:#c9f58d;width:10px;height:10px}
+.hero-carousel-thumbs{position:relative;z-index:5;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:8px 0 0}
+.hero-carousel-thumb{position:relative;min-width:0;height:62px;padding:0;border:1px solid rgba(255,255,255,.18);border-radius:11px;overflow:hidden;background:rgba(255,255,255,.08);cursor:pointer}
+.hero-carousel-thumb.active{border:2px solid #c9f58d;box-shadow:0 0 0 1px rgba(201,245,141,.12)}
+.hero-carousel-thumb img{width:100%;height:100%;display:block;object-fit:cover}
+.hero-thumb-map{display:block;width:100%;height:100%;background:linear-gradient(145deg,rgba(8,113,84,.9),rgba(13,75,61,.95));position:relative}
+.hero-thumb-map:after{content:"";position:absolute;inset:14px 16px;background:url('/turkey.svg') center/contain no-repeat;filter:brightness(1.12) saturate(.72)}
 .hero-carousel-slide[data-slide="0"] .hero-carousel-caption{display:none}
 .hero-mini-map svg{width:100%;height:100%;display:block;filter:drop-shadow(0 10px 15px rgba(0,0,0,.14))}
 .hero-mini-map svg [id^="TR"]{stroke:#fff;stroke-width:1.8;transition:.2s}
@@ -269,6 +275,8 @@ html[data-lang="de"] .hero-network-head p{font-size:14px}
   .hero-carousel-arrow{width:31px;height:31px;font-size:24px}
   .hero-carousel-caption{left:10px;right:10px;bottom:10px}
   .hero-carousel-caption b{font-size:11px}
+  .hero-carousel-thumbs{gap:6px}
+  .hero-carousel-thumb{height:52px;border-radius:9px}
 }
 
 /* V27 content hub refinements */
@@ -1246,11 +1254,14 @@ img{decoding:async}
             </div>
           </div>
           <button class="hero-carousel-arrow hero-carousel-next" type="button" aria-label="Sonraki görsel">›</button>
-          <div class="hero-carousel-dots" aria-label="Görsel seçimi">
-            <button type="button" class="active" data-carousel-dot="0" aria-label="81 il haritası"></button>
-            <button type="button" data-carousel-dot="1" aria-label="Tunceli"></button>
-            <button type="button" data-carousel-dot="2" aria-label="Viyana"></button>
-            <button type="button" data-carousel-dot="3" aria-label="Ankara"></button>
+          <div class="hero-carousel-thumbs" aria-label="Görsel seçimi">
+            <button type="button" class="hero-carousel-thumb active" data-carousel-dot="0" aria-label="81 il haritası"><span class="hero-thumb-map" aria-hidden="true"></span></button>
+            <button type="button" class="hero-carousel-thumb" data-carousel-dot="1" aria-label="Tunceli"><img src="/tunceli/tunceli01.jpg" alt=""></button>
+            <button type="button" class="hero-carousel-thumb" data-carousel-dot="2" aria-label="Viyana"><img src="/assets/international/vienna/IMG_2621.jpg" alt=""></button>
+            <button type="button" class="hero-carousel-thumb" data-carousel-dot="3" aria-label="Ankara"><img src="/ankara/01.jpg" alt=""></button>
+          </div>
+          <div class="hero-carousel-dots" aria-hidden="true">
+            <span class="active"></span><span></span><span></span><span></span>
           </div>
         </div>
         <div class="hero-stats">
@@ -2135,6 +2146,8 @@ const _v27ExtraTranslations={
       current=(n+slides.length)%slides.length;
       slides.forEach((s,i)=>s.classList.toggle('active',i===current));
       dots.forEach((d,i)=>{d.classList.toggle('active',i===current);d.setAttribute('aria-current',i===current?'true':'false')});
+      const visualDots=[...root.querySelectorAll('.hero-carousel-dots span')];
+      visualDots.forEach((d,i)=>d.classList.toggle('active',i===current));
       if(manual)restart();
     };
     const restart=()=>{clearInterval(timer);timer=setInterval(()=>show(current+1),6500)};
