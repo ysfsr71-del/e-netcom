@@ -1294,6 +1294,17 @@ img{decoding:async}
   .hero-v17 .hero-carousel-thumb b{font-size:8px!important}
   .hero-v17 .hero-carousel-thumb small{font-size:6px!important}
 }
+</style><style id="hero-thumb-text-fix">
+.hero-v17 .hero-carousel-thumb b{font-size:11px!important;line-height:1.08!important;margin:5px 0 2px!important}
+.hero-v17 .hero-carousel-thumb small{font-size:8.5px!important;line-height:1.18!important;font-weight:700!important}
+@media(max-width:820px){
+  .hero-v17 .hero-carousel-thumb b{font-size:9.5px!important}
+  .hero-v17 .hero-carousel-thumb small{font-size:7.5px!important}
+}
+@media(max-width:560px){
+  .hero-v17 .hero-carousel-thumb b{font-size:8.5px!important}
+  .hero-v17 .hero-carousel-thumb small{font-size:6.8px!important}
+}
 </style></head><body id="main-content">
 
 <a class="a11y-skip" href="#main-content" id="a11ySkip">Ana içeriğe geç</a>
@@ -1437,16 +1448,16 @@ img{decoding:async}
               <span class="hero-thumb-map" aria-hidden="true"></span><b>81 İl</b>
             </button>
             <button type="button" class="hero-carousel-thumb" data-carousel-dot="1" aria-label="Tunceli">
-              <img src="/tunceli/tunceli01.jpg" alt=""><b>Tunceli</b><small>11 Temmuz 2026 · 51 katılımcı</small>
+              <img src="/tunceli/tunceli01.jpg" alt=""><b>Tunceli</b><small data-carousel="tunceliMeta">11 Temmuz 2026 · 51 katılımcı</small>
             </button>
             <button type="button" class="hero-carousel-thumb" data-carousel-dot="2" aria-label="Viyana">
-              <img src="/assets/international/vienna/IMG_2621.jpg" alt=""><b>Viyana</b><small>Saha çalışması</small>
+              <img src="/assets/international/vienna/IMG_2621.jpg" alt=""><b>Viyana</b><small data-carousel="viennaMeta">Saha çalışması</small>
             </button>
             <button type="button" class="hero-carousel-thumb" data-carousel-dot="3" aria-label="Ankara">
-              <img src="/ankara/01.jpg" alt=""><b>Ankara</b><small>Gençlik eğitimi</small>
+              <img src="/ankara/01.jpg" alt=""><b>Ankara</b><small data-carousel="ankaraMeta">Gençlik eğitimi</small>
             </button>
             <button type="button" class="hero-carousel-thumb" data-carousel-dot="4" aria-label="İzmir">
-              <img src="/assets/site-images/izmir-zirve.jpg" alt=""><b>İzmir</b><small>Gençlik, İklim Değişikliği ve Medya Zirvesi</small>
+              <img src="/assets/site-images/izmir-zirve.jpg" alt=""><b>İzmir</b><small data-carousel="izmirMeta">Gençlik, İklim Değişikliği ve Medya Zirvesi</small>
             </button>
           </div>
 
@@ -2357,23 +2368,25 @@ const _v27ExtraTranslations={
         tunceliTitle:"Tunceli'de e-NetCoM eğitimi",tunceliMeta:'11 Temmuz 2026 · 51 katılımcı',
         viennaTitle:'Viyana · Uluslararası workshop',viennaMeta:'Saha çalışması',
         ankaraTitle:'Ankara · e-NetCoM faaliyeti',ankaraMeta:'Gençlik eğitimi',
-        izmirTitle:'İzmir · Gençlik, İklim Değişikliği ve Medya Zirvesi',izmirMeta:'İzmir'
+        izmirTitle:'İzmir · Gençlik, İklim Değişikliği ve Medya Zirvesi',izmirMeta:'Gençlik, İklim Değişikliği ve Medya Zirvesi'
       },
       en:{
         tunceliTitle:'e-NetCoM training in Tunceli',tunceliMeta:'11 July 2026 · 51 participants',
         viennaTitle:'Vienna · International workshop',viennaMeta:'Field activity',
         ankaraTitle:'Ankara · e-NetCoM activity',ankaraMeta:'Youth training',
-        izmirTitle:'Izmir · Youth, Climate Change and Media Summit',izmirMeta:'Izmir'
+        izmirTitle:'Izmir · Youth, Climate Change and Media Summit',izmirMeta:'Youth, Climate Change and Media Summit'
       },
       de:{
         tunceliTitle:'e-NetCoM-Schulung in Tunceli',tunceliMeta:'11. Juli 2026 · 51 Teilnehmende',
         viennaTitle:'Wien · Internationaler Workshop',viennaMeta:'Aktivität vor Ort',
         ankaraTitle:'Ankara · e-NetCoM-Aktivität',ankaraMeta:'Jugendbildung',
-        izmirTitle:'Izmir · Gipfel für Jugend, Klimawandel und Medien',izmirMeta:'Izmir'
+        izmirTitle:'Izmir · Gipfel für Jugend, Klimawandel und Medien',izmirMeta:'Gipfel für Jugend, Klimawandel und Medien'
       }
     }[lang]||null;
     if(!T)return;
-    Object.entries(T).forEach(([k,v])=>{const el=document.querySelector('[data-carousel="'+k+'"]');if(el)el.textContent=v});
+    Object.entries(T).forEach(([k,v])=>{
+      document.querySelectorAll('[data-carousel="'+k+'"]').forEach(el=>el.textContent=v);
+    });
   }
 
   async function buildHeroMap(){
