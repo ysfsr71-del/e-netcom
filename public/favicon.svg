@@ -1,7 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-<rect width="64" height="64" rx="14" fill="#087a5c"/>
-<path d="M31 48V27" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
-<path d="M31 34c-8-1-13-5-14-13 8 0 14 4 14 13Z" fill="#fff"/>
-<path d="M33 31c1-9 6-14 14-15 0 8-5 14-14 15Z" fill="#fff"/>
-<path d="M31 43c-7-1-11-4-13-10 7 0 12 3 13 10Z" fill="#fff" opacity=".92"/>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#9be95c"/>
+    <stop offset="1" stop-color="#42b97d"/>
+  </linearGradient>
+  <linearGradient id="soil" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#9b5b50"/>
+    <stop offset="1" stop-color="#6e403c"/>
+  </linearGradient>
+</defs>
+<rect x="2" y="2" width="60" height="60" rx="18" fill="url(#bg)"/>
+<path d="M32 43V27" stroke="#b8ec58" stroke-width="4" stroke-linecap="round"/>
+<path d="M31 33C21 32 15 27 14 20c9 0 16 4 17 13Z" fill="#b4ed58"/>
+<path d="M33 31c1-9 7-14 17-14-1 8-7 14-17 14Z" fill="#b4ed58"/>
+<path d="M32 43c-9 0-14 5-15 11h30c-1-6-6-11-15-11Z" fill="url(#soil)"/>
 </svg>
