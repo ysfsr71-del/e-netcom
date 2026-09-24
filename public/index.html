@@ -2738,7 +2738,20 @@ document.addEventListener('keydown', function(e){
     document.getElementById('a11yTitle').textContent=t.title;document.getElementById('a11ySubtitle').textContent=t.sub;document.getElementById('a11yVisualLabel').textContent=t.label;
     document.getElementById('a11yKeyboardTitle').textContent=t.keyboard;document.getElementById('a11yKeyboardText').textContent=t.keyboardText;document.getElementById('a11yReset').textContent=t.reset;
     fab.setAttribute('aria-label',t.open);fab.title=t.title;close.setAttribute('aria-label',t.close);skip.textContent=t.skip;
-    document.querySelectorAll('[data-i18n]').forEach(el=>{const key=el.dataset.i18n;if(t[key])el.textContent=t[key]});apply();
+    const optionTitles={
+      large:{tr:'Büyük yazı',en:'Larger text',de:'Größere Schrift'},
+      contrast:{tr:'Yüksek kontrast',en:'High contrast',de:'Hoher Kontrast'},
+      links:{tr:'Bağlantıları vurgula',en:'Highlight links',de:'Links hervorheben'},
+      motion:{tr:'Hareketleri azalt',en:'Reduce motion',de:'Bewegungen reduzieren'},
+      cursor:{tr:'Büyük imleç',en:'Large cursor',de:'Großer Cursor'},
+      readable:{tr:'Okuma kolaylığı',en:'Reading comfort',de:'Lesefreundlichkeit'},
+      focus:{tr:'Klavye odağını güçlendir',en:'Stronger keyboard focus',de:'Tastaturfokus verstärken'}
+    };
+    document.querySelectorAll('.a11y-title[data-i18n]').forEach(el=>{
+      const key=el.dataset.i18n.replace('Title','');
+      if(optionTitles[key]?.[lang]) el.textContent=optionTitles[key][lang];
+    });
+    apply();
   }
   function openPanel(){panel.classList.add('is-open');panel.setAttribute('aria-hidden','false');fab.setAttribute('aria-expanded','true');close.focus()}
   function closePanel(){panel.classList.remove('is-open');panel.setAttribute('aria-hidden','true');fab.setAttribute('aria-expanded','false');fab.focus()}
