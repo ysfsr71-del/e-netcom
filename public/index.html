@@ -1119,7 +1119,95 @@ img{decoding:async}
   /* Keep the accessibility control clear of the mobile browser's bottom area. */
   .a11y-fab{right:15px!important;bottom:72px!important}
 }
-</style></head><body id="main-content">
+</style>
+<style id="hero-final-layout-fix">
+/* Final hero carousel layout fix — keep map, thumbnails and stats in their own areas. */
+.hero-v17 .hero-network-body{
+  grid-template-columns:minmax(0,1fr) 165px!important;
+  align-items:start!important;
+  min-height:0!important;
+}
+.hero-v17 .hero-mini-map.hero-carousel{
+  height:auto!important;
+  min-height:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:flex-start!important;
+  align-items:stretch!important;
+  overflow:visible!important;
+  background:rgba(2,62,49,.10)!important;
+}
+.hero-v17 .hero-carousel-slides{
+  position:relative!important;
+  width:100%!important;
+  height:270px!important;
+  flex:0 0 270px!important;
+  overflow:hidden!important;
+  border-radius:18px!important;
+}
+.hero-v17 .hero-carousel-slide{
+  position:absolute!important;
+  inset:0!important;
+}
+.hero-v17 .hero-carousel-slide[data-slide="0"] #heroMapMount{
+  width:100%!important;
+  height:100%!important;
+  padding:4px!important;
+}
+.hero-v17 .hero-carousel-slide[data-slide="0"] #heroMapMount svg{
+  width:138%!important;
+  height:138%!important;
+  max-width:none!important;
+  max-height:none!important;
+  flex:none!important;
+}
+.hero-v17 .hero-carousel-thumbs{
+  position:relative!important;
+  width:100%!important;
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:8px!important;
+  margin:10px 0 0!important;
+  flex:none!important;
+}
+.hero-v17 .hero-carousel-thumb{
+  height:62px!important;
+}
+.hero-v17 .hero-carousel-dots{
+  position:relative!important;
+  width:100%!important;
+  display:flex!important;
+  justify-content:center!important;
+  margin:8px 0 0!important;
+  flex:none!important;
+}
+.hero-v17 .hero-stats{
+  align-self:start!important;
+  margin-top:20px!important;
+}
+@media(max-width:1050px){
+  .hero-v17 .hero-network-body{grid-template-columns:minmax(0,1fr) 145px!important}
+}
+@media(max-width:820px){
+  .hero-v17 .hero-network-body{grid-template-columns:1fr!important}
+  .hero-v17 .hero-mini-map.hero-carousel{width:100%!important}
+  .hero-v17 .hero-carousel-slides{height:250px!important;flex-basis:250px!important}
+  .hero-v17 .hero-carousel-thumbs{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  .hero-v17 .hero-carousel-thumb{height:54px!important}
+  .hero-v17 .hero-stats{
+    width:100%!important;
+    margin-top:12px!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+}
+@media(max-width:560px){
+  .hero-v17 .hero-carousel-slides{height:210px!important;flex-basis:210px!important}
+  .hero-v17 .hero-carousel-thumbs{gap:6px!important}
+  .hero-v17 .hero-carousel-thumb{height:52px!important}
+  .hero-v17 .hero-carousel-slide[data-slide="0"] #heroMapMount svg{width:132%!important;height:132%!important}
+}
+</style>
+</head><body id="main-content">
 
 <a class="a11y-skip" href="#main-content" id="a11ySkip">Ana içeriğe geç</a>
 <button class="a11y-fab" id="a11yFab" type="button" aria-label="Erişilebilirlik araçlarını aç" aria-expanded="false" aria-controls="a11yPanel" title="Erişilebilirlik">♿</button>
