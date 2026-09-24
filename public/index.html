@@ -2749,10 +2749,15 @@ document.addEventListener('keydown', function(e){
   document.querySelectorAll('[data-a11y]').forEach(btn=>btn.addEventListener('click',()=>{const k=btn.dataset.a11y;state[k]=!state[k];apply();}));
   reset.addEventListener('click',()=>{state={};apply();});
   window.addEventListener('storage',()=>{state=load();apply()});
-  // Integrate with the site's existing TR/EN/DE language switcher without replacing it.
-  function hookApply(){const old=window.apply;if(typeof old==='function'&&!old.__a11yWrapped){const wrapped=function(l){const r=old.apply(this,arguments);updateText((l||document.documentElement.lang||'tr').slice(0,2));return r};wrapped.__a11yWrapped=true;window.apply=wrapped;}}
-  window.addEventListener('load',()=>{hookApply();updateText((document.documentElement.lang||'tr').slice(0,2));});
-  setTimeout(hookApply,500);
+  // Follow the site's existing TR/EN/DE language state.
+  // The main language function is scoped locally, so observe the shared
+  // document language attribute instead of trying to replace that function.
+  const langObserver=new MutationObserver(()=>{
+    const current=(document.documentElement.dataset.lang||document.documentElement.lang||'tr').slice(0,2);
+    if(current!==lang) updateText(current);
+  });
+  langObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-lang','lang']});
+  window.addEventListener('load',()=>{updateText((document.documentElement.dataset.lang||document.documentElement.lang||'tr').slice(0,2));});
   apply();
 })();
 </script>
