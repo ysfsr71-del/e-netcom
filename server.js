@@ -295,6 +295,10 @@ app.get("/api/youtube-stats", async (req, res) => {
       ["kamu spot"]
     );
 
+    // Stable playlist ID: new campaign videos added to this playlist
+    // are included automatically without a code change.
+    const hashtagCampaignsPlaylistId = "PLzoT3-KDh6lbt_LVZOZvhzQzqi7M8-X87";
+
    const interactivePlaylists = playlists.filter(playlist => {
   const title = String(
     playlist.snippet?.title || ""
@@ -314,10 +318,12 @@ app.get("/api/youtube-stats", async (req, res) => {
 const [
   oneMinute,
   publicSpots,
+  hashtagCampaigns,
   interactiveViews
 ] = await Promise.all([
   getPlaylistViews(oneMinutePlaylist?.id),
   getPlaylistViews(publicSpotsPlaylist?.id),
+  getPlaylistViews(hashtagCampaignsPlaylistId),
 
   Promise.all(
     interactivePlaylists.map(
@@ -341,6 +347,7 @@ const interactive = interactiveViews;
       oneMinute,
       interactive,
       publicSpots,
+      hashtagCampaigns,
 
       updatedAt: new Date().toISOString()
     };
