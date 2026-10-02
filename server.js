@@ -862,15 +862,9 @@ function buildReportWorkbook(range, fromDate, toDate) {
   }
 
   const sectionCounts = countAll(events.filter(e => e.type === "section_view"), "section");
-  const languageEvents = [];
-  const seenLang = new Set();
-  for (const e of events) {
-    if (e.type === "language" && e.lang) {
-      const k=`${e.sessionId}|${e.lang}`; if(!seenLang.has(k)){seenLang.add(k);languageEvents.push(e);}
-    }
-  }
-  for (const e of sessions) { if(e.lang){const k=`${e.sessionId}|${e.lang}`;if(!seenLang.has(k)){seenLang.add(k);languageEvents.push(e);}} }
-  const languageCounts = countAll(languageEvents, "lang");
+  // Keep the exported language sheet consistent with the dashboard:
+  // one language per session, using the language recorded at session start.
+  const languageCounts = countAll(sessions, "lang");
   const deviceCounts = countAll(sessions, "device");
   const refCounts = new Map();
   for (const e of sessions) {
