@@ -3923,7 +3923,11 @@ document.addEventListener("click",function(e){
     var href=t.getAttribute('href')||'';
     if(/\\.(pdf|zip|docx?|xlsx?)($|[?#])/i.test(href)){send('download',{section:t.closest('#network,#ciktilar,#veritabani')?.id||'',target:href,meta:t.textContent.trim().slice(0,120)});return}
     var oc=t.getAttribute('onclick')||'';
-    if(oc.indexOf('playContent')>-1||oc.indexOf('playPlaylistIndex')>-1){send('video_open',{section:t.closest('section[id]')?.id||'medya',target:t.textContent.trim().slice(0,120),meta:oc.slice(0,180)});return}
+    if(oc.indexOf('playContent')>-1||oc.indexOf('playPlaylistIndex')>-1){
+      var card=t.closest&&t.closest('article,.video,.card');
+      var heading=card&&card.querySelector&&card.querySelector('h3,h2');
+      var videoTitle=((heading&&heading.textContent)||t.getAttribute('aria-label')||t.getAttribute('title')||t.textContent||'Video').trim().slice(0,120);
+      send('video_open',{section:t.closest('section[id]')?.id||'medya',target:videoTitle,meta:oc.slice(0,180)});return}
     var db=t.closest&&t.closest('#veritabani');
     if(db){send('click',{section:'veritabani',target:t.tagName.toLowerCase(),meta:t.textContent.trim().slice(0,120)});}
   },{passive:true});
