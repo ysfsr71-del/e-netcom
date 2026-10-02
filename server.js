@@ -623,23 +623,9 @@ function buildAnalyticsStats(range = "30d", fromDate = "", toDate = "") {
   const sessionStarts = getSessionStarts(events);
   const visits = sessionStarts.length;
   const sections = countBy(events.filter(e => e.type === "section_view"), "section");
-  const languageEvents = [];
-  const seenLanguageSessions = new Set();
-  for (const event of events) {
-    if (event.type !== "language" || !event.lang) continue;
-    const key = `${event.sessionId || ""}|${event.lang}`;
-    if (seenLanguageSessions.has(key)) continue;
-    seenLanguageSessions.add(key);
-    languageEvents.push(event);
-  }
-  for (const event of sessionStarts) {
-    if (!event.lang) continue;
-    const key = `${event.sessionId || ""}|${event.lang}`;
-    if (seenLanguageSessions.has(key)) continue;
-    seenLanguageSessions.add(key);
-    languageEvents.push(event);
-  }
-  const languages = countBy(languageEvents, "lang");
+  // Language distribution is based strictly on the language at session start.
+  // Language-change events are intentionally excluded so totals match visit counts.
+  const languages = countBy(sessionStarts, "lang");
   const devices = countBy(sessionStarts, "device");
   const referrerEvents = sessionStarts.map(event => {
     const raw = String(event.referrer || "direct").trim();
@@ -680,10 +666,12 @@ function buildAnalyticsStats(range = "30d", fromDate = "", toDate = "") {
   ).length;
 
   // Daily traffic follows the selected range.
-  const dayCount = Math.max(1, Math.floor((now - start) / 86400000) + 1);
   const dayMap = new Map();
-  for (let i = dayCount - 1; i >= 0; i--) {
-    const date = new Date(now - i * 86400000);
+  const firstDay = new Date(start);
+  firstDay.setUTCHours(0, 0, 0, 0);
+  const lastDay = new Date(now);
+  lastDay.setUTCHours(0, 0, 0, 0);
+  for (let date = new Date(firstDay); date <= lastDay; date.setUTCDate(date.getUTCDate() + 1)) {
     const key = date.toISOString().slice(0, 10);
     dayMap.set(key, { date: key, visits: 0, pageviews: 0 });
   }
