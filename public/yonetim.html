@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>e-NetCoM Yönetim Paneli</title>
+<title>e-NetCoM Yönetim Paneli</title><meta name="robots" content="noindex,nofollow">
 <style>
 :root{--bg:#08111d;--card:#101d2c;--muted:#91a2b6;--text:#f3f7fb;--line:#223348;--accent:#62d9a6;--accent2:#75a9ff}
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#07101b,#0d1a29 55%,#091522);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:var(--text)}
@@ -18,6 +18,20 @@ h2{font-size:17px;margin:0 0 14px}.list{display:grid;gap:9px}.row{display:grid;g
 .report-box{display:flex;justify-content:space-between;align-items:center;gap:18px}.report-box button{white-space:nowrap}.note{margin-top:16px;color:var(--muted);font-size:12px}.loading{opacity:.6}
 @media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}.two,.three{grid-template-columns:1fr}}
 @media(max-width:600px){.wrap{padding:16px}.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.num{font-size:27px}}
+</style>
+<style id="admin-v2">
+:root{--bg:#07120f;--card:#0d1c18;--card2:#10241e;--muted:#8fa99e;--text:#f3fbf7;--line:#1f3b31;--accent:#64e0a7;--accent2:#77a9ff}
+body{background:radial-gradient(circle at 80% -10%,rgba(100,224,167,.13),transparent 32%),radial-gradient(circle at 10% 15%,rgba(119,169,255,.08),transparent 26%),linear-gradient(145deg,#06100d,#0a1714 55%,#07120f)}
+.wrap{max-width:1480px;padding:30px}.top{position:sticky;top:0;z-index:20;margin:-30px -30px 22px;padding:22px 30px;background:rgba(7,18,15,.82);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.06)}
+.brand{letter-spacing:-.02em}.sub{max-width:720px}.card{background:linear-gradient(145deg,rgba(16,36,30,.94),rgba(10,25,21,.94));box-shadow:0 16px 50px rgba(0,0,0,.16);transition:transform .2s,border-color .2s}.card:hover{transform:translateY(-2px);border-color:#315b4c}
+.grid .card{position:relative;overflow:hidden;min-height:126px}.grid .card:after{content:"";position:absolute;width:95px;height:95px;border-radius:50%;right:-32px;top:-36px;background:radial-gradient(circle,rgba(100,224,167,.16),transparent 68%)}
+.kpi-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(100,224,167,.10);border:1px solid rgba(100,224,167,.18);font-size:18px;margin-bottom:13px}.num{font-size:34px;letter-spacing:-.035em}.dashboard-kicker{color:var(--accent);font-size:11px;font-weight:900;letter-spacing:.14em;margin-bottom:5px}.live-pill{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid var(--line);border-radius:999px;color:#cce1d8;font-size:12px;background:#0b1a16}.live-pill:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(100,224,167,.1)}
+.traffic-layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(280px,.75fr);gap:14px;margin-top:14px}.traffic-card{min-width:0}.traffic-meta{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.traffic-big{font-size:12px;color:var(--muted)}.chart{height:230px;border-bottom:1px solid var(--line);background:repeating-linear-gradient(to top,transparent 0,transparent 44px,rgba(255,255,255,.035) 45px);padding:24px 4px 0}.col{background:linear-gradient(180deg,#64e0a7,#2c7358);min-width:5px;opacity:.92}.snapshot{display:grid;gap:10px;margin-top:14px}.snapshot-item{display:flex;justify-content:space-between;align-items:center;padding:13px;border-radius:14px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.05)}.snapshot-item b{font-size:18px}
+.section-title{display:flex;align-items:center;gap:9px}.section-title .ico{width:29px;height:29px;border-radius:9px;display:grid;place-items:center;background:rgba(119,169,255,.10);font-size:14px}
+.map-card{overflow:hidden}.map-layout{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;align-items:start}.admin-map{min-height:350px;display:grid;place-items:center;border:1px solid var(--line);border-radius:18px;background:radial-gradient(circle at center,rgba(100,224,167,.06),transparent 60%);padding:14px}.admin-map svg{width:100%;height:auto;max-height:390px}.admin-map svg path{fill:#17372c!important;stroke:#416658!important;stroke-width:.45!important;transition:.18s}.admin-map svg path[data-admin-count]{cursor:pointer}.admin-map svg path[data-level="1"]{fill:#1f4b3b!important}.admin-map svg path[data-level="2"]{fill:#2b6b50!important}.admin-map svg path[data-level="3"]{fill:#3c956b!important}.admin-map svg path[data-level="4"]{fill:#64e0a7!important}.map-tip{color:var(--muted);font-size:12px;margin-top:9px}.content-performance{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:14px}.ecenter-card{background:linear-gradient(145deg,rgba(100,224,167,.10),rgba(16,36,30,.94))}
+.login{position:relative;overflow:hidden}.login:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 20%,rgba(100,224,167,.13),transparent 28%),radial-gradient(circle at 80% 70%,rgba(119,169,255,.09),transparent 28%);pointer-events:none}.loginbox{position:relative;padding:38px;border-radius:28px;background:rgba(10,28,23,.91);backdrop-filter:blur(18px)}.loginbox:before{content:"E-NETCOM · ANALİTİK MERKEZ";display:block;color:var(--accent);font-size:10px;font-weight:900;letter-spacing:.15em;margin-bottom:16px}
+@media(max-width:1000px){.traffic-layout,.map-layout,.content-performance{grid-template-columns:1fr}.top{position:static;margin:-30px -30px 22px}}
+@media(max-width:600px){.wrap{padding:16px}.top{margin:-16px -16px 18px;padding:18px 16px}.traffic-layout{grid-template-columns:1fr}.chart{height:190px}}
 </style>
 
 <style id="province-panel-ui">
@@ -42,8 +56,8 @@ h2{font-size:17px;margin:0 0 14px}.list{display:grid;gap:9px}.row{display:grid;g
 <main id="app" class="wrap hidden">
   <header class="top">
     <div>
-      <div class="brand">e-NetCoM <span>Yönetim Paneli</span></div>
-      <div class="sub">Ziyaretçi, içerik ve dijital medya göstergeleri</div>
+      <div class="dashboard-kicker">YÖNETİM MERKEZİ · CANLI ANALİTİK</div><div class="brand">e-NetCoM <span>Yönetim Paneli</span></div>
+      <div class="sub">Ziyaretçi, içerik ve dijital medya göstergeleri · <span class="live-pill">Anonim ölçüm aktif</span></div>
     </div>
     <div class="toolbar">
       <div class="range">
@@ -65,10 +79,10 @@ h2{font-size:17px;margin:0 0 14px}.list{display:grid;gap:9px}.row{display:grid;g
   </header>
 
   <section class="grid" id="cards">
-    <div class="card"><div class="label">Toplam ziyaret (oturum)</div><div class="num" id="visits">—</div></div>
-    <div class="card"><div class="label">Tekil ziyaretçi</div><div class="num" id="unique">—</div></div>
-    <div class="card"><div class="label">Şu anda aktif ziyaretçi</div><div class="num" id="active">—</div></div>
-    <div class="card"><div class="label">Ort. oturum</div><div class="num" id="duration">—</div><div class="small">kapanış verilerine göre</div></div>
+    <div class="card"><div class="kpi-icon">↗</div><div class="label">Toplam ziyaret (oturum)</div><div class="num" id="visits">—</div><div class="small">Seçili dönem</div></div>
+    <div class="card"><div class="kpi-icon">◉</div><div class="label">Tekil ziyaretçi</div><div class="num" id="unique">—</div><div class="small">Anonim ziyaretçi kimliği</div></div>
+    <div class="card"><div class="kpi-icon">●</div><div class="label">Şu anda aktif ziyaretçi</div><div class="num" id="active">—</div><div class="small">Canlı durum</div></div>
+    <div class="card"><div class="kpi-icon">◷</div><div class="label">Ort. oturum</div><div class="num" id="duration">—</div><div class="small">Kapanış verilerine göre</div></div>
   </section>
 
   <section class="card report-box" style="margin-top:14px">
@@ -79,9 +93,9 @@ h2{font-size:17px;margin:0 0 14px}.list{display:grid;gap:9px}.row{display:grid;g
     <button class="ghost" id="exportExcel">📥 Excel Raporu İndir</button>
   </section>
 
-  <section class="card" style="margin-top:14px">
-    <h2>Günlük ziyaret trafiği (oturum)</h2>
-    <div class="chart" id="chart"></div>
+  <section class="traffic-layout">
+    <div class="card traffic-card"><div class="traffic-meta"><div><div class="section-title"><span class="ico">⌁</span><h2>Günlük ziyaret trafiği</h2></div><div class="small">Seçili dönemdeki oturum hareketi · son 30 veri noktası</div></div><div class="traffic-big">Sütun üzerine gelerek günü görüntüleyin</div></div><div class="chart" id="chart"></div></div>
+    <div class="card"><div class="section-title"><span class="ico">◎</span><h2>Hızlı görünüm</h2></div><div class="snapshot"><div class="snapshot-item"><span>Oturum</span><b id="snapVisits">—</b></div><div class="snapshot-item"><span>Tekil ziyaretçi</span><b id="snapUnique">—</b></div><div class="snapshot-item"><span>Aktif</span><b id="snapActive">—</b></div><div class="snapshot-item"><span>Ort. süre</span><b id="snapDuration">—</b></div></div></div>
   </section>
 
   <section class="three">
@@ -95,15 +109,9 @@ h2{font-size:17px;margin:0 0 14px}.list{display:grid;gap:9px}.row{display:grid;g
     <div class="card"><h2>YouTube</h2><div class="list" id="youtube"><div class="row"><span>Yükleniyor…</span></div></div></div>
   </section>
 
-  <section class="two">
-    <div class="card province-card"><h2>İl bazlı ilgi</h2><div class="small" style="margin-top:-8px;margin-bottom:12px">81 il haritasında açılan il detayları.</div><input class="province-search" id="provinceSearch" type="search" placeholder="İl ara…" autocomplete="off"/><div class="list" id="provinceViews"></div></div>
-    <div class="card"><h2>En çok açılan videolar</h2><div class="small" style="margin-top:-8px;margin-bottom:12px">Video ve oynatma kontrolleri.</div><div class="list" id="videoOpens"></div></div>
-  </section>
+  <section class="card map-card" style="margin-top:14px"><div class="section-title"><span class="ico">⌖</span><h2>Türkiye · İl bazlı ilgi</h2></div><div class="small" style="margin-top:-8px;margin-bottom:14px">81 il haritasında açılan il detayları. Renk yoğunluğu etkileşim miktarını gösterir.</div><div class="map-layout"><div><div class="admin-map" id="adminMap">Harita yükleniyor…</div><div class="map-tip" id="adminMapTip">Bir ilin üzerine gelerek etkileşim sayısını görüntüleyin.</div></div><div><input class="province-search" id="provinceSearch" type="search" placeholder="İl ara…" autocomplete="off"/><div class="list province-card" id="provinceViews"></div></div></div></section>
 
-  <section class="two">
-    <div class="card"><h2>İndirilen içerikler</h2><div class="small" style="margin-top:-8px;margin-bottom:12px">PDF, program ve indirilebilir içerik etkileşimleri.</div><div class="list" id="downloads"></div></div>
-    <div class="card"><h2>e-Merkez kullanımı</h2><div class="num" id="eCenterInteractions">—</div><div class="small">e-Merkez alanındaki toplam etkileşim</div></div>
-  </section>
+  <section class="content-performance"><div class="card"><h2>En çok açılan videolar</h2><div class="small" style="margin-top:-8px;margin-bottom:12px">Video ve oynatma kontrolleri.</div><div class="list" id="videoOpens"></div></div><div class="card"><h2>İndirilen içerikler</h2><div class="small" style="margin-top:-8px;margin-bottom:12px">PDF, program ve indirilebilir içerik etkileşimleri.</div><div class="list" id="downloads"></div></div><div class="card ecenter-card"><div class="kpi-icon">⌕</div><h2>e-Merkez kullanımı</h2><div class="num" id="eCenterInteractions">—</div><div class="small">e-Merkez alanındaki toplam etkileşim</div></div></section>
 
   <div class="note">Bu panel anonim site etkileşimleri üzerinden çalışır. IP adresi kaydedilmez. Tekil ziyaretçi ölçümü tarayıcıdaki anonim ziyaretçi kimliğine dayanır ve yaklaşık bir metriktir.</div>
 </main>
@@ -132,6 +140,18 @@ function renderList(id,items,total){
 function renderChart(items){
   const el=$("chart"), vals=(items||[]).slice(-30), max=Math.max(...vals.map(x=>x.visits),1);
   el.innerHTML=vals.map(x=>`<div class="col" title="${esc(x.date)}: ${fmt(x.visits)} ziyaret" style="height:${Math.max(3,Math.round(x.visits/max*100))}%"><span>${esc(x.date.slice(5))}</span></div>`).join("");
+}
+let adminMapLoaded=false,adminMapSvg=null;
+async function ensureAdminMap(){
+  if(adminMapLoaded)return;adminMapLoaded=true;
+  const mount=$("adminMap");if(!mount)return;
+  try{const r=await fetch("/turkey.svg");if(!r.ok)throw new Error("map");mount.innerHTML=await r.text();adminMapSvg=mount.querySelector("svg");if(adminMapSvg){adminMapSvg.setAttribute("preserveAspectRatio","xMidYMid meet");adminMapSvg.setAttribute("role","img");adminMapSvg.setAttribute("aria-label","Türkiye il bazlı etkileşim haritası");}}
+  catch(e){mount.innerHTML='<div class="small">Türkiye haritası yüklenemedi.</div>';}
+}
+function renderAdminMap(items){
+  ensureAdminMap().then(()=>{if(!adminMapSvg)return;const rows=Array.isArray(items)?items:[],byName=new Map(rows.map(x=>[String(x.name||"").toLocaleLowerCase("tr-TR"),Number(x.count||0)])),max=Math.max(...rows.map(x=>Number(x.count||0)),1);
+    adminMapSvg.querySelectorAll("[data-city]").forEach(p=>{const city=String(p.dataset.city||"");const count=byName.get(city.toLocaleLowerCase("tr-TR"))||0;const ratio=count/max;const level=count===0?0:ratio>.66?4:ratio>.33?3:ratio>.12?2:1;p.dataset.adminCount=count;p.dataset.level=level;p.onmouseenter=()=>{$("adminMapTip").textContent=city+" · "+fmt(count)+" etkileşim";};p.onmouseleave=()=>{$("adminMapTip").textContent="Bir ilin üzerine gelerek etkileşim sayısını görüntüleyin.";};});
+  });
 }
 function filterProvinceList(){
   const el=$("provinceViews");
@@ -163,12 +183,13 @@ async function load(){
     $("unique").textContent=fmt(d.uniqueVisitors);
     $("active").textContent=fmt(d.activeVisitors);
     $("duration").textContent=duration(d.averageSessionSeconds);
+    $("snapVisits").textContent=fmt(d.visits);$("snapUnique").textContent=fmt(d.uniqueVisitors);$("snapActive").textContent=fmt(d.activeVisitors);$("snapDuration").textContent=duration(d.averageSessionSeconds);
     renderChart(d.daily);
     renderList("sections",d.sections);
     renderList("languages",d.languages);
     renderList("devices",d.devices);
     renderList("referrers",d.referrers);
-    renderList("provinceViews",d.provinceViews);
+    renderList("provinceViews",d.provinceViews);renderAdminMap(d.provinceViews);
     renderList("videoOpens",d.videoOpens);
     renderList("downloads",d.downloads);
     $("eCenterInteractions").textContent=fmt(d.eCenterInteractions);
