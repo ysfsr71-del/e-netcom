@@ -4,12 +4,17 @@
   <url>
     <loc>https://enetcomproject.com/</loc>
   </url>
-<url>
+
+  <url>
     <loc>https://enetcomproject.com/gallery.html</loc>
   </url>
 
   <url>
     <loc>https://enetcomproject.com/ciktilar.html</loc>
+  </url>
+
+  <url>
+    <loc>https://enetcomproject.com/proje.html</loc>
   </url>
 
 </urlset>
