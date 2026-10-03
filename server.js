@@ -818,18 +818,39 @@ function zipStore(files) {
   return Buffer.concat([body, centralBuf, end]);
 }
 
-function xlsxSheet(rows) {
+function xlsxSheet(rows, sheetName="") {
   const safeRows = Array.isArray(rows) ? rows : [];
-  let xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>';
+  const maxCols=Math.max(1,...safeRows.map(r=>Array.isArray(r)?r.length:1));
+  const colLetter=c=>{let n=c,out="";while(n){const rem=(n-1)%26;out=String.fromCharCode(65+rem)+out;n=Math.floor((n-1)/26);}return out;};
+  const isSummary=sheetName==="Genel Özet";
+  const widths=Array.from({length:maxCols},(_,i)=>{
+    let max=10;
+    for(const row of safeRows){const v=String((Array.isArray(row)?row:[row])[i]??"");max=Math.max(max,Math.min(v.length+2,i===0?42:28));}
+    return Math.min(max,i===0?46:30);
+  });
+  let xml='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">';
+  xml+='<sheetViews><sheetView workbookViewId="0"><pane ySplit="'+(isSummary?1:1)+'" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>';
+  xml+='<cols>'+widths.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join("")+'</cols><sheetData>';
   safeRows.forEach((row, r) => {
-    xml += `<row r="${r + 1}">`;
-    (Array.isArray(row) ? row : [row]).forEach((value, c) => {
-      const col = (() => { let n=c+1, out=""; while(n){ const rem=(n-1)%26; out=String.fromCharCode(65+rem)+out; n=Math.floor((n-1)/26);} return out; })();
-      xml += `<c r="${col}${r + 1}" t="inlineStr"><is><t xml:space="preserve">${xmlEscape(value)}</t></is></c>`;
+    const vals=Array.isArray(row)?row:[row];
+    const height=(isSummary&&r===0)?28:(r===0?24:20);
+    xml += `<row r="${r + 1}" ht="${height}" customHeight="1">`;
+    vals.forEach((value, ci) => {
+      const ref=colLetter(ci+1)+(r+1);
+      let style=0;
+      if(isSummary&&r===0) style=1;
+      else if(!isSummary&&r===0) style=2;
+      else if(isSummary&&ci===0) style=3;
+      else if(typeof value==="number") style=4;
+      else style=5;
+      if(typeof value==="number" && Number.isFinite(value)) xml+=`<c r="${ref}" s="${style}"><v>${value}</v></c>`;
+      else xml += `<c r="${ref}" s="${style}" t="inlineStr"><is><t xml:space="preserve">${xmlEscape(value)}</t></is></c>`;
     });
     xml += '</row>';
   });
-  xml += '</sheetData></worksheet>';
+  xml += '</sheetData>';
+  if(!isSummary && safeRows.length>1) xml+=`<autoFilter ref="A1:${colLetter(maxCols)}${safeRows.length}"/>`;
+  xml+='<pageMargins left="0.3" right="0.3" top="0.5" bottom="0.5" header="0.2" footer="0.2"/><pageSetup orientation="landscape" fitToWidth="1" fitToHeight="0"/></worksheet>';
   return xml;
 }
 
@@ -927,12 +948,13 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
   const workbookSheets=sheets.map((_,i)=>`<sheet name="${xmlEscape(sheets[i][0])}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join("");
   const files=[
-    {name:"[Content_Types].xml",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>${sheets.map((_,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join("")}</Types>`},
+    {name:"[Content_Types].xml",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${sheets.map((_,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join("")}</Types>`},
     {name:"_rels/.rels",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`},
     {name:"xl/workbook.xml",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${workbookSheets}</sheets></workbook>`},
-    {name:"xl/_rels/workbook.xml.rels",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((_,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join("")}</Relationships>`}
+    {name:"xl/_rels/workbook.xml.rels",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((_,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join("")}<Relationship Id="rId${sheets.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`},
+    {name:"xl/styles.xml",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="4"><font><sz val="11"/><name val="Aptos"/></font><font><b/><sz val="16"/><color rgb="FFFFFFFF"/><name val="Aptos Display"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Aptos"/></font><font><b/><sz val="11"/><color rgb="FF16372C"/><name val="Aptos"/></font></fonts><fills count="5"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF173F34"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FF2F6F59"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFEAF5F0"/></patternFill></fill></fills><borders count="2"><border/><border><left style="thin"><color rgb="FFD7E6DF"/></left><right style="thin"><color rgb="FFD7E6DF"/></right><top style="thin"><color rgb="FFD7E6DF"/></top><bottom style="thin"><color rgb="FFD7E6DF"/></bottom></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="6"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyAlignment="1"><alignment vertical="center"/></xf><xf numFmtId="0" fontId="2" fillId="3" borderId="1" xfId="0" applyAlignment="1"><alignment vertical="center"/></xf><xf numFmtId="0" fontId="3" fillId="4" borderId="1" xfId="0" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyAlignment="1"><alignment horizontal="right" vertical="center"/></xf><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`}
   ];
-  sheets.forEach((sh,i)=>files.push({name:`xl/worksheets/sheet${i+1}.xml`,data:xlsxSheet(sh[1])}));
+  sheets.forEach((sh,i)=>files.push({name:`xl/worksheets/sheet${i+1}.xml`,data:xlsxSheet(sh[1],sh[0])}));
   return zipStore(files);
 }
 
