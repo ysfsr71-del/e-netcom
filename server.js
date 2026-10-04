@@ -1226,7 +1226,8 @@ function buildAnalyticsEvaluationDocx(range="30d",fromDate="",toDate=""){
  if(topProvince)body+=docxP("• İl haritasında en yüksek etkileşim "+topProvince.name+" ("+topProvince.count+" etkileşim).",{size:19,after:70});
  if(topVideo)body+=docxP("• En çok açılan video "+topVideo.name+" ("+topVideo.count+" açılma).",{size:19,after:70});
  body+=docxPageBreak()+docxP("TRAFİK VE KULLANICI PROFİLİ",{style:"Heading1",bold:true,color:"176B52",size:29,after:100});
- body+=analyticsDailyTable(st.daily);\n body+=docxP("Değerlendirme: "+trafficText,{color:"4E6B61",size:18,after:140});
+ body+=analyticsDailyTable(st.daily);
+ body+=docxP("Değerlendirme: "+trafficText,{color:"4E6B61",size:18,after:140});
  body+=analyticsBarTable("Cihaz Dağılımı",devices,visits,6);
  body+=docxP("Değerlendirme: "+deviceText,{color:"4E6B61",size:18,after:140});
  body+=analyticsBarTable("Dil Dağılımı",languages,visits,6);
