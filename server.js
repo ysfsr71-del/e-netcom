@@ -878,7 +878,9 @@ function countTargetsAll(events, type) {
 
 function xlsxChartXml(type,title,categories,values,seriesName,showLegend=true,categoryCache=[],valueCache=[]){
   const tx=xmlEscape(seriesName), ttl=xmlEscape(title);
-  const cat=xmlEscape(categories), val=xmlEscape(values);\n  const strCache=`<c:strCache><c:ptCount val="${categoryCache.length}"/>${categoryCache.map((v,i)=>`<c:pt idx="${i}"><c:v>${xmlEscape(v)}</c:v></c:pt>`).join("")}</c:strCache>`;\n  const numCache=`<c:numCache><c:formatCode>General</c:formatCode><c:ptCount val="${valueCache.length}"/>${valueCache.map((v,i)=>`<c:pt idx="${i}"><c:v>${Number(v)||0}</c:v></c:pt>`).join("")}</c:numCache>`;
+  const cat=xmlEscape(categories), val=xmlEscape(values);
+  const strCache=`<c:strCache><c:ptCount val="${categoryCache.length}"/>${categoryCache.map((v,i)=>`<c:pt idx="${i}"><c:v>${xmlEscape(v)}</c:v></c:pt>`).join("")}</c:strCache>`;
+  const numCache=`<c:numCache><c:formatCode>General</c:formatCode><c:ptCount val="${valueCache.length}"/>${valueCache.map((v,i)=>`<c:pt idx="${i}"><c:v>${Number(v)||0}</c:v></c:pt>`).join("")}</c:numCache>`;
   const chartBody=type==="line"
     ? `<c:lineChart><c:grouping val="standard"/><c:varyColors val="0"/><c:ser><c:idx val="0"/><c:order val="0"/><c:tx><c:v>${tx}</c:v></c:tx><c:marker><c:symbol val="none"/></c:marker><c:cat><c:strRef><c:f>${cat}</c:f>${strCache}</c:strRef></c:cat><c:val><c:numRef><c:f>${val}</c:f>${numCache}</c:numRef></c:val><c:smooth val="0"/></c:ser><c:axId val="48650112"/><c:axId val="48672768"/></c:lineChart>`
     : `<c:barChart><c:barDir val="col"/><c:grouping val="clustered"/><c:varyColors val="0"/><c:ser><c:idx val="0"/><c:order val="0"/><c:tx><c:v>${tx}</c:v></c:tx><c:cat><c:strRef><c:f>${cat}</c:f></c:strRef></c:cat><c:val><c:numRef><c:f>${val}</c:f></c:numRef></c:val></c:ser><c:dLbls><c:showVal val="1"/><c:showLegendKey val="0"/><c:showCatName val="0"/><c:showSerName val="0"/></c:dLbls><c:axId val="48650112"/><c:axId val="48672768"/></c:barChart>`;
