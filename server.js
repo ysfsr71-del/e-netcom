@@ -828,7 +828,7 @@ function xlsxSheet(rows, sheetName="") {
     for(const row of safeRows){const v=String((Array.isArray(row)?row:[row])[i]??"");max=Math.max(max,Math.min(v.length+2,i===0?42:28));}
     return Math.min(max,i===0?46:30);
   });
-  let xml='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">';
+  let xml='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">';
   xml+='<sheetViews><sheetView workbookViewId="0"><pane ySplit="'+(isSummary?1:1)+'" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>';
   xml+='<cols>'+widths.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join("")+'</cols><sheetData>';
   safeRows.forEach((row, r) => {
@@ -850,6 +850,7 @@ function xlsxSheet(rows, sheetName="") {
   });
   xml += '</sheetData>';
   if(!isSummary && safeRows.length>1) xml+=`<autoFilter ref="A1:${colLetter(maxCols)}${safeRows.length}"/>`;
+  if(isSummary) xml+='<drawing r:id="rId1"/>';
   xml+='<pageMargins left="0.3" right="0.3" top="0.5" bottom="0.5" header="0.2" footer="0.2"/><pageSetup orientation="landscape" fitToWidth="1" fitToHeight="0"/></worksheet>';
   return xml;
 }
@@ -875,6 +876,19 @@ function countTargetsAll(events, type) {
   return [...map.entries()].sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0], "tr"));
 }
 
+function xlsxChartXml(type,title,categories,values,seriesName){
+  const tx=xmlEscape(seriesName), ttl=xmlEscape(title);
+  const cat=xmlEscape(categories), val=xmlEscape(values);
+  const chartBody=type==="line"
+    ? `<c:lineChart><c:grouping val="standard"/><c:varyColors val="0"/><c:ser><c:idx val="0"/><c:order val="0"/><c:tx><c:v>${tx}</c:v></c:tx><c:marker><c:symbol val="none"/></c:marker><c:cat><c:strRef><c:f>${cat}</c:f></c:strRef></c:cat><c:val><c:numRef><c:f>${val}</c:f></c:numRef></c:val><c:smooth val="0"/></c:ser><c:axId val="48650112"/><c:axId val="48672768"/></c:lineChart>`
+    : `<c:barChart><c:barDir val="col"/><c:grouping val="clustered"/><c:varyColors val="0"/><c:ser><c:idx val="0"/><c:order val="0"/><c:tx><c:v>${tx}</c:v></c:tx><c:cat><c:strRef><c:f>${cat}</c:f></c:strRef></c:cat><c:val><c:numRef><c:f>${val}</c:f></c:numRef></c:val></c:ser><c:axId val="48650112"/><c:axId val="48672768"/></c:barChart>`;
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><c:chartSpace xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><c:chart><c:title><c:tx><c:rich><a:bodyPr/><a:lstStyle/><a:p><a:r><a:rPr lang="tr-TR" sz="1300" b="1"/><a:t>${ttl}</a:t></a:r></a:p></c:rich></c:tx><c:layout/><c:overlay val="0"/></c:title><c:autoTitleDeleted val="0"/><c:plotArea><c:layout/>${chartBody}<c:catAx><c:axId val="48650112"/><c:scaling><c:orientation val="minMax"/></c:scaling><c:delete val="0"/><c:axPos val="b"/><c:tickLblPos val="nextTo"/><c:crossAx val="48672768"/><c:crosses val="autoZero"/><c:auto val="1"/><c:lblAlgn val="ctr"/><c:lblOffset val="100"/></c:catAx><c:valAx><c:axId val="48672768"/><c:scaling><c:orientation val="minMax"/></c:scaling><c:delete val="0"/><c:axPos val="l"/><c:majorGridlines/><c:numFmt formatCode="0" sourceLinked="0"/><c:tickLblPos val="nextTo"/><c:crossAx val="48650112"/><c:crosses val="autoZero"/><c:crossBetween val="between"/></c:valAx></c:plotArea><c:legend><c:legendPos val="b"/><c:layout/><c:overlay val="0"/></c:legend><c:plotVisOnly val="1"/><c:dispBlanksAs val="zero"/></c:chart></c:chartSpace>`;
+}
+function xlsxDrawingXml(){
+  const anchor=(id,name,chartId,fromCol,fromRow,toCol,toRow)=>`<xdr:twoCellAnchor><xdr:from><xdr:col>${fromCol}</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>${fromRow}</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:from><xdr:to><xdr:col>${toCol}</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>${toRow}</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:to><xdr:graphicFrame macro=""><xdr:nvGraphicFramePr><xdr:cNvPr id="${id}" name="${name}"/><xdr:cNvGraphicFramePr/></xdr:nvGraphicFramePr><xdr:xfrm/><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/chart"><c:chart xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:id="rId${chartId}"/></a:graphicData></a:graphic></xdr:graphicFrame><xdr:clientData/></xdr:twoCellAnchor>`;
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><xdr:wsDr xmlns:xdr="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">${anchor(1,"Günlük Trafik",1,3,1,11,17)}${anchor(2,"Cihaz Dağılımı",2,3,18,7,32)}${anchor(3,"Dil Dağılımı",3,8,18,12,32)}</xdr:wsDr>`;
+}
+
 function buildReportWorkbook(range, fromDate, toDate) {
   const bounds = getRangeBounds(range, fromDate, toDate);
   const start = bounds.start, end = bounds.end;
@@ -892,8 +906,12 @@ function buildReportWorkbook(range, fromDate, toDate) {
   const sectionCounts = countAll(events.filter(e => e.type === "section_view"), "section");
   // Keep the exported language sheet consistent with the dashboard:
   // one language per session, using the language recorded at session start.
-  const languageCounts = countAll(sessions, "lang");
-  const deviceCounts = countAll(sessions, "device");
+  const langNames={tr:"Türkçe",en:"İngilizce",de:"Almanca"};
+  const deviceNames={desktop:"Masaüstü",mobile:"Mobil",tablet:"Tablet"};
+  const eventNames={pageview:"Sayfa görüntüleme",section_view:"Bölüm görüntüleme",session_start:"Oturum başlangıcı",session_end:"Oturum sonu",session_heartbeat:"Aktif oturum sinyali",map_click:"İl haritası etkileşimi",video_open:"Video açma",download:"İndirme",click:"Tıklama"};
+  const translateCounts=(items,names)=>items.map(([name,count])=>[names[String(name).toLowerCase()]||name,count]);
+  const languageCounts = translateCounts(countAll(sessions, "lang"),langNames);
+  const deviceCounts = translateCounts(countAll(sessions, "device"),deviceNames);
   const refCounts = new Map();
   for (const e of sessions) {
     const raw=String(e.referrer||"direct").trim();
@@ -943,17 +961,26 @@ function buildReportWorkbook(range, fromDate, toDate) {
     ["Diller",twoCol("Dil",languageCounts)],
     ["Cihazlar",twoCol("Cihaz",deviceCounts)],
     ["Giriş Kaynakları",twoCol("Kaynak",referrerCounts)],
-    ["Olay Türleri",twoCol("Olay",countAll(events,"type"))]
+    ["Olay Türleri",twoCol("Olay",translateCounts(countAll(events,"type"),eventNames))]
   ];
 
   const workbookSheets=sheets.map((_,i)=>`<sheet name="${xmlEscape(sheets[i][0])}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join("");
   const files=[
-    {name:"[Content_Types].xml",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${sheets.map((_,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join("")}</Types>`},
+    {name:"[Content_Types].xml",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/><Override PartName="/xl/drawings/drawing1.xml" ContentType="application/vnd.openxmlformats-officedocument.drawing+xml"/><Override PartName="/xl/charts/chart1.xml" ContentType="application/vnd.openxmlformats-officedocument.drawingml.chart+xml"/><Override PartName="/xl/charts/chart2.xml" ContentType="application/vnd.openxmlformats-officedocument.drawingml.chart+xml"/><Override PartName="/xl/charts/chart3.xml" ContentType="application/vnd.openxmlformats-officedocument.drawingml.chart+xml"/>${sheets.map((_,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join("")}</Types>`},
     {name:"_rels/.rels",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`},
     {name:"xl/workbook.xml",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${workbookSheets}</sheets></workbook>`},
     {name:"xl/_rels/workbook.xml.rels",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((_,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join("")}<Relationship Id="rId${sheets.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`},
     {name:"xl/styles.xml",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="4"><font><sz val="11"/><name val="Aptos"/></font><font><b/><sz val="16"/><color rgb="FFFFFFFF"/><name val="Aptos Display"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Aptos"/></font><font><b/><sz val="11"/><color rgb="FF16372C"/><name val="Aptos"/></font></fonts><fills count="5"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF173F34"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FF2F6F59"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFEAF5F0"/></patternFill></fill></fills><borders count="2"><border/><border><left style="thin"><color rgb="FFD7E6DF"/></left><right style="thin"><color rgb="FFD7E6DF"/></right><top style="thin"><color rgb="FFD7E6DF"/></top><bottom style="thin"><color rgb="FFD7E6DF"/></bottom></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="6"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyAlignment="1"><alignment vertical="center"/></xf><xf numFmtId="0" fontId="2" fillId="3" borderId="1" xfId="0" applyAlignment="1"><alignment vertical="center"/></xf><xf numFmtId="0" fontId="3" fillId="4" borderId="1" xfId="0" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyAlignment="1"><alignment horizontal="right" vertical="center"/></xf><xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`}
   ];
+  const dailyEnd=Math.max(2,daily.length), deviceEnd=Math.max(2,deviceCounts.length+1), langEnd=Math.max(2,languageCounts.length+1);
+  files.push(
+    {name:"xl/worksheets/_rels/sheet1.xml.rels",data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing" Target="../drawings/drawing1.xml"/></Relationships>'},
+    {name:"xl/drawings/drawing1.xml",data:xlsxDrawingXml()},
+    {name:"xl/drawings/_rels/drawing1.xml.rels",data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart" Target="../charts/chart1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart" Target="../charts/chart2.xml"/><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart" Target="../charts/chart3.xml"/></Relationships>'},
+    {name:"xl/charts/chart1.xml",data:xlsxChartXml("line","Günlük Ziyaret Trafiği",`'Günlük Trafik'!$A$2:$A${dailyEnd}`,`'Günlük Trafik'!$B$2:$B${dailyEnd}`,"Ziyaret")},
+    {name:"xl/charts/chart2.xml",data:xlsxChartXml("bar","Cihaz Dağılımı",`'Cihazlar'!$A$2:$A${deviceEnd}`,`'Cihazlar'!$B$2:$B${deviceEnd}`,"Oturum")},
+    {name:"xl/charts/chart3.xml",data:xlsxChartXml("bar","Dil Dağılımı",`'Diller'!$A$2:$A${langEnd}`,`'Diller'!$B$2:$B${langEnd}`,"Oturum")}
+  );
   sheets.forEach((sh,i)=>files.push({name:`xl/worksheets/sheet${i+1}.xml`,data:xlsxSheet(sh[1],sh[0])}));
   return zipStore(files);
 }
