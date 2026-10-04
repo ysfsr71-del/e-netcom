@@ -3144,37 +3144,7 @@ document.addEventListener('keydown', function(e){
   apply();
 })();
 </script>
-<script id="v67-project-outputs-i18n">
-(function(){
-  const labels={
-    tr:{section:'PROJE ÇIKTILARI',title:'Dijital Aktivizm ve Farkındalık Tasarımları',lead:'WP2 kapsamında hazırlanan dijital çevre aktivizmi ve farkındalık materyallerini keşfedin.',tag:'WP2 · DİJİTAL AKTİVİZM',desc:'Hashtag kampanyaları, kısa film fikirleri ve Green Challenge içerikleri.',copy:'Belgedeki kampanya temalarını, çok dilli hashtagleri ve eylem çağrılarını tek bir dijital alanda kullanın.',pdf:"PDF'yi aç ↗",kit:'Dijital kiti keşfet →',nav:'Proje Çıktıları'},
-    en:{section:'PROJECT OUTPUTS',title:'Digital Activism and Awareness Designs',lead:'Explore the digital environmental activism and awareness materials prepared under WP2.',tag:'WP2 · DIGITAL ACTIVISM',desc:'Hashtag campaigns, short-film ideas and Green Challenge content.',copy:'Use the campaign themes, multilingual hashtags and calls to action from the document in one digital space.',pdf:'Open PDF ↗',kit:'Explore the digital kit →',nav:'Project Outputs'},
-    de:{section:'PROJEKTERGEBNISSE',title:'Digitale Aktivismus- und Sensibilisierungsdesigns',lead:'Entdecken Sie die im Rahmen von WP2 erstellten Materialien für digitalen Umweltaktivismus und Sensibilisierung.',tag:'WP2 · DIGITALER AKTIVISMUS',desc:'Hashtag-Kampagnen, Kurzfilmideen und Green-Challenge-Inhalte.',copy:'Nutzen Sie Kampagnenthemen, mehrsprachige Hashtags und Handlungsaufrufe des Dokuments an einem digitalen Ort.',pdf:'PDF öffnen ↗',kit:'Digitales Kit entdecken →',nav:'Projektergebnisse'}
-  };
-  function update(l){const t=labels[l]||labels.tr;const root=document.getElementById('ciktilar');if(!root)return;const q=(sel)=>root.querySelector(sel);if(q('.eyebrow'))q('.eyebrow').textContent=t.section;if(q('h2'))q('h2').textContent=t.title;if(q('.section-lead'))q('.section-lead').textContent=t.lead;if(q('.tag'))q('.tag').textContent=t.tag;if(q('h3'))q('h3').textContent=t.desc;if(q('p'))q('p').textContent=t.copy;const btns=root.querySelectorAll('.output-actions .btn');if(btns[0])btns[0].textContent=t.pdf;if(btns[1])btns[1].textContent=t.kit;document.querySelectorAll('a[href="#ciktilar"]').forEach(a=>{if(a.textContent.trim()==='Proje Çıktıları'||a.textContent.trim()==='Project Outputs'||a.textContent.trim()==='Projektergebnisse')a.textContent=t.nav})}
-  function hook(){const old=window.apply;if(typeof old==='function'&&!old.__v67Outputs){const wrapped=function(l){const r=old.apply(this,arguments);update((l||document.documentElement.lang||'tr').slice(0,2));return r};wrapped.__v67Outputs=true;window.apply=wrapped;}update((document.documentElement.lang||'tr').slice(0,2));}
-  window.addEventListener('load',hook);setTimeout(hook,700);
-})();
 
-document.addEventListener("click",function(e){
-  const link=e.target.closest("[data-clear-wp]");
-  if(link) clearActivityWP();
-});
-
-
-document.addEventListener("click",function(e){
-  const card=e.target.closest("a.wp-card-link[href]");
-  if(!card)return;
-  try{
-    const url=new URL(card.getAttribute("href"),window.location.href);
-    const wp=url.searchParams.get("wp");
-    if(["WP2","WP3","WP4"].includes(wp)){
-      rememberActivityWP(wp);
-    }
-  }catch(err){}
-});
-
-</script>
 
 <!-- WP3 Akran Eğiticisi Gelişim Programı: content is data-driven so additional photos can be added later. -->
 <div class="wp3-modal" id="wp3AkranModal" aria-hidden="true">
