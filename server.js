@@ -980,6 +980,10 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-04","Çok Dillilik / UX","Bağımsız Proje, Eğitimler, Uluslararası Faaliyetler ve Veritabanı sayfalarına görünür TR / EN / DE dil seçici eklendi; sayfa içeriklerinin İngilizce ve Almanca çevirileri tamamlandı."],
+["2026-10-04","Çok Dillilik / Navigasyon","Ana sayfadaki aktif dilin bağımsız HTML sayfalarına aktarılması sağlandı; bağlantılara dil parametresi eklenerek sayfalar arası dil tercihi korunur hale getirildi."],
+["2026-10-04","Kalite / Çok Dillilik","Bağımsız sayfalardaki dil seçicinin çalışmasını engelleyen JavaScript kapsam ve çalışma zamanı hataları giderildi; TR / EN / DE arasında canlı geçiş kararlı hale getirildi."],
+["2026-10-04","Ana Sayfa / UX","Etki Göstergeleri altındaki yinelenen faaliyet özeti, Eğitim ve Farkındalık, Uluslararası İş Birliği, Dijital İletişim ve Yaygınlaştırma Ağı kartlarından oluşan Etki Alanları bölümüyle yenilendi."],
 ["2026-10-04","Kalite / Raporlama","Excel uygulamalarındaki kurtarma ve uyumluluk uyarılarını tamamen önlemek amacıyla grafik bileşenleri analitik rapordan kaldırıldı; veri tabloları, kurumsal biçimlendirme ve Türkçeleştirilmiş etiketler korunarak daha kararlı XLSX yapısına geçildi."],
 ["2026-10-04","Kalite / Raporlama","Excel açılışındaki kurtarma uyarısını önlemek amacıyla grafik OOXML yapısı Excel uyumluluğu için güçlendirildi; grafik veri önbellekleri, dil ve çalışma kitabı uyumluluk bilgileri eklendi."],
 ["2026-10-04","Raporlama","Excel Genel Özet başlığı birleştirilerek okunabilirliği artırıldı; cihaz ve dil grafiklerinde gereksiz lejant kaldırıldı, veri etiketleri eklendi ve language olay türü Dil değişimi olarak Türkçeleştirildi."],
@@ -1019,6 +1023,10 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-04","Multilingual / UX","A visible TR / EN / DE language selector was added to the standalone Project, Training, International Activities and Database pages, and English and German translations of page content were completed."],
+["2026-10-04","Multilingual / Navigation","The active homepage language is now carried into standalone HTML pages; language parameters were added to links so the selected language is preserved across page navigation."],
+["2026-10-04","Quality / Multilingual","JavaScript scope and runtime errors that blocked the standalone language selector were fixed, making live switching between TR / EN / DE reliable."],
+["2026-10-04","Homepage / UX","The duplicated activity summary below Impact Indicators was replaced with an Impact Areas section covering Education & Awareness, International Cooperation, Digital Communication and Dissemination Network."],
 ["2026-10-04","Quality / Reporting","Chart components were removed from the analytics workbook to eliminate Excel recovery and compatibility warnings; data tables, institutional formatting and localized labels were retained in a more stable XLSX structure."],
 ["2026-10-04","Quality / Reporting","Excel chart OOXML compatibility was strengthened to address the workbook recovery warning; chart caches and workbook compatibility information were added."],
 ["2026-10-04","Reporting","The General Summary title was improved for readability; unnecessary legends were removed and report-facing event labels were localized."],
