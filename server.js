@@ -1287,27 +1287,6 @@ function buildReleasePrintHtml(lang="tr"){
  return printShell(title,sub,body);
 }
 
-async function htmlToPdfBuffer(html){
- let browser;
- try{
-  const {default:puppeteer}=await import("puppeteer");
-  browser=await puppeteer.launch({headless:true,args:["--no-sandbox","--disable-setuid-sandbox"]});
-  const page=await browser.newPage();
-  await page.setContent(html.replace(/<script>window\.addEventListener\("load",[\s\S]*?<\/script>/,""),{waitUntil:"networkidle0"});
-  await page.emulateMediaType("print");
-  return await page.pdf({format:"A4",printBackground:true,preferCSSPageSize:true,margin:{top:"0",right:"0",bottom:"0",left:"0"}});
- }finally{if(browser)await browser.close();}
-}
-function sendPdf(res,buffer,filename){
- res.setHeader("Content-Type","application/pdf");
- res.setHeader("Content-Disposition",'attachment; filename="'+filename+'"');
- res.setHeader("Cache-Control","no-store");
- res.send(buffer);
-}
-
-app.get("/api/admin/analytics-report.pdf",requireAdmin,async(req,res)=>{try{const {range,fromDate,toDate}=reportRangeFromReq(req),html=buildAnalyticsPrintHtml(range,fromDate,toDate),pdf=await htmlToPdfBuffer(html),stamp=new Date().toISOString().slice(0,10);sendPdf(res,pdf,"e-NetCoM_Analitik_Raporu_"+stamp+".pdf");}catch(err){console.error("Analytics PDF error:",err);res.status(500).json({error:"PDF raporu oluşturulamadı."});}});
-app.get("/api/admin/release-notes.pdf",requireAdmin,async(req,res)=>{try{const lang=String(req.query.lang||"tr").toLowerCase()==="en"?"en":"tr",html=buildReleasePrintHtml(lang),pdf=await htmlToPdfBuffer(html),stamp=new Date().toISOString().slice(0,10),name=lang==="en"?"e-NetCoM_Development_Release_Report_EN_"+stamp+".pdf":"e-NetCoM_Gelistirme_Surum_Raporu_TR_"+stamp+".pdf";sendPdf(res,pdf,name);}catch(err){console.error("Release PDF error:",err);res.status(500).json({error:"PDF raporu oluşturulamadı."});}});
-
 app.get("/api/admin/analytics-report.print",requireAdmin,(req,res)=>{const {range,fromDate,toDate}=reportRangeFromReq(req);res.type("html").send(buildAnalyticsPrintHtml(range,fromDate,toDate));});
 app.get("/api/admin/release-notes.print",requireAdmin,(req,res)=>{const lang=String(req.query.lang||"tr").toLowerCase()==="en"?"en":"tr";res.type("html").send(buildReleasePrintHtml(lang));});
 
