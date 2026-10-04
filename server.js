@@ -1,5 +1,4 @@
 import express from "express";
-import PDFDocument from "pdfkit";
 import OpenAI from "openai";
 import dotenv from "dotenv";
 import path from "path";
@@ -1159,46 +1158,6 @@ function trafficInsight(daily){
  const avg=rows.reduce((a,x)=>a+Number(x.visits||0),0)/rows.length;
  return "Günlük trafikte en yüksek değer "+peak.date+" tarihinde "+peak.visits+" oturumla kaydedilmiştir. Aktif gün ortalaması "+Math.round(avg)+" oturumdur.";
 }
-function pdfSafeText(v){return String(v??"");}
-function createPdfBuffer(render){
- return new Promise((resolve,reject)=>{try{
-  const doc=new PDFDocument({size:"A4",margin:54,bufferPages:true,info:{Title:"e-NetCoM Report",Author:"e-NetCoM Management Centre"}});
-  doc.registerFont("Noto","node_modules/@fontsource/noto-sans/files/noto-sans-latin-ext-400-normal.woff");
-  doc.registerFont("NotoBold","node_modules/@fontsource/noto-sans/files/noto-sans-latin-ext-700-normal.woff");
-  doc.font("Noto");
-  const chunks=[];doc.on("data",d=>chunks.push(d));doc.on("end",()=>resolve(Buffer.concat(chunks)));doc.on("error",reject);
-  render(doc);
-  const pages=doc.bufferedPageRange();
-  for(let i=0;i<pages.count;i++){doc.switchToPage(i);doc.font("Noto").fontSize(7).fillColor("#91A39C").text("e-NetCoM · "+(i+1),54,806,{width:487,align:"center",lineBreak:false});}
-  doc.end();
- }catch(e){reject(e);}});
-}
-function pdfHeader(doc,title,subtitle){
- doc.font("NotoBold").fillColor("#176B52").fontSize(27).text("e-NetCoM",{align:"center"}).moveDown(.18);
- doc.font("NotoBold").fillColor("#173F34").fontSize(18).text(pdfSafeText(title),{align:"center"}).moveDown(.18);
- if(subtitle)doc.font("Noto").fillColor("#536B62").fontSize(9.5).text(pdfSafeText(subtitle),{align:"center"}).moveDown(.85);
-}
-function pdfCover(doc,title,subtitle,period,meta,stats){
- doc.rect(0,0,595,10).fill("#173F34");
- doc.moveDown(5);
- doc.font("NotoBold").fillColor("#176B52").fontSize(31).text("e-NetCoM",{align:"center"}).moveDown(.2);
- doc.font("NotoBold").fillColor("#71867D").fontSize(8.5).text("ENVIRONMENTAL COMMUNICATION AND MEDIA NETWORK",{align:"center",characterSpacing:.4}).moveDown(2.1);
- doc.font("NotoBold").fillColor("#173F34").fontSize(22).text(pdfSafeText(title),{align:"center"}).moveDown(.35);
- doc.font("Noto").fillColor("#536B62").fontSize(11).text(pdfSafeText(subtitle),{align:"center"}).moveDown(2);
- doc.font("NotoBold").fillColor("#176B52").fontSize(9).text("RAPOR DÖNEMİ",{align:"center"}).moveDown(.25);
- doc.font("NotoBold").fillColor("#173F34").fontSize(14).text(pdfSafeText(period),{align:"center"}).moveDown(1.7);
- if(stats){doc.roundedRect(88,doc.y,419,55,8).fill("#F0F7F4");doc.fillColor("#176B52").font("NotoBold").fontSize(11).text(pdfSafeText(stats),98,doc.y+20,{width:399,align:"center"});doc.y+=75;}
- doc.font("Noto").fillColor("#6B7F77").fontSize(8.5).text(pdfSafeText(meta),{align:"center"}).moveDown(.6);
- doc.font("NotoBold").fillColor("#173F34").fontSize(9).text("e-NetCoM Yönetim Merkezi · enetcomproject.com",{align:"center"});
-}
-function pdfSection(doc,title){
- if(doc.y>720)doc.addPage();
- doc.moveDown(.65);const y=doc.y;doc.rect(54,y,487,23).fill("#E9F3EF");doc.font("NotoBold").fillColor("#176B52").fontSize(11).text(pdfSafeText(title),62,y+6,{width:471});doc.y=y+31;doc.font("Noto").fillColor("#263D35").fontSize(9.2);
-}
-function pdfBars(doc,title,items,total,maxItems=10){
- pdfSection(doc,title);const rows=(items||[]).slice(0,maxItems),max=Math.max(1,...rows.map(x=>x.count));
- for(const x of rows){if(doc.y>748)doc.addPage();const y=doc.y,label=pdfSafeText(x.name);doc.font("Noto").fillColor("#263D35").fontSize(8.2).text(label,54,y,{width:176,height:24,ellipsis:true});const bx=238,bw=205,w=Math.max(3,bw*x.count/max);doc.roundedRect(bx,y+3,w,8,3).fill("#176B52");doc.font("NotoBold").fillColor("#263D35").fontSize(8).text(x.count+" ("+reportPct(x.count,total)+"%)",450,y,{width:91,align:"right"});doc.y=Math.max(doc.y,y+20);}
-}
 function reportPct(n,total){return total?Math.round((Number(n)||0)*1000/total)/10:0;}
 function reportDuration(sec){sec=Math.max(0,Number(sec)||0);const m=Math.floor(sec/60),ss=Math.round(sec%60);return m?m+" dk "+ss+" sn":ss+" sn";}
 function analyticsBarTable(title,items,total,maxItems=8){
@@ -1279,29 +1238,39 @@ function buildAnalyticsEvaluationDocx(range="30d",fromDate="",toDate=""){
  return zipStore([{name:"[Content_Types].xml",data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/></Types>'},{name:"_rels/.rels",data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'},{name:"word/_rels/document.xml.rels",data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>'},{name:"word/document.xml",data:document},{name:"word/styles.xml",data:styles},{name:"word/footer1.xml",data:footer}]);
 }
 
-async function buildAnalyticsEvaluationPdf(range="30d",fromDate="",toDate=""){
+function reportRangeFromReq(req){return {range:["24h","7d","30d","90d","1y","all","custom"].includes(req.query.range)?req.query.range:"30d",fromDate:String(req.query.from||""),toDate:String(req.query.to||"")};}
+
+function printEsc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function printBars(title,items,total,maxItems=10){
+ const rows=(items||[]).slice(0,maxItems),max=Math.max(1,...rows.map(x=>Number(x.count)||0));
+ return '<section><h2>'+printEsc(title)+'</h2><div class="bars">'+rows.map(x=>{const n=Number(x.count)||0,w=Math.max(2,Math.round(n/max*100));return '<div class="barrow"><div class="barname">'+printEsc(x.name)+'</div><div class="track"><i style="width:'+w+'%"></i></div><div class="barval">'+n+' <small>%'+reportPct(n,total)+'</small></div></div>';}).join("")+'</div></section>';
+}
+function printShell(title,subtitle,body){
+ return '<!doctype html><html lang="tr"><head><meta charset="utf-8"><title>'+printEsc(title)+'</title><style>'+
+ '*{box-sizing:border-box}body{margin:0;font-family:Arial,"Segoe UI",sans-serif;color:#203b32;background:#e9efec}.page{width:210mm;min-height:297mm;margin:10mm auto;background:#fff;padding:18mm 17mm 20mm;box-shadow:0 4px 24px #0002;position:relative}.top{height:5mm;background:#173f34;position:absolute;left:0;right:0;top:0}.brand{text-align:center;margin-top:25mm;color:#176b52;font-size:34px;font-weight:800}.network{text-align:center;color:#6b7f77;font-size:10px;letter-spacing:.7px;margin:6px 0 28px}.title{text-align:center;font-size:25px;font-weight:800;color:#173f34}.subtitle{text-align:center;color:#536b62;margin-top:8px}.period{text-align:center;margin:34px 0 18px;color:#176b52;font-weight:700}.stats{background:#eef6f2;border-radius:12px;padding:18px;text-align:center;color:#176b52;font-weight:800;margin:0 auto;max-width:155mm}.meta{text-align:center;color:#71867d;font-size:11px;margin-top:30px}.pagebreak{break-before:page}.content{width:210mm;margin:0 auto;background:#fff;padding:15mm 17mm 20mm}h1{font-size:22px;color:#173f34;margin:0 0 14px}h2{font-size:14px;color:#176b52;background:#eaf4ef;padding:7px 9px;margin:20px 0 10px}p{font-size:11px;line-height:1.65;margin:7px 0}.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}.kpi{border:1px solid #dce9e3;border-radius:8px;padding:10px}.kpi b{display:block;color:#176b52;font-size:16px}.barrow{display:grid;grid-template-columns:40mm 1fr 28mm;gap:8px;align-items:center;margin:7px 0;font-size:10px}.track{height:9px;background:#edf3f0;border-radius:5px;overflow:hidden}.track i{display:block;height:100%;background:#176b52;border-radius:5px}.barval{text-align:right;font-weight:700}.barval small{color:#71867d}.note{color:#536b62;border-left:3px solid #176b52;padding:8px 10px;background:#f6faf8}.entry{margin:8px 0;font-size:10.5px;line-height:1.55}.entry b{color:#176b52}.date{font-size:14px;font-weight:800;color:#176b52;background:#eaf4ef;padding:7px;margin-top:18px}@page{size:A4;margin:10mm}@media print{body{background:#fff}.page,.content{margin:0;box-shadow:none;width:auto}.no-print{display:none!important}.page{break-after:page}.content{padding-top:8mm}section{break-inside:avoid}}'+
+ '</style></head><body>'+body+'<script>window.addEventListener("load",()=>setTimeout(()=>window.print(),350));</script></body></html>';
+}
+function buildAnalyticsPrintHtml(range="30d",fromDate="",toDate=""){
  const st=buildAnalyticsStats(range,fromDate,toDate),visits=st.visits||0,unique=st.uniqueVisitors||0,events=st.totalEvents||0,avg=st.averageSessionSeconds||0;
  const devices=cleanAnalyticsItems(st.devices,"device"),languages=cleanAnalyticsItems(st.languages,"language"),sections=cleanAnalyticsItems(st.sections,"section"),downloads=cleanAnalyticsItems(st.downloads,"download"),videos=cleanVideoItems(st.videoOpens),referrers=cleanAnalyticsItems(st.referrers,"referrer"),provinces=st.provinceViews||[];
  const label=range==="custom"?fromDate+" – "+toDate:range==="all"?"Tüm kayıtlar":({"24h":"Son 24 saat","7d":"Son 7 gün","30d":"Son 30 gün","90d":"Son 90 gün","1y":"Son 1 yıl"}[range]||range);
  const now=new Date(),stamp=now.toLocaleDateString("tr-TR",{day:"2-digit",month:"long",year:"numeric",timeZone:"Europe/Istanbul"})+" · "+now.toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit",timeZone:"Europe/Istanbul"})+" · Türkiye (UTC+3)";
- return createPdfBuffer(doc=>{pdfCover(doc,"ANALİTİK DEĞERLENDİRME RAPORU","Web sitesi kullanım verilerinin yönetici odaklı analizi",label,"Oluşturulma: "+stamp,visits+" oturum   •   "+unique+" tekil ziyaretçi   •   "+events+" analitik olayı");
- doc.addPage();pdfSection(doc,"YÖNETİCİ ÖZETİ");doc.font("Noto").fontSize(9.5).fillColor("#263D35").text("Seçilen dönemde e-NetCoM web sitesinde "+visits+" oturum ve "+unique+" tekil ziyaretçi kaydedilmiştir. Ortalama oturum süresi "+reportDuration(avg)+"; toplam analitik etkileşim "+events+" olarak ölçülmüştür. "+trafficInsight(st.daily),{lineGap:3});
- pdfSection(doc,"TEMEL GÖSTERGELER");const kpis=[["Toplam ziyaret",visits+" oturum"],["Tekil ziyaretçi",unique],["Ortalama oturum",reportDuration(avg)],["Toplam analitik olayı",events],["e-Merkez etkileşimi",st.eCenterInteractions]];for(const [k,v] of kpis){doc.font("NotoBold").fillColor("#173F34").fontSize(9).text(k+": ",{continued:true});doc.font("Noto").text(String(v));}
- pdfBars(doc,"CİHAZ DAĞILIMI",devices,visits,6);pdfBars(doc,"DİL DAĞILIMI",languages,visits,6);pdfBars(doc,"GİRİŞ KAYNAKLARI",referrers,visits,8);
- doc.addPage();pdfHeader(doc,"İÇERİK PERFORMANSI",label);pdfBars(doc,"EN ÇOK GÖRÜNTÜLENEN BÖLÜMLER",sections,sections.reduce((a,x)=>a+x.count,0),10);pdfBars(doc,"EN ÇOK AÇILAN VİDEOLAR",videos,videos.reduce((a,x)=>a+x.count,0),10);pdfBars(doc,"EN ÇOK İNDİRİLEN İÇERİKLER",downloads,downloads.reduce((a,x)=>a+x.count,0),10);
- doc.addPage();pdfHeader(doc,"COĞRAFİ ETKİLEŞİM",label);pdfBars(doc,"İL HARİTASI ETKİLEŞİMLERİ",provinces,provinces.reduce((a,x)=>a+x.count,0),15);pdfSection(doc,"DEĞERLENDİRME VE METODOLOJİ");doc.font("Noto").fontSize(9.2).text("İl verileri ziyaretçinin fiziksel konumunu değil, e-NetCoM Türkiye haritasında açılan il detaylarını ifade eder. Rapor, seçilen tarih filtresindeki anonim analitik kayıtlardan otomatik üretilir. Veriler yönetici okumasını kolaylaştırmak amacıyla sayı, oran ve açıklayıcı değerlendirmelerle birlikte sunulur.",{lineGap:3});});
+ let body='<div class="page"><div class="top"></div><div class="brand">e-NetCoM</div><div class="network">ENVIRONMENTAL COMMUNICATION AND MEDIA NETWORK</div><div class="title">ANALİTİK DEĞERLENDİRME RAPORU</div><div class="subtitle">Web sitesi kullanım verilerinin yönetici odaklı analizi</div><div class="period">RAPOR DÖNEMİ<br><span style="color:#173f34;font-size:18px">'+printEsc(label)+'</span></div><div class="stats">'+visits+' oturum &nbsp; • &nbsp; '+unique+' tekil ziyaretçi &nbsp; • &nbsp; '+events+' analitik olayı</div><div class="meta">Oluşturulma: '+printEsc(stamp)+'<br><br><b>e-NetCoM Yönetim Merkezi · enetcomproject.com</b></div></div>';
+ body+='<main class="content"><h1>Yönetici Özeti</h1><p>Seçilen dönemde e-NetCoM web sitesinde <b>'+visits+' oturum</b> ve <b>'+unique+' tekil ziyaretçi</b> kaydedilmiştir. Ortalama oturum süresi <b>'+printEsc(reportDuration(avg))+'</b>; toplam analitik etkileşim <b>'+events+'</b> olarak ölçülmüştür.</p><p class="note">'+printEsc(trafficInsight(st.daily))+'</p><h2>Temel Göstergeler</h2><div class="kpis"><div class="kpi">Toplam ziyaret<b>'+visits+'</b></div><div class="kpi">Tekil ziyaretçi<b>'+unique+'</b></div><div class="kpi">Ortalama oturum<b>'+printEsc(reportDuration(avg))+'</b></div><div class="kpi">e-Merkez etkileşimi<b>'+st.eCenterInteractions+'</b></div></div>'+printBars("Cihaz Dağılımı",devices,visits,6)+printBars("Dil Dağılımı",languages,visits,6)+printBars("Giriş Kaynakları",referrers,visits,8)+'</main>';
+ body+='<main class="content pagebreak"><h1>İçerik Performansı</h1>'+printBars("En Çok Görüntülenen Bölümler",sections,sections.reduce((a,x)=>a+x.count,0),10)+printBars("En Çok Açılan Videolar",videos,videos.reduce((a,x)=>a+x.count,0),10)+printBars("En Çok İndirilen İçerikler",downloads,downloads.reduce((a,x)=>a+x.count,0),10)+'</main>';
+ body+='<main class="content pagebreak"><h1>Coğrafi Etkileşim</h1>'+printBars("İl Haritası Etkileşimleri",provinces,provinces.reduce((a,x)=>a+x.count,0),15)+'<h2>Metodoloji</h2><p class="note">İl verileri ziyaretçinin fiziksel konumunu değil, e-NetCoM Türkiye haritasında açılan il detaylarını ifade eder. Rapor seçilen tarih filtresindeki anonim analitik kayıtlardan otomatik üretilir.</p></main>';
+ return printShell("e-NetCoM Analitik Değerlendirme Raporu","",body);
 }
-async function buildReleaseNotesPdf(lang="tr"){
- const en=lang==="en",notes=en?RELEASE_NOTES_EN:RELEASE_NOTES;
- const title=en?"DEVELOPMENT & RELEASE REPORT":"GELİŞTİRME VE SÜRÜM RAPORU",sub=en?"Project Development History":"Proje Geliştirme Tarihçesi",recent=en?"LATEST UPDATES":"SON GÜNCELLEMELER",history=en?"CHRONOLOGICAL DEVELOPMENT RECORD":"KRONOLOJİK GELİŞTİRME KAYDI";
- const period=en?"September – October 2026":"Eylül – Ekim 2026",areas=new Set(notes.map(x=>x[1])).size,now=new Date(),stamp=now.toLocaleDateString(en?"en-GB":"tr-TR",{day:"2-digit",month:"long",year:"numeric",timeZone:"Europe/Istanbul"})+" · "+now.toLocaleTimeString(en?"en-GB":"tr-TR",{hour:"2-digit",minute:"2-digit",timeZone:"Europe/Istanbul"})+" · Türkiye (UTC+3)";
- return createPdfBuffer(doc=>{pdfCover(doc,title,sub,period,(en?"Generated: ":"Oluşturulma: ")+stamp,notes.length+" "+(en?"development records":"geliştirme kaydı")+"   •   "+areas+" "+(en?"work areas":"çalışma alanı"));
- doc.addPage();pdfSection(doc,recent);for(const [,area,n] of notes.slice(0,8)){if(doc.y>735)doc.addPage();doc.font("NotoBold").fillColor("#176B52").fontSize(8.5).text("• "+pdfSafeText(area)+" — ",{continued:true});doc.font("Noto").fillColor("#263D35").text(pdfSafeText(n),{lineGap:2}).moveDown(.35);}
- doc.addPage();pdfHeader(doc,history,period);let last="";for(const [date,area,n] of notes){if(doc.y>730)doc.addPage();if(date!==last){pdfSection(doc,releaseLabel(date,en?"en":"tr"));last=date;}doc.font("NotoBold").fillColor("#176B52").fontSize(8.2).text("• "+pdfSafeText(area)+" — ",{continued:true});doc.font("Noto").fillColor("#263D35").text(pdfSafeText(n),{lineGap:2}).moveDown(.25);}});
+function buildReleasePrintHtml(lang="tr"){
+ const en=lang==="en",notes=en?RELEASE_NOTES_EN:RELEASE_NOTES,title=en?"DEVELOPMENT & RELEASE REPORT":"GELİŞTİRME VE SÜRÜM RAPORU",sub=en?"Project Development History":"Proje Geliştirme Tarihçesi",period=en?"September – October 2026":"Eylül – Ekim 2026";
+ let body='<div class="page"><div class="top"></div><div class="brand">e-NetCoM</div><div class="network">ENVIRONMENTAL COMMUNICATION AND MEDIA NETWORK</div><div class="title">'+title+'</div><div class="subtitle">'+sub+'</div><div class="period">'+(en?"REPORTING PERIOD":"RAPOR DÖNEMİ")+'<br><span style="color:#173f34;font-size:18px">'+period+'</span></div><div class="stats">'+notes.length+' '+(en?"development records":"geliştirme kaydı")+' &nbsp; • &nbsp; '+new Set(notes.map(x=>x[1])).size+' '+(en?"work areas":"çalışma alanı")+'</div></div>';
+ body+='<main class="content"><h1>'+(en?"Latest Updates":"Son Güncellemeler")+'</h1>'+notes.slice(0,8).map(([,a,n])=>'<div class="entry"><b>• '+printEsc(a)+' — </b>'+printEsc(n)+'</div>').join("")+'<h1 style="margin-top:28px">'+(en?"Chronological Development Record":"Kronolojik Geliştirme Kaydı")+'</h1>';
+ let last="";for(const [d,a,n] of notes){if(d!==last){body+='<div class="date">'+printEsc(releaseLabel(d,en?"en":"tr"))+'</div>';last=d;}body+='<div class="entry"><b>• '+printEsc(a)+' — </b>'+printEsc(n)+'</div>';}body+='</main>';
+ return printShell(title,sub,body);
 }
 function reportRangeFromReq(req){return {range:["24h","7d","30d","90d","1y","all","custom"].includes(req.query.range)?req.query.range:"30d",fromDate:String(req.query.from||""),toDate:String(req.query.to||"")};}
-app.get("/api/admin/analytics-report.pdf",requireAdmin,async(req,res)=>{try{const {range,fromDate,toDate}=reportRangeFromReq(req),buffer=await buildAnalyticsEvaluationPdf(range,fromDate,toDate);res.setHeader("Content-Type","application/pdf");res.setHeader("Content-Disposition",'attachment; filename="e-NetCoM_Analitik_Degerlendirme_Raporu.pdf"');res.setHeader("Cache-Control","no-store");res.send(buffer);}catch(err){console.error("Analytics PDF error:",err);res.status(500).json({error:"PDF raporu olusturulamadi."});}});
-app.get("/api/admin/release-notes.pdf",requireAdmin,async(req,res)=>{try{const lang=String(req.query.lang||"tr").toLowerCase()==="en"?"en":"tr",buffer=await buildReleaseNotesPdf(lang);res.setHeader("Content-Type","application/pdf");res.setHeader("Content-Disposition",'attachment; filename="'+(lang==="en"?"e-NetCoM_Development_Release_Report_EN.pdf":"e-NetCoM_Gelistirme_Surum_Raporu_TR.pdf")+'"');res.setHeader("Cache-Control","no-store");res.send(buffer);}catch(err){console.error("Release PDF error:",err);res.status(500).json({error:"PDF raporu olusturulamadi."});}});
+app.get("/api/admin/analytics-report.print",requireAdmin,(req,res)=>{const {range,fromDate,toDate}=reportRangeFromReq(req);res.type("html").send(buildAnalyticsPrintHtml(range,fromDate,toDate));});
+app.get("/api/admin/release-notes.print",requireAdmin,(req,res)=>{const lang=String(req.query.lang||"tr").toLowerCase()==="en"?"en":"tr";res.type("html").send(buildReleasePrintHtml(lang));});
 
 app.get("/api/admin/analytics-report.docx",requireAdmin,(req,res)=>{try{const range=["24h","7d","30d","90d","1y","all","custom"].includes(req.query.range)?req.query.range:"30d",fromDate=String(req.query.from||""),toDate=String(req.query.to||"");const buffer=buildAnalyticsEvaluationDocx(range,fromDate,toDate),stamp=new Date().toISOString().slice(0,10);res.setHeader("Content-Type","application/vnd.openxmlformats-officedocument.wordprocessingml.document");res.setHeader("Content-Disposition",'attachment; filename="e-NetCoM_Analitik_Degerlendirme_Raporu_'+stamp+'.docx"');res.setHeader("Cache-Control","no-store");res.send(buffer);}catch(err){console.error("Analytics evaluation DOCX error:",err);res.status(500).json({error:"Analitik değerlendirme raporu oluşturulamadı."});}});
 
