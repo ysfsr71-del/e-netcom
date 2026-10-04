@@ -2781,7 +2781,7 @@ function updateActionLabels(lang){
   window.__enetcomActivityCaption=activityCaption;
   function apply(lang){
     if(!langNames[lang])lang='tr';
-    document.documentElement.dataset.lang=lang;localStorage.setItem('enetcom_lang',lang);
+    document.documentElement.dataset.lang=lang;localStorage.setItem('enetcom_lang',lang);document.querySelectorAll('a[href^="/egitimler.html"],a[href^="/proje.html"],a[href^="/uluslararasi.html"],a[href^="/veritabani.html"]').forEach(a=>{const u=new URL(a.getAttribute('href'),location.origin);u.searchParams.set('lang',lang);a.setAttribute('href',u.pathname+u.search+u.hash);});
     restore(document.body);setMeta(lang);translateRoot(document.body,lang);updateActionLabels(lang);updateMapLabels(lang);applyHeroTranslations(lang);applyDynamicSectionTranslations(lang);updateComputedStats(lang);renderYouTubePlaylists(lang);renderWorkPackage(lang,document.querySelector('.wp-tab.active')?.dataset.wpTab||new URLSearchParams(window.location.search).get('wp')||'WP2');updateWpReturnLinks(lang);updateEuSupport(lang);updateActivityModalsI18n(lang);if(window.updateHeaderI18n)window.updateHeaderI18n(lang);if(selectedCity)cityInfo(selectedCity);
   }
   function install(){
