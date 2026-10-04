@@ -980,6 +980,11 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-04","Proje Çıktıları / İçerik","Proje Çıktıları sayfası yalnızca WP2 hashtag kampanyalarını gösteren yapıdan çıkarılarak Dijital İletişim ve Farkındalık, Eğitim, Bilgi ve Kaynak, Uluslararası Çalışmalar ile Yaygınlaştırma ve Saha başlıklarını bir araya getiren kapsamlı bir Çıktı Merkezi olarak yeniden düzenlendi."],
+["2026-10-04","Proje Çıktıları / UX","Hashtag Kütüphanesi sayfa uzunluğunu azaltacak şekilde ilk 6 kartı gösterecek biçimde kompaktlaştırıldı; kategori filtreleri ve kopyalama işlevleri korunarak tüm etiketleri açma ve listeyi yeniden daraltma kontrolleri eklendi."],
+["2026-10-04","Ana Sayfa / Proje Çıktıları","Ana sayfadaki Proje Çıktıları vitrini yeni Çıktı Merkezi yapısını temsil edecek şekilde yenilendi; eski WP2/PDF odaklı anlatım kaldırıldı, beş çıktı alanı özetlendi ve çağrı butonu Tüm çıktıları incele olarak güncellendi."],
+["2026-10-04","Kalite / Ana Sayfa","Yeni Proje Çıktıları kartını sayfa yüklendikten sonra eski WP2 ve PDF metinlerine döndüren eski çok dillilik betiği kaldırıldı; güncel içerik ve çağrı butonunun kalıcı olması sağlandı."],
+["2026-10-04","İçerik / Çok Dillilik","Ana sayfa Proje Çıktıları başlığı e-NetCoM'un çıktılarını tek merkezde keşfedin olarak güncellendi; Çıktı Merkezi, hashtag kontrolleri ve yeni ana sayfa metinlerinin Türkçe, İngilizce ve Almanca karşılıkları tamamlandı."],
 ["2026-10-04","Çok Dillilik / UX","Bağımsız Proje, Eğitimler, Uluslararası Faaliyetler ve Veritabanı sayfalarına görünür TR / EN / DE dil seçici eklendi; sayfa içeriklerinin İngilizce ve Almanca çevirileri tamamlandı."],
 ["2026-10-04","Çok Dillilik / Navigasyon","Ana sayfadaki aktif dilin bağımsız HTML sayfalarına aktarılması sağlandı; bağlantılara dil parametresi eklenerek sayfalar arası dil tercihi korunur hale getirildi."],
 ["2026-10-04","Kalite / Çok Dillilik","Bağımsız sayfalardaki dil seçicinin çalışmasını engelleyen JavaScript kapsam ve çalışma zamanı hataları giderildi; TR / EN / DE arasında canlı geçiş kararlı hale getirildi."],
@@ -1023,6 +1028,11 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-04","Project Outputs / Content","The Project Outputs page was expanded from a WP2 hashtag-focused page into a comprehensive Outputs Centre bringing together Digital Communication & Awareness, Training, Knowledge & Resources, International Work, and Dissemination & Field outputs."],
+["2026-10-04","Project Outputs / UX","The Hashtag Library was compacted to show the first six cards by default; category filters and copy actions were preserved, with controls added to reveal all hashtags and collapse the list again."],
+["2026-10-04","Homepage / Project Outputs","The homepage Project Outputs preview was refreshed to represent the broader Outputs Centre; the old WP2/PDF-focused copy was removed, five output areas were summarized, and the CTA was changed to Explore all outputs."],
+["2026-10-04","Quality / Homepage","A legacy multilingual script that reverted the refreshed Project Outputs card to old WP2 and PDF copy after page load was removed, ensuring the current content and CTA remain authoritative."],
+["2026-10-04","Content / Multilingual","The homepage Project Outputs heading was updated to Discover e-NetCoM outputs in one place; Turkish, English and German copy was completed for the Outputs Centre, hashtag controls and refreshed homepage content."],
 ["2026-10-04","Multilingual / UX","A visible TR / EN / DE language selector was added to the standalone Project, Training, International Activities and Database pages, and English and German translations of page content were completed."],
 ["2026-10-04","Multilingual / Navigation","The active homepage language is now carried into standalone HTML pages; language parameters were added to links so the selected language is preserved across page navigation."],
 ["2026-10-04","Quality / Multilingual","JavaScript scope and runtime errors that blocked the standalone language selector were fixed, making live switching between TR / EN / DE reliable."],
