@@ -1268,7 +1268,7 @@ function buildReleasePrintHtml(lang="tr"){
  let last="";for(const [d,a,n] of notes){if(d!==last){body+='<div class="date">'+printEsc(releaseLabel(d,en?"en":"tr"))+'</div>';last=d;}body+='<div class="entry"><b>• '+printEsc(a)+' — </b>'+printEsc(n)+'</div>';}body+='</main>';
  return printShell(title,sub,body);
 }
-function reportRangeFromReq(req){return {range:["24h","7d","30d","90d","1y","all","custom"].includes(req.query.range)?req.query.range:"30d",fromDate:String(req.query.from||""),toDate:String(req.query.to||"")};}
+
 app.get("/api/admin/analytics-report.print",requireAdmin,(req,res)=>{const {range,fromDate,toDate}=reportRangeFromReq(req);res.type("html").send(buildAnalyticsPrintHtml(range,fromDate,toDate));});
 app.get("/api/admin/release-notes.print",requireAdmin,(req,res)=>{const lang=String(req.query.lang||"tr").toLowerCase()==="en"?"en":"tr";res.type("html").send(buildReleasePrintHtml(lang));});
 
