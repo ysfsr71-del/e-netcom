@@ -987,6 +987,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-04","Kalite / Yönetim Paneli","Türkiye il etkileşim haritasının SVG il eşleştirmesi düzeltildi; Türkçe karakter farklılıklarına dayanıklı eşleştirme ve il listesi kaydırma davranışı iyileştirildi."],
 ["2026-10-04","Raporlama","Excel analitik raporuna günlük ziyaret, cihaz ve dil grafikleri eklendi; dil, cihaz ve olay türü etiketleri Türkçeleştirildi."],
 ["2026-10-04","Raporlama","Excel raporu kurumsal renkler, başlık stilleri, sütun genişlikleri, sabit başlık satırları, filtreler, kenarlıklar ve baskı ayarlarıyla yeniden biçimlendirildi."],
 ["2026-10-04","Yönetim Paneli","Yönetim paneli KPI kartları, hızlı görünüm, geliştirilmiş trafik alanı, Türkiye il etkileşim haritası, içerik performans kartları ve yenilenmiş giriş ekranıyla yeniden tasarlandı."],

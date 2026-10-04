@@ -35,7 +35,7 @@ body{background:radial-gradient(circle at 80% -10%,rgba(100,224,167,.13),transpa
 </style>
 
 <style id="province-panel-ui">
-.province-card .list{max-height:430px;overflow-y:auto;padding-right:6px;scrollbar-width:thin;}
+.province-card{max-height:430px;overflow-y:auto;padding-right:6px;scrollbar-width:thin;}
 .province-search{width:100%;box-sizing:border-box;border:1px solid #26394d;background:#0c1b2a;color:#fff;border-radius:10px;padding:10px 12px;margin:0 0 12px;font:inherit;outline:none;}
 .province-search::placeholder{color:#8fa3b8;}
 .province-search:focus{border-color:#6ea8fe;box-shadow:0 0 0 2px rgba(110,168,254,.12);}
@@ -142,15 +142,16 @@ function renderChart(items){
   el.innerHTML=vals.map(x=>`<div class="col" title="${esc(x.date)}: ${fmt(x.visits)} ziyaret" style="height:${Math.max(3,Math.round(x.visits/max*100))}%"><span>${esc(x.date.slice(5))}</span></div>`).join("");
 }
 let adminMapLoaded=false,adminMapSvg=null;
+function normCity(v){return String(v||"").toLocaleLowerCase("tr-TR").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/ı/g,"i").replace(/[^a-z]/g,"");}
 async function ensureAdminMap(){
-  if(adminMapLoaded)return;adminMapLoaded=true;
+  if(adminMapLoaded&&adminMapSvg)return;
   const mount=$("adminMap");if(!mount)return;
-  try{const r=await fetch("/turkey.svg");if(!r.ok)throw new Error("map");mount.innerHTML=await r.text();adminMapSvg=mount.querySelector("svg");if(adminMapSvg){adminMapSvg.setAttribute("preserveAspectRatio","xMidYMid meet");adminMapSvg.setAttribute("role","img");adminMapSvg.setAttribute("aria-label","Türkiye il bazlı etkileşim haritası");}}
-  catch(e){mount.innerHTML='<div class="small">Türkiye haritası yüklenemedi.</div>';}
+  try{const r=await fetch("/turkey.svg");if(!r.ok)throw new Error("map");mount.innerHTML=await r.text();adminMapSvg=mount.querySelector("svg");if(adminMapSvg){adminMapLoaded=true;adminMapSvg.setAttribute("preserveAspectRatio","xMidYMid meet");adminMapSvg.setAttribute("role","img");adminMapSvg.setAttribute("aria-label","Türkiye il bazlı etkileşim haritası");}}
+  catch(e){adminMapLoaded=false;adminMapSvg=null;mount.innerHTML='<div class="small">Türkiye haritası yüklenemedi. Yenile ile tekrar deneyebilirsiniz.</div>';}
 }
 function renderAdminMap(items){
-  ensureAdminMap().then(()=>{if(!adminMapSvg)return;const rows=Array.isArray(items)?items:[],byName=new Map(rows.map(x=>[String(x.name||"").toLocaleLowerCase("tr-TR"),Number(x.count||0)])),max=Math.max(...rows.map(x=>Number(x.count||0)),1);
-    adminMapSvg.querySelectorAll("[data-city]").forEach(p=>{const city=String(p.dataset.city||"");const count=byName.get(city.toLocaleLowerCase("tr-TR"))||0;const ratio=count/max;const level=count===0?0:ratio>.66?4:ratio>.33?3:ratio>.12?2:1;p.dataset.adminCount=count;p.dataset.level=level;p.onmouseenter=()=>{$("adminMapTip").textContent=city+" · "+fmt(count)+" etkileşim";};p.onmouseleave=()=>{$("adminMapTip").textContent="Bir ilin üzerine gelerek etkileşim sayısını görüntüleyin.";};});
+  ensureAdminMap().then(()=>{if(!adminMapSvg)return;const rows=Array.isArray(items)?items:[],byName=new Map(rows.map(x=>[normCity(x.name),Number(x.count||0)])),max=Math.max(...rows.map(x=>Number(x.count||0)),1);
+    adminMapSvg.querySelectorAll("path[name]").forEach(p=>{const city=String(p.getAttribute("name")||"");const count=byName.get(normCity(city))||0;const ratio=count/max;const level=count===0?0:ratio>.66?4:ratio>.33?3:ratio>.12?2:1;p.dataset.adminCount=count;p.dataset.level=level;p.onmouseenter=()=>{$("adminMapTip").textContent=city+" · "+fmt(count)+" etkileşim";};p.onmouseleave=()=>{$("adminMapTip").textContent="Bir ilin üzerine gelerek etkileşim sayısını görüntüleyin.";};});
   });
 }
 function filterProvinceList(){
