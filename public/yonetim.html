@@ -88,9 +88,9 @@ body{background:radial-gradient(circle at 80% -10%,rgba(100,224,167,.13),transpa
   <section class="card report-box" style="margin-top:14px">
     <div>
       <h2 style="margin-bottom:6px">📊 Raporlama</h2>
-      <div class="small">Seçili tarih aralığındaki ziyaret, bölüm, 81 il, video, indirme, dil, cihaz ve giriş kaynağı verilerini Excel dosyası olarak dışa aktar.</div>
+      <div class="small">Analitik verileri Excel olarak dışa aktarın veya bugüne kadar yapılan geliştirmeleri Word sürüm notları olarak indirin.</div>
     </div>
-    <button class="ghost" id="exportExcel">📥 Excel Raporu İndir</button>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"><button class="ghost" id="exportWord">📝 Sürüm Notları (Word)</button><button class="ghost" id="exportExcel">📥 Excel Raporu İndir</button></div>
   </section>
 
   <section class="traffic-layout">
@@ -213,6 +213,7 @@ $("applyDates").addEventListener("click",()=>{
   load();
 });
 $("provinceSearch").addEventListener("input",filterProvinceList);
+$("exportWord").addEventListener("click",async()=>{const btn=$("exportWord"),old=btn.textContent;btn.disabled=true;btn.textContent="⏳ Word hazırlanıyor…";try{const r=await fetch("/api/admin/release-notes.docx");if(r.status===401){showLogin();throw new Error("Oturum sona erdi.");}if(!r.ok)throw new Error("Word dosyası oluşturulamadı.");const blob=await r.blob(),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="e-NetCoM_Surum_Notlari.docx";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);}catch(e){if(e.message!=="Oturum sona erdi.")alert(e.message||"Word dosyası oluşturulamadı.");}finally{btn.disabled=false;btn.textContent=old;}});
 $("exportExcel").addEventListener("click",async()=>{
   const btn=$("exportExcel");
   const old=btn.textContent;

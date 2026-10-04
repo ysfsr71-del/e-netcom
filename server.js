@@ -986,6 +986,39 @@ function buildReportWorkbook(range, fromDate, toDate) {
 }
 
 
+const RELEASE_NOTES = [
+["2026-10-04","Raporlama","Excel analitik raporuna günlük ziyaret, cihaz ve dil grafikleri eklendi; dil, cihaz ve olay türü etiketleri Türkçeleştirildi."],
+["2026-10-04","Raporlama","Excel raporu kurumsal renkler, başlık stilleri, sütun genişlikleri, sabit başlık satırları, filtreler, kenarlıklar ve baskı ayarlarıyla yeniden biçimlendirildi."],
+["2026-10-04","Yönetim Paneli","Yönetim paneli KPI kartları, hızlı görünüm, geliştirilmiş trafik alanı, Türkiye il etkileşim haritası, içerik performans kartları ve yenilenmiş giriş ekranıyla yeniden tasarlandı."],
+["2026-10","SEO","Veritabanı için aranabilir bağımsız SEO sayfası oluşturuldu, sitemap ve ana sayfa bağlantıları eklendi; sayfa içeriği güçlendirildi."],
+["2026-10","SEO","Proje çıktıları sayfasının içerik ve SEO yapısı geliştirildi."],
+["2026-10","SEO","Uluslararası faaliyetler için bağımsız SEO sayfası oluşturuldu; metadata, içerik, sitemap ve ana sayfa bağlantıları tamamlandı."],
+["2026-10","SEO","Eğitimler için bağımsız SEO sayfası oluşturuldu; eğitim ağı verileri, sitemap ve ana sayfa bağlantıları işlendi."],
+["2026-10","SEO","Proje için bağımsız SEO sayfası oluşturuldu; yapılandırılmış veri ve içerik kapsamı genişletildi."],
+["2026-10","SEO","Ana sayfaya teknik SEO altyapısı, canonical, robots, Open Graph, Twitter metadata ve JSON-LD eklendi; meta açıklaması iyileştirildi."],
+["2026-10","Kalite","Mobil veritabanı bağlantısı, uluslararası rozetler, proje faaliyet metrikleri ve Almanca WP2 başlık/alt başlıkları düzeltildi."],
+["2026-10","Analitik","YouTube istatistiklerine hashtag kampanyaları oynatma listesi ve çok dilli görüntülenme etiketleri eklendi."],
+["2026-10","Analitik","Excel dil toplamları, günlük raporlama ve video başlıklarının okunabilirliği iyileştirildi."],
+["2026-09","Ana Sayfa","Hero alanı saha fotoğrafları ve proje vitrini mantığıyla yeniden düzenlendi; Tunceli, Viyana, Ankara ve İzmir içerikleri carousel yapısına taşındı."],
+["2026-09","Çok Dillilik","Dinamik bölüm etiketleri, uluslararası buluşmalar ve erişilebilirlik seçeneklerinin dil değişimleri düzeltildi."],
+["2026-09","Mobil / UX","Mobil harita ve ağ tablosu yerleşimi geliştirildi."],
+["2026-09","Marka","e-NetCoM faviconu oluşturuldu ve logo ile uyumlu hale getirildi."],
+["2026-09","Altyapı","Yönetim ve sunucu tarafında analitik, raporlama ve yönetim panelinin temel sürümleri geliştirildi."],
+["2026-09","SEO Altyapısı","robots.txt ve sitemap.xml oluşturuldu ve sonraki sayfalarla güncellendi."]
+];
+function docxParagraph(text,style="normal"){
+ const t=xmlEscape(text),p=style==="title"?'<w:pPr><w:jc w:val="center"/><w:spacing w:after="220"/></w:pPr>':style==="h1"?'<w:pPr><w:spacing w:before="240" w:after="100"/></w:pPr>':'<w:pPr><w:spacing w:after="90"/></w:pPr>';
+ const r=style==="title"?'<w:rPr><w:b/><w:color w:val="176B52"/><w:sz w:val="34"/></w:rPr>':style==="h1"?'<w:rPr><w:b/><w:color w:val="176B52"/><w:sz w:val="24"/></w:rPr>':'<w:rPr><w:sz w:val="21"/></w:rPr>';
+ return `<w:p>${p}<w:r>${r}<w:t xml:space="preserve">${t}</w:t></w:r></w:p>`;
+}
+function buildReleaseNotesDocx(){
+ let body=docxParagraph("e-NetCoM GELİŞTİRME VE SÜRÜM NOTLARI","title")+docxParagraph("Web sitesi, yönetim paneli, analitik, raporlama, SEO, çok dillilik ve kullanıcı deneyimi kapsamında gerçekleştirilen geliştirmelerin kayıt dokümanıdır.");
+ let last="";for(const [date,area,note] of RELEASE_NOTES){if(date!==last){body+=docxParagraph(date,"h1");last=date;}body+=docxParagraph("• "+area+" — "+note);}
+ body+=docxParagraph("Bu belge yönetim panelinden üretilir. Yeni geliştirmeler sürüm notlarına eklendikçe sonraki Word çıktılarında yer alır.");
+ const document=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${body}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134"/></w:sectPr></w:body></w:document>`;
+ return zipStore([{name:"[Content_Types].xml",data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>'},{name:"_rels/.rels",data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'},{name:"word/document.xml",data:document}]);
+}
+app.get("/api/admin/release-notes.docx",requireAdmin,(req,res)=>{try{const buffer=buildReleaseNotesDocx();res.setHeader("Content-Type","application/vnd.openxmlformats-officedocument.wordprocessingml.document");res.setHeader("Content-Disposition",'attachment; filename="e-NetCoM_Surum_Notlari.docx"');res.send(buffer);}catch(err){console.error("Release notes DOCX error:",err);res.status(500).json({error:"Sürüm notları Word dosyası oluşturulamadı."});}});
 app.get("/api/admin/report.xlsx", requireAdmin, (req, res) => {
   const range = ["24h","7d","30d","90d","1y","all","custom"].includes(req.query.range) ? req.query.range : "30d";
   const fromDate = String(req.query.from || "");
