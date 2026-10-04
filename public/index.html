@@ -1316,7 +1316,17 @@ img{decoding:async}
   .hero-v17 .hero-carousel-thumb b{font-size:8.5px!important}
   .hero-v17 .hero-carousel-thumb small{font-size:6.8px!important}
 }
-</style></head><body id="main-content">
+</style><style id="v-impact-areas">
+.impact-v2-summary.impact-areas{align-items:stretch;gap:22px}
+.impact-areas-intro{max-width:430px;display:flex;flex-direction:column;justify-content:center}
+.impact-area-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;flex:1}
+.impact-area-card{display:flex;flex-direction:column;min-height:132px;padding:14px;border:1px solid #dcebe5;border-radius:16px;background:#f4f9f6;color:#063f32;text-decoration:none;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.impact-area-card:hover{transform:translateY(-2px);border-color:#9bcdbb;box-shadow:0 10px 24px rgba(6,63,50,.08)}
+.impact-area-icon{font-size:21px;margin-bottom:8px}.impact-area-card strong{font-size:13px;line-height:1.25}.impact-area-card small{display:block;margin-top:5px;color:#5e756d;font-size:10px;line-height:1.45;flex:1}.impact-area-card em{margin-top:9px;color:#087d68;font-size:9px;font-style:normal;font-weight:900}
+@media(max-width:1050px){.impact-v2-summary.impact-areas{display:block}.impact-areas-intro{max-width:none;margin-bottom:16px}.impact-area-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.impact-area-grid{grid-template-columns:1fr}.impact-area-card{min-height:0}.impact-v2-summary.impact-areas{padding:20px}}
+</style>
+</head><body id="main-content">
 
 <a class="a11y-skip" href="#main-content" id="a11ySkip">Ana içeriğe geç</a>
 <button class="a11y-fab" id="a11yFab" type="button" aria-label="Erişilebilirlik araçlarını aç" aria-expanded="false" aria-controls="a11yPanel" title="Erişilebilirlik">♿</button>
@@ -1545,17 +1555,17 @@ img{decoding:async}
     </article>
   </div>
 
-  <div class="impact-v2-summary">
-    <div>
-      <span class="tag">FAALİYET LİSTESİ · 2026</span>
-      <h3>Proje şu ana kadar</h3>
-      <p>Güncel faaliyet kayıtları; yüz yüze ve çevrimiçi eğitimlerin yanı sıra Türkiye genelindeki yaygınlaştırma ağını ve dijital bilgi üretimini görünür kılıyor.</p>
+  <div class="impact-v2-summary impact-areas">
+    <div class="impact-areas-intro">
+      <span class="tag">ETKİ ALANLARI · 2026</span>
+      <h3>Projenin çok boyutlu etkisi</h3>
+      <p>e-NetCoM; eğitimden saha çalışmalarına, dijital iletişimden uluslararası iş birliklerine uzanan bütünleşik bir çevresel iletişim ağı oluşturuyor.</p>
     </div>
-    <div class="impact-v2-summary-items">
-      <div><b>16</b><span>yüz yüze eğitim</span></div>
-      <div><b>8</b><span>çevrimiçi eğitim</span></div>
-      <div><b>24</b><span>ilde faaliyet</span></div>
-      <div><b>2.449</b><span>e-Merkez kaynağı</span></div>
+    <div class="impact-area-grid">
+      <a class="impact-area-card" href="/egitimler.html"><span class="impact-area-icon">🎓</span><strong>Eğitim ve Farkındalık</strong><small>Yüz yüze ve çevrimiçi eğitimlerle çevresel iletişim kapasitesi.</small><em>Kayıtları incele →</em></a>
+      <a class="impact-area-card" href="#uluslararasi"><span class="impact-area-icon">🌍</span><strong>Uluslararası İş Birliği</strong><small>Proje ortakları, uluslararası buluşmalar ve bilgi paylaşımı.</small><em>Çalışmaları gör →</em></a>
+      <a class="impact-area-card" href="#medya"><span class="impact-area-icon">📣</span><strong>Dijital İletişim</strong><small>Kamu spotları, hashtag kampanyaları ve dijital içerikler.</small><em>İçeriklere git →</em></a>
+      <a class="impact-area-card" href="#iller"><span class="impact-area-icon">🤝</span><strong>Yaygınlaştırma Ağı</strong><small>81 ile uzanan e-NetCoM ağı ve saha bağlantıları.</small><em>Ağı keşfet →</em></a>
     </div>
   </div>
 </div>
