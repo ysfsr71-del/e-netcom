@@ -19,6 +19,7 @@ h2{font-size:17px;margin:0 0 14px}.list{display:grid;gap:9px}.row{display:grid;g
 @media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}.two,.three{grid-template-columns:1fr}}
 @media(max-width:600px){.wrap{padding:16px}.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.num{font-size:27px}}
  .mobile-map-tip{display:none}@media(max-width:600px){.desktop-map-tip{display:none}.mobile-map-tip{display:inline}}
+.report-box{align-items:stretch}.report-hub{display:grid;grid-template-columns:1.15fr 1.45fr .8fr;gap:10px;flex:1;min-width:0}.report-type{border:1px solid #244c3e;border-radius:14px;padding:12px;background:rgba(12,39,31,.42);min-width:0}.report-type h3{margin:0 0 4px;font-size:14px;color:#eef9f5}.report-type p{margin:0 0 10px;font-size:11px;color:#9fbdb1;line-height:1.4}.report-actions{display:flex;gap:6px;flex-wrap:wrap}.report-actions .ghost{padding:8px 11px;font-size:12px;min-height:34px}.report-actions .primary-report{background:#173f34;border-color:#2c6c57}.report-lang{font-size:10px;color:#7fa596;margin:7px 0 4px;font-weight:700;letter-spacing:.04em}@media(max-width:900px){.report-box{display:block}.report-hub{grid-template-columns:1fr;margin-top:12px}.report-type{padding:11px}.report-actions .ghost{flex:1}}
 </style>
 <style id="admin-v2">
 :root{--bg:#07120f;--card:#0d1c18;--card2:#10241e;--muted:#8fa99e;--text:#f3fbf7;--line:#1f3b31;--accent:#64e0a7;--accent2:#77a9ff}
@@ -89,9 +90,13 @@ body{background:radial-gradient(circle at 80% -10%,rgba(100,224,167,.13),transpa
   <section class="card report-box" style="margin-top:14px">
     <div>
       <h2 style="margin-bottom:6px">📊 Raporlama</h2>
-      <div class="small">Analitik verileri Excel olarak dışa aktarın veya proje geliştirme tarihçesini Türkçe / İngilizce tam Word raporu olarak indirin.</div>
+      <div class="small">Rapor türünü seçin; düzenlenebilir Word, paylaşılabilir PDF veya ham Excel verisini indirin.</div>
     </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"><button class="ghost" id="exportAnalyticsWord">📊 Analitik Değerlendirme · Word</button><button class="ghost" id="exportWord">📝 Geliştirme Raporu · TR</button><button class="ghost" id="exportWordEn">📝 Development Report · EN</button><button class="ghost" id="exportExcel">📥 Ham Veri · Excel</button></div>
+    <div class="report-hub">
+<div class="report-type"><h3>📊 Analitik Değerlendirme</h3><p>Seçili dönemin verilerini grafikler ve yönetici değerlendirmeleriyle sunar.</p><div class="report-actions"><button class="ghost primary-report" id="exportAnalyticsWord">WORD</button><button class="ghost" id="exportAnalyticsPdf">PDF</button></div></div>
+<div class="report-type"><h3>📑 Geliştirme ve Sürüm Raporu</h3><p>Projenin geliştirme tarihçesi ve sürüm kayıtları.</p><div class="report-lang">TÜRKÇE</div><div class="report-actions"><button class="ghost primary-report" id="exportWord">WORD</button><button class="ghost" id="exportPdfTr">PDF</button></div><div class="report-lang">ENGLISH</div><div class="report-actions"><button class="ghost primary-report" id="exportWordEn">WORD</button><button class="ghost" id="exportPdfEn">PDF</button></div></div>
+<div class="report-type"><h3>📦 Ham Veri</h3><p>Detaylı analitik tabloları.</p><div class="report-actions"><button class="ghost" id="exportExcel">EXCEL</button></div></div>
+</div>
   </section>
 
   <section class="traffic-layout">
@@ -215,6 +220,11 @@ $("applyDates").addEventListener("click",()=>{
   load();
 });
 $("provinceSearch").addEventListener("input",filterProvinceList);
+async function downloadReportFile(url,name,buttonId,label){const btn=$(buttonId),old=btn.textContent;btn.disabled=true;btn.textContent="⏳";try{const r=await fetch(url);if(r.status===401){showLogin();throw new Error("Oturum sona erdi.");}if(!r.ok)throw new Error(label+" oluşturulamadı.");const blob=await r.blob(),u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);}catch(e){if(e.message!=="Oturum sona erdi.")alert(e.message||label+" oluşturulamadı.");}finally{btn.disabled=false;btn.textContent=old;}}
+function currentReportQuery(){const p=new URLSearchParams({range:currentRange});if(currentRange==="custom"){p.set("from",$("fromDate").value);p.set("to",$("toDate").value);}return p.toString();}
+$("exportAnalyticsPdf").addEventListener("click",()=>downloadReportFile("/api/admin/analytics-report.pdf?"+currentReportQuery(),"e-NetCoM_Analitik_Degerlendirme_Raporu.pdf","exportAnalyticsPdf","PDF raporu"));
+$("exportPdfTr").addEventListener("click",()=>downloadReportFile("/api/admin/release-notes.pdf?lang=tr","e-NetCoM_Gelistirme_Surum_Raporu_TR.pdf","exportPdfTr","PDF raporu"));
+$("exportPdfEn").addEventListener("click",()=>downloadReportFile("/api/admin/release-notes.pdf?lang=en","e-NetCoM_Development_Release_Report_EN.pdf","exportPdfEn","PDF report"));
 async function downloadAnalyticsWord(){const btn=$("exportAnalyticsWord"),old=btn.textContent;btn.disabled=true;btn.textContent="⏳ Analiz hazırlanıyor…";try{const p=new URLSearchParams({range:currentRange});if(currentRange==="custom"){p.set("from",$("from").value);p.set("to",$("to").value);}const r=await fetch("/api/admin/analytics-report.docx?"+p.toString());if(r.status===401){showLogin();throw new Error("Oturum sona erdi.");}if(!r.ok)throw new Error("Analitik değerlendirme raporu oluşturulamadı.");const blob=await r.blob(),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="e-NetCoM_Analitik_Degerlendirme_Raporu.docx";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);}catch(e){if(e.message!=="Oturum sona erdi.")alert(e.message||"Analitik değerlendirme raporu oluşturulamadı.");}finally{btn.disabled=false;btn.textContent=old;}} $("exportAnalyticsWord").addEventListener("click",downloadAnalyticsWord);
 async function downloadWordReport(lang,buttonId){const btn=$(buttonId),old=btn.textContent;btn.disabled=true;btn.textContent="⏳ Word hazırlanıyor…";try{const r=await fetch("/api/admin/release-notes.docx?lang="+lang);if(r.status===401){showLogin();throw new Error("Oturum sona erdi.");}if(!r.ok)throw new Error("Word raporu oluşturulamadı.");const blob=await r.blob(),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=lang==="en"?"e-NetCoM_Development_Release_Report_EN.docx":"e-NetCoM_Gelistirme_Surum_Raporu_TR.docx";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);}catch(e){if(e.message!=="Oturum sona erdi.")alert(e.message||"Word raporu oluşturulamadı.");}finally{btn.disabled=false;btn.textContent=old;}} $("exportWord").addEventListener("click",()=>downloadWordReport("tr","exportWord")); $("exportWordEn").addEventListener("click",()=>downloadWordReport("en","exportWordEn"));
 $("exportExcel").addEventListener("click",async()=>{
