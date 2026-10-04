@@ -826,7 +826,7 @@ function xlsxSheet(rows, sheetName="") {
   const widths=Array.from({length:maxCols},(_,i)=>{
     let max=10;
     for(const row of safeRows){const v=String((Array.isArray(row)?row:[row])[i]??"");max=Math.max(max,Math.min(v.length+2,i===0?42:28));}
-    return Math.min(max,i===0?46:30);
+    if(isSummary&&i===0)return Math.max(32,Math.min(max,46)); if(isSummary&&i===1)return Math.max(24,Math.min(max,30)); return Math.min(max,i===0?46:30);
   });
   let xml='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">';
   xml+='<sheetViews><sheetView workbookViewId="0"><pane ySplit="'+(isSummary?1:1)+'" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>';
@@ -848,7 +848,7 @@ function xlsxSheet(rows, sheetName="") {
     });
     xml += '</row>';
   });
-  xml += '</sheetData>';
+  xml += '</sheetData>';\n  if(isSummary) xml+='<mergeCells count="1"><mergeCell ref="A1:B1"/></mergeCells>';
   if(!isSummary && safeRows.length>1) xml+=`<autoFilter ref="A1:${colLetter(maxCols)}${safeRows.length}"/>`;
   if(isSummary) xml+='<drawing r:id="rId1"/>';
   xml+='<pageMargins left="0.3" right="0.3" top="0.5" bottom="0.5" header="0.2" footer="0.2"/><pageSetup orientation="landscape" fitToWidth="1" fitToHeight="0"/></worksheet>';
@@ -876,13 +876,13 @@ function countTargetsAll(events, type) {
   return [...map.entries()].sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0], "tr"));
 }
 
-function xlsxChartXml(type,title,categories,values,seriesName){
+function xlsxChartXml(type,title,categories,values,seriesName,showLegend=true){
   const tx=xmlEscape(seriesName), ttl=xmlEscape(title);
   const cat=xmlEscape(categories), val=xmlEscape(values);
   const chartBody=type==="line"
     ? `<c:lineChart><c:grouping val="standard"/><c:varyColors val="0"/><c:ser><c:idx val="0"/><c:order val="0"/><c:tx><c:v>${tx}</c:v></c:tx><c:marker><c:symbol val="none"/></c:marker><c:cat><c:strRef><c:f>${cat}</c:f></c:strRef></c:cat><c:val><c:numRef><c:f>${val}</c:f></c:numRef></c:val><c:smooth val="0"/></c:ser><c:axId val="48650112"/><c:axId val="48672768"/></c:lineChart>`
-    : `<c:barChart><c:barDir val="col"/><c:grouping val="clustered"/><c:varyColors val="0"/><c:ser><c:idx val="0"/><c:order val="0"/><c:tx><c:v>${tx}</c:v></c:tx><c:cat><c:strRef><c:f>${cat}</c:f></c:strRef></c:cat><c:val><c:numRef><c:f>${val}</c:f></c:numRef></c:val></c:ser><c:axId val="48650112"/><c:axId val="48672768"/></c:barChart>`;
-  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><c:chartSpace xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><c:chart><c:title><c:tx><c:rich><a:bodyPr/><a:lstStyle/><a:p><a:r><a:rPr lang="tr-TR" sz="1300" b="1"/><a:t>${ttl}</a:t></a:r></a:p></c:rich></c:tx><c:layout/><c:overlay val="0"/></c:title><c:autoTitleDeleted val="0"/><c:plotArea><c:layout/>${chartBody}<c:catAx><c:axId val="48650112"/><c:scaling><c:orientation val="minMax"/></c:scaling><c:delete val="0"/><c:axPos val="b"/><c:tickLblPos val="nextTo"/><c:crossAx val="48672768"/><c:crosses val="autoZero"/><c:auto val="1"/><c:lblAlgn val="ctr"/><c:lblOffset val="100"/></c:catAx><c:valAx><c:axId val="48672768"/><c:scaling><c:orientation val="minMax"/></c:scaling><c:delete val="0"/><c:axPos val="l"/><c:majorGridlines/><c:numFmt formatCode="0" sourceLinked="0"/><c:tickLblPos val="nextTo"/><c:crossAx val="48650112"/><c:crosses val="autoZero"/><c:crossBetween val="between"/></c:valAx></c:plotArea><c:legend><c:legendPos val="b"/><c:layout/><c:overlay val="0"/></c:legend><c:plotVisOnly val="1"/><c:dispBlanksAs val="zero"/></c:chart></c:chartSpace>`;
+    : `<c:barChart><c:barDir val="col"/><c:grouping val="clustered"/><c:varyColors val="0"/><c:ser><c:idx val="0"/><c:order val="0"/><c:tx><c:v>${tx}</c:v></c:tx><c:cat><c:strRef><c:f>${cat}</c:f></c:strRef></c:cat><c:val><c:numRef><c:f>${val}</c:f></c:numRef></c:val></c:ser><c:dLbls><c:showVal val="1"/><c:showLegendKey val="0"/><c:showCatName val="0"/><c:showSerName val="0"/></c:dLbls><c:axId val="48650112"/><c:axId val="48672768"/></c:barChart>`;
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><c:chartSpace xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><c:chart><c:title><c:tx><c:rich><a:bodyPr/><a:lstStyle/><a:p><a:r><a:rPr lang="tr-TR" sz="1300" b="1"/><a:t>${ttl}</a:t></a:r></a:p></c:rich></c:tx><c:layout/><c:overlay val="0"/></c:title><c:autoTitleDeleted val="0"/><c:plotArea><c:layout/>${chartBody}<c:catAx><c:axId val="48650112"/><c:scaling><c:orientation val="minMax"/></c:scaling><c:delete val="0"/><c:axPos val="b"/><c:tickLblPos val="nextTo"/><c:crossAx val="48672768"/><c:crosses val="autoZero"/><c:auto val="1"/><c:lblAlgn val="ctr"/><c:lblOffset val="100"/></c:catAx><c:valAx><c:axId val="48672768"/><c:scaling><c:orientation val="minMax"/></c:scaling><c:delete val="0"/><c:axPos val="l"/><c:majorGridlines/><c:numFmt formatCode="0" sourceLinked="0"/><c:tickLblPos val="nextTo"/><c:crossAx val="48650112"/><c:crosses val="autoZero"/><c:crossBetween val="between"/></c:valAx></c:plotArea>${showLegend?'<c:legend><c:legendPos val="b"/><c:layout/><c:overlay val="0"/></c:legend>':""}<c:plotVisOnly val="1"/><c:dispBlanksAs val="zero"/></c:chart></c:chartSpace>`;
 }
 function xlsxDrawingXml(){
   const anchor=(id,name,chartId,fromCol,fromRow,toCol,toRow)=>`<xdr:twoCellAnchor><xdr:from><xdr:col>${fromCol}</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>${fromRow}</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:from><xdr:to><xdr:col>${toCol}</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>${toRow}</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:to><xdr:graphicFrame macro=""><xdr:nvGraphicFramePr><xdr:cNvPr id="${id}" name="${name}"/><xdr:cNvGraphicFramePr/></xdr:nvGraphicFramePr><xdr:xfrm/><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/chart"><c:chart xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:id="rId${chartId}"/></a:graphicData></a:graphic></xdr:graphicFrame><xdr:clientData/></xdr:twoCellAnchor>`;
@@ -908,7 +908,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
   // one language per session, using the language recorded at session start.
   const langNames={tr:"Türkçe",en:"İngilizce",de:"Almanca"};
   const deviceNames={desktop:"Masaüstü",mobile:"Mobil",tablet:"Tablet"};
-  const eventNames={pageview:"Sayfa görüntüleme",section_view:"Bölüm görüntüleme",session_start:"Oturum başlangıcı",session_end:"Oturum sonu",session_heartbeat:"Aktif oturum sinyali",map_click:"İl haritası etkileşimi",video_open:"Video açma",download:"İndirme",click:"Tıklama"};
+  const eventNames={pageview:"Sayfa görüntüleme",section_view:"Bölüm görüntüleme",session_start:"Oturum başlangıcı",session_end:"Oturum sonu",session_heartbeat:"Aktif oturum sinyali",map_click:"İl haritası etkileşimi",video_open:"Video açma",download:"İndirme",click:"Tıklama",language:"Dil değişimi"};
   const translateCounts=(items,names)=>items.map(([name,count])=>[names[String(name).toLowerCase()]||name,count]);
   const languageCounts = translateCounts(countAll(sessions, "lang"),langNames);
   const deviceCounts = translateCounts(countAll(sessions, "device"),deviceNames);
@@ -987,6 +987,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-04","Raporlama","Excel Genel Özet başlığı birleştirilerek okunabilirliği artırıldı; cihaz ve dil grafiklerinde gereksiz lejant kaldırıldı, veri etiketleri eklendi ve language olay türü Dil değişimi olarak Türkçeleştirildi."],
 ["2026-10-04","Mobil / Yönetim Paneli","İl haritası kullanım yönlendirmesi cihaz türüne uyarlandı; mobilde dokunma, masaüstünde üzerine gelme ifadesi gösterilecek şekilde yönetim paneli harita QA çalışması tamamlandı."],
 ["2026-10-04","Mobil / Yönetim Paneli","İl bazlı ilgi haritasının mobil yüksekliği azaltıldı, Türkiye haritası görünümü büyütüldü ve il listesinin sağ tarafı yukarı çık düğmesiyle çakışmayacak şekilde düzenlendi."],
 ["2026-10-04","Kalite / Yönetim Paneli","Türkiye il etkileşim haritasının SVG il eşleştirmesi düzeltildi; Türkçe karakter farklılıklarına dayanıklı eşleştirme ve il listesi kaydırma davranışı iyileştirildi."],
