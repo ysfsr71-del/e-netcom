@@ -1,5 +1,5 @@
 import express from "express";
-const PDFDocument = require("pdfkit");
+import PDFDocument from "pdfkit";
 import OpenAI from "openai";
 import dotenv from "dotenv";
 import path from "path";
