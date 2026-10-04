@@ -91,7 +91,7 @@ body{background:radial-gradient(circle at 80% -10%,rgba(100,224,167,.13),transpa
       <h2 style="margin-bottom:6px">📊 Raporlama</h2>
       <div class="small">Analitik verileri Excel olarak dışa aktarın veya proje geliştirme tarihçesini Türkçe / İngilizce tam Word raporu olarak indirin.</div>
     </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"><button class="ghost" id="exportWord">📝 Word Raporu · TR</button><button class="ghost" id="exportWordEn">📝 Word Report · EN</button><button class="ghost" id="exportExcel">📥 Excel Raporu İndir</button></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"><button class="ghost" id="exportAnalyticsWord">📊 Analitik Değerlendirme · Word</button><button class="ghost" id="exportWord">📝 Geliştirme Raporu · TR</button><button class="ghost" id="exportWordEn">📝 Development Report · EN</button><button class="ghost" id="exportExcel">📥 Ham Veri · Excel</button></div>
   </section>
 
   <section class="traffic-layout">
@@ -215,6 +215,7 @@ $("applyDates").addEventListener("click",()=>{
   load();
 });
 $("provinceSearch").addEventListener("input",filterProvinceList);
+async function downloadAnalyticsWord(){const btn=$("exportAnalyticsWord"),old=btn.textContent;btn.disabled=true;btn.textContent="⏳ Analiz hazırlanıyor…";try{const p=new URLSearchParams({range:currentRange});if(currentRange==="custom"){p.set("from",$("from").value);p.set("to",$("to").value);}const r=await fetch("/api/admin/analytics-report.docx?"+p.toString());if(r.status===401){showLogin();throw new Error("Oturum sona erdi.");}if(!r.ok)throw new Error("Analitik değerlendirme raporu oluşturulamadı.");const blob=await r.blob(),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="e-NetCoM_Analitik_Degerlendirme_Raporu.docx";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);}catch(e){if(e.message!=="Oturum sona erdi.")alert(e.message||"Analitik değerlendirme raporu oluşturulamadı.");}finally{btn.disabled=false;btn.textContent=old;}} $("exportAnalyticsWord").addEventListener("click",downloadAnalyticsWord);
 async function downloadWordReport(lang,buttonId){const btn=$(buttonId),old=btn.textContent;btn.disabled=true;btn.textContent="⏳ Word hazırlanıyor…";try{const r=await fetch("/api/admin/release-notes.docx?lang="+lang);if(r.status===401){showLogin();throw new Error("Oturum sona erdi.");}if(!r.ok)throw new Error("Word raporu oluşturulamadı.");const blob=await r.blob(),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=lang==="en"?"e-NetCoM_Development_Release_Report_EN.docx":"e-NetCoM_Gelistirme_Surum_Raporu_TR.docx";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);}catch(e){if(e.message!=="Oturum sona erdi.")alert(e.message||"Word raporu oluşturulamadı.");}finally{btn.disabled=false;btn.textContent=old;}} $("exportWord").addEventListener("click",()=>downloadWordReport("tr","exportWord")); $("exportWordEn").addEventListener("click",()=>downloadWordReport("en","exportWordEn"));
 $("exportExcel").addEventListener("click",async()=>{
   const btn=$("exportExcel");
