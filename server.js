@@ -1129,6 +1129,86 @@ function buildReleaseNotesDocx(lang="tr"){
 }
 app.get("/api/admin/release-notes.docx",requireAdmin,(req,res)=>{try{const lang=String(req.query.lang||"tr").toLowerCase()==="en"?"en":"tr";const buffer=buildReleaseNotesDocx(lang);res.setHeader("Content-Type","application/vnd.openxmlformats-officedocument.wordprocessingml.document");res.setHeader("Content-Disposition",'attachment; filename="'+(lang==="en"?"e-NetCoM_Development_Release_Report_EN.docx":"e-NetCoM_Gelistirme_Surum_Raporu_TR.docx")+'"');res.setHeader("Cache-Control","no-store");res.send(buffer);}catch(err){console.error("Release report DOCX error:",err);res.status(500).json({error:"Word raporu oluşturulamadı."});}});
 
+
+function reportPct(n,total){return total?Math.round((Number(n)||0)*1000/total)/10:0;}
+function reportDuration(sec){sec=Math.max(0,Number(sec)||0);const m=Math.floor(sec/60),ss=Math.round(sec%60);return m?m+" dk "+ss+" sn":ss+" sn";}
+function analyticsBarTable(title,items,total,maxItems=8){
+ const rows=(items||[]).slice(0,maxItems); if(!rows.length)return docxP("Veri bulunmuyor.",{color:"6B7F77",size:18,after:120});
+ const max=Math.max(1,...rows.map(x=>Number(x.count)||0));
+ let xml=docxP(title,{bold:true,color:"176B52",size:22,before:160,after:80});
+ xml+='<w:tbl><w:tblPr><w:tblW w:w="100%" w:type="pct"/><w:tblBorders><w:insideH w:val="single" w:sz="4" w:color="DCE9E3"/></w:tblBorders></w:tblPr><w:tblGrid><w:gridCol w:w="3000"/><w:gridCol w:w="5200"/><w:gridCol w:w="1300"/></w:tblGrid>';
+ for(const item of rows){const n=Number(item.count)||0,pct=reportPct(n,total),bar=Math.max(4,Math.round(n/max*100));xml+='<w:tr><w:tc><w:tcPr><w:tcW w:w="3000" w:type="dxa"/></w:tcPr>'+docxP(String(item.name||"—"),{size:18,after:30})+'</w:tc><w:tc><w:tcPr><w:tcW w:w="5200" w:type="dxa"/></w:tcPr><w:p><w:r><w:rPr><w:color w:val="176B52"/><w:sz w:val="18"/></w:rPr><w:t>'+xmlEscape("█".repeat(Math.max(1,Math.round(bar/5))))+'</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="1300" w:type="dxa"/></w:tcPr>'+docxP(n+" ("+pct+"%)",{bold:true,size:17,after:30})+'</w:tc></w:tr>';}
+ return xml+'</w:tbl>';
+}
+function analyticsDailyTable(daily){
+ const rows=(daily||[]).filter(x=>x.visits||x.pageviews).slice(-14);if(!rows.length)return docxP("Seçilen dönemde günlük trafik verisi bulunmuyor.",{color:"6B7F77",size:18});
+ const max=Math.max(1,...rows.map(x=>Number(x.visits)||0));
+ let xml=docxP("Günlük Ziyaret Eğilimi · Son 14 Aktif Gün",{bold:true,color:"176B52",size:22,before:160,after:80});
+ xml+='<w:tbl><w:tblPr><w:tblW w:w="100%" w:type="pct"/></w:tblPr><w:tblGrid><w:gridCol w:w="2200"/><w:gridCol w:w="5700"/><w:gridCol w:w="1300"/></w:tblGrid>';
+ for(const x of rows){const n=Number(x.visits)||0,bar=Math.max(1,Math.round(n/max*20));xml+='<w:tr><w:tc>'+docxP(String(x.date),{size:17,after:20})+'</w:tc><w:tc><w:p><w:r><w:rPr><w:color w:val="176B52"/><w:sz w:val="18"/></w:rPr><w:t>'+xmlEscape("█".repeat(bar))+'</w:t></w:r></w:p></w:tc><w:tc>'+docxP(String(n),{bold:true,size:17,after:20})+'</w:tc></w:tr>';}
+ return xml+'</w:tbl>';
+}
+function topInsight(items,total,label){
+ const x=(items||[])[0];if(!x)return "Bu başlıkta yeterli veri bulunmamaktadır.";
+ const pct=reportPct(x.count,total);return label+" içinde en yüksek pay "+x.name+" kategorisindedir ("+x.count+", %"+pct+").";
+}
+function buildAnalyticsEvaluationDocx(range="30d",fromDate="",toDate=""){
+ const st=buildAnalyticsStats(range,fromDate,toDate),bounds=getRangeBounds(range,fromDate,toDate);
+ const now=new Date(),date=now.toLocaleDateString("tr-TR",{day:"2-digit",month:"long",year:"numeric",timeZone:"Europe/Istanbul"}),time=now.toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit",second:"2-digit",timeZone:"Europe/Istanbul"});
+ const rangeLabel=range==="custom"?fromDate+" – "+toDate:range==="all"?"Tüm kayıtlar":({"24h":"Son 24 saat","7d":"Son 7 gün","30d":"Son 30 gün","90d":"Son 90 gün","1y":"Son 1 yıl"}[range]||range);
+ const visits=st.visits||0,unique=st.uniqueVisitors||0,events=st.totalEvents||0,avg=st.averageSessionSeconds||0;
+ const returning=Math.max(0,visits-unique),uniqueRate=reportPct(unique,visits);
+ const deviceText=topInsight(st.devices,visits,"Cihaz dağılımı"),langText=topInsight(st.languages,visits,"Dil dağılımı"),refText=topInsight(st.referrers,visits,"Trafik kaynakları");
+ const topSection=(st.sections||[])[0],topProvince=(st.provinceViews||[])[0],topVideo=(st.videoOpens||[])[0];
+ let body="";
+ body+=docxP("e-NetCoM",{align:"center",bold:true,color:"176B52",size:54,before:620,after:120});
+ body+=docxP("ÇEVRESEL İLETİŞİM VE MEDYA AĞI",{align:"center",bold:true,color:"6B7F77",size:17,after:330});
+ body+=docxP("ANALİTİK DEĞERLENDİRME RAPORU",{align:"center",bold:true,color:"173F34",size:36,after:120});
+ body+=docxP("Web sitesi kullanım verilerinin yönetici odaklı analizi",{align:"center",color:"4E6B61",size:24,after:300});
+ body+=docxP("RAPOR DÖNEMİ",{align:"center",bold:true,color:"176B52",size:18,after:45})+docxP(rangeLabel,{align:"center",bold:true,color:"173F34",size:26,after:300});
+ body+=docxP(visits+" oturum   •   "+unique+" tekil ziyaretçi   •   "+events+" analitik olayı",{align:"center",bold:true,color:"176B52",size:21,after:320});
+ body+=docxP("Oluşturulma: "+date+" · "+time+" · Türkiye (UTC+3)",{align:"center",color:"6B7F77",size:18,after:220});
+ body+=docxP("e-NetCoM Yönetim Merkezi · enetcomproject.com",{align:"center",bold:true,color:"173F34",size:18});
+ body+=docxPageBreak();
+ body+=docxP("YÖNETİCİ ÖZETİ",{style:"Heading1",bold:true,color:"176B52",size:29,after:130});
+ body+=docxP("Seçilen dönemde e-NetCoM web sitesi "+visits+" oturum ve "+unique+" tekil ziyaretçi üretmiştir. Tekil ziyaretçilerin oturumlara oranı %"+uniqueRate+" düzeyindedir. Ortalama oturum süresi "+reportDuration(avg)+" olarak ölçülmüş, toplam "+events+" analitik etkileşim kaydedilmiştir. e-Merkez alanında "+st.eCenterInteractions+" etkileşim gerçekleşmiştir.",{size:20,after:170});
+ body+=docxP("TEMEL GÖSTERGELER",{style:"Heading1",bold:true,color:"176B52",size:28,after:110});
+ for(const x of [["Toplam ziyaret",visits+" oturum"],["Tekil ziyaretçi",String(unique)],["Tekrar oturum farkı",String(returning)],["Ortalama oturum",reportDuration(avg)],["Toplam analitik olayı",String(events)],["e-Merkez etkileşimi",String(st.eCenterInteractions)]]) body+=docxP(x[0]+": "+x[1],{bold:true,color:"173F34",size:20,after:65});
+ body+=docxP("ÖNE ÇIKAN BULGULAR",{style:"Heading1",bold:true,color:"176B52",size:28,before:220,after:100});
+ body+=docxP("• "+deviceText,{size:19,after:70})+docxP("• "+langText,{size:19,after:70})+docxP("• "+refText,{size:19,after:70});
+ if(topSection)body+=docxP("• En fazla görüntülenen bölüm "+topSection.name+" ("+topSection.count+" görüntüleme).",{size:19,after:70});
+ if(topProvince)body+=docxP("• İl haritasında en yüksek etkileşim "+topProvince.name+" ("+topProvince.count+" etkileşim).",{size:19,after:70});
+ if(topVideo)body+=docxP("• En çok açılan video "+topVideo.name+" ("+topVideo.count+" açılma).",{size:19,after:70});
+ body+=docxPageBreak()+docxP("TRAFİK VE KULLANICI PROFİLİ",{style:"Heading1",bold:true,color:"176B52",size:29,after:100});
+ body+=analyticsDailyTable(st.daily);
+ body+=analyticsBarTable("Cihaz Dağılımı",st.devices,visits,6);
+ body+=docxP("Değerlendirme: "+deviceText,{color:"4E6B61",size:18,after:140});
+ body+=analyticsBarTable("Dil Dağılımı",st.languages,visits,6);
+ body+=docxP("Değerlendirme: "+langText,{color:"4E6B61",size:18,after:140});
+ body+=analyticsBarTable("Giriş Kaynakları",st.referrers,visits,8);
+ body+=docxP("Değerlendirme: "+refText,{color:"4E6B61",size:18,after:140});
+ body+=docxPageBreak()+docxP("İÇERİK PERFORMANSI",{style:"Heading1",bold:true,color:"176B52",size:29,after:100});
+ body+=analyticsBarTable("En Çok Görüntülenen Bölümler",st.sections,(st.sections||[]).reduce((a,x)=>a+x.count,0),10);
+ body+=analyticsBarTable("En Çok Açılan Videolar",st.videoOpens,(st.videoOpens||[]).reduce((a,x)=>a+x.count,0),10);
+ body+=analyticsBarTable("En Çok İndirilen İçerikler",st.downloads,(st.downloads||[]).reduce((a,x)=>a+x.count,0),10);
+ body+=docxPageBreak()+docxP("COĞRAFİ ETKİLEŞİM",{style:"Heading1",bold:true,color:"176B52",size:29,after:100});
+ body+=analyticsBarTable("İl Haritası Etkileşimleri",st.provinceViews,(st.provinceViews||[]).reduce((a,x)=>a+x.count,0),15);
+ body+=docxP("Bu bölüm, ziyaretçinin fiziksel konumunu değil; e-NetCoM Türkiye haritasında hangi illerle etkileşim kurulduğunu göstermektedir.",{color:"6B7F77",size:18,after:160});
+ body+=docxP("GENEL DEĞERLENDİRME",{style:"Heading1",bold:true,color:"176B52",size:29,before:220,after:100});
+ let assessment="Seçilen dönem için kullanım verileri, ziyaret hacmi ve içerik etkileşimlerinin birlikte değerlendirilmesine imkân vermektedir. ";
+ if(avg>=180)assessment+="Ortalama oturum süresinin üç dakikanın üzerinde olması, kullanıcıların site içinde anlamlı süre geçirdiğine işaret etmektedir. "; else if(avg>0)assessment+="Ortalama oturum süresi "+reportDuration(avg)+" düzeyindedir; içeriklerde daha uzun etkileşimi destekleyecek yönlendirmeler değerlendirilebilir. ";
+ if(st.eCenterInteractions>0)assessment+="e-Merkez alanında "+st.eCenterInteractions+" ölçülebilir etkileşim kaydedilmiştir. ";
+ assessment+="Bu değerlendirmeler yalnızca e-NetCoM analitik altyapısında seçilen dönem için kaydedilen verilere dayanmaktadır.";
+ body+=docxP(assessment,{size:20,after:150});
+ body+=docxP("METODOLOJİ NOTU",{style:"Heading1",bold:true,color:"176B52",size:26,before:220,after:100});
+ body+=docxP("Oturum sayısı session_start kayıtlarından, tekil ziyaretçi sayısı anonim visitorId değerlerinden, dil ve cihaz dağılımları oturum başlangıçlarından hesaplanır. İl verileri harita etkileşimlerini ifade eder. Rapor, seçilen tarih filtresindeki kayıtları otomatik olarak özetler ve açıklayıcı değerlendirmeler üretir.",{size:18});
+ const document='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><w:body>'+body+'<w:sectPr><w:footerReference w:type="default" r:id="rId1"/><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1000" w:right="1000" w:bottom="1000" w:left="1000" w:footer="550"/></w:sectPr></w:body></w:document>';
+ const styles='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:rPr><w:rFonts w:ascii="Aptos" w:hAnsi="Aptos"/><w:sz w:val="20"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:qFormat/><w:outlineLvl w:val="0"/></w:style></w:styles>';
+ const footer='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:ftr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:rPr><w:color w:val="6B7F77"/><w:sz w:val="17"/></w:rPr><w:t>e-NetCoM · ANALİTİK DEĞERLENDİRME RAPORU · </w:t></w:r><w:r><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText> PAGE </w:instrText></w:r><w:r><w:fldChar w:fldCharType="end"/></w:r></w:p></w:ftr>';
+ return zipStore([{name:"[Content_Types].xml",data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/></Types>'},{name:"_rels/.rels",data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'},{name:"word/_rels/document.xml.rels",data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>'},{name:"word/document.xml",data:document},{name:"word/styles.xml",data:styles},{name:"word/footer1.xml",data:footer}]);
+}
+app.get("/api/admin/analytics-report.docx",requireAdmin,(req,res)=>{try{const range=["24h","7d","30d","90d","1y","all","custom"].includes(req.query.range)?req.query.range:"30d",fromDate=String(req.query.from||""),toDate=String(req.query.to||"");const buffer=buildAnalyticsEvaluationDocx(range,fromDate,toDate),stamp=new Date().toISOString().slice(0,10);res.setHeader("Content-Type","application/vnd.openxmlformats-officedocument.wordprocessingml.document");res.setHeader("Content-Disposition",'attachment; filename="e-NetCoM_Analitik_Degerlendirme_Raporu_'+stamp+'.docx"');res.setHeader("Cache-Control","no-store");res.send(buffer);}catch(err){console.error("Analytics evaluation DOCX error:",err);res.status(500).json({error:"Analitik değerlendirme raporu oluşturulamadı."});}});
+
 app.get("/api/admin/report.xlsx", requireAdmin, (req, res) => {
   const range = ["24h","7d","30d","90d","1y","all","custom"].includes(req.query.range) ? req.query.range : "30d";
   const fromDate = String(req.query.from || "");
