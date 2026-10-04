@@ -987,6 +987,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-04","Mobil / Yönetim Paneli","İl haritası kullanım yönlendirmesi cihaz türüne uyarlandı; mobilde dokunma, masaüstünde üzerine gelme ifadesi gösterilecek şekilde yönetim paneli harita QA çalışması tamamlandı."],
 ["2026-10-04","Mobil / Yönetim Paneli","İl bazlı ilgi haritasının mobil yüksekliği azaltıldı, Türkiye haritası görünümü büyütüldü ve il listesinin sağ tarafı yukarı çık düğmesiyle çakışmayacak şekilde düzenlendi."],
 ["2026-10-04","Kalite / Yönetim Paneli","Türkiye il etkileşim haritasının SVG il eşleştirmesi düzeltildi; Türkçe karakter farklılıklarına dayanıklı eşleştirme ve il listesi kaydırma davranışı iyileştirildi."],
 ["2026-10-04","Raporlama","Excel analitik raporuna günlük ziyaret, cihaz ve dil grafikleri eklendi; dil, cihaz ve olay türü etiketleri Türkçeleştirildi."],
