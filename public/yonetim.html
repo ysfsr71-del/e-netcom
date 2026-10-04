@@ -18,6 +18,7 @@ h2{font-size:17px;margin:0 0 14px}.list{display:grid;gap:9px}.row{display:grid;g
 .report-box{display:flex;justify-content:space-between;align-items:center;gap:18px}.report-box button{white-space:nowrap}.note{margin-top:16px;color:var(--muted);font-size:12px}.loading{opacity:.6}
 @media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}.two,.three{grid-template-columns:1fr}}
 @media(max-width:600px){.wrap{padding:16px}.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.num{font-size:27px}}
+ .mobile-map-tip{display:none}@media(max-width:600px){.desktop-map-tip{display:none}.mobile-map-tip{display:inline}}
 </style>
 <style id="admin-v2">
 :root{--bg:#07120f;--card:#0d1c18;--card2:#10241e;--muted:#8fa99e;--text:#f3fbf7;--line:#1f3b31;--accent:#64e0a7;--accent2:#77a9ff}
@@ -109,7 +110,7 @@ body{background:radial-gradient(circle at 80% -10%,rgba(100,224,167,.13),transpa
     <div class="card"><h2>YouTube</h2><div class="list" id="youtube"><div class="row"><span>Yükleniyor…</span></div></div></div>
   </section>
 
-  <section class="card map-card" style="margin-top:14px"><div class="section-title"><span class="ico">⌖</span><h2>Türkiye · İl bazlı ilgi</h2></div><div class="small" style="margin-top:-8px;margin-bottom:14px">81 il haritasında açılan il detayları. Renk yoğunluğu etkileşim miktarını gösterir.</div><div class="map-layout"><div><div class="admin-map" id="adminMap">Harita yükleniyor…</div><div class="map-tip" id="adminMapTip">Bir ilin üzerine gelerek etkileşim sayısını görüntüleyin.</div></div><div><input class="province-search" id="provinceSearch" type="search" placeholder="İl ara…" autocomplete="off"/><div class="list province-card" id="provinceViews"></div></div></div></section>
+  <section class="card map-card" style="margin-top:14px"><div class="section-title"><span class="ico">⌖</span><h2>Türkiye · İl bazlı ilgi</h2></div><div class="small" style="margin-top:-8px;margin-bottom:14px">81 il haritasında açılan il detayları. Renk yoğunluğu etkileşim miktarını gösterir.</div><div class="map-layout"><div><div class="admin-map" id="adminMap">Harita yükleniyor…</div><div class="map-tip" id="adminMapTip"><span class="desktop-map-tip">Bir ilin üzerine gelerek etkileşim sayısını görüntüleyin.</span><span class="mobile-map-tip">Haritada bir ile dokunarak etkileşim sayısını görüntüleyin.</span></div></div><div><input class="province-search" id="provinceSearch" type="search" placeholder="İl ara…" autocomplete="off"/><div class="list province-card" id="provinceViews"></div></div></div></section>
 
   <section class="content-performance"><div class="card"><h2>En çok açılan videolar</h2><div class="small" style="margin-top:-8px;margin-bottom:12px">Video ve oynatma kontrolleri.</div><div class="list" id="videoOpens"></div></div><div class="card"><h2>İndirilen içerikler</h2><div class="small" style="margin-top:-8px;margin-bottom:12px">PDF, program ve indirilebilir içerik etkileşimleri.</div><div class="list" id="downloads"></div></div><div class="card ecenter-card"><div class="kpi-icon">⌕</div><h2>e-Merkez kullanımı</h2><div class="num" id="eCenterInteractions">—</div><div class="small">e-Merkez alanındaki toplam etkileşim</div></div></section>
 
