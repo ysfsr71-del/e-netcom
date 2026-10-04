@@ -848,7 +848,8 @@ function xlsxSheet(rows, sheetName="") {
     });
     xml += '</row>';
   });
-  xml += '</sheetData>';\n  if(isSummary) xml+='<mergeCells count="1"><mergeCell ref="A1:B1"/></mergeCells>';
+  xml += '</sheetData>';
+  if(isSummary) xml+='<mergeCells count="1"><mergeCell ref="A1:B1"/></mergeCells>';
   if(!isSummary && safeRows.length>1) xml+=`<autoFilter ref="A1:${colLetter(maxCols)}${safeRows.length}"/>`;
   if(isSummary) xml+='<drawing r:id="rId1"/>';
   xml+='<pageMargins left="0.3" right="0.3" top="0.5" bottom="0.5" header="0.2" footer="0.2"/><pageSetup orientation="landscape" fitToWidth="1" fitToHeight="0"/></worksheet>';
