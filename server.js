@@ -980,6 +980,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-05","Eğitimler / Kırklareli","3 Ekim 2026 tarihinde Kırklareli için gerçekleştirilen çevrimiçi eğitim 15 katılımcı ile sisteme eklendi; eğitim sayıları, katılımcı toplamları ve il bazlı harita verisi güncellendi."],
 ["2026-10-04","Proje Çıktıları / İçerik","Proje Çıktıları sayfası yalnızca WP2 hashtag kampanyalarını gösteren yapıdan çıkarılarak Dijital İletişim ve Farkındalık, Eğitim, Bilgi ve Kaynak, Uluslararası Çalışmalar ile Yaygınlaştırma ve Saha başlıklarını bir araya getiren kapsamlı bir Çıktı Merkezi olarak yeniden düzenlendi."],
 ["2026-10-04","Proje Çıktıları / UX","Hashtag Kütüphanesi sayfa uzunluğunu azaltacak şekilde ilk 6 kartı gösterecek biçimde kompaktlaştırıldı; kategori filtreleri ve kopyalama işlevleri korunarak tüm etiketleri açma ve listeyi yeniden daraltma kontrolleri eklendi."],
 ["2026-10-04","Ana Sayfa / Proje Çıktıları","Ana sayfadaki Proje Çıktıları vitrini yeni Çıktı Merkezi yapısını temsil edecek şekilde yenilendi; eski WP2/PDF odaklı anlatım kaldırıldı, beş çıktı alanı özetlendi ve çağrı butonu Tüm çıktıları incele olarak güncellendi."],
@@ -1028,6 +1029,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-05","Training / Kırklareli","The online training delivered for Kırklareli on 3 October 2026 was added with 15 participants; training counts, participant totals and province-level map data were updated."],
 ["2026-10-04","Project Outputs / Content","The Project Outputs page was expanded from a WP2 hashtag-focused page into a comprehensive Outputs Centre bringing together Digital Communication & Awareness, Training, Knowledge & Resources, International Work, and Dissemination & Field outputs."],
 ["2026-10-04","Project Outputs / UX","The Hashtag Library was compacted to show the first six cards by default; category filters and copy actions were preserved, with controls added to reveal all hashtags and collapse the list again."],
 ["2026-10-04","Homepage / Project Outputs","The homepage Project Outputs preview was refreshed to represent the broader Outputs Centre; the old WP2/PDF-focused copy was removed, five output areas were summarized, and the CTA was changed to Explore all outputs."],
