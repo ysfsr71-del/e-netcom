@@ -1522,9 +1522,9 @@ img{decoding:async}
     <article class="impact-v2-main">
       <div class="impact-v2-kicker">SAHA VE AĞ</div>
       <div class="impact-v2-kpis">
-        <div class="impact-v2-kpi impact-v2-kpi-featured"><b id="impactTotalParticipants">1.262</b><span>Toplam eğitim katılımcısı</span></div>
-        <div class="impact-v2-kpi"><b id="impactActivityCount">24</b><span>Gerçekleşen eğitim kaydı</span></div>
-        <div class="impact-v2-kpi"><b id="impactProvinceCount">24</b><span>Eğitim gerçekleştirilen il</span></div>
+        <div class="impact-v2-kpi impact-v2-kpi-featured"><b id="impactTotalParticipants">1.277</b><span>Toplam eğitim katılımcısı</span></div>
+        <div class="impact-v2-kpi"><b id="impactActivityCount">25</b><span>Gerçekleşen eğitim kaydı</span></div>
+        <div class="impact-v2-kpi"><b id="impactProvinceCount">25</b><span>Eğitim gerçekleştirilen il</span></div>
         <div class="impact-v2-kpi"><b>2.449</b><span>e-Merkez kaynağı</span></div>
       </div>
       <div class="impact-v2-split">
@@ -1532,7 +1532,7 @@ img{decoding:async}
           <span class="impact-v2-label">EĞİTİM DAĞILIMI</span>
           <div class="impact-v2-mini-grid">
             <div><b id="impactFaceActivityCount">16</b><span>Yüz yüze</span></div>
-            <div><b id="impactOnlineActivityCount">8</b><span>Çevrimiçi</span></div>
+            <div><b id="impactOnlineActivityCount">9</b><span>Çevrimiçi</span></div>
           </div>
         </div>
         <div class="impact-v2-network-note"><strong>81 il ağı</strong><span>Projenin yaygınlaştırma ve iletişim ağı Türkiye'nin tamamına uzanıyor.</span></div>
@@ -1615,8 +1615,8 @@ img{decoding:async}
 <div class="map-summary">
 <div class="map-summary-card"><b>81</b><span data-map-label="network">İl ağı</span></div>
 <div class="map-summary-card"><b id="mapFaceCount">16</b><span data-map-label="face">Yüz yüze eğitim</span></div>
-<div class="map-summary-card"><b id="mapOnlineCount">8</b><span data-map-label="online">Çevrimiçi eğitim</span></div>
-<div class="map-summary-card"><b id="mapParticipantCount">1.262</b><span data-map-label="participants">Toplam katılımcı</span></div>
+<div class="map-summary-card"><b id="mapOnlineCount">9</b><span data-map-label="online">Çevrimiçi eğitim</span></div>
+<div class="map-summary-card"><b id="mapParticipantCount">1.277</b><span data-map-label="participants">Toplam katılımcı</span></div>
 </div>
 
 <div class="map-tools"><button class="filter active" data-filter="all" data-map-label="all">Tümü</button><button class="filter" data-filter="face" data-map-label="faceFilter">Yüz yüze</button><button class="filter" data-filter="online" data-map-label="onlineFilter">Çevrimiçi</button><button class="filter" data-filter="done" data-map-label="done">Gerçekleşen</button><input class="search" id="citySearch" placeholder="İl ara…" data-map-placeholder="search"/></div>
@@ -1917,6 +1917,9 @@ function updateComputedStats(lang){
   set('heroParticipantCount',fmt(totalParticipants));
   set('impactFaceParticipants',fmt(faceParticipants));
   set('impactTotalParticipants',fmt(totalParticipants));
+  set('impactActivityCount',completed.length);
+  set('impactFaceActivityCount',face.length);
+  set('impactOnlineActivityCount',online.length);
   set('impactProvinceCount',lang==='en'?provinceCount+' provinces':lang==='de'?provinceCount+' Provinzen':provinceCount+' ilde');
   set('impactNoticeParticipants',lang==='en'?fmt(totalParticipants)+' participants':lang==='de'?fmt(totalParticipants)+' Teilnehmende':fmt(totalParticipants)+' katılımcı');
   const summary=document.getElementById('impactSummaryText');
