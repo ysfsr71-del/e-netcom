@@ -980,6 +980,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-05","Kırklareli / Galeri","Kırklareli etkinlik galerisi için klasör yolu Türkçe karakter içeren public/kırklareli/ yolundan URL uyumlu public/kirklareli/ yoluna taşındı. 01.png saha görseli ve afis.png program afişi korunarak galeriyle eşleştirildi."],
 ["2026-10-05","Eğitim / Gösterge QA","Kırklareli eğitimi sonrası ana sayfadaki eğitim KPI varsayılanları 25 eğitim, 25 il, 1.277 katılımcı ve 9 çevrimiçi eğitim olarak güncellendi; faaliyet ve dağılım sayaçları eğitim verisinden dinamik hesaplanacak şekilde tamamlandı. Eğitimler sayfasındaki eski Open Graph başlığı da düzeltildi."],
 ["2026-10-05","Harita / Kalite","Türkiye haritasındaki il eşleştirmesi alfabetik sıra yerine gerçek plaka kodlarıyla yeniden kuruldu; Kırklareli, Kırıkkale ve 68–81 plaka aralığındaki illerin yanlış konum/etiket riski giderildi."],
 ["2026-10-05","Galeri / Kalite","Etkinlik galerisi GitHub içerik isteğine zaman aşımı ve mevcut CDN fallback akışı eklenerek sonsuz Görseller yükleniyor durumuna karşı güçlendirildi."],
@@ -1032,6 +1033,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-05","Kırklareli / Gallery","The Kırklareli event gallery folder was moved from the Turkish-character path public/kırklareli/ to the URL-safe public/kirklareli/ path. The 01.png field image and afis.png programme poster were preserved and connected to the gallery."],
 ["2026-10-05","Training / KPI QA","After the Kırklareli training, homepage training KPI defaults were updated to 25 trainings, 25 provinces, 1,277 participants and 9 online trainings; activity and distribution counters now fully refresh from training data. The stale Open Graph title on the training page was also corrected."],
 ["2026-10-05","Map / Quality","Province matching on the Türkiye map was rebuilt using actual plate codes instead of alphabetical order, fixing incorrect location/label risks for Kırklareli, Kırıkkale and provinces in the 68–81 plate-code range."],
 ["2026-10-05","Gallery / Quality","The event gallery was hardened against an endless Loading visuals state by adding a timeout to the GitHub contents request while preserving the CDN fallback flow."],
