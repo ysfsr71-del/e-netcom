@@ -2002,9 +2002,10 @@ function thumbFor(v){
  return `/thumbs/${local}`;
 }
 function renderVideos(filter='all'){
- const list=videoData.filter(v=>filter==='all'||(filter==='kamu'&&v[1]==='Kamu Spotları')||(filter==='kisa'&&v[1]==='Kısa Filmler')||(filter==='1dakika'&&v[1]==='1 Dakikada'));
  const grid=document.getElementById('videoGrid');
  if(!grid)return;
+ if(typeof videoData==='undefined')return;
+ const list=videoData.filter(v=>filter==='all'||(filter==='kamu'&&v[1]==='Kamu Spotları')||(filter==='kisa'&&v[1]==='Kısa Filmler')||(filter==='1dakika'&&v[1]==='1 Dakikada'));
  grid.innerHTML=list.map(v=>{
    const local=thumbFor(v);
    const yt=v[4]==='youtube';
