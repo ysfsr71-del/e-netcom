@@ -10,7 +10,9 @@
 const params = new URLSearchParams(location.search);
 const city = params.get('city') || '';
 const view = params.get('view') || 'photos';
-const lang = localStorage.getItem('enetcom_lang') || 'tr';
+const queryLang=params.get('lang');
+const lang = ['tr','en','de'].includes(queryLang) ? queryLang : (localStorage.getItem('enetcom_lang') || 'tr');
+document.documentElement.lang=lang;
 
 const esc = s => String(s).replace(/[&<>"']/g,m=>({
   '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
@@ -75,6 +77,14 @@ const eyebrow = document.getElementById('eyebrow');
 const actions = document.getElementById('actions');
 
 eyebrow.textContent = L.ey;
+function applyGallerySeo(){
+  const place=(titleOverrides[citySlug]&&titleOverrides[citySlug][lang]) || city || 'e-NetCoM';
+  const label=lang==='en'?'Event Gallery':lang==='de'?'Veranstaltungsgalerie':'Etkinlik Galerisi';
+  document.title=place+' · '+label+' | e-NetCoM';
+  const md=document.querySelector('meta[name="description"]');
+  if(md)md.content=lang==='en'?('Photos and programme materials from the e-NetCoM '+place+' event.'):lang==='de'?('Fotos und Programmmaterialien der e-NetCoM-Veranstaltung '+place+'.'):('e-NetCoM '+place+' etkinliğine ait saha fotoğrafları ve program materyalleri.');
+}
+applyGallerySeo();
 
 function backUrl(){
   /* International events always return to International Activities,
@@ -141,7 +151,7 @@ function renderSlides(list){
 
   actions.classList.remove('hidden');
   actions.innerHTML =
-    '<a class="btn" href="/gallery.html?city='+encodeURIComponent(city)+'&view=poster&back='+encodeURIComponent(params.get('back')||'')+'">'+L.poster+'</a>'+
+    '<a class="btn" href="/gallery.html?city='+encodeURIComponent(city)+'&view=poster&back='+encodeURIComponent(params.get('back')||'')+'&lang='+encodeURIComponent(lang)+'">'+L.poster+'</a>'+
     '<a class="btn" href="'+backUrl()+'">'+backLabel()+'</a>';
 }
 
@@ -157,7 +167,7 @@ function renderPoster(src){
 
   actions.classList.remove('hidden');
   actions.innerHTML =
-    '<a class="btn primary" href="/gallery.html?city='+encodeURIComponent(city)+'&back='+encodeURIComponent(params.get('back')||'')+'">'+L.photo+'</a>'+
+    '<a class="btn primary" href="/gallery.html?city='+encodeURIComponent(city)+'&back='+encodeURIComponent(params.get('back')||'')+'&lang='+encodeURIComponent(lang)+'">'+L.photo+'</a>'+
     '<a class="btn" href="'+backUrl()+'">'+backLabel()+'</a>';
 }
 
