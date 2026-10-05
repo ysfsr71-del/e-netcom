@@ -84,8 +84,6 @@ function applyGallerySeo(){
   const md=document.querySelector('meta[name="description"]');
   if(md)md.content=lang==='en'?('Photos and programme materials from the e-NetCoM '+place+' event.'):lang==='de'?('Fotos und Programmmaterialien der e-NetCoM-Veranstaltung '+place+'.'):('e-NetCoM '+place+' etkinliğine ait saha fotoğrafları ve program materyalleri.');
 }
-applyGallerySeo();
-
 function backUrl(){
   /* International events always return to International Activities,
      while Turkish provinces always return to the 81-province map. */
@@ -298,6 +296,7 @@ async function legacyDiscover(){
 }
 
 async function main(){
+  applyGallerySeo();
   if(!city){
     showError(lang==='en'?'Event information not found.':lang==='de'?'Veranstaltungsinformationen nicht gefunden.':'Etkinlik bilgisi bulunamadı.');
     return;

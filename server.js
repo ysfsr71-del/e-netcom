@@ -980,6 +980,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-05","Galeri regresyon düzeltmesi","PR #51 sonrasında tüm etkinlik galerilerinin yükleme ekranında kalmasına neden olan JavaScript başlatma sırası hatası giderildi. Galeri SEO işlemi şehir başlığı eşlemeleri hazırlandıktan sonra çalıştırılarak il ve uluslararası galeriler yeniden erişilebilir hale getirildi."],
 ["2026-10-05","Dil ve SEO kalite düzeltmeleri","Astra O4–O5 regresyon kontrolünde kalan çeviri ve SEO tutarsızlıkları giderildi: veritabanı dil geçişleri, Çıktılar sloganı, uluslararası şehir adları, ana sayfa meta description tekrarı ve galeri dil/SEO metadatası düzeltildi."],
 ["2026-10-05","Kırklareli / Galeri","Kırklareli etkinlik galerisi için klasör yolu Türkçe karakter içeren public/kırklareli/ yolundan URL uyumlu public/kirklareli/ yoluna taşındı. 01.png saha görseli ve afis.png program afişi korunarak galeriyle eşleştirildi."],
 ["2026-10-05","Eğitim / Gösterge QA","Kırklareli eğitimi sonrası ana sayfadaki eğitim KPI varsayılanları 25 eğitim, 25 il, 1.277 katılımcı ve 9 çevrimiçi eğitim olarak güncellendi; faaliyet ve dağılım sayaçları eğitim verisinden dinamik hesaplanacak şekilde tamamlandı. Eğitimler sayfasındaki eski Open Graph başlığı da düzeltildi."],
@@ -1034,6 +1035,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-05","Gallery regression fix","Fixed the JavaScript initialization-order error introduced after PR #51 that left all event galleries stuck on the loading screen. Gallery SEO now runs only after city title mappings are initialized, restoring province and international galleries."],
 ["2026-10-05","Language and SEO quality fixes","Resolved the remaining translation and SEO inconsistencies from the Astra O4–O5 regression check: database language switching, Outputs slogan, international city names, duplicate homepage meta description and gallery language/SEO metadata."],
 ["2026-10-05","Kırklareli / Gallery","The Kırklareli event gallery folder was moved from the Turkish-character path public/kırklareli/ to the URL-safe public/kirklareli/ path. The 01.png field image and afis.png programme poster were preserved and connected to the gallery."],
 ["2026-10-05","Training / KPI QA","After the Kırklareli training, homepage training KPI defaults were updated to 25 trainings, 25 provinces, 1,277 participants and 9 online trainings; activity and distribution counters now fully refresh from training data. The stale Open Graph title on the training page was also corrected."],
