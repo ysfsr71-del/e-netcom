@@ -1,12 +1,13 @@
 # e-NetCoM – Doğanın Enerjileri | Güncel Dijital Platform
 
-Bu sürüm, sitedeki güncel eğitim kayıtları esas alınarak güncellenmiştir. Eğitim verilerinin güncel kesiti 11 Temmuz 2026 tarihli Tunceli çevrimiçi eğitimini de kapsamaktadır.
+Bu sürüm, sitedeki güncel eğitim kayıtları esas alınarak güncellenmiştir. Eğitim verilerinin güncel kesiti 3 Ekim 2026 tarihli Kırklareli çevrimiçi eğitimini de kapsamaktadır.
 
 ## Güncel göstergeler
 - Yüz yüze eğitim: 16 il
-- Çevrimiçi eğitim: 8 il
-- Güncel toplam: 24 gerçekleşen eğitim / 24 il / 1.262 katılımcı
+- Çevrimiçi eğitim: 9 il
+- Güncel toplam: 25 gerçekleşen eğitim / 25 il / 1.277 katılımcı
 - 11 Temmuz 2026: Tunceli çevrimiçi eğitim, 51 katılımcı
+- 3 Ekim 2026: Kırklareli çevrimiçi eğitim, 15 katılımcı
 - 1 Dakikada serisi: 10 içerik / 11.077 görüntülenme (rapor)
 - İnteraktif Eğitim ve Farkındalık Videoları: 24 içerik / 21.696 görüntülenme (rapor)
 - İnformatif Kamu Spotları: 2 içerik / proje YouTube'da 6.251 görüntülenme (rapor)
