@@ -980,6 +980,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-06","Kamu spotları / TV yaygınlaştırma","e-NetCoM yapımı iki kamu spotunun VİA yayın takibinde Show Türk, Bloomberg HT, Kanal 3 ve Cartoon Network olmak üzere 4 kanalda toplam 26 kez yayınlandığı bilgisi ana sayfa etki göstergelerine, Proje Çıktıları sayfasına ve yönetim paneline eklendi."],
 ["2026-10-05","Galeri regresyon düzeltmesi","PR #51 sonrasında tüm etkinlik galerilerinin yükleme ekranında kalmasına neden olan JavaScript başlatma sırası hatası giderildi. Galeri SEO işlemi şehir başlığı eşlemeleri hazırlandıktan sonra çalıştırılarak il ve uluslararası galeriler yeniden erişilebilir hale getirildi."],
 ["2026-10-05","Dil ve SEO kalite düzeltmeleri","Astra O4–O5 regresyon kontrolünde kalan çeviri ve SEO tutarsızlıkları giderildi: veritabanı dil geçişleri, Çıktılar sloganı, uluslararası şehir adları, ana sayfa meta description tekrarı ve galeri dil/SEO metadatası düzeltildi."],
 ["2026-10-05","Kırklareli / Galeri","Kırklareli etkinlik galerisi için klasör yolu Türkçe karakter içeren public/kırklareli/ yolundan URL uyumlu public/kirklareli/ yoluna taşındı. 01.png saha görseli ve afis.png program afişi korunarak galeriyle eşleştirildi."],
@@ -1035,6 +1036,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-06","Public service spots / TV dissemination","Added the verified VİA broadcast-monitoring result for two e-NetCoM public service spots: 26 broadcasts across Show Türk, Bloomberg HT, Kanal 3 and Cartoon Network. The figures are now visible in homepage impact indicators, Project Outputs and the admin panel."],
 ["2026-10-05","Gallery regression fix","Fixed the JavaScript initialization-order error introduced after PR #51 that left all event galleries stuck on the loading screen. Gallery SEO now runs only after city title mappings are initialized, restoring province and international galleries."],
 ["2026-10-05","Language and SEO quality fixes","Resolved the remaining translation and SEO inconsistencies from the Astra O4–O5 regression check: database language switching, Outputs slogan, international city names, duplicate homepage meta description and gallery language/SEO metadata."],
 ["2026-10-05","Kırklareli / Gallery","The Kırklareli event gallery folder was moved from the Turkish-character path public/kırklareli/ to the URL-safe public/kirklareli/ path. The 01.png field image and afis.png programme poster were preserved and connected to the gallery."],
