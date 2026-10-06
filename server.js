@@ -980,6 +980,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-06","Proje Çıktıları kompakt yerleşim","Çıktı Aileleri kartları küçültülerek 3+2 dengeli düzene alındı; tek başına kalan kart görünümü kaldırıldı. Uluslararası Materyaller ile Yaygınlaştırma ve Saha bölümleri masaüstünde yan yana, daha kompakt bir kapanış alanında birleştirildi. Mobil görünüm ve mevcut bağlantı/çeviri işlevleri korundu."],
 ["2026-10-06","Proje Çıktıları tasarım yenilemesi","Proje Çıktıları sayfası ana siteye uyumlu, daha kurumsal bir çıktı merkezi olarak yeniden düzenlendi. Kamu spotları ve TV yaygınlaştırması öne alındı; çıktı aileleri, WP2 dijital aktivizm kiti, PDF görüntüleyici, uluslararası materyaller ve saha/yaygınlaştırma bölümleri ortak görsel hiyerarşide birleştirildi. Mevcut TR-EN-DE çeviri, erişilebilirlik, video, hashtag ve bağlantı işlevleri korundu."],
 ["2026-10-06","Ana sayfa TV göstergesi görsel uyumu","Ana sayfadaki 26 Televizyon Yayını göstergesi, 2 Kamu Spotu ve 4 TV Kanalı kartlarıyla aynı renk ve görünümde olacak şekilde eşitlendi."],
 ["2026-10-06","TV yayın göstergesi görsel uyumu","Proje Çıktıları sayfasındaki 26 Televizyon Yayını kartı diğer göstergelerle aynı beyaz kart tasarımına getirildi; rakam ve etiket koyu yeşil ve tam opak tutularak okunabilirlik korundu."],
@@ -1041,6 +1042,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-06","Project Outputs compact layout","Reduced and balanced the Output Families cards into a 3+2 layout, removing the isolated final-card appearance. International Materials and Dissemination & Field are now presented side by side in a more compact desktop closing area, while preserving mobile layout and existing links/translations."],
 ["2026-10-06","Project Outputs design refresh","Redesigned Project Outputs as a more cohesive, institutional output hub aligned with the main site. Public service spots and TV dissemination are now more prominent, while output families, the WP2 digital activism kit, PDF viewer, international materials and field/dissemination content share a consistent visual hierarchy. Existing TR-EN-DE translation, accessibility, video, hashtag and link functionality is preserved."],
 ["2026-10-06","Homepage TV indicator visual consistency","Matched the homepage 26 TV Broadcasts indicator to the same color and visual treatment as the 2 Public Service Spots and 4 TV Channels cards."],
 ["2026-10-06","TV broadcast indicator visual consistency","The 26 TV Broadcasts card on Project Outputs now uses the same white-card design as the other indicators, while keeping the number and label fully opaque dark green for clear readability."],
