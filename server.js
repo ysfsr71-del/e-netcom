@@ -980,6 +980,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-06","TV yaygınlaştırma çeviri düzeltmesi","Ana sayfa ve Proje Çıktıları sayfasına yeni eklenen kamu spotları / TV yaygınlaştırma alanları mevcut TR-EN-DE dil sistemine entegre edildi. Dil değiştirildiğinde başlık, açıklama, göstergeler, kamu spotu adları ve kaynak metinleri artık doğru dilde güncelleniyor."],
 ["2026-10-06","Kamu spotları erişim ve görünürlük","Ana sayfadaki 2 Kamu Spotu göstergesi Medya bölümündeki kamu spotu oynatıcısına bağlandı. Proje Çıktıları sayfasında iki e-NetCoM kamu spotu YouTube üzerinden sayfa içinde izlenebilir hale getirildi ve 26 televizyon yayını kartının kontrastı düzeltildi."],
 ["2026-10-06","Kamu spotları / TV yaygınlaştırma","e-NetCoM yapımı iki kamu spotunun VİA yayın takibinde Show Türk, Bloomberg HT, Kanal 3 ve Cartoon Network olmak üzere 4 kanalda toplam 26 kez yayınlandığı bilgisi ana sayfa etki göstergelerine, Proje Çıktıları sayfasına ve yönetim paneline eklendi."],
 ["2026-10-05","Galeri regresyon düzeltmesi","PR #51 sonrasında tüm etkinlik galerilerinin yükleme ekranında kalmasına neden olan JavaScript başlatma sırası hatası giderildi. Galeri SEO işlemi şehir başlığı eşlemeleri hazırlandıktan sonra çalıştırılarak il ve uluslararası galeriler yeniden erişilebilir hale getirildi."],
@@ -1037,6 +1038,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-06","TV dissemination translation fix","Integrated the newly added public-spots / TV-dissemination areas on the homepage and Project Outputs with the existing TR-EN-DE language systems. Titles, descriptions, indicators, public-spot names and source text now update correctly when the language changes."],
 ["2026-10-06","Public spot access and visibility","Linked the homepage 2 Public Service Spots indicator to the public-spot player in Media. Both e-NetCoM public service spots can now be watched inline from YouTube on Project Outputs, and the contrast of the 26 TV broadcasts card was corrected."],
 ["2026-10-06","Public service spots / TV dissemination","Added the verified VİA broadcast-monitoring result for two e-NetCoM public service spots: 26 broadcasts across Show Türk, Bloomberg HT, Kanal 3 and Cartoon Network. The figures are now visible in homepage impact indicators, Project Outputs and the admin panel."],
 ["2026-10-05","Gallery regression fix","Fixed the JavaScript initialization-order error introduced after PR #51 that left all event galleries stuck on the loading screen. Gallery SEO now runs only after city title mappings are initialized, restoring province and international galleries."],
