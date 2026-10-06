@@ -980,6 +980,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-06","Çıktılar bölüm etiketleri ve hizalama","Proje Çıktıları sayfasındaki 01–04 numaralı bölüm etiketleri TR-EN-DE dil sistemine bağlandı. Uluslararası Materyaller ve Yaygınlaştırma/Saha sütunları masaüstünde aynı toplam yüksekliğe ve alt hizaya gelecek şekilde dengelendi."],
 ["2026-10-06","Proje Çıktıları kompakt yerleşim","Çıktı Aileleri kartları küçültülerek 3+2 dengeli düzene alındı; tek başına kalan kart görünümü kaldırıldı. Uluslararası Materyaller ile Yaygınlaştırma ve Saha bölümleri masaüstünde yan yana, daha kompakt bir kapanış alanında birleştirildi. Mobil görünüm ve mevcut bağlantı/çeviri işlevleri korundu."],
 ["2026-10-06","Proje Çıktıları tasarım yenilemesi","Proje Çıktıları sayfası ana siteye uyumlu, daha kurumsal bir çıktı merkezi olarak yeniden düzenlendi. Kamu spotları ve TV yaygınlaştırması öne alındı; çıktı aileleri, WP2 dijital aktivizm kiti, PDF görüntüleyici, uluslararası materyaller ve saha/yaygınlaştırma bölümleri ortak görsel hiyerarşide birleştirildi. Mevcut TR-EN-DE çeviri, erişilebilirlik, video, hashtag ve bağlantı işlevleri korundu."],
 ["2026-10-06","Ana sayfa TV göstergesi görsel uyumu","Ana sayfadaki 26 Televizyon Yayını göstergesi, 2 Kamu Spotu ve 4 TV Kanalı kartlarıyla aynı renk ve görünümde olacak şekilde eşitlendi."],
@@ -1042,6 +1043,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-06","Outputs section labels and alignment","Connected the numbered 01–04 Project Outputs section labels to the TR-EN-DE language system. Balanced the International Materials and Dissemination/Field columns to the same total desktop height and bottom alignment."],
 ["2026-10-06","Project Outputs compact layout","Reduced and balanced the Output Families cards into a 3+2 layout, removing the isolated final-card appearance. International Materials and Dissemination & Field are now presented side by side in a more compact desktop closing area, while preserving mobile layout and existing links/translations."],
 ["2026-10-06","Project Outputs design refresh","Redesigned Project Outputs as a more cohesive, institutional output hub aligned with the main site. Public service spots and TV dissemination are now more prominent, while output families, the WP2 digital activism kit, PDF viewer, international materials and field/dissemination content share a consistent visual hierarchy. Existing TR-EN-DE translation, accessibility, video, hashtag and link functionality is preserved."],
 ["2026-10-06","Homepage TV indicator visual consistency","Matched the homepage 26 TV Broadcasts indicator to the same color and visual treatment as the 2 Public Service Spots and 4 TV Channels cards."],
