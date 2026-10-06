@@ -980,6 +980,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-06","Uluslararası kart etiketleri","Bükreş Planlanan üst etiketi Viyana kartıyla aynı tipografik stile getirildi. Viyana şehir etiketi de TR-EN-DE dil sistemine bağlanarak Türkçede VİYANA, İngilizcede VIENNA ve Almancada WIEN olarak gösterilecek şekilde düzeltildi."],
 ["2026-10-06","Bükreş planlanan çıktı ve 3×3 yerleşim","Uluslararası Materyaller alanına Bükreş için Planlanan durum kartı eklendi ve TR-EN-DE çevirileri tanımlandı. Sayfanın kapanışındaki Uluslararası Materyaller ile Yaygınlaştırma/Saha alanları masaüstünde üçer eşit satırlı simetrik 3×3 düzene geçirildi."],
 ["2026-10-06","Çıktılar bölüm etiketleri ve hizalama","Proje Çıktıları sayfasındaki 01–04 numaralı bölüm etiketleri TR-EN-DE dil sistemine bağlandı. Uluslararası Materyaller ve Yaygınlaştırma/Saha sütunları masaüstünde aynı toplam yüksekliğe ve alt hizaya gelecek şekilde dengelendi."],
 ["2026-10-06","Proje Çıktıları kompakt yerleşim","Çıktı Aileleri kartları küçültülerek 3+2 dengeli düzene alındı; tek başına kalan kart görünümü kaldırıldı. Uluslararası Materyaller ile Yaygınlaştırma ve Saha bölümleri masaüstünde yan yana, daha kompakt bir kapanış alanında birleştirildi. Mobil görünüm ve mevcut bağlantı/çeviri işlevleri korundu."],
@@ -1044,6 +1045,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-06","International card labels","Matched the Bucharest Planned meta label typography to the Vienna card and localized the Vienna city label through the TR-EN-DE language system: VİYANA, VIENNA and WIEN respectively."],
 ["2026-10-06","Planned Bucharest output and 3×3 layout","Added a Planned Bucharest card to International Materials with TR-EN-DE translations. The International Materials and Dissemination/Field closing areas now use a symmetrical three-row-per-column desktop layout."],
 ["2026-10-06","Outputs section labels and alignment","Connected the numbered 01–04 Project Outputs section labels to the TR-EN-DE language system. Balanced the International Materials and Dissemination/Field columns to the same total desktop height and bottom alignment."],
 ["2026-10-06","Project Outputs compact layout","Reduced and balanced the Output Families cards into a 3+2 layout, removing the isolated final-card appearance. International Materials and Dissemination & Field are now presented side by side in a more compact desktop closing area, while preserving mobile layout and existing links/translations."],
