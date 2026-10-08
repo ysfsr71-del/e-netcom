@@ -980,6 +980,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-08","Kamu spotları TV yayın sayısı güncellendi","VİA takibinde toplam TV yayını 26’dan 30’a yükseldi. Ana sayfa, Proje Çıktıları (TR/EN/DE) ve yönetim paneli göstergeleri güncellendi; önceki sürüm notları tarihsel kayıt olarak korundu."],
 ["2026-10-06","Viyana etiket çevirisi düzeltmesi","Viyana kartındaki sabit VIENNA · 2026 etiketi doğrudan TR-EN-DE çeviri anahtarına bağlandı; Türkçe görünümde artık VİYANA · 2026 gösteriliyor."],
 ["2026-10-06","Uluslararası kart etiketleri","Bükreş Planlanan üst etiketi Viyana kartıyla aynı tipografik stile getirildi. Viyana şehir etiketi de TR-EN-DE dil sistemine bağlanarak Türkçede VİYANA, İngilizcede VIENNA ve Almancada WIEN olarak gösterilecek şekilde düzeltildi."],
 ["2026-10-06","Bükreş planlanan çıktı ve 3×3 yerleşim","Uluslararası Materyaller alanına Bükreş için Planlanan durum kartı eklendi ve TR-EN-DE çevirileri tanımlandı. Sayfanın kapanışındaki Uluslararası Materyaller ile Yaygınlaştırma/Saha alanları masaüstünde üçer eşit satırlı simetrik 3×3 düzene geçirildi."],
@@ -1046,6 +1047,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-08","Public service spot broadcast count updated","The VİA-monitored TV broadcast total increased from 26 to 30. Updated the homepage, Project Outputs (TR/EN/DE) and admin dashboard while preserving historical release notes."],
 ["2026-10-06","Vienna label translation fix","Connected the previously hard-coded VIENNA · 2026 label directly to the TR-EN-DE translation key; Turkish now displays VİYANA · 2026."],
 ["2026-10-06","International card labels","Matched the Bucharest Planned meta label typography to the Vienna card and localized the Vienna city label through the TR-EN-DE language system: VİYANA, VIENNA and WIEN respectively."],
 ["2026-10-06","Planned Bucharest output and 3×3 layout","Added a Planned Bucharest card to International Materials with TR-EN-DE translations. The International Materials and Dissemination/Field closing areas now use a symmetrical three-row-per-column desktop layout."],
