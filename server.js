@@ -980,6 +980,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-09","WP4 faaliyet tablosu boşluk düzeltmesi","Masaüstünde faaliyet listesinin kaydırılabilir alanı sağdaki üç bilgi kartının toplam yüksekliğine uzatıldı. Alt boşluk kaldırıldı; yalnızca alana sığmayan faaliyetler kaydırılıyor. Mobil görünüm ve diğer ana sayfa bölümleri korundu."],
 ["2026-10-09","WP4 bilim ve medya ağı faaliyet listesi","Faaliyet tablosuna arama, masaüstü iç kaydırma, mobilde daha fazla göster ve yeni tarihten eskiye sıralama eklendi. 15 Mayıs 2026 kısa film incelemesi faaliyet kaydı eklendi; PDF dosyası yayımlanana kadar bağlantı beklemede gösteriliyor."],
 ["2026-10-08","Kamu spotları TV yayın sayısı güncellendi","VİA takibinde toplam TV yayını 26’dan 30’a yükseldi. Ana sayfa, Proje Çıktıları (TR/EN/DE) ve yönetim paneli göstergeleri güncellendi; önceki sürüm notları tarihsel kayıt olarak korundu."],
 ["2026-10-06","Viyana etiket çevirisi düzeltmesi","Viyana kartındaki sabit VIENNA · 2026 etiketi doğrudan TR-EN-DE çeviri anahtarına bağlandı; Türkçe görünümde artık VİYANA · 2026 gösteriliyor."],
@@ -1048,6 +1049,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-09","WP4 events table height fix","The desktop event list now fills the full height of the three adjacent information cards. Excess blank space is removed; only overflowing events scroll. Mobile and other homepage sections remain unchanged."],
 ["2026-10-09","WP4 science and media network events","Added search, desktop scrolling, mobile show-more and newest-first sorting to the event list. Added the 15 May 2026 short-film review event; its PDF is marked pending until uploaded."],
 ["2026-10-08","Public service spot broadcast count updated","The VİA-monitored TV broadcast total increased from 26 to 30. Updated the homepage, Project Outputs (TR/EN/DE) and admin dashboard while preserving historical release notes."],
 ["2026-10-06","Vienna label translation fix","Connected the previously hard-coded VIENNA · 2026 label directly to the TR-EN-DE translation key; Turkish now displays VİYANA · 2026."],
