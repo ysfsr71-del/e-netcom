@@ -3515,6 +3515,14 @@ document.addEventListener('keydown', function(e){
   #network #networkEventsHint{display:none}
   #network #networkEventsMore:not([hidden]){display:inline-flex}
 }
+/* Fill the entire height of the three right-hand cards; scroll only overflow. */
+@media(min-width:651px){
+  #network .network-grid{align-items:stretch}
+  #network .network-events-shell{position:relative;min-height:0;height:100%;overflow:hidden}
+  #network .network-events-toolbar{position:absolute;top:0;left:0;right:0;z-index:3;min-height:57px}
+  #network .network-events-scroll{position:absolute;top:57px;bottom:32px;left:0;right:0;max-height:none;overflow-y:auto;overflow-x:hidden}
+  #network .network-events-footer{position:absolute;bottom:0;left:0;right:0;min-height:32px}
+}
 </style>
 <script id="v68-network-events-table">
 (function(){
