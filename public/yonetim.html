@@ -43,6 +43,39 @@ body{background:radial-gradient(circle at 80% -10%,rgba(100,224,167,.13),transpa
 .province-search:focus{border-color:#6ea8fe;box-shadow:0 0 0 2px rgba(110,168,254,.12);}
 .province-empty{padding:12px 4px;color:#8fa3b8;font-size:13px;}
 </style>
+<style id="traffic-analytics-v2">
+.traffic-card{position:relative}
+.traffic-tools{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin:17px 0 13px}
+.traffic-toggle{display:inline-flex;padding:3px;border:1px solid #27483b;border-radius:11px;background:#10271f;gap:2px}
+.traffic-toggle button,.traffic-action{border:0;border-radius:8px;background:transparent;color:#b7d5c7;padding:9px 11px;cursor:pointer;font:inherit;font-size:12px;font-weight:700}
+.traffic-toggle button.selected{background:#235b43;color:#fff}
+.traffic-toggle button:hover,.traffic-action:hover{background:#28543f;color:#fff}
+.traffic-action{border:1px solid #27483b}
+.traffic-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:11px}
+.traffic-summary>div{background:#10271f;border:1px solid #244237;border-radius:12px;padding:11px 13px;min-width:0}
+.traffic-summary span{display:block;font-size:11px;color:#9abfac;margin-bottom:6px}
+.traffic-summary b{display:block;font-size:20px;color:#e4fff0;overflow-wrap:anywhere}
+.traffic-selected{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#153629;border:1px solid #306b4e;border-radius:12px;padding:12px 15px;margin:0 0 12px}
+.traffic-selected span{color:#a7d6bc;font-size:12px}
+.traffic-selected strong{font-size:19px;color:#78e7b0;text-align:right}
+.traffic-plot{overflow-x:auto;overflow-y:hidden}
+#chart{height:244px;display:flex;align-items:end;gap:4px;min-width:0;padding:22px 4px 24px;box-sizing:border-box;position:relative}
+#chart .traffic-col{flex:1;min-width:6px;position:relative;height:100%;display:flex;align-items:end;justify-content:center;cursor:pointer;border:0;background:transparent;padding:0;outline-offset:3px}
+#chart .traffic-bar{display:block;width:100%;min-height:3px;max-width:32px;background:linear-gradient(180deg,#64e0a7,#2c7358);border-radius:5px 5px 2px 2px;opacity:.85;transition:opacity .12s,filter .12s}
+#chart .traffic-col:hover .traffic-bar,#chart .traffic-col:focus-visible .traffic-bar,#chart .traffic-col.is-active .traffic-bar{opacity:1;filter:brightness(1.4);box-shadow:0 0 0 2px #a7f5ce}
+#chart .traffic-col small{position:absolute;bottom:-21px;left:50%;transform:translateX(-50%);font-size:9px;color:#93b4a5;white-space:nowrap}
+#chart .traffic-col .traffic-event{position:absolute;top:0;left:50%;transform:translateX(-50%);width:7px;height:7px;border-radius:50%;background:#f6c76e;box-shadow:0 0 0 2px #0c211b}
+#chart .traffic-line{width:100%;height:100%;position:absolute;inset:0;overflow:visible;pointer-events:none}
+#chart.traffic-line-mode .traffic-col{z-index:1}
+#chart.traffic-line-mode .traffic-bar{opacity:0}
+#chart.traffic-line-mode .traffic-col.is-active .traffic-bar{opacity:.12}
+#chart .traffic-line path{fill:none;stroke:#67e0a8;stroke-width:2.5;vector-effect:non-scaling-stroke}
+#chart .traffic-line circle{fill:#8bf3bc;stroke:#0c211b;stroke-width:1.5}
+.traffic-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#9ebdad;margin-top:10px}
+.traffic-legend i{display:inline-block;width:9px;height:9px;background:#64e0a7;border-radius:3px;margin-right:5px}
+.traffic-legend i.traffic-event-key{background:#f6c76e;border-radius:50%}
+@media(max-width:650px){.traffic-summary b{font-size:16px}.traffic-selected{display:block}.traffic-selected strong{display:block;text-align:left;margin-top:5px;font-size:17px}#chart{height:210px}.traffic-tools{gap:6px}.traffic-toggle button,.traffic-action{padding:9px 8px}}
+</style>
 </head>
 <body>
 <div id="login" class="login">
@@ -100,7 +133,11 @@ body{background:radial-gradient(circle at 80% -10%,rgba(100,224,167,.13),transpa
   </section>
 
   <section class="traffic-layout">
-    <div class="card traffic-card"><div class="traffic-meta"><div><div class="section-title"><span class="ico">⌁</span><h2>Günlük ziyaret trafiği</h2></div><div class="small">Seçili dönemdeki oturum hareketi · son 30 veri noktası</div></div><div class="traffic-big">Sütun üzerine gelerek günü görüntüleyin</div></div><div class="chart" id="chart"></div></div>
+    <div class="card traffic-card"><div class="traffic-meta"><div><div class="section-title"><span class="ico">⌁</span><h2>Günlük ziyaret trafiği</h2></div><div class="small" id="trafficRangeLabel">Seçili dönemdeki günlük oturum hareketi</div></div><div class="traffic-big">Fareyle üzerine gelin · mobilde dokunun</div></div>
+<div class="traffic-tools"><div class="traffic-toggle" role="group" aria-label="Grafik dönemi"><button type="button" data-traffic-range="7d">7 gün</button><button type="button" data-traffic-range="30d" class="selected">30 gün</button><button type="button" data-traffic-range="90d">90 gün</button></div><div class="traffic-toggle" role="group" aria-label="Grafik türü"><button type="button" data-traffic-type="bar" class="selected">Sütun</button><button type="button" data-traffic-type="line">Çizgi</button></div><button class="traffic-action" type="button" id="trafficCsv">CSV ↓</button><button class="traffic-action" type="button" id="trafficPng">PNG ↓</button></div>
+<div class="traffic-summary"><div><span>Toplam oturum</span><b id="trafficTotal">—</b></div><div><span>Günlük ortalama</span><b id="trafficAverage">—</b></div><div><span>En yoğun gün</span><b id="trafficPeak">—</b></div></div>
+<div class="traffic-selected" id="trafficSelected" aria-live="polite"><span>Gün seçin</span><strong>Grafik üzerinde bir güne gelin veya dokunun</strong></div>
+<div class="traffic-plot"><div class="chart" id="chart" role="group" aria-label="Günlük oturum grafiği"></div></div><div class="traffic-legend"><span><i></i> Oturum</span><span><i class="traffic-event-key"></i> Proje etkinliği</span><span>Kampanya tarihleri doğrulandığında işaretlenir.</span></div></div>
     <div class="card"><div class="section-title"><span class="ico">◎</span><h2>Hızlı görünüm</h2></div><div class="snapshot"><div class="snapshot-item"><span>Oturum</span><b id="snapVisits">—</b></div><div class="snapshot-item"><span>Tekil ziyaretçi</span><b id="snapUnique">—</b></div><div class="snapshot-item"><span>Aktif</span><b id="snapActive">—</b></div><div class="snapshot-item"><span>Ort. süre</span><b id="snapDuration">—</b></div></div></div>
   </section>
 
@@ -154,10 +191,69 @@ function renderList(id,items,total){
   const max=Math.max(...source.map(x=>x.count),1);
   el.innerHTML=source.map(x=>`<div><div class="row"><span>${esc(x.name)}</span><b>${fmt(x.count)}</b></div><div class="bar"><i style="width:${Math.round(x.count/max*100)}%"></i></div></div>`).join("");
 }
+let trafficItems=[],trafficType="bar",trafficSelectedDate="";
+const trafficEvents={
+ "2026-05-15":"Kısa Filmlerle Çevre ve Sürdürülebilirlik",
+ "2026-03-26":"Gençlik, İklim Değişikliği ve Medya Zirvesi",
+ "2025-04-17":"Çevresel Sürdürülebilirlik Zirvesi"
+};
+function trafficDate(s){const d=new Date(String(s).slice(0,10)+"T12:00:00");return Number.isNaN(d.getTime())?String(s):d.toLocaleDateString("tr-TR",{day:"numeric",month:"long",year:"numeric"});}
+function trafficFile(name,content,type){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 function renderChart(items){
-  const el=$("chart"), vals=(items||[]).slice(-30), max=Math.max(...vals.map(x=>x.visits),1);
-  el.innerHTML=vals.map(x=>`<div class="col" title="${esc(x.date)}: ${fmt(x.visits)} ziyaret" style="height:${Math.max(3,Math.round(x.visits/max*100))}%"><span>${esc(x.date.slice(5))}</span></div>`).join("");
+  trafficItems=(Array.isArray(items)?items:[]).map(x=>({date:String(x.date||""),visits:Math.max(0,Number(x.visits)||0)})).sort((a,b)=>a.date.localeCompare(b.date));
+  drawTraffic();
 }
+function drawTraffic(){
+ const el=$("chart"),items=trafficItems,max=Math.max(1,...items.map(x=>x.visits)),total=items.reduce((s,x)=>s+x.visits,0),peak=items.reduce((a,b)=>!a||b.visits>a.visits?b:a,null);
+ $("trafficTotal").textContent=fmt(total);
+ $("trafficAverage").textContent=items.length?(total/items.length).toLocaleString("tr-TR",{maximumFractionDigits:1}):"—";
+ $("trafficPeak").textContent=peak?trafficDate(peak.date)+" · "+fmt(peak.visits):"—";
+ $("trafficRangeLabel").textContent="Seçili dönemdeki günlük oturum hareketi · "+items.length+" gün";
+ document.querySelectorAll("[data-traffic-type]").forEach(b=>b.classList.toggle("selected",b.dataset.trafficType===trafficType));
+ document.querySelectorAll("[data-traffic-range]").forEach(b=>b.classList.toggle("selected",b.dataset.trafficRange===currentRange));
+ if(!items.length){el.innerHTML='<div class="small">Bu dönemde günlük oturum verisi bulunamadı.</div>';$("trafficSelected").innerHTML="<span>Veri yok</span><strong>Başka bir dönem seçin</strong>";return;}
+ if(!items.some(x=>x.date===trafficSelectedDate))trafficSelectedDate=items[items.length-1].date;
+ el.classList.toggle("traffic-line-mode",trafficType==="line");
+ el.innerHTML=items.map((x,i)=>{const event=trafficEvents[x.date],label=trafficDate(x.date),show=items.length<=14||i===0||i===items.length-1||i%Math.ceil(items.length/9)===0;return `<button type="button" class="traffic-col" data-traffic-index="${i}" aria-label="${esc(label)}: ${fmt(x.visits)} oturum${event?", etkinlik: "+esc(event):""}" title="${esc(label)} · ${fmt(x.visits)} oturum${event?" · "+esc(event):""}"><span class="traffic-bar" style="height:${Math.max(2,x.visits/max*100)}%"></span>${event?'<i class="traffic-event" aria-hidden="true"></i>':""}${show?`<small>${esc(x.date.slice(5))}</small>`:""}</button>`}).join("");
+ if(trafficType==="line"){
+  const pts=items.map((x,i)=>[(i+.5)/items.length*100,100-x.visits/max*100*.88-6]);
+  const path=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(3)+" "+p[1].toFixed(3)).join(" ");
+  const svg='<svg class="traffic-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="'+path+'"/></svg>';
+  el.insertAdjacentHTML("afterbegin",svg);
+ }
+ el.querySelectorAll(".traffic-col").forEach(b=>{const select=()=>selectTraffic(Number(b.dataset.trafficIndex));b.addEventListener("pointerenter",select);b.addEventListener("focus",select);b.addEventListener("click",select);});
+ selectTraffic(items.findIndex(x=>x.date===trafficSelectedDate));
+}
+function selectTraffic(i){
+ const x=trafficItems[i];if(!x)return;trafficSelectedDate=x.date;
+ $("trafficSelected").innerHTML='<span>'+esc(trafficDate(x.date))+(trafficEvents[x.date]?' · '+esc(trafficEvents[x.date]):"")+'</span><strong>'+fmt(x.visits)+' oturum</strong>';
+ $("chart").querySelectorAll(".traffic-col").forEach((b,j)=>b.classList.toggle("is-active",i===j));
+}
+function exportTrafficCsv(){
+ const lines=[["Tarih","Oturum","Proje etkinliği"],...trafficItems.map(x=>[x.date,x.visits,trafficEvents[x.date]||""])];
+ const csv="\uFEFF"+lines.map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(";")).join("\r\n");
+ trafficFile("e-NetCoM_Gunluk_Oturumlar.csv",csv,"text/csv;charset=utf-8");
+}
+function exportTrafficPng(){
+ if(!trafficItems.length)return alert("Dışa aktarılacak veri yok.");
+ const canvas=document.createElement("canvas");canvas.width=1500;canvas.height=820;const ctx=canvas.getContext("2d");if(!ctx)return;
+ ctx.fillStyle="#0c211b";ctx.fillRect(0,0,1500,820);
+ ctx.fillStyle="#eafff2";ctx.font="bold 40px Arial";ctx.fillText("e-NetCoM | Günlük ziyaret trafiği",65,75);
+ ctx.font="22px Arial";ctx.fillStyle="#acd0bd";ctx.fillText("Oturum · "+trafficItems.length+" gün · Toplam: "+fmt(trafficItems.reduce((s,x)=>s+x.visits,0)),65,117);
+ const left=75,top=195,w=1350,h=485,max=Math.max(1,...trafficItems.map(x=>x.visits)),n=trafficItems.length;
+ ctx.strokeStyle="#29483a";for(let k=0;k<=4;k++){let y=top+h-k*h/4;ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(left+w,y);ctx.stroke();ctx.fillStyle="#a8c5b6";ctx.font="17px Arial";ctx.fillText(fmt(Math.round(max*k/4)),20,y+6);}
+ if(trafficType==="line"){ctx.beginPath();ctx.strokeStyle="#65e2a8";ctx.lineWidth=4;trafficItems.forEach((x,i)=>{let px=left+(i+.5)*w/n,py=top+h-x.visits/max*h;i?ctx.lineTo(px,py):ctx.moveTo(px,py)});ctx.stroke();}
+ else{trafficItems.forEach((x,i)=>{let bw=Math.max(2,w/n*.7),px=left+(i+.15)*w/n,hh=x.visits/max*h;ctx.fillStyle="#58c996";ctx.fillRect(px,top+h-hh,bw,Math.max(2,hh));});}
+ trafficItems.forEach((x,i)=>{if(trafficEvents[x.date]){ctx.fillStyle="#f6c76e";ctx.beginPath();ctx.arc(left+(i+.5)*w/n,top-12,5,0,Math.PI*2);ctx.fill();}});
+ ctx.fillStyle="#a8c5b6";ctx.font="16px Arial";trafficItems.forEach((x,i)=>{if(i===0||i===n-1||i%Math.max(1,Math.ceil(n/12))===0)ctx.fillText(x.date.slice(5),left+(i+.1)*w/n,top+h+35)});
+ ctx.fillStyle="#a8c5b6";ctx.font="17px Arial";ctx.fillText("Sarı noktalar: doğrulanmış proje etkinlikleri. Nedensellik göstermez.",75,772);
+ canvas.toBlob(blob=>{if(blob){const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="e-NetCoM_Gunluk_Trafik.png";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}else alert("PNG oluşturulamadı.")},"image/png");
+}
+document.querySelectorAll("[data-traffic-range]").forEach(b=>b.addEventListener("click",()=>{currentRange=b.dataset.trafficRange;document.querySelectorAll("[data-range]").forEach(x=>x.classList.toggle("active",x.dataset.range===currentRange));load();}));
+document.querySelectorAll("[data-traffic-type]").forEach(b=>b.addEventListener("click",()=>{trafficType=b.dataset.trafficType;drawTraffic()}));
+$("trafficCsv").addEventListener("click",exportTrafficCsv);
+$("trafficPng").addEventListener("click",exportTrafficPng);
+
 let adminMapLoaded=false,adminMapSvg=null;
 function normCity(v){return String(v||"").toLocaleLowerCase("tr-TR").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/ı/g,"i").replace(/[^a-z]/g,"");}
 async function ensureAdminMap(){
