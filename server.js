@@ -980,6 +980,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-10","Çıktılar sayfası alt bölüm boşlukları düzeltildi","Uluslararası çıktılar ve yaygınlaştırma/saha dokümanları bölümlerindeki zorunlu üç eşit satır yüksekliği kaldırıldı. Kartlar içeriklerine göre doğal boyutlandı; Bükreş kartının hatalı HTML kapanışı düzeltildi. Mobil görünüm, bağlantılar ve üç dil korundu."],
 ["2026-10-09","Yönetim paneli etkileşimli trafik grafiği","Günlük oturum grafiğine fare ve dokunma ile seçilebilir büyük bilgi kartı, 7/30/90 gün filtreleri, sütun/çizgi geçişi, toplam/ortalama/en yoğun gün göstergeleri, tarihli proje etkinliği işaretleri ve PNG/CSV dışa aktarma eklendi. Mevcut analitik veriler ve diğer panel bileşenleri korundu."],
 ["2026-10-09","Kısa film incelemesi PDF bağlantısı","15 Mayıs 2026 tarihli Kısa Filmlerle Çevre ve Sürdürülebilirlik faaliyetinin GitHub’a yüklenen PDF dosyası WP4 faaliyet listesine bağlandı; PDF hazırlanıyor ibaresi kaldırıldı."],
 ["2026-10-09","WP4 faaliyet tablosu boşluk düzeltmesi","Masaüstünde faaliyet listesinin kaydırılabilir alanı sağdaki üç bilgi kartının toplam yüksekliğine uzatıldı. Alt boşluk kaldırıldı; yalnızca alana sığmayan faaliyetler kaydırılıyor. Mobil görünüm ve diğer ana sayfa bölümleri korundu."],
@@ -1051,6 +1052,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-10","Outputs page closing section spacing fixed","Removed forced three-row equal heights in the international outputs and dissemination sections. Cards now size to their content, and the Bucharest card HTML closing tag was corrected. Mobile layout, links and all three languages are preserved."],
 ["2026-10-09","Interactive admin traffic analytics","Added hover/touch day selection, readable detail panel, 7/30/90-day filters, bar/line switch, total/average/peak summaries, dated project event markers and PNG/CSV export. Existing analytics data and other admin panels remain unchanged."],
 ["2026-10-09","Short-film review PDF linked","Connected the uploaded 15 May 2026 Environment and Sustainability Through Short Films PDF to the WP4 event list, replacing the pending PDF label."],
 ["2026-10-09","WP4 events table height fix","The desktop event list now fills the full height of the three adjacent information cards. Excess blank space is removed; only overflowing events scroll. Mobile and other homepage sections remain unchanged."],
