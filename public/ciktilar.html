@@ -97,17 +97,16 @@ body{background:#f7faf8}
 .closing-output-grid .btn{padding:9px 11px;font-size:10px}
 @media(max-width:900px){.output-intro .output-grid{grid-template-columns:repeat(2,1fr)}.output-intro .output-card,.output-intro .output-card:nth-child(4),.output-intro .output-card:nth-child(5){grid-column:auto}.output-intro .output-card:nth-child(5){grid-column:1 / -1}.closing-output-grid{grid-template-columns:1fr}.closing-output-grid .section-head{min-height:0}}
 @media(max-width:600px){.output-intro .output-grid{grid-template-columns:1fr}.output-intro .output-card,.output-intro .output-card:nth-child(5){grid-column:auto;min-height:150px}.closing-output-grid{padding:40px 0}.closing-output-grid #yayginlastirma .archive-grid{grid-template-columns:1fr}}
-</style><style id="outputs-closing-3x3">
-.planned-card{background:linear-gradient(145deg,#fbfdfc,#eef7f2);border-style:dashed!important}
-.planned-pill{display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;background:#e4f3eb;color:var(--green);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
-@media(min-width:901px){
-  .closing-output-grid{align-items:stretch}
-  .closing-output-grid>.section{display:grid;grid-template-rows:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);gap:12px;height:100%}
-  .closing-output-grid .section-head{min-height:0;height:100%;margin:0;box-sizing:border-box}
-  .closing-output-grid .archive-grid{display:contents!important}
-  .closing-output-grid .archive-card{min-height:0!important;height:100%;box-sizing:border-box;margin:0;display:flex;flex-direction:column}
-  .closing-output-grid .archive-actions{margin-top:auto}
-}
+</style><style id="outputs-closing-natural-height">
+/* Closing output cards follow their actual content, without three equal-height tracks. */
+.closing-output-grid{align-items:start;padding-top:28px;padding-bottom:36px}
+.closing-output-grid>.section{display:block;height:auto;min-height:0}
+.closing-output-grid .section-head{height:auto;min-height:0;margin-bottom:12px}
+.closing-output-grid .archive-grid{display:grid!important;grid-template-columns:1fr;gap:12px}
+.closing-output-grid .archive-card{height:auto;min-height:0!important;display:block;margin:0}
+.closing-output-grid .archive-actions{margin-top:16px}
+@media(max-width:900px){.closing-output-grid{padding-top:24px;padding-bottom:32px}}
+@media(max-width:600px){.closing-output-grid{padding-top:20px;padding-bottom:28px}}
 </style><style id="international-meta-consistency">
 .closing-output-grid #uluslararasi-ciktilar .archive-meta{
   color:var(--green);font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;
@@ -170,7 +169,7 @@ body{background:#f7faf8}
           <h3 data-t="buchTitle">Bükreş uluslararası çalışma materyalleri</h3>
           <p data-t="buchText">Proje kapsamında gerçekleştirilecek Bükreş uluslararası çalışmasına ilişkin materyaller etkinlik sonrasında burada yayımlanacaktır.</p>
           <div class="archive-actions"><span class="planned-pill" data-t="plannedLabel">Planlanan</span></div>
-        </div></div></section>
+        </article></div></div></section>
 <section class="section" id="yayginlastirma"><div class="wrap"><div class="section-head"><div><span class="output-section-index" data-t="section04">04 · YAYGINLAŞTIRMA</span><div class="eyebrow" data-t="dissemEyebrow">YAYGINLAŞTIRMA VE SAHA</div><h2 data-t="dissemTitle">Yayımlanmış ağ ve saha dokümanları</h2><p data-t="dissemLead">Sitede mevcut olan etkinlik ve ağ dokümanları proje görünürlüğü ve bilgi paylaşımı kapsamında tek noktadan erişilebilir hale getiriliyor.</p></div></div><div class="archive-grid"><article class="archive-card"><div class="eyebrow">PDF · ARŞİV</div><h3 data-t="networkDocs">Ağ ve etkinlik dokümanları</h3><p data-t="networkDocsText">Çevresel sürdürülebilirlik zirvesi, kongre, konferans ve Gençlik İklim Medya Zirvesi dahil yayımlanmış PDF materyalleri.</p><div class="archive-actions"><a class="btn ghost" href="/#network" data-t="networkGo">Ağ bölümüne git →</a></div></article><article class="archive-card"><div class="eyebrow">SAHA · GÖRSELLER</div><h3 data-t="fieldVisuals">Saha görselleri</h3><p data-t="fieldVisualsText">Proje faaliyetlerinden yayımlanmış saha fotoğrafları ve görsel kayıtlar, ilgili faaliyet sayfaları üzerinden sunulur.</p><div class="archive-actions"><a class="btn ghost" href="/#iller" data-t="mapGo">İl ağına git →</a><a class="btn ghost" href="/uluslararasi.html" data-t="intlGo">Uluslararası çalışmalara git →</a></div></article></div></div></section>
 </div></div></main><footer><div class="wrap footerin"><span>© e-NetCoM</span><span data-t="footer">WP2 · Digital Activism and Awareness Designs</span><a href="/" data-t="backHome">← Ana sayfaya dön</a></div></footer>
 <script>
