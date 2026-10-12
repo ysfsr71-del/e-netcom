@@ -980,6 +980,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-12","Kamu spotları verileri site genelinde eşitlendi","Çıktılar sayfasından sonra ana sayfadaki kamu spotları göstergeleri de 2 spot, 7 TV kanalı ve 45 yayın olarak güncellendi. Ana sayfa TR/EN/DE açıklamalarına K Kardelen TV, MK TV ve Yeni Kocaeli TV eklendi; yönetim panelindeki kanal listesi eşitlendi. Geçmiş sürüm notları korundu."],
 ["2026-10-12","Kamu spotları 45 yayına ve 7 kanala ulaştı","VİA yayın takibi kapsamında K KARDELEN TV, MK TV ve YENİ KOCAELİ TV eklendi. İki kamu spotunun toplam tespit edilen yayını 30’dan 45’e, kanal sayısı 4’ten 7’ye yükseltildi. Çıktılar sayfası TR/EN/DE güncellendi."],
 ["2026-10-10","Çıktılar sayfası alt bölüm boşlukları düzeltildi","Uluslararası çıktılar ve yaygınlaştırma/saha dokümanları bölümlerindeki zorunlu üç eşit satır yüksekliği kaldırıldı. Kartlar içeriklerine göre doğal boyutlandı; Bükreş kartının hatalı HTML kapanışı düzeltildi. Mobil görünüm, bağlantılar ve üç dil korundu."],
 ["2026-10-09","Yönetim paneli etkileşimli trafik grafiği","Günlük oturum grafiğine fare ve dokunma ile seçilebilir büyük bilgi kartı, 7/30/90 gün filtreleri, sütun/çizgi geçişi, toplam/ortalama/en yoğun gün göstergeleri, tarihli proje etkinliği işaretleri ve PNG/CSV dışa aktarma eklendi. Mevcut analitik veriler ve diğer panel bileşenleri korundu."],
@@ -1053,6 +1054,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-12","Public spot figures synchronized sitewide","After the Outputs page, the homepage TV summary now shows 2 spots, 7 TV channels and 45 broadcasts. Homepage copy in TR/EN/DE and the admin channel list now include K Kardelen TV, MK TV and Yeni Kocaeli TV. Historical release notes remain unchanged."],
 ["2026-10-12","Public service spots reach 45 broadcasts on 7 channels","Added K KARDELEN TV, MK TV and YENİ KOCAELİ TV to the VİA channel list. The two public service spots now total 45 identified broadcasts across 7 channels, up from 30 across 4. Outputs page updated in TR/EN/DE."],
 ["2026-10-10","Outputs page closing section spacing fixed","Removed forced three-row equal heights in the international outputs and dissemination sections. Cards now size to their content, and the Bucharest card HTML closing tag was corrected. Mobile layout, links and all three languages are preserved."],
 ["2026-10-09","Interactive admin traffic analytics","Added hover/touch day selection, readable detail panel, 7/30/90-day filters, bar/line switch, total/average/peak summaries, dated project event markers and PNG/CSV export. Existing analytics data and other admin panels remain unchanged."],
