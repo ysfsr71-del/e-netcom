@@ -980,6 +980,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-19","Eğitim göstergeleri ve ortak etkinlik metni sadeleştirildi","Ana sayfada il sayısı 27 olarak gösteriliyor; gereksiz ‘ilde’ eki kaldırıldı. Bartın–Zonguldak ortak eğitim kartındaki ‘tek kez sayılır’ parantezi çıkarıldı. Eğitim ve katılımcı hesaplamaları değiştirilmedi."],
 ["2026-10-19","Bartın ve Zonguldak galeri butonları geri getirildi","81 il haritasında Bartın ve Zonguldak detay kartlarından gizlenmiş olan Sahadan Kareler ve Program Akışı bağlantıları yeniden görünür hâle getirildi. Ortak eğitim verileri ve sayaçlar korunmuştur."],
 ["2026-10-19","Eğitim arşivi ve ortak il haritası açıklamaları iyileştirildi","Eğitimler sayfasındaki teknik başlık daha anlaşılır hâle getirildi. Bartın ve Zonguldak ortak eğitiminin 48 katılımcısının yalnızca bir kez sayıldığı belirtildi; il detaylarında katılımcı sayısı ortak toplam olarak etiketlendi ve bu iller için henüz içerik bulunmayan galeri bağlantıları gizlendi. Eğitim ve il toplamları korundu."],
 ["2026-10-19","Bartın ve Zonguldak ortak çevrimiçi eğitimi kaydedildi","17 Ekim 2026 tarihinde gerçekleştirilen 48 katılımcılı ortak eğitim, 81 il haritasında Bartın ve Zonguldak’a bağlandı. Tek etkinlik olarak sayılarak toplam 26 eğitim, 27 il ve 1.325 katılımcı bilgileri eğitim arşiviyle eşitlendi. Her iki ilin detayında afiş ve ekran görseli için medya alanları hazırlandı; görsellerin GitHub’a yüklenmesi bekleniyor."],
@@ -1058,6 +1059,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-19","Training indicator and joint-event text simplified","The province KPI now shows only the number 27 without a redundant suffix. Removed the parenthetical once-counted explanation from the joint Bartın–Zonguldak event card. Training and attendee calculations remain unchanged."],
 ["2026-10-19","Gallery buttons restored for Bartın and Zonguldak","Restored the Field Photos and Program Flow buttons in the province detail cards for both Bartın and Zonguldak. Shared training data and counters are unchanged."],
 ["2026-10-19","Training archive and joint-province map labels refined","Replaced the technical training-list heading with a clearer title. Clarified that the 48 attendees of the joint Bartın–Zonguldak event are counted once, labeled the shared attendance in both province details, and hid gallery links without available content. Training and province totals remain unchanged."],
 ["2026-10-19","Joint Bartın and Zonguldak online training recorded","The completed 17 October 2026 online session with 48 participants is linked to both provinces on the 81-province map, while counted once in totals: 26 training events, 27 provinces and 1,325 participants. Media slots are prepared in both province cards pending asset upload."],
