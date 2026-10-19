@@ -1950,7 +1950,7 @@ function updateComputedStats(lang){
   set('impactActivityCount',completed.length);
   set('impactFaceActivityCount',face.length);
   set('impactOnlineActivityCount',online.length);
-  set('impactProvinceCount',lang==='en'?provinceCount+' provinces':lang==='de'?provinceCount+' Provinzen':provinceCount+' ilde');
+  set('impactProvinceCount',lang==='en'?provinceCount+' provinces':lang==='de'?provinceCount+' Provinzen':String(provinceCount));
   set('impactNoticeParticipants',lang==='en'?fmt(totalParticipants)+' participants':lang==='de'?fmt(totalParticipants)+' Teilnehmende':fmt(totalParticipants)+' katılımcı');
   const summary=document.getElementById('impactSummaryText');
   if(summary){
@@ -2018,7 +2018,7 @@ function sharedTrainingMedia(city){
  const lang=document.documentElement.dataset.lang||'tr';
  const title=lang==='en'?'Joint online training — Bartın & Zonguldak':lang==='de'?'Gemeinsame Online-Schulung — Bartın & Zonguldak':'Bartın & Zonguldak ortak çevrimiçi eğitimi';
  const images=[['/assets/training/bartin-zonguldak-2026-10-17-afis.jpg',lang==='en'?'Event poster':lang==='de'?'Veranstaltungsplakat':'Etkinlik afişi'],['/assets/training/bartin-zonguldak-2026-10-17-ekran.jpg',lang==='en'?'Session screenshot':lang==='de'?'Sitzungsbild':'Eğitim ekran görüntüsü']];
- return '<div class="shared-training-media"><b>'+esc(title)+'</b><p>17.10.2026 · '+(lang==='en'?'48 participants across two provinces (counted once)':lang==='de'?'48 Teilnehmende in zwei Provinzen (einmal gezählt)':'İki il için toplam 48 katılımcı (tek kez sayılır)')+'</p><div class="shared-training-images">'+images.map(([src,label])=>'<a href="'+src+'" target="_blank" rel="noopener" style="display:none" data-shared-media><img src="'+src+'" alt="'+esc(label)+'" loading="lazy" onload="this.parentNode.style.display=\'block\'" onerror="this.parentNode.remove()"><small>'+esc(label)+'</small></a>').join('')+'</div></div>';
+ return '<div class="shared-training-media"><b>'+esc(title)+'</b><p>17.10.2026 · '+(lang==='en'?'48 participants across both provinces':lang==='de'?'48 Teilnehmende in beiden Provinzen insgesamt':'İki il için toplam 48 katılımcı')+'</p><div class="shared-training-images">'+images.map(([src,label])=>'<a href="'+src+'" target="_blank" rel="noopener" style="display:none" data-shared-media><img src="'+src+'" alt="'+esc(label)+'" loading="lazy" onload="this.parentNode.style.display=\'block\'" onerror="this.parentNode.remove()"><small>'+esc(label)+'</small></a>').join('')+'</div></div>';
 }
 function cityInfo(city){
  selectedCity=city;
