@@ -980,6 +980,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-19","Bartın ve Zonguldak ortak çevrimiçi eğitimi kaydedildi","17 Ekim 2026 tarihinde gerçekleştirilen 48 katılımcılı ortak eğitim, 81 il haritasında Bartın ve Zonguldak’a bağlandı. Tek etkinlik olarak sayılarak toplam 26 eğitim, 27 il ve 1.325 katılımcı bilgileri eğitim arşiviyle eşitlendi. Her iki ilin detayında afiş ve ekran görseli için medya alanları hazırlandı; görsellerin GitHub’a yüklenmesi bekleniyor."],
 ["2026-10-19","Kamu spotları toplam 76 televizyon yayınına ulaştı","VİA yayın takibi doğrultusunda iki kamu spotunun toplam yayın sayısı 45’ten 76’ya yükseltildi. Mevcut 7 kanal bilgisi korunarak ana sayfa ve Çıktılar sayfasındaki göstergeler ile TR/EN/DE açıklamaları güncellendi."],
 ["2026-10-12","Kamu spotları verileri site genelinde eşitlendi","Çıktılar sayfasından sonra ana sayfadaki kamu spotları göstergeleri de 2 spot, 7 TV kanalı ve 45 yayın olarak güncellendi. Ana sayfa TR/EN/DE açıklamalarına K Kardelen TV, MK TV ve Yeni Kocaeli TV eklendi; yönetim panelindeki kanal listesi eşitlendi. Geçmiş sürüm notları korundu."],
 ["2026-10-12","Kamu spotları 45 yayına ve 7 kanala ulaştı","VİA yayın takibi kapsamında K KARDELEN TV, MK TV ve YENİ KOCAELİ TV eklendi. İki kamu spotunun toplam tespit edilen yayını 30’dan 45’e, kanal sayısı 4’ten 7’ye yükseltildi. Çıktılar sayfası TR/EN/DE güncellendi."],
@@ -1055,6 +1056,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-19","Joint Bartın and Zonguldak online training recorded","The completed 17 October 2026 online session with 48 participants is linked to both provinces on the 81-province map, while counted once in totals: 26 training events, 27 provinces and 1,325 participants. Media slots are prepared in both province cards pending asset upload."],
 ["2026-10-19","Public service spots reach 76 TV broadcasts","Following updated VİA monitoring figures, the two public service spots now total 76 broadcasts, up from 45. The existing 7-channel list is retained; homepage and Outputs page figures and TR/EN/DE descriptions are synchronized."],
 ["2026-10-12","Public spot figures synchronized sitewide","After the Outputs page, the homepage TV summary now shows 2 spots, 7 TV channels and 45 broadcasts. Homepage copy in TR/EN/DE and the admin channel list now include K Kardelen TV, MK TV and Yeni Kocaeli TV. Historical release notes remain unchanged."],
 ["2026-10-12","Public service spots reach 45 broadcasts on 7 channels","Added K KARDELEN TV, MK TV and YENİ KOCAELİ TV to the VİA channel list. The two public service spots now total 45 identified broadcasts across 7 channels, up from 30 across 4. Outputs page updated in TR/EN/DE."],
