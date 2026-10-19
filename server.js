@@ -980,6 +980,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-19","WP3 eğitim programlarının kapsam açıklamaları güncellendi","Akran eğiticisi gelişim programı hibrit eğitim yaklaşımıyla açıklandı; yüz yüze eğitimler büyükşehir statüsündeki 30 ili, dijital eğitimler büyükşehir statüsü bulunmayan 51 ili kapsayacak şekilde ifade edildi. TR/EN/DE metinleri eşitlendi. Gerçekleşmiş eğitim istatistikleri değiştirilmedi."],
 ["2026-10-19","Eğitim göstergeleri ve ortak etkinlik metni sadeleştirildi","Ana sayfada il sayısı 27 olarak gösteriliyor; gereksiz ‘ilde’ eki kaldırıldı. Bartın–Zonguldak ortak eğitim kartındaki ‘tek kez sayılır’ parantezi çıkarıldı. Eğitim ve katılımcı hesaplamaları değiştirilmedi."],
 ["2026-10-19","Bartın ve Zonguldak galeri butonları geri getirildi","81 il haritasında Bartın ve Zonguldak detay kartlarından gizlenmiş olan Sahadan Kareler ve Program Akışı bağlantıları yeniden görünür hâle getirildi. Ortak eğitim verileri ve sayaçlar korunmuştur."],
 ["2026-10-19","Eğitim arşivi ve ortak il haritası açıklamaları iyileştirildi","Eğitimler sayfasındaki teknik başlık daha anlaşılır hâle getirildi. Bartın ve Zonguldak ortak eğitiminin 48 katılımcısının yalnızca bir kez sayıldığı belirtildi; il detaylarında katılımcı sayısı ortak toplam olarak etiketlendi ve bu iller için henüz içerik bulunmayan galeri bağlantıları gizlendi. Eğitim ve il toplamları korundu."],
@@ -1059,6 +1060,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-19","WP3 training programme scope descriptions revised","The peer educator development programme now describes its face-to-face and digital (hybrid) format. The face-to-face and digital programme descriptions refer respectively to Türkiye’s 30 metropolitan municipality provinces and 51 other provinces. TR/EN/DE copy updated; completed-training statistics unchanged."],
 ["2026-10-19","Training indicator and joint-event text simplified","The province KPI now shows only the number 27 without a redundant suffix. Removed the parenthetical once-counted explanation from the joint Bartın–Zonguldak event card. Training and attendee calculations remain unchanged."],
 ["2026-10-19","Gallery buttons restored for Bartın and Zonguldak","Restored the Field Photos and Program Flow buttons in the province detail cards for both Bartın and Zonguldak. Shared training data and counters are unchanged."],
 ["2026-10-19","Training archive and joint-province map labels refined","Replaced the technical training-list heading with a clearer title. Clarified that the 48 attendees of the joint Bartın–Zonguldak event are counted once, labeled the shared attendance in both province details, and hid gallery links without available content. Training and province totals remain unchanged."],
