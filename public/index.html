@@ -1331,7 +1331,15 @@ img{decoding:async}
 .tv-dissemination h3{font-size:27px;margin:10px 0 6px}.tv-dissemination p{margin:0;color:#d8f4e8;line-height:1.6;font-size:13px}.tv-dissemination .tag{background:rgba(255,255,255,.12);color:#dff7e9}.tv-dissemination-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.tv-dissemination-kpis div,.tv-dissemination-kpis .tv-kpi-link{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.13);border-radius:16px;padding:13px;text-align:center}.tv-dissemination-kpis .tv-kpi-link{color:inherit;text-decoration:none;transition:.18s}.tv-dissemination-kpis .tv-kpi-link:hover{transform:translateY(-2px);background:rgba(255,255,255,.16)}.tv-dissemination-kpis .featured{background:rgba(255,255,255,.1);color:#fff}.tv-dissemination-kpis b,.tv-dissemination-kpis .tv-kpi-link b{display:block;font-size:29px;line-height:1}.tv-dissemination-kpis span,.tv-dissemination-kpis .tv-kpi-link span{display:block;font-size:10px;font-weight:850;margin-top:5px}.tv-dissemination>.arrow{color:#fff;white-space:nowrap}
 @media(max-width:1000px){.tv-dissemination{grid-template-columns:1fr}.tv-dissemination-kpis{max-width:520px}}@media(max-width:560px){.tv-dissemination{padding:20px 17px}.tv-dissemination-kpis{grid-template-columns:1fr 1fr 1fr}.tv-dissemination-kpis b{font-size:24px}}
 </style>
-</head><body id="main-content">
+<style id="joint-training-media-styles">
+.shared-training-media{margin:14px 0;padding:13px;border:1px solid #cde2d6;border-radius:14px;background:#f4faf6;color:#143b2d}
+.shared-training-media>p{font-size:12px;line-height:1.5;margin:7px 0}
+.shared-training-images{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.shared-training-images a{border:1px solid #cde2d6;border-radius:9px;overflow:hidden;text-decoration:none;color:#14543b;background:#fff}
+.shared-training-images img{display:block;width:100%;height:118px;object-fit:cover}
+.shared-training-images small{display:block;padding:7px;font-size:11px}
+@media(max-width:500px){.shared-training-images{grid-template-columns:1fr}.shared-training-images img{height:155px}}
+</style></head><body id="main-content">
 
 <a class="a11y-skip" href="#main-content" id="a11ySkip">Ana içeriğe geç</a>
 <button class="a11y-fab" id="a11yFab" type="button" aria-label="Erişilebilirlik araçlarını aç" aria-expanded="false" aria-controls="a11yPanel" title="Erişilebilirlik">♿</button>
@@ -2005,6 +2013,13 @@ function updateMapLabels(lang){
  const pc=document.getElementById('mapParticipantCount');if(pc)pc.textContent=trainingData.reduce((n,x)=>n+Number(x[4]||0),0).toLocaleString('tr-TR');
  document.querySelectorAll('.city-btn').forEach(b=>{const c=b.dataset.city;b.textContent=c+(completedActivities(c).length?' • '+(lang==='de'?'Aktivität':lang==='en'?'activity':'faaliyet'):'' )});
 }
+function sharedTrainingMedia(city){
+ if(city!=='Bartın'&&city!=='Zonguldak')return '';
+ const lang=document.documentElement.dataset.lang||'tr';
+ const title=lang==='en'?'Joint online training — Bartın & Zonguldak':lang==='de'?'Gemeinsame Online-Schulung — Bartın & Zonguldak':'Bartın & Zonguldak ortak çevrimiçi eğitimi';
+ const images=[['/assets/training/bartin-zonguldak-2026-10-17-afis.jpg',lang==='en'?'Event poster':lang==='de'?'Veranstaltungsplakatı':'Etkinlik afişi'],['/assets/training/bartin-zonguldak-2026-10-17-ekran.jpg',lang==='en'?'Session screenshot':lang==='de'?'Sitzungsbild':'Eğitim ekran görüntüsü']];
+ return '<div class="shared-training-media"><b>'+esc(title)+'</b><p>17.10.2026 · '+(lang==='en'?'48 participants across two provinces (counted once)':lang==='de'?'48 Teilnehmende in zwei Provinzen (einmal gezählt)':'İki il için toplam 48 katılımcı (tek kez sayılır)')+'</p><div class="shared-training-images">'+images.map(([src,label])=>'<a href="'+src+'" target="_blank" rel="noopener" style="display:none" data-shared-media><img src="'+src+'" alt="'+esc(label)+'" loading="lazy" onload="this.parentNode.style.display=\'block\'" onerror="this.parentNode.remove()"><small>'+esc(label)+'</small></a>').join('')+'</div></div>';
+}
 function cityInfo(city){
  selectedCity=city;
  const L=mapLabels(document.documentElement.dataset.lang||'tr');
@@ -2012,7 +2027,7 @@ function cityInfo(city){
  document.getElementById('cityTitle').textContent=city;
  if(a.length){
    const items=a.map(x=>{const isPeerTraining=x.type==='Akran Destekli Eğitim Programı';const displayType=isPeerTraining?L.training:x.type;const displayTitle=isPeerTraining?L.training:x.title;return `<div class="map-activity-card"><div class="pill-row"><span class="tag">${esc(displayType)}</span><span class="tag">${esc(x.mode)}</span><span class="tag">${x.status==='completed'?esc(L.completed):esc(L.planned)}</span></div><div class="info-row"><span>${esc(x.date)}</span><b>${x.participants?esc(String(x.participants))+' '+esc(L.person):'—'}</b></div><div class="info-row"><span>${esc(L.activity)}</span><b>${esc(displayTitle)}</b></div><div class="info-row"><span>${esc(L.location)}</span><b>${esc(x.org)}</b></div></div>`}).join('');
-   document.getElementById('cityInfo').innerHTML=`<div class="pill-row"><span class="tag">${completed.length} ${L.activity.toLocaleLowerCase(document.documentElement.lang==='tr'?'tr-TR':document.documentElement.lang)}</span><span class="tag">${a.length-completed.length} ${esc(L.planned.toLocaleLowerCase(document.documentElement.lang==='tr'?'tr-TR':document.documentElement.lang))}</span></div>${items}<div class="map-event-links"><a class="btn primary map-photo-link" href="/gallery.html?city=${encodeURIComponent(city)}">${L.photo}</a><a class="btn ghost map-poster-link" href="/gallery.html?city=${encodeURIComponent(city)}&view=poster">${L.poster}</a></div>`;
+   document.getElementById('cityInfo').innerHTML=`<div class="pill-row"><span class="tag">${completed.length} ${L.activity.toLocaleLowerCase(document.documentElement.lang==='tr'?'tr-TR':document.documentElement.lang)}</span><span class="tag">${a.length-completed.length} ${esc(L.planned.toLocaleLowerCase(document.documentElement.lang==='tr'?'tr-TR':document.documentElement.lang))}</span></div>${items}${sharedTrainingMedia(city)}<div class="map-event-links"><a class="btn primary map-photo-link" href="/gallery.html?city=${encodeURIComponent(city)}">${L.photo}</a><a class="btn ghost map-poster-link" href="/gallery.html?city=${encodeURIComponent(city)}&view=poster">${L.poster}</a></div>`;
  }else{
    document.getElementById('cityInfo').innerHTML=`<span class="tag">${esc(L.networkTag)}</span><p class="prose" style="font-size:13px">${esc(L.noActivity)}</p><div class="notice">${esc(L.activity)}: ${esc(L.planned)}</div>`;
  }
