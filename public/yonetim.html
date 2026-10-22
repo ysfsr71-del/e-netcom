@@ -76,6 +76,15 @@ body{background:radial-gradient(circle at 80% -10%,rgba(100,224,167,.13),transpa
 .traffic-legend i.traffic-event-key{background:#f6c76e;border-radius:50%}
 @media(max-width:650px){.traffic-summary b{font-size:16px}.traffic-selected{display:block}.traffic-selected strong{display:block;text-align:left;margin-top:5px;font-size:17px}#chart{height:210px}.traffic-tools{gap:6px}.traffic-toggle button,.traffic-action{padding:9px 8px}}
 </style>
+<style id="education-admin-styles">
+.education-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.education-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.education-stat{background:rgba(100,224,167,.07);border:1px solid rgba(100,224,167,.16);border-radius:14px;padding:17px}
+.education-stat .num{font-size:30px;font-weight:850;margin:7px 0}
+.education-stat .label{font-size:13px}
+.education-note{margin-top:14px;line-height:1.55}
+@media(max-width:650px){.education-stats{grid-template-columns:1fr 1fr}.education-stat:last-child{grid-column:1/-1}}
+</style>
 </head>
 <body>
 <div id="login" class="login">
@@ -113,6 +122,18 @@ body{background:radial-gradient(circle at 80% -10%,rgba(100,224,167,.13),transpa
     </div>
   </header>
 
+<section class="card" id="educationDashboard" style="margin-top:14px">
+  <div class="education-head"><div><div class="section-title"><span class="ico">🎓</span><h2>Eğitimler</h2></div><div class="small">Gerçekleşen eğitimler · Katılımcı ve yöntem dağılımı</div></div><a class="ghost" href="/egitimler.html" target="_blank" rel="noopener" style="text-decoration:none">Eğitim arşivini aç ↗</a></div>
+  <div class="education-stats">
+    <div class="education-stat"><div class="label">Toplam katılımcı</div><div class="num" id="eduTotalPeople">—</div><div class="small">Tüm eğitimler</div></div>
+    <div class="education-stat"><div class="label">Yüz yüze katılımcı</div><div class="num" id="eduFacePeople">—</div><div class="small" id="eduFaceSessions">— eğitim</div></div>
+    <div class="education-stat"><div class="label">Çevrimiçi katılımcı</div><div class="num" id="eduOnlinePeople">—</div><div class="small" id="eduOnlineSessions">— eğitim</div></div>
+    <div class="education-stat"><div class="label">Gerçekleşen eğitim</div><div class="num" id="eduSessions">—</div><div class="small">Ortak eğitimler tek sayılır</div></div>
+    <div class="education-stat"><div class="label">Ulaşılan il</div><div class="num" id="eduProvinces">—</div><div class="small">Ortak eğitimin iki ili ayrı sayılır</div></div>
+    <div class="education-stat"><div class="label">Eğitim türü dağılımı</div><div class="num" id="eduSplit">—</div><div class="small">Yüz yüze / Çevrimiçi</div></div>
+  </div>
+  <div class="small education-note" id="eduSourceNote">Veriler eğitim kayıtlarından hesaplanıyor. Buradaki katılımcı sayıları web sitesi ziyaretçi istatistiklerinden bağımsızdır.</div>
+</section>
   <section class="grid" id="cards">
     <div class="card"><div class="kpi-icon">↗</div><div class="label">Toplam ziyaret (oturum)</div><div class="num" id="visits">—</div><div class="small">Seçili dönem</div></div>
     <div class="card"><div class="kpi-icon">◉</div><div class="label">Tekil ziyaretçi</div><div class="num" id="unique">—</div><div class="small">Anonim ziyaretçi kimliği</div></div>
@@ -354,6 +375,42 @@ $("exportExcel").addEventListener("click",async()=>{
 $("refresh").addEventListener("click",load);
 $("logout").addEventListener("click",async()=>{try{await api("/api/admin/logout",{method:"POST"});}finally{showLogin();}});
 load();
+</script>
+<script id="education-admin-script">
+async function loadEducationStats(){
+  const el=id=>document.getElementById(id);
+  try{
+    const response=await fetch('/index.html',{cache:'no-store'});
+    if(!response.ok)throw new Error('Eğitim verisi alınamadı');
+    const html=await response.text();
+    const trainingBlock=html.match(/const trainingData=\[([\s\S]*?)\];/);
+    const extraBlock=html.match(/const additionalActivities=\[([\s\S]*?)\];/);
+    if(!trainingBlock||!extraBlock)throw new Error('Eğitim kayıtları bulunamadı');
+    const trainingRe=/\['([^']+)','([^']+)','(Yüz yüze|Çevrimiçi)','[^']*',(\d+)\]/g;
+    const trainings=[...trainingBlock[1].matchAll(trainingRe)].map(m=>({city:m[2],mode:m[3],people:Number(m[4])}));
+    if(trainings.length<1)throw new Error('Eğitim kayıtları okunamadı');
+    // Birden fazla ili kapsayan ortak etkinlik, tek eğitim ve tek katılımcı grubu sayılır.
+    const shared=[...extraBlock[1].matchAll(/\['[^']+','([^']+)','[^']+','(Yüz yüze|Çevrimiçi)',[^\n]*?,(\d+),'completed','([^']+)'\]/g)];
+    const seen=new Set(), extras=[];
+    for(const m of shared){if(seen.has(m[4]))continue;seen.add(m[4]);extras.push({city:m[1],mode:m[2],people:Number(m[3])});}
+    const all=[...trainings,...extras];
+    const face=all.filter(x=>x.mode==='Yüz yüze'),online=all.filter(x=>x.mode==='Çevrimiçi');
+    const sum=arr=>arr.reduce((n,x)=>n+x.people,0);
+    const fmt=n=>n.toLocaleString('tr-TR');
+    const provinces=new Set([...trainings.map(x=>x.city),...shared.map(x=>x[1])]);
+    el('eduTotalPeople').textContent=fmt(sum(all));
+    el('eduFacePeople').textContent=fmt(sum(face));
+    el('eduOnlinePeople').textContent=fmt(sum(online));
+    el('eduFaceSessions').textContent=face.length+' eğitim';
+    el('eduOnlineSessions').textContent=online.length+' eğitim';
+    el('eduSessions').textContent=all.length;
+    el('eduProvinces').textContent=provinces.size;
+    el('eduSplit').textContent=face.length+' / '+online.length;
+    el('eduSourceNote').textContent='Kaynak: Sitedeki güncel eğitim kayıtları. Ortak illerdeki katılımcılar yalnızca bir kez toplanır. Bu göstergeler ziyaretçi analitiğinden bağımsızdır.';
+  }catch(err){el('eduSourceNote').textContent='Eğitim verileri yüklenemedi: '+err.message;}
+}
+document.getElementById('refresh').addEventListener('click',loadEducationStats);
+loadEducationStats();
 </script>
 </body>
 </html>
