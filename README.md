@@ -3,9 +3,9 @@
 Bu sürüm, sitedeki güncel eğitim kayıtları esas alınarak güncellenmiştir. Eğitim verilerinin güncel kesiti 3 Ekim 2026 tarihli Kırklareli çevrimiçi eğitimini de kapsamaktadır.
 
 ## Güncel göstergeler
-- Yüz yüze eğitim: 16 il
-- Çevrimiçi eğitim: 9 il
-- Güncel toplam: 25 gerçekleşen eğitim / 25 il / 1.277 katılımcı
+- Yüz yüze eğitim: 17 il
+- Çevrimiçi eğitim: 10 il
+- Güncel toplam: 27 gerçekleşen eğitim / 28 il / 1.425 katılımcı
 - 11 Temmuz 2026: Tunceli çevrimiçi eğitim, 51 katılımcı
 - 3 Ekim 2026: Kırklareli çevrimiçi eğitim, 15 katılımcı
 - 1 Dakikada serisi: 10 içerik / 11.077 görüntülenme (rapor)
@@ -20,3 +20,6 @@ Bu sürüm, sitedeki güncel eğitim kayıtları esas alınarak güncellenmişti
 4. Tarayıcıdan `http://localhost:3000` adresini açın.
 
 Site, gerçek Türkiye il haritasını ve 81 il listesini kullanır. Harita üzerindeki gerçekleşen il işaretleri eğitim kayıtlarını açar.
+
+- 17 Ekim 2026: Bartın–Zonguldak ortak çevrimiçi eğitim, 48 katılımcı (tek etkinlik)
+- 21 Ekim 2026: Bursa, Şükrü Şankaya Anadolu Lisesi, yüz yüze eğitim, 100 katılımcı
