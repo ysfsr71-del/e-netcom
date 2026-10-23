@@ -3,11 +3,11 @@
 Bu sürüm, sitedeki güncel eğitim kayıtları esas alınarak güncellenmiştir. Eğitim verilerinin güncel kesiti 3 Ekim 2026 tarihli Kırklareli çevrimiçi eğitimini de kapsamaktadır.
 
 ## Güncel göstergeler
-- Yüz yüze eğitim: 17 il
-- Çevrimiçi eğitim: 10 il
-- Güncel toplam: 27 gerçekleşen eğitim / 28 il / 1.425 katılımcı
+- Yüz yüze eğitim: 17 eğitim / 17 il
+- Çevrimiçi eğitim: 10 eğitim / 11 il
+- Güncel toplam: 27 gerçekleşen eğitim / 28 il / 1.433 katılımcı
 - 11 Temmuz 2026: Tunceli çevrimiçi eğitim, 51 katılımcı
-- 3 Ekim 2026: Kırklareli çevrimiçi eğitim, 15 katılımcı
+- 3 Ekim 2026: Kırklareli çevrimiçi eğitim, 23 katılımcı
 - 1 Dakikada serisi: 10 içerik / 11.077 görüntülenme (rapor)
 - İnteraktif Eğitim ve Farkındalık Videoları: 24 içerik / 21.696 görüntülenme (rapor)
 - İnformatif Kamu Spotları: 2 içerik / proje YouTube'da 6.251 görüntülenme (rapor)
