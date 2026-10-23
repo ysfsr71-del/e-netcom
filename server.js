@@ -980,6 +980,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-23","Eğitim sayıları ve üç dilde metinler eşitlendi","27 eğitim, 28 il ve 1.433 katılımcı doğrulandı. Ana sayfa harita başlangıç etiketleri 17 yüz yüze ve 11 çevrimiçi il olarak güncellendi; 81 il iletişim ağı ifadesi eğitimlerden ayrıştırıldı. Eğitimler sayfası çevirileri ve README kayıtları eşitlendi."],
 ["2026-10-22","Kırklareli katılımcı düzeltmesi ve kamu spotu verileri eşitlendi","Kırklareli çevrimiçi eğitiminin katılımcı sayısı 15'ten 23'e düzeltildi. Toplam 1.433 katılımcı (1.025 yüz yüze, 408 çevrimiçi) oldu. Eğitimler sayfasındaki gereksiz alt açıklama kaldırıldı. Yönetim panelindeki kamu spotu verileri ana sitedeki 2 spot, 7 kanal ve 76 yayın ile eşitlendi."],
 ["2026-10-22","Eğitimler sayfası yeniden tasarlandı","Eğitimler sayfasına altı temel gösterge, yüz yüze ve çevrimiçi katılımcı karşılaştırması, sade eğitim kartları, eğitim türü filtreleri ve il araması eklendi. Mobil uyum için düzenlemeler yapıldı."],
 ["2026-10-22","Yönetim paneline Eğitimler istatistikleri eklendi","Yönetim paneline toplam katılımcı, yüz yüze ve çevrimiçi katılımcı sayıları, eğitim sayıları ve ulaşılan il göstergeleri eklendi. Veriler site eğitim kayıtlarından hesaplanacak şekilde bağlandı."],
@@ -1064,6 +1065,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-23","Training statistics and multilingual copy aligned","Verified 27 trainings, 28 provinces and 1,433 participants. Updated initial homepage map legends to 17 face-to-face and 11 online provinces, clarified the 81-province communication network, and aligned training-page translations and README figures."],
 ["2026-10-19","WP3 training programme scope descriptions revised","The peer educator development programme now describes its face-to-face and digital (hybrid) format. The face-to-face and digital programme descriptions refer respectively to Türkiye’s 30 metropolitan municipality provinces and 51 other provinces. TR/EN/DE copy updated; completed-training statistics unchanged."],
 ["2026-10-19","Training indicator and joint-event text simplified","The province KPI now shows only the number 27 without a redundant suffix. Removed the parenthetical once-counted explanation from the joint Bartın–Zonguldak event card. Training and attendee calculations remain unchanged."],
 ["2026-10-19","Gallery buttons restored for Bartın and Zonguldak","Restored the Field Photos and Program Flow buttons in the province detail cards for both Bartın and Zonguldak. Shared training data and counters are unchanged."],
