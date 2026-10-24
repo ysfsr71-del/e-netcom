@@ -4017,14 +4017,12 @@ document.addEventListener('keydown', function(e){
     document.querySelectorAll('section[id],main[id]').forEach(function(el){io.observe(el)});
   }
   document.addEventListener('click',function(e){
+    var mapPath=e.target.closest&&e.target.closest('#turkeyMapMount [id^="TR"]');
     var t=e.target.closest&&e.target.closest('[data-city],a[href$=".pdf"],a[href*="/assets/"],button[onclick*="playContent"],button[onclick*="playPlaylistIndex"],a');
-    if(!t)return;
-    var city=t.dataset&&t.dataset.city;
-    if(!city){
-      var mapPath=t.closest&&t.closest('#turkeyMapMount [id^="TR"]');
-      city=mapPath&&mapPath.dataset&&mapPath.dataset.city;
-    }
+    if(!t&&!mapPath)return;
+    var city=(mapPath&&mapPath.dataset&&mapPath.dataset.city)||(t&&t.dataset&&t.dataset.city);
     if(city){send('map_click',{section:'iller',target:city,meta:city});return}
+    if(!t)return;
     var href=t.getAttribute('href')||'';
     if(/\\.(pdf|zip|docx?|xlsx?)($|[?#])/i.test(href)){send('download',{section:t.closest('#network,#ciktilar,#veritabani')?.id||'',target:href,meta:t.textContent.trim().slice(0,120)});return}
     var oc=t.getAttribute('onclick')||'';
