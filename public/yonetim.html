@@ -184,7 +184,7 @@ body{background:radial-gradient(circle at 80% -10%,rgba(100,224,167,.13),transpa
     </div>
   </section>
 
-  <section class="card map-card" style="margin-top:14px"><div class="section-title"><span class="ico">⌖</span><h2>Türkiye · İl bazlı ilgi</h2></div><div class="small" style="margin-top:-8px;margin-bottom:14px">81 il haritasında açılan il detayları. Renk yoğunluğu etkileşim miktarını gösterir.</div><div class="map-layout"><div><div class="admin-map" id="adminMap">Harita yükleniyor…</div><div class="map-tip" id="adminMapTip"><span class="desktop-map-tip">Bir ilin üzerine gelerek etkileşim sayısını görüntüleyin.</span><span class="mobile-map-tip">Haritada bir ile dokunarak etkileşim sayısını görüntüleyin.</span></div></div><div><input class="province-search" id="provinceSearch" type="search" placeholder="İl ara…" autocomplete="off"/><div class="list province-card" id="provinceViews"></div></div></div></section>
+  <section class="card map-card" style="margin-top:14px"><div class="section-title"><span class="ico">⌖</span><h2>Türkiye · İl bazlı ilgi</h2></div><div class="small" style="margin-top:-8px;margin-bottom:14px">81 il haritasında açılan il detayları. Renk yoğunluğu etkileşim miktarını gösterir. Haritadan veya listeden bir il seçebilirsiniz.</div><div class="map-layout"><div><div class="admin-map" id="adminMap">Harita yükleniyor…</div><div class="map-tip" id="adminMapTip"><span class="desktop-map-tip">Bir ilin üzerine gelerek etkileşim sayısını görüntüleyin.</span><span class="mobile-map-tip">Haritada bir ile dokunarak etkileşim sayısını görüntüleyin.</span></div></div><div><input class="province-search" id="provinceSearch" type="search" placeholder="İl ara…" autocomplete="off"/><div class="list province-card" id="provinceViews"></div></div></div></section>
 
   <section class="content-performance"><div class="card"><h2>En çok açılan videolar</h2><div class="small" style="margin-top:-8px;margin-bottom:12px">Video ve oynatma kontrolleri.</div><div class="list" id="videoOpens"></div></div><div class="card"><h2>İndirilen içerikler</h2><div class="small" style="margin-top:-8px;margin-bottom:12px">PDF, program ve indirilebilir içerik etkileşimleri.</div><div class="list" id="downloads"></div></div><div class="card ecenter-card"><div class="kpi-icon">⌕</div><h2>e-Merkez kullanımı</h2><div class="num" id="eCenterInteractions">—</div><div class="small">e-Merkez alanındaki toplam etkileşim</div></div></section>
 
@@ -283,20 +283,70 @@ async function ensureAdminMap(){
   try{const r=await fetch("/turkey.svg");if(!r.ok)throw new Error("map");mount.innerHTML=await r.text();adminMapSvg=mount.querySelector("svg");if(adminMapSvg){adminMapLoaded=true;adminMapSvg.setAttribute("preserveAspectRatio","xMidYMid meet");adminMapSvg.setAttribute("role","img");adminMapSvg.setAttribute("aria-label","Türkiye il bazlı etkileşim haritası");}}
   catch(e){adminMapLoaded=false;adminMapSvg=null;mount.innerHTML='<div class="small">Türkiye haritası yüklenemedi. Yenile ile tekrar deneyebilirsiniz.</div>';}
 }
+let adminProvinceItems=[];
+let selectedAdminProvince="";
+function adminProvincePaths(){return adminMapSvg?[...adminMapSvg.querySelectorAll("path[name]")]:[];}
+function highlightAdminProvince(city){
+  selectedAdminProvince=city||"";
+  const key=normCity(selectedAdminProvince);
+  adminProvincePaths().forEach(p=>{
+    const match=!!key&&normCity(p.getAttribute("name"))===key;
+    p.classList.toggle("admin-selected",match);
+    p.style.stroke=match?"#f7d66c":"";
+    p.style.strokeWidth=match?"2.5":"";
+    p.style.filter=match?"drop-shadow(0 0 4px rgba(247,214,108,.75))":"";
+    p.setAttribute("aria-pressed",String(match));
+  });
+  document.querySelectorAll("#provinceViews [data-province-name]").forEach(el=>{
+    const match=!!key&&normCity(el.dataset.provinceName)===key;
+    el.style.outline=match?"2px solid #f7d66c":"";
+    el.style.borderRadius="8px";
+  });
+  const row=adminProvinceItems.find(x=>normCity(x.name)===key);
+  const tip=$("adminMapTip");
+  if(tip&&row)tip.textContent=row.name+" · "+fmt(row.count)+" etkileşim";
+  else if(tip)tip.textContent="Haritada veya listede bir il seçin. Seçimi kaldırmak için aynı ile tekrar dokunun.";
+}
+function selectAdminProvince(city){
+  const next=normCity(selectedAdminProvince)===normCity(city)?"":city;
+  highlightAdminProvince(next);
+  if(next){const input=$("provinceSearch");if(input&&input.value&&!normCity(next).includes(normCity(input.value))){input.value="";filterProvinceList();}}
+}
 function renderAdminMap(items){
-  ensureAdminMap().then(()=>{if(!adminMapSvg)return;const rows=Array.isArray(items)?items:[],byName=new Map(rows.map(x=>[normCity(x.name),Number(x.count||0)])),max=Math.max(...rows.map(x=>Number(x.count||0)),1);
-    adminMapSvg.querySelectorAll("path[name]").forEach(p=>{const city=String(p.getAttribute("name")||"");const count=byName.get(normCity(city))||0;const ratio=count/max;const level=count===0?0:ratio>.66?4:ratio>.33?3:ratio>.12?2:1;p.dataset.adminCount=count;p.dataset.level=level;p.onmouseenter=()=>{$("adminMapTip").textContent=city+" · "+fmt(count)+" etkileşim";};p.onmouseleave=()=>{$("adminMapTip").textContent="Bir ilin üzerine gelerek etkileşim sayısını görüntüleyin.";};});
+  adminProvinceItems=Array.isArray(items)?items:[];
+  ensureAdminMap().then(()=>{
+    if(!adminMapSvg)return;
+    const rows=adminProvinceItems,byName=new Map(rows.map(x=>[normCity(x.name),Number(x.count||0)]));
+    const max=Math.max(...rows.map(x=>Number(x.count||0)),1);
+    adminProvincePaths().forEach(p=>{
+      const city=String(p.getAttribute("name")||"");
+      const count=byName.get(normCity(city))||0;
+      const ratio=count/max;
+      const level=count===0?0:ratio>.66?4:ratio>.33?3:ratio>.12?2:1;
+      p.dataset.adminCount=count;p.dataset.level=level;
+      p.style.cursor="pointer";
+      p.setAttribute("tabindex","0");p.setAttribute("role","button");
+      p.setAttribute("aria-label",city+" · "+fmt(count)+" etkileşim");
+      p.onmouseenter=()=>{if(!selectedAdminProvince)$("adminMapTip").textContent=city+" · "+fmt(count)+" etkileşim";};
+      p.onmouseleave=()=>{if(!selectedAdminProvince)$("adminMapTip").textContent="Haritada veya listede bir il seçin.";};
+      p.onclick=()=>selectAdminProvince(city);
+      p.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();selectAdminProvince(city);}};
+    });
+    highlightAdminProvince(selectedAdminProvince);
   });
 }
 function filterProvinceList(){
   const el=$("provinceViews");
   const q=String($("provinceSearch")?.value||"").trim().toLocaleLowerCase("tr-TR");
-  const items=Array.isArray(el._items)?el._items:[];
+  const items=Array.isArray(el._items)?el._items:adminProvinceItems;
   if(!items.length){el.innerHTML='<div class="small">Henüz veri yok.</div>';return;}
   const filtered=q?items.filter(x=>String(x.name||"").toLocaleLowerCase("tr-TR").includes(q)):items;
-  if(!filtered.length){el.innerHTML='<div class="province-empty">Bu ada ait il bulunamadı.</div>';return;}
+  if(!filtered.length){el.innerHTML='<div class="province-empty">Bu ada ait il bulunamadı.</div>';highlightAdminProvince("");return;}
   const max=Math.max(...items.map(x=>x.count),1);
-  el.innerHTML=filtered.map(x=>`<div><div class="row"><span>${esc(x.name)}</span><b>${fmt(x.count)}</b></div><div class="bar"><i style="width:${Math.round(x.count/max*100)}%"></i></div></div>`).join("");
+  el.innerHTML=filtered.map(x=>`<button type="button" data-province-name="${esc(x.name)}" style="display:block;width:100%;border:0;background:transparent;color:inherit;text-align:left;padding:7px 3px;cursor:pointer"><div class="row"><span>${esc(x.name)}</span><b>${fmt(x.count)}</b></div><div class="bar"><i style="width:${Math.round(x.count/max*100)}%"></i></div></button>`).join("");
+  el.querySelectorAll("[data-province-name]").forEach(button=>button.addEventListener("click",()=>selectAdminProvince(button.dataset.provinceName)));
+  if(q&&filtered.length===1)highlightAdminProvince(filtered[0].name);
+  else highlightAdminProvince(selectedAdminProvince);
 }
 
 function renderYouTube(y){
@@ -324,7 +374,7 @@ async function load(){
     renderList("languages",d.languages);
     renderList("devices",d.devices);
     renderList("referrers",d.referrers);
-    renderList("provinceViews",d.provinceViews);renderAdminMap(d.provinceViews);
+    renderList("provinceViews",d.provinceViews);renderAdminMap(d.provinceViews);filterProvinceList();
     renderList("videoOpens",d.videoOpens);
     renderList("downloads",d.downloads);
     $("eCenterInteractions").textContent=fmt(d.eCenterInteractions);
