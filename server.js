@@ -980,6 +980,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-24","Kamu spotları 101 televizyon yayınına ulaştı","VİA yayın takibinde e-NetCoM yapımı 2 kamu spotunun 7 televizyon kanalındaki toplam tespit edilen yayın sayısı 76’dan 101’e yükseldi. Ana sayfa, Çıktılar, yönetim paneli ve TR/EN/DE metinleri eşitlendi; geçmiş sürüm kayıtları korundu."],
 ["2026-10-23","Balıkesir yüz yüze eğitim eklendi","23 Ekim 2026 Muharrem Hasbi Anadolu Lisesi Balıkesir yüz yüze eğitimi, 30 katılımcı olarak kaydedildi. Toplam 28 eğitim, 29 il, 1.463 katılımcı; harita, eğitimler sayfası ve görsel bağlantıları güncellendi."],
 ["2026-10-23","Eğitim sayıları ve üç dilde metinler eşitlendi","27 eğitim, 28 il ve 1.433 katılımcı doğrulandı. Ana sayfa harita başlangıç etiketleri 17 yüz yüze ve 11 çevrimiçi il olarak güncellendi; 81 il iletişim ağı ifadesi eğitimlerden ayrıştırıldı. Eğitimler sayfası çevirileri ve README kayıtları eşitlendi."],
 ["2026-10-22","Kırklareli katılımcı düzeltmesi ve kamu spotu verileri eşitlendi","Kırklareli çevrimiçi eğitiminin katılımcı sayısı 15'ten 23'e düzeltildi. Toplam 1.433 katılımcı (1.025 yüz yüze, 408 çevrimiçi) oldu. Eğitimler sayfasındaki gereksiz alt açıklama kaldırıldı. Yönetim panelindeki kamu spotu verileri ana sitedeki 2 spot, 7 kanal ve 76 yayın ile eşitlendi."],
@@ -1066,6 +1067,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-24","Public service spots reach 101 TV broadcasts","VİA monitoring now records 101 broadcasts of the two e-NetCoM public service spots across seven TV channels, up from 76. Homepage, Outputs, admin dashboard and TR/EN/DE text were synchronized; historical release notes retained."],
 ["2026-10-23","Balıkesir face-to-face training added","Added the 23 October 2026 Balıkesir training at Muharrem Hasbi Anadolu Lisesi with 30 participants. Totals are now 28 trainings across 29 provinces with 1,463 participants."],
 ["2026-10-23","Training statistics and multilingual copy aligned","Verified 27 trainings, 28 provinces and 1,433 participants. Updated initial homepage map legends to 17 face-to-face and 11 online provinces, clarified the 81-province communication network, and aligned training-page translations and README figures."],
 ["2026-10-19","WP3 training programme scope descriptions revised","The peer educator development programme now describes its face-to-face and digital (hybrid) format. The face-to-face and digital programme descriptions refer respectively to Türkiye’s 30 metropolitan municipality provinces and 51 other provinces. TR/EN/DE copy updated; completed-training statistics unchanged."],
