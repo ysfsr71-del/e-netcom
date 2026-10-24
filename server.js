@@ -655,13 +655,16 @@ function buildAnalyticsStats(range = "30d", fromDate = "", toDate = "") {
   );
 
   // Province clicks: use meta when present, otherwise target. Blank/unknown map events are ignored.
-  const provinceViews = countEventTargets(
-    events.filter(e => {
-      const name = eventTargetName(e);
-      return e.type === "map_click" && (e.section === "iller" || TURKEY_PROVINCES.has(name));
-    }),
-    "map_click"
-  );
+  const provinceViews = (() => {
+    const counts = new Map();
+    for (const event of events) {
+      if (event.type !== "map_click") continue;
+      const name = eventTargetName(event);
+      if (!TURKEY_PROVINCES.has(name)) continue;
+      counts.set(name, (counts.get(name) || 0) + 1);
+    }
+    return [...counts.entries()].sort((a,b)=>b[1]-a[1]).map(([name,count])=>({name,count}));
+  })();
 
   // Video and download metrics are based on their explicit event types.
   const videoOpens = countEventTargets(events, "video_open");
@@ -980,6 +983,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-24","İl haritası analitik kayıt ve gösterimi düzeltildi","SVG harita il tıklamaları analitik olaylarına eklendi; yönetim panelindeki ilk 12 il sınırı kaldırıldı. Harita gerçek ziyaretçi konumu değil, il detayına tıklama sayısını gösterir. Kalıcı disk kontrol edildi."],
 ["2026-10-24","Yönetim paneli il haritası etkileşimleri iyileştirildi","81 il haritasına tıklama/dokunma ile il seçimi, listeden haritada vurgulama, arama sonucu eşleştirmesi ve klavye ile seçim eklendi. Mevcut ziyaret istatistikleri değiştirilmedi."],
 ["2026-10-24","Gümüşhane ve Şırnak ortak çevrimiçi eğitimi eklendi","24 Ekim 2026 tarihli iki ili kapsayan tek çevrimiçi eğitim 51 katılımcıyla kaydedildi. Güncel toplam: 29 eğitim, 31 il, 1.514 katılımcı. Ana sayfa haritası, eğitimler sayfası ve üç dilde göstergeler eşitlendi."],
 ["2026-10-24","Kamu spotları 101 televizyon yayınına ulaştı","VİA yayın takibinde e-NetCoM yapımı 2 kamu spotunun 7 televizyon kanalındaki toplam tespit edilen yayın sayısı 76’dan 101’e yükseldi. Ana sayfa, Çıktılar, yönetim paneli ve TR/EN/DE metinleri eşitlendi; geçmiş sürüm kayıtları korundu."],
@@ -1069,6 +1073,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-24","Province map analytics tracking corrected","SVG province clicks are now tracked; the admin map no longer truncates to the top 12 provinces. The map counts province-detail clicks, not visitors’ geographic origins. Persistent storage verified."],
 ["2026-10-24","Admin province map interactions improved","Added clickable and keyboard-accessible provinces, list-to-map highlighting and search matching to the 81-province analytics map. Existing analytics data was preserved."],
 ["2026-10-24","Joint Gümüşhane and Şırnak online training added","One online training held on 24 October 2026 across two provinces with 51 participants. Totals updated to 29 trainings, 31 provinces and 1,514 participants; homepage map and training statistics synchronized."],
 ["2026-10-24","Public service spots reach 101 TV broadcasts","VİA monitoring now records 101 broadcasts of the two e-NetCoM public service spots across seven TV channels, up from 76. Homepage, Outputs, admin dashboard and TR/EN/DE text were synchronized; historical release notes retained."],
