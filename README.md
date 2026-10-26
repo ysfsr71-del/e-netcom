@@ -27,3 +27,15 @@ Site, gerçek Türkiye il haritasını ve 81 il listesini kullanır. Harita üze
 - 23 Ekim 2026: Balıkesir, Muharrem Hasbi Anadolu Lisesi, yüz yüze eğitim, 30 katılımcı. Afiş ve fotoğraflar: `public/balikesir/`.
 
 - 24 Ekim 2026: Gümüşhane ve Şırnak ortak çevrimiçi eğitim, tek etkinlik, 51 katılımcı (12.00–14.00).
+
+## Sürüm notları — 26 Ekim 2026
+
+### Projenin hikâyesi ve güncel gelişmeler
+- Ana sayfadaki **Projenin hikâyesi** bölümü fotoğraflı hikâye alanı, 2025 başlangıç / 2026 uygulama ve gelişim / gelecek kalıcı etki aşamalarını gösteren zaman çizelgesi ve üç gelişme kartıyla yeniden tasarlandı.
+- Başlık hiyerarşisi, tipografi, renk geçişleri, ikonlar, kart aralıkları ve mobil görünüm düzenlendi.
+- **Güncel gelişmeler** kartlarının konuya uygun fotoğrafları, onaylanan görsel referansından kırpılarak sitenin kendi dosyalarına WebP biçiminde eklendi: `public/assets/story-erasmus.webp`, `public/assets/story-training.webp`, `public/assets/story-research.webp`. Harici Unsplash görsel bağlantılarının yerini bu yerel dosyalar aldı.
+- Eğitim kartındaki görsel, kadın eğitimci gösteren önceki tasarım yerine erkek eğitimcinin katılımcılara hitap ettiği görselle değiştirildi.
+- Üç kartın bağlantıları korundu: **Projeyi keşfet** → `#proje`, **Faaliyetleri incele** → `#faaliyetler`, **Yayınları keşfet** → `#network`. Son bağlantı için ilgili bölüme kaydırma davranışı güçlendirildi.
+- Kartların tarih bilgileri içeriklerine uygun tutuldu; 2025 tarihli bildiri sırf görsel sıralama için 2026 olarak değiştirilmedi.
+- Değişiklikler öncesinde GitHub üzerinde geri dönüş amaçlı yedek dallar oluşturuldu; son görsel güncellemesi öncesi yedek: `backup-before-exact-card-images-20261026`.
+
