@@ -1551,7 +1551,7 @@ img{decoding:async}
   <div class="story-v3-cards story-v4-cards">
     <article class="story-v3-card"><div class="story-v4-media"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=700&q=85" alt="Toprakta yetişen genç yeşil bitki" loading="lazy"><span class="story-v4-erasmus">🇪🇺 Erasmus+</span></div><div class="story-v4-copy"><div class="news-meta"><span class="tag">DUYURU</span><span>2025</span></div><h4>e-NetCoM Projesi Erasmus+ KA220-YOU kapsamında desteklendi.</h4><p>RTÜK koordinatörlüğündeki projenin çevresel sürdürülebilirlik hedefleri, ortaklık yapısı ve amaçları.</p><a class="arrow" href="#proje">Projeyi keşfet ↗</a></div></article>
     <article class="story-v3-card"><div class="story-v4-media"><img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=700&q=85" alt="Katılımcıların birlikte çalıştığı eğitim ortamı" loading="lazy"></div><div class="story-v4-copy"><div class="news-meta"><span class="tag">PROGRAM</span><span>2025–2026</span></div><h4>Sürdürülebilirlik ve Yeşil Beceriler Akran Eğitimcisi Gelişim Programı</h4><p>Akran eğitimcisi gelişimi ve akran destekli eğitim yaklaşımıyla Türkiye'nin farklı illerinde gerçekleştirilen eğitimler.</p><a class="arrow" href="#faaliyetler">Faaliyetleri incele ↗</a></div></article>
-    <article class="story-v3-card"><div class="story-v4-media"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=700&q=85" alt="Dijital veri analizi ve bilimsel çalışma" loading="lazy"></div><div class="story-v4-copy"><div class="news-meta"><span class="tag">BİLDİRİ</span><span>2025</span></div><h4>Çevresel Sürdürülebilirlik ve İklim Değişikliği İçin Yapay Zekâ Destekli Eğitim Stratejileri</h4><p>e-NetCoM'nin bilimsel üretim ve eğitim yaklaşımını görünür kılan çalışma.</p><a class="arrow" href="#network">Yayınları keşfet ↗</a></div></article>
+    <article class="story-v3-card"><div class="story-v4-media"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=700&q=85" alt="Dijital veri analizi ve bilimsel çalışma" loading="lazy"></div><div class="story-v4-copy"><div class="news-meta"><span class="tag">BİLDİRİ</span><span>2025</span></div><h4>Çevresel Sürdürülebilirlik ve İklim Değişikliği İçin Yapay Zekâ Destekli Eğitim Stratejileri</h4><p>e-NetCoM'nin bilimsel üretim ve eğitim yaklaşımını görünür kılan çalışma.</p><a class="arrow" href="#network" data-story-network-link="1">Yayınları keşfet ↗</a></div></article>
   </div>
 </div></section>
 
@@ -4075,4 +4075,19 @@ document.addEventListener('keydown', function(e){
 </script>\n<script id="tv-public-spot-link-script">
 document.querySelectorAll('[data-tv-public-spots="1"]').forEach(a=>a.addEventListener('click',()=>{setTimeout(()=>{const frame=document.getElementById('publicSpotFrame');const card=frame&&frame.closest('.media-archive');if(card)card.scrollIntoView({behavior:'smooth',block:'center'});},180);}));
 </script>
+
+<script>
+/* Directly reveal the network section when the publication card is opened. */
+document.addEventListener('click',function(event){
+  var link=event.target.closest('[data-story-network-link]');
+  if(!link)return;
+  event.preventDefault();
+  var target=document.getElementById('network');
+  if(!target)return;
+  if(location.hash!=='#network')history.pushState(null,'','#network');
+  target.scrollIntoView({behavior:'smooth',block:'start'});
+  window.setTimeout(function(){target.scrollIntoView({behavior:'smooth',block:'start'});},180);
+});
+</script>
+<style>#network{scroll-margin-top:90px}</style>
 </body></html>
