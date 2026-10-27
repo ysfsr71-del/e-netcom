@@ -39,3 +39,8 @@ Site, gerçek Türkiye il haritasını ve 81 il listesini kullanır. Harita üze
 - Kartların tarih bilgileri içeriklerine uygun tutuldu; 2025 tarihli bildiri sırf görsel sıralama için 2026 olarak değiştirilmedi.
 - Değişiklikler öncesinde GitHub üzerinde geri dönüş amaçlı yedek dallar oluşturuldu; son görsel güncellemesi öncesi yedek: `backup-before-exact-card-images-20261026`.
 
+
+## 27 Ekim 2026 — Kayseri yüz yüze eğitimi
+- Kayseri Fen Lisesi'nde 14.00–16.00 saatlerinde 90 katılımcıyla tamamlandı.
+- Görseller ve program afişi `public/kayseri/` klasöründe; galeri bu klasörü otomatik okur.
+- Ana sayfa eğitim verilerine Kayseri eklendi. Güncel toplam: **30 eğitim, 32 il, 1.604 katılımcı** (19 yüz yüze, 11 çevrimiçi eğitim).
