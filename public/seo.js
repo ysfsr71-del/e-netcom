@@ -8,6 +8,7 @@
     if(lang !== 'tr') canonical.searchParams.set('lang',lang);
     const c=document.querySelector('link[rel="canonical"]'); if(c)c.href=canonical.href;
     document.querySelectorAll('a[href]').forEach(a=>{
+      if(a.getAttribute('href').startsWith('#'))return;
       const target=new URL(a.getAttribute('href'),location.origin);
       if(target.origin===location.origin && (target.pathname==='/' || /^\/(proje|egitimler|uluslararasi|veritabani|ciktilar|gallery)\.html$/.test(target.pathname))){target.searchParams.set('lang',lang);a.setAttribute('href',target.pathname+target.search+target.hash);}
     });
