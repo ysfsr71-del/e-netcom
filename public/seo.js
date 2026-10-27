@@ -18,7 +18,7 @@
       const tag=document.querySelector(`meta[property="${key}"],meta[name="${key}"]`); if(tag) tag.content=value;
     }
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync);else sync();
+  if(document.readyState!=='complete')document.addEventListener('DOMContentLoaded',sync);else sync();
   new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
   document.addEventListener('click',e=>{if(e.target.closest('[data-lang-switch]'))queueMicrotask(sync)});
 })();
