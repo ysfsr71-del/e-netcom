@@ -983,6 +983,8 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-27","Kayseri yüz yüze eğitimi ve eğitim istatistikleri güncellendi","27 Ekim 2026 tarihinde Kayseri Fen Lisesinde 90 katılımcıyla tamamlanan eğitim haritaya, eğitimler sayfasına ve galeri bağlantılarına eklendi. Güncel toplam: 30 eğitim, 32 il, 1.604 katılımcı. Görseller public/kayseri/ klasöründen yükleniyor."],
+
 ["2026-10-24","İl haritası analitik kayıt ve gösterimi düzeltildi","SVG harita il tıklamaları analitik olaylarına eklendi; yönetim panelindeki ilk 12 il sınırı kaldırıldı. Harita gerçek ziyaretçi konumu değil, il detayına tıklama sayısını gösterir. Kalıcı disk kontrol edildi."],
 ["2026-10-24","Yönetim paneli il haritası etkileşimleri iyileştirildi","81 il haritasına tıklama/dokunma ile il seçimi, listeden haritada vurgulama, arama sonucu eşleştirmesi ve klavye ile seçim eklendi. Mevcut ziyaret istatistikleri değiştirilmedi."],
 ["2026-10-24","Gümüşhane ve Şırnak ortak çevrimiçi eğitimi eklendi","24 Ekim 2026 tarihli iki ili kapsayan tek çevrimiçi eğitim 51 katılımcıyla kaydedildi. Güncel toplam: 29 eğitim, 31 il, 1.514 katılımcı. Ana sayfa haritası, eğitimler sayfası ve üç dilde göstergeler eşitlendi."],
@@ -1073,6 +1075,8 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-27","Kayseri face-to-face training and statistics updated","The 27 October 2026 training at Kayseri Science High School with 90 participants was added to the province map, training records and gallery links. Updated totals: 30 trainings, 32 provinces and 1,604 participants. Media is loaded from public/kayseri/."],
+
 ["2026-10-24","Province map analytics tracking corrected","SVG province clicks are now tracked; the admin map no longer truncates to the top 12 provinces. The map counts province-detail clicks, not visitors’ geographic origins. Persistent storage verified."],
 ["2026-10-24","Admin province map interactions improved","Added clickable and keyboard-accessible provinces, list-to-map highlighting and search matching to the 81-province analytics map. Existing analytics data was preserved."],
 ["2026-10-24","Joint Gümüşhane and Şırnak online training added","One online training held on 24 October 2026 across two provinces with 51 participants. Totals updated to 29 trainings, 31 provinces and 1,514 participants; homepage map and training statistics synchronized."],
