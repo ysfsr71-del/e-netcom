@@ -1,4 +1,5 @@
 import express from "express";
+import { installSeo } from "./seo.js";
 import OpenAI from "openai";
 import dotenv from "dotenv";
 import path from "path";
@@ -15,6 +16,7 @@ const __dirname = path.dirname(__filename);
 
 app.disable("x-powered-by");
 app.use(express.json({limit:"512kb"}));
+installSeo(app, __dirname);
 app.use(express.static(path.join(__dirname, "public")));
 
 const apiKey = process.env.OPENAI_API_KEY?.trim();
@@ -983,6 +985,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-28","SEO ve galeri erişimi","Dil bazlı canonical, karşılıklı hreflang, Open Graph/Twitter metadata, index.html kalıcı yönlendirmesi ve güvenlik başlıkları eklendi. Galeriler dağıtımla gelen yerel dosya listesine geçirildi; eğitim verileri korundu."],
 ["2026-10-27","Kayseri yüz yüze eğitimi ve eğitim istatistikleri güncellendi","27 Ekim 2026 tarihinde Kayseri Fen Lisesinde 90 katılımcıyla tamamlanan eğitim haritaya, eğitimler sayfasına ve galeri bağlantılarına eklendi. Güncel toplam: 30 eğitim, 32 il, 1.604 katılımcı. Görseller public/kayseri/ klasöründen yükleniyor."],
 
 ["2026-10-24","İl haritası analitik kayıt ve gösterimi düzeltildi","SVG harita il tıklamaları analitik olaylarına eklendi; yönetim panelindeki ilk 12 il sınırı kaldırıldı. Harita gerçek ziyaretçi konumu değil, il detayına tıklama sayısını gösterir. Kalıcı disk kontrol edildi."],
@@ -1075,6 +1078,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-28","SEO and gallery access","Added language-aware canonical, reciprocal hreflang, Open Graph/Twitter metadata, permanent index.html redirect and security headers. Galleries now use a local media manifest; training data preserved."],
 ["2026-10-27","Kayseri face-to-face training and statistics updated","The 27 October 2026 training at Kayseri Science High School with 90 participants was added to the province map, training records and gallery links. Updated totals: 30 trainings, 32 provinces and 1,604 participants. Media is loaded from public/kayseri/."],
 
 ["2026-10-24","Province map analytics tracking corrected","SVG province clicks are now tracked; the admin map no longer truncates to the top 12 provinces. The map counts province-detail clicks, not visitors’ geographic origins. Persistent storage verified."],

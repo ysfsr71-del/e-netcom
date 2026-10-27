@@ -2884,7 +2884,7 @@ function updateActionLabels(lang){
       if(added) updateActionLabels(lang);
     });
     observer.observe(document.body,{subtree:true,childList:true});
-    apply(localStorage.getItem('enetcom_lang')||'tr');updateEuSupport(document.documentElement.dataset.lang||localStorage.getItem('enetcom_lang')||'tr');initWorkPackages();
+    apply(new URLSearchParams(location.search).get('lang')||localStorage.getItem('enetcom_lang')||'tr');updateEuSupport(document.documentElement.dataset.lang||localStorage.getItem('enetcom_lang')||'tr');initWorkPackages();
     const runHeroMap=()=>{buildHeroMap();initHeroCarousel();};
     if('requestIdleCallback' in window){requestIdleCallback(runHeroMap,{timeout:1800});}else{setTimeout(runHeroMap,900);}
   }

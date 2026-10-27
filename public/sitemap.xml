@@ -1,31 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-  <url>
-    <loc>https://enetcomproject.com/</loc>
-  </url>
-
-  <url>
-    <loc>https://enetcomproject.com/gallery.html</loc>
-  </url>
-
-  <url>
-    <loc>https://enetcomproject.com/ciktilar.html</loc>
-  </url>
-
-  <url>
-    <loc>https://enetcomproject.com/proje.html</loc>
-  </url>
-
-  <url>
-    <loc>https://enetcomproject.com/egitimler.html</loc>
-  </url>
-
-  <url>
-    <loc>https://enetcomproject.com/uluslararasi.html</loc>
-  </url>
-
-  <url>
-    <loc>https://enetcomproject.com/veritabani.html</loc>
-  </url>
+  <url><loc>https://enetcomproject.com/</loc></url>
+  <url><loc>https://enetcomproject.com/?lang=en</loc></url>
+  <url><loc>https://enetcomproject.com/?lang=de</loc></url>
+  <url><loc>https://enetcomproject.com/gallery.html</loc></url>
+  <url><loc>https://enetcomproject.com/gallery.html?lang=en</loc></url>
+  <url><loc>https://enetcomproject.com/gallery.html?lang=de</loc></url>
+  <url><loc>https://enetcomproject.com/ciktilar.html</loc></url>
+  <url><loc>https://enetcomproject.com/ciktilar.html?lang=en</loc></url>
+  <url><loc>https://enetcomproject.com/ciktilar.html?lang=de</loc></url>
+  <url><loc>https://enetcomproject.com/proje.html</loc></url>
+  <url><loc>https://enetcomproject.com/proje.html?lang=en</loc></url>
+  <url><loc>https://enetcomproject.com/proje.html?lang=de</loc></url>
+  <url><loc>https://enetcomproject.com/egitimler.html</loc></url>
+  <url><loc>https://enetcomproject.com/egitimler.html?lang=en</loc></url>
+  <url><loc>https://enetcomproject.com/egitimler.html?lang=de</loc></url>
+  <url><loc>https://enetcomproject.com/uluslararasi.html</loc></url>
+  <url><loc>https://enetcomproject.com/uluslararasi.html?lang=en</loc></url>
+  <url><loc>https://enetcomproject.com/uluslararasi.html?lang=de</loc></url>
+  <url><loc>https://enetcomproject.com/veritabani.html</loc></url>
+  <url><loc>https://enetcomproject.com/veritabani.html?lang=en</loc></url>
+  <url><loc>https://enetcomproject.com/veritabani.html?lang=de</loc></url>
 </urlset>

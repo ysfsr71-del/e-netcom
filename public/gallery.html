@@ -187,6 +187,9 @@ function sourceFolder(){
 }
 
 async function githubContents(folder){
+  const local=await fetch('/gallery-manifest.json');
+  if(local.ok){const manifest=await local.json(); if(Array.isArray(manifest[folder])) return manifest[folder];}
+
   const api='https://api.github.com/repos/ysfsr71-del/e-netcom/contents/public/'+
     folder.split('/').map(encodeURIComponent).join('/')+
     '?ref=main';
@@ -218,18 +221,11 @@ function isPosterName(name){
 }
 
 function fileUrl(item,folder){
-  /* Serve repository media through jsDelivr for reliable browser/CDN delivery.
-     GitHub API is used only to discover files; the actual asset URL does not
-     depend on the API's download_url field. */
-  return 'https://cdn.jsdelivr.net/gh/ysfsr71-del/e-netcom@main/public/'+
-    folder.split('/').map(encodeURIComponent).join('/')+'/'+
-    encodeURIComponent(item.name);
+  return '/'+folder.split('/').map(encodeURIComponent).join('/')+'/'+encodeURIComponent(item.name);
 }
 
 function cdnUrl(folder,name){
-  return 'https://cdn.jsdelivr.net/gh/ysfsr71-del/e-netcom@main/public/'+
-    folder.split('/').map(encodeURIComponent).join('/')+'/'+
-    encodeURIComponent(name);
+  return '/'+folder.split('/').map(encodeURIComponent).join('/')+'/'+encodeURIComponent(name);
 }
 
 function sortFiles(a,b){
@@ -298,7 +294,7 @@ async function legacyDiscover(){
 async function main(){
   applyGallerySeo();
   if(!city){
-    showError(lang==='en'?'Event information not found.':lang==='de'?'Veranstaltungsinformationen nicht gefunden.':'Etkinlik bilgisi bulunamadı.');
+    title.textContent=lang==='en'?'Event galleries':lang==='de'?'Veranstaltungsgalerien':'Etkinlik galerileri';
     return;
   }
 
