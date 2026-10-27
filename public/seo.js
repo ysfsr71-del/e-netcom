@@ -11,7 +11,7 @@
       const target=new URL(a.getAttribute('href'),location.origin);
       if(target.origin===location.origin && (target.pathname==='/' || /^\/(proje|egitimler|uluslararasi|veritabani|ciktilar|gallery)\.html$/.test(target.pathname))){target.searchParams.set('lang',lang);a.setAttribute('href',target.pathname+target.search+target.hash);}
     });
-    const labels={'Eğitim filtreleri':['Training filters','Schulungsfilter'],'Eğitim ili ara':['Search training provinces','Schulungsprovinz suchen']};
+    const labels={'İçerik türü':['Content type','Inhaltstyp'],'Konu':['Topic','Thema'],'Kaynak dili':['Resource language','Quellensprache'],'Eğitim filtreleri':['Training filters','Schulungsfilter'],'Eğitim ili ara':['Search training provinces','Schulungsprovinz suchen']};
     document.querySelectorAll('[aria-label]').forEach(el=>{const raw=el.dataset.seoAria||el.getAttribute('aria-label');if(labels[raw]){el.dataset.seoAria=raw;el.setAttribute('aria-label',lang==='tr'?raw:labels[raw][lang==='en'?0:1]);}});
     const title=document.title, description=document.querySelector('meta[name="description"]')?.content || '';
     for(const [key,value] of Object.entries({'og:title':title,'og:description':description,'og:url':canonical.href,'og:locale':{tr:'tr_TR',en:'en_GB',de:'de_DE'}[lang],'twitter:title':title,'twitter:description':description})) {

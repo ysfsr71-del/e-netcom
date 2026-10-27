@@ -985,7 +985,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
-["2026-10-28","SEO ve galeri erişimi","Dil bazlı canonical, karşılıklı hreflang, Open Graph/Twitter metadata, index.html kalıcı yönlendirmesi ve güvenlik başlıkları eklendi. Galeriler dağıtımla gelen yerel dosya listesine geçirildi; eğitim verileri korundu."],
+["2026-10-28","SEO ve galeri erişimi","Dil bazlı canonical, karşılıklı hreflang, Open Graph/Twitter metadata, index.html kalıcı yönlendirmesi ve güvenlik başlıkları eklendi. Galeriler dağıtımla gelen yerel dosya listesine geçirildi; eğitim verileri korundu. Büyük zirve görseli WebP olarak optimize edildi; yerel görsellere boyutlar, ana içerik alanına main işareti ve veritabanı filtrelerine erişilebilir adlar eklendi."],
 ["2026-10-27","Kayseri yüz yüze eğitimi ve eğitim istatistikleri güncellendi","27 Ekim 2026 tarihinde Kayseri Fen Lisesinde 90 katılımcıyla tamamlanan eğitim haritaya, eğitimler sayfasına ve galeri bağlantılarına eklendi. Güncel toplam: 30 eğitim, 32 il, 1.604 katılımcı. Görseller public/kayseri/ klasöründen yükleniyor."],
 
 ["2026-10-24","İl haritası analitik kayıt ve gösterimi düzeltildi","SVG harita il tıklamaları analitik olaylarına eklendi; yönetim panelindeki ilk 12 il sınırı kaldırıldı. Harita gerçek ziyaretçi konumu değil, il detayına tıklama sayısını gösterir. Kalıcı disk kontrol edildi."],
