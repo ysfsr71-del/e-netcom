@@ -495,7 +495,7 @@ html[data-lang="de"] .hero-network-head p{font-size:14px}
 }
 .hero-v18-image{
   position:absolute;inset:-4%;
-  background-image:url("./assets/site-images/941d74c3d4444db4.webp");
+  background-image:none;
   background-size:cover;
   background-position:center center;
   background-repeat:no-repeat;
@@ -556,14 +556,14 @@ html[data-lang="de"] .hero-network-head p{font-size:14px}
   background:rgba(255,255,255,.91)!important;
 }
 @keyframes v18SceneDrift{
-  0%{transform:scale(1.055) translate3d(-8px,2px,0);background-position:49.2% 50.2%}
-  50%{transform:scale(1.075) translate3d(8px,-4px,0);background-position:50.7% 49.3%}
-  100%{transform:scale(1.06) translate3d(-3px,5px,0);background-position:50.1% 50.8%}
+  0%{transform:scale(1.055) translate3d(-8px,2px,0);}
+  50%{transform:scale(1.075) translate3d(8px,-4px,0);}
+  100%{transform:scale(1.06) translate3d(-3px,5px,0);}
 }
 @keyframes v18LightSweep{
-  0%{left:-30%;opacity:.05}
-  42%{left:82%;opacity:.42}
-  100%{left:125%;opacity:.03}
+  0%{transform:translate3d(0,0,0) rotate(17deg);opacity:.05}
+  42%{transform:translate3d(509%,0,0) rotate(17deg);opacity:.42}
+  100%{transform:translate3d(704%,0,0) rotate(17deg);opacity:.03}
 }
 @keyframes v18Atmosphere{
   0%{opacity:.55;transform:scale(1)}
@@ -1354,7 +1354,8 @@ img{decoding:async}
 .shared-training-images img{display:block;width:100%;height:118px;object-fit:cover}
 .shared-training-images small{display:block;padding:7px;font-size:11px}
 @media(max-width:500px){.shared-training-images{grid-template-columns:1fr}.shared-training-images img{height:155px}}
-</style></head><body>
+</style><link rel="preload" as="image" href="/assets/optimized/hero-800.webp" media="(max-width:650px)" fetchpriority="high"><link rel="preload" as="image" href="/assets/optimized/hero-1600.webp" media="(min-width:651px)" fetchpriority="high">
+<style id="performance-v2">.hero-v18-image picture,.hero-v18-image img{display:block;width:100%;height:100%}.hero-v18-image img{object-fit:cover;object-position:center}.hero-v18-light{will-change:transform,opacity}.hero-v18-real-bg{contain:layout paint}.hero-v17 .hero-v2-copy{animation:none}.partners-bar img,.partner-logo img{object-fit:contain}#localDbResults{min-height:180px}.story-v3-news-card img{object-fit:cover}select{max-width:100%}@media(prefers-reduced-motion:reduce){.hero-v18-light{animation:none!important}}</style></head><body>
 
 <a class="a11y-skip" href="#main-content" id="a11ySkip">Ana içeriğe geç</a>
 <button class="a11y-fab" id="a11yFab" type="button" aria-label="Erişilebilirlik araçlarını aç" aria-expanded="false" aria-controls="a11yPanel" title="Erişilebilirlik">♿</button>
@@ -1444,7 +1445,7 @@ img{decoding:async}
 <main id="main-content" tabindex="-1">
 <header class="hero hero-v2 hero-v17" id="top">
   <div class="hero-v18-real-bg" aria-hidden="true">
-    <div class="hero-v18-image"></div>
+    <div class="hero-v18-image"><picture><source media="(max-width:650px)" srcset="/assets/optimized/hero-800.webp"><img src="/assets/optimized/hero-1600.webp" width="1600" height="640" fetchpriority="high" loading="eager" decoding="async" alt=""></picture></div>
     <div class="hero-v18-vignette"></div>
     <div class="hero-v18-light"></div>
     <div class="hero-v18-atmosphere"></div>
@@ -1532,7 +1533,7 @@ img{decoding:async}
   </div>
 </header>
 
-<section class="identity-band" aria-label="Erasmus+ ve proje ortakları"><div class="wrap identity-wrap"><div class="partner-logo-row"><a class="mini-logo" href="https://erasmus-plus.ec.europa.eu/" target="_blank" rel="noopener" aria-label="Erasmus+ resmi web sitesi"><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Erasmus%2B_Logo.svg" alt="Erasmus+"/ loading="lazy" decoding="async"><small>Erasmus+ Programı</small></a><a class="mini-logo" href="https://www.ua.gov.tr/" target="_blank" rel="noopener" aria-label="Türkiye Ulusal Ajansı resmi web sitesi"><img src="https://logowik.com/content/uploads/images/turkiye-ulusal-ajansi8083.jpg" alt="Türkiye Ulusal Ajansı"/ loading="lazy" decoding="async"><small>Türkiye Ulusal Ajansı</small></a><a class="mini-logo" href="https://www.rtuk.gov.tr/" target="_blank" rel="noopener"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7d/RT%C3%9CK_logo.svg" alt="RTÜK"/ loading="lazy" decoding="async"><small>Koordinatör</small></a><a class="mini-logo" href="https://www.erciyes.edu.tr/" target="_blank" rel="noopener"><img src="https://www.erciyes.edu.tr/EditorUpload/Haberler/a6efb507-1528-43b9-9c79-96cd36c01f50.jpg" alt="Erciyes Üniversitesi"/ loading="lazy" decoding="async"><small>Türkiye · Kayseri</small></a><a class="mini-logo" href="https://www.univie.ac.at/" target="_blank" rel="noopener"><img src="https://www.univie.ac.at/fileadmin/user_upload/univie/Logos/Logos_Universitaet_Wien/Uni_Logo.png" alt="Universität Wien"/ loading="lazy" decoding="async"><small>Avusturya · Viyana</small></a><a class="mini-logo" href="https://snspa.ro/" target="_blank" rel="noopener"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/SNSPA_logo.jpg" alt="SNSPA"/ loading="lazy" decoding="async"><small>Romanya · Bükreş</small></a><a class="mini-logo" href="https://tugva.org/" target="_blank" rel="noopener"><img src="https://framerusercontent.com/assets/fX8ZYbhOV13OsF6Uj3MMQ5KtJSE.png" alt="Türkiye Gençlik Vakfı"/ loading="lazy" decoding="async"><small>Türkiye · İstanbul</small></a></div></div></section>
+<section class="identity-band" aria-label="Erasmus+ ve proje ortakları"><div class="wrap identity-wrap"><div class="partner-logo-row"><a class="mini-logo" href="https://erasmus-plus.ec.europa.eu/" target="_blank" rel="noopener" aria-label="Erasmus+ resmi web sitesi"><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Erasmus%2B_Logo.svg" alt="Erasmus+"/ loading="lazy" decoding="async" width="160" height="80"><small>Erasmus+ Programı</small></a><a class="mini-logo" href="https://www.ua.gov.tr/" target="_blank" rel="noopener" aria-label="Türkiye Ulusal Ajansı resmi web sitesi"><img src="https://logowik.com/content/uploads/images/turkiye-ulusal-ajansi8083.jpg" alt="Türkiye Ulusal Ajansı"/ loading="lazy" decoding="async" width="160" height="80"><small>Türkiye Ulusal Ajansı</small></a><a class="mini-logo" href="https://www.rtuk.gov.tr/" target="_blank" rel="noopener"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7d/RT%C3%9CK_logo.svg" alt="RTÜK"/ loading="lazy" decoding="async" width="160" height="80"><small>Koordinatör</small></a><a class="mini-logo" href="https://www.erciyes.edu.tr/" target="_blank" rel="noopener"><img src="https://www.erciyes.edu.tr/EditorUpload/Haberler/a6efb507-1528-43b9-9c79-96cd36c01f50.jpg" alt="Erciyes Üniversitesi"/ loading="lazy" decoding="async" width="160" height="80"><small>Türkiye · Kayseri</small></a><a class="mini-logo" href="https://www.univie.ac.at/" target="_blank" rel="noopener"><img src="https://www.univie.ac.at/fileadmin/user_upload/univie/Logos/Logos_Universitaet_Wien/Uni_Logo.png" alt="Universität Wien"/ loading="lazy" decoding="async" width="160" height="80"><small>Avusturya · Viyana</small></a><a class="mini-logo" href="https://snspa.ro/" target="_blank" rel="noopener"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/SNSPA_logo.jpg" alt="SNSPA"/ loading="lazy" decoding="async" width="160" height="80"><small>Romanya · Bükreş</small></a><a class="mini-logo" href="https://tugva.org/" target="_blank" rel="noopener"><img src="https://framerusercontent.com/assets/fX8ZYbhOV13OsF6Uj3MMQ5KtJSE.png" alt="Türkiye Gençlik Vakfı"/ loading="lazy" decoding="async" width="160" height="80"><small>Türkiye · İstanbul</small></a></div></div></section>
 <section class="section" id="proje"><div class="wrap"><div class="section-head"><div><div class="eyebrow" style="color:var(--green)">PROJE MERKEZİ</div><h2>e-NetCoM proje merkezi.</h2></div></div><div class="info-accordion-grid"><details class="info-accordion"><summary><span class="tag">PROJE</span><div><h3>Proje Hakkında</h3><p>Çevresel sürdürülebilirlik, iklim değişikliği, bireysel ve yerel dinamikler ile eğitim yaklaşımı.</p></div></summary><div class="accordion-body">e-NetCoM; çevresel sürdürülebilirlik ve iklim değişikliğiyle mücadelede eğitim, insan kaynağı ve kurumsal kapasiteyi güçlendiren ulus ötesi bir işbirliği yaklaşımıdır. Proje bireysel ve yerel boyutları öne çıkarırken farklı kültür ve toplumlarda sürdürülebilirlik etkisini anlamaya ve sosyal sürdürülebilirliği güçlendirmeye odaklanır.</div></details><details class="info-accordion"><summary><span class="tag">HEDEFLER</span><div><h3>Proje Hedefleri</h3><p>İnsan kaynağı, kurumsal kapasite, yerel boyut, kültürlerarası etki ve sosyal sürdürülebilirlik.</p></div></summary><div class="accordion-body"><ul><li>İnsan kaynağı potansiyelini geliştirmek.</li><li>İlgili tarafların ve kurumların kapasitesini desteklemek.</li><li>Çevre ve iklim değişikliğinin bireysel ve yerel boyutlarını öne çıkarmak.</li><li>Farklı kültür ve toplumlarda sürdürülebilir eğitim etkisini anlamak.</li><li>Sürdürülebilirliğin sosyal boyutunu güçlendirmek.</li></ul></div></details><details class="info-accordion"><summary><span class="tag">KONSORSİYUM</span><div><h3>5 ortaklı yapı</h3><p>RTÜK koordinatörlüğünde Türkiye, Avusturya ve Romanya'dan kurumların işbirliği.</p></div></summary><div class="accordion-body"><strong>Koordinatör:</strong> RTÜK · Türkiye / Ankara<br/><strong>Ortaklar:</strong> Erciyes Üniversitesi · Türkiye Gençlik Vakfı · Universität Wien · SNSPA</div></details><details class="info-accordion"><summary><span class="tag">YÖNETİM</span><div><h3>Proje Yönetimi</h3><p>Akış, izleme, çalışma paketleri ve uygulama mantığını inceleyin.</p></div></summary><div class="accordion-body"><strong>WP2:</strong> Dijital öğrenme araçları, etkileşimli eğitim/farkındalık videoları, 1 Dakikada serisi ve e-Merkez.<br/><strong>WP3:</strong> Doğanın Enerjileri akran eğitimcisi gelişim ve akran destekli eğitim programı.<br/><strong>WP4:</strong> Çevresel sürdürülebilirlik bilim, iletişim ve medya ağı, çalıştaylar, yaygınlaştırma ve politika yapıcı ağları.</div></details><details class="info-accordion"><summary><span class="tag">PROJE KAPSAMI</span><div><h3>36 aylık yolculuk</h3><p>Aralık 2024 – Kasım 2027 döneminde eğitim, medya, ağ ve yaygınlaştırma faaliyetleri.</p></div></summary><div class="accordion-body">Proje dönemi <strong>1 Aralık 2024 – 30 Kasım 2027</strong>. Eğitim, medya üretimi, akran eğitimleri, çevresel iletişim-medya ağı ve yaygınlaştırma faaliyetleri birbirini tamamlayan bir yapı içinde yürütülür.</div></details><details class="info-accordion"><summary><span class="tag">RESMÎ</span><div><h3>İletişim</h3><p>RTÜK, Ankara · enetcom@rtuk.gov.tr · +90 312 297 52 05 / 297 54 58</p></div></summary><div class="accordion-body"><strong>E-posta:</strong> <a href="mailto:enetcom@rtuk.gov.tr" style="color:var(--green);font-weight:900">enetcom@rtuk.gov.tr</a><br/><strong>Telefon:</strong> +90 312 297 52 05 / 297 54 58</div></details></div></div></section>
 
 <section class="section alt story-v3" id="haberler">
@@ -1550,9 +1551,9 @@ img{decoding:async}
   </div>
   <div class="story-v3-updates-head"><div><h3>Güncel gelişmeler</h3><p>Projenin yolculuğundaki son adımlar, haberler ve çalışmalar.</p></div><a href="#faaliyetler" class="story-v3-all">Tüm gelişmeleri gör ↗</a></div>
   <div class="story-v3-cards story-v4-cards">
-    <article class="story-v3-card"><div class="story-v4-media"><img src="/assets/story-erasmus.webp" alt="Toprakta yetişen genç yeşil bitki" loading="lazy" width="90" height="128"></div><div class="story-v4-copy"><div class="news-meta"><span class="tag">DUYURU</span><span>2025</span></div><h4>e-NetCoM Projesi Erasmus+ KA220-YOU kapsamında desteklendi.</h4><p>RTÜK koordinatörlüğündeki projenin çevresel sürdürülebilirlik hedefleri, ortaklık yapısı ve amaçları.</p><a class="arrow" href="#proje">Projeyi keşfet ↗</a></div></article>
-    <article class="story-v3-card"><div class="story-v4-media"><img src="/assets/story-training.webp" alt="Katılımcıların birlikte çalıştığı eğitim ortamı" loading="lazy" width="90" height="128"></div><div class="story-v4-copy"><div class="news-meta"><span class="tag">PROGRAM</span><span>2025–2026</span></div><h4>Sürdürülebilirlik ve Yeşil Beceriler Akran Eğitimcisi Gelişim Programı</h4><p>Akran eğitimcisi gelişimi ve akran destekli eğitim yaklaşımıyla Türkiye'nin farklı illerinde gerçekleştirilen eğitimler.</p><a class="arrow" href="#faaliyetler">Faaliyetleri incele ↗</a></div></article>
-    <article class="story-v3-card"><div class="story-v4-media"><img src="/assets/story-research.webp" alt="Dijital veri analizi ve bilimsel çalışma" loading="lazy" width="90" height="128"></div><div class="story-v4-copy"><div class="news-meta"><span class="tag">BİLDİRİ</span><span>2025</span></div><h4>Çevresel Sürdürülebilirlik ve İklim Değişikliği İçin Yapay Zekâ Destekli Eğitim Stratejileri</h4><p>e-NetCoM'nin bilimsel üretim ve eğitim yaklaşımını görünür kılan çalışma.</p><a class="arrow" href="#network" data-story-network-link="1">Yayınları keşfet ↗</a></div></article>
+    <article class="story-v3-card"><div class="story-v4-media"><img src="/assets/optimized/story-erasmus.webp" alt="Toprakta yetişen genç yeşil bitki" loading="lazy" width="600" height="800"></div><div class="story-v4-copy"><div class="news-meta"><span class="tag">DUYURU</span><span>2025</span></div><h4>e-NetCoM Projesi Erasmus+ KA220-YOU kapsamında desteklendi.</h4><p>RTÜK koordinatörlüğündeki projenin çevresel sürdürülebilirlik hedefleri, ortaklık yapısı ve amaçları.</p><a class="arrow" href="#proje">Projeyi keşfet ↗</a></div></article>
+    <article class="story-v3-card"><div class="story-v4-media"><img src="/assets/optimized/story-training.webp" alt="Katılımcıların birlikte çalıştığı eğitim ortamı" loading="lazy" width="600" height="800"></div><div class="story-v4-copy"><div class="news-meta"><span class="tag">PROGRAM</span><span>2025–2026</span></div><h4>Sürdürülebilirlik ve Yeşil Beceriler Akran Eğitimcisi Gelişim Programı</h4><p>Akran eğitimcisi gelişimi ve akran destekli eğitim yaklaşımıyla Türkiye'nin farklı illerinde gerçekleştirilen eğitimler.</p><a class="arrow" href="#faaliyetler">Faaliyetleri incele ↗</a></div></article>
+    <article class="story-v3-card"><div class="story-v4-media"><img src="/assets/optimized/story-research.webp" alt="Dijital veri analizi ve bilimsel çalışma" loading="lazy" width="600" height="800"></div><div class="story-v4-copy"><div class="news-meta"><span class="tag">BİLDİRİ</span><span>2025</span></div><h4>Çevresel Sürdürülebilirlik ve İklim Değişikliği İçin Yapay Zekâ Destekli Eğitim Stratejileri</h4><p>e-NetCoM'nin bilimsel üretim ve eğitim yaklaşımını görünür kılan çalışma.</p><a class="arrow" href="#network" data-story-network-link="1">Yayınları keşfet ↗</a></div></article>
   </div>
 </div></section>
 
@@ -2306,7 +2307,7 @@ const _v27ExtraTranslations={
   function capture(root){
     const skip=new Set(['SCRIPT','STYLE','NOSCRIPT']);
     const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(n){return skip.has(n.parentElement?.tagName)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}});
-    while(w.nextNode()){const n=w.currentNode;if(!originals.has(n))originals.set(n,n.nodeValue);}
+    while(w.nextNode()){const n=w.currentNode;if(!originals.has(n))originals.set(n,window.__enetcomOriginalText?.get(n)||n.nodeValue);}
     root.querySelectorAll('input[placeholder],textarea[placeholder], [aria-label]').forEach(el=>{if(!originals.has(el)) originals.set(el,{placeholder:el.getAttribute('placeholder'),aria:el.getAttribute('aria-label')});});
   }
   function restore(root){
