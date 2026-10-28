@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "prestart": "node scripts/prerender.mjs"
   },
   "engines": {
     "node": ">=20"
@@ -12,6 +13,7 @@
   "dependencies": {
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
+    "jsdom": "26.1.0",
     "openai": "^5.0.0"
   }
 }

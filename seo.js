@@ -16,7 +16,7 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 export function installSeo(app,dir){
  app.use((req,res,next)=>{
   res.set({'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','X-Frame-Options':'SAMEORIGIN','Permissions-Policy':'camera=(), microphone=(), geolocation=()'});
-  if(req.path.startsWith('/api/admin/')||['/yonetim','/yonetim.html'].includes(req.path))res.set('X-Robots-Tag','noindex, nofollow');
+  if(req.path.startsWith('/qa/')||req.path.startsWith('/api/admin/')||['/yonetim','/yonetim.html'].includes(req.path))res.set('X-Robots-Tag','noindex, nofollow');
   if(req.path==='/index.html')return res.redirect(301,'/'+req.url.slice('/index.html'.length));
   next();
  });
@@ -25,19 +25,21 @@ export function installSeo(app,dir){
   const canonical=new URL(req.path,origin);
   if(req.path==='/gallery.html' && typeof req.query.city==='string')canonical.searchParams.set('city',req.query.city.slice(0,100));
   if(lang!=='tr')canonical.searchParams.set('lang',lang);
-  let html=fs.readFileSync(path.join(dir,'public',req.path==='/'?'index.html':req.path.slice(1)),'utf8');
-  let title=titles[req.path][li];
+  const file=req.path==='/'?'index.html':req.path.slice(1);
+  const localized=path.join(dir,'.cache','localized',lang,file);
+  let html=fs.readFileSync(lang!=='tr'&&fs.existsSync(localized)?localized:path.join(dir,'public',file),'utf8');
+  let title=html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]||titles[req.path][li];
   if(req.path==='/gallery.html'&&req.query.city)title=String(req.query.city).slice(0,100)+' | '+title;
   html=html.replace(/<title>[\s\S]*?<\/title>/i,'<title>'+esc(title)+'</title>');
   html=html.replace(/<link\b(?=[^>]*rel=["']canonical["'])[^>]*>/gi,'');
   html=html.replace(/<meta\b(?=[^>]*(?:property|name)=["'](?:og:[^"']+|twitter:[^"']+)["'])[^>]*>/gi,'');
-  if(lang!=='tr')html=html.replace(/<meta\b(?=[^>]*name=["']description["'])[^>]*>/i,'<meta name="description" content="'+esc(desc[lang])+'">');
+  // Localized documents retain their page-specific translated descriptions.
   const description=html.match(/<meta name="description" content="([^"]*)"/i)?.[1]||'';
   let tags='<link rel="canonical" href="'+esc(canonical.href)+'">';
   for(const l of ['tr','en','de','x-default']){const u=new URL(canonical);u.searchParams.delete('lang');if(l==='en'||l==='de')u.searchParams.set('lang',l);tags+='<link rel="alternate" hreflang="'+l+'" href="'+esc(u.href)+'">';}
   for(const [k,v] of Object.entries({'og:type':'website','og:site_name':'e-NetCoM','og:title':title,'og:description':description,'og:url':canonical.href,'og:locale':{tr:'tr_TR',en:'en_GB',de:'de_DE'}[lang],'og:image':origin+'/thumbs/01.jpg','twitter:card':'summary_large_image','twitter:title':title,'twitter:description':description,'twitter:image':origin+'/thumbs/01.jpg'}))tags+='<meta '+(k.startsWith('twitter:')?'name':'property')+'="'+k+'" content="'+esc(v)+'">';
   html=html.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g,(tag,raw)=>{try{const data=JSON.parse(raw);if(data.url===origin+req.path){data.url=canonical.href;data.inLanguage=lang;if(data['@id'])data['@id']=canonical.href+'#page';}return '<script type="application/ld+json">'+JSON.stringify(data).replace(/</g,'\\u003c')+'</script>';}catch{return tag;}});
-  html=html.replace('</head>',tags+'<script src="/seo.js" defer></script></head>');
+  html=html.replace('</head>',tags+'<script src="/seo.js" defer></script><script src="/consent.js" defer></script></head>');
   if(req.path==='/gallery.html'&&!req.query.city){
    const cities=['Kayseri','Ankara','İstanbul','İzmir','Balıkesir','Tunceli','Viyana'];
    html=html.replace(/<div class="loading" id="loading">[^<]*<\/div>/,'<div class="notice">'+cities.map(c=>'<p><a href="/gallery.html?city='+encodeURIComponent(c)+'&amp;lang='+lang+'">'+esc(c)+'</a></p>').join('')+'</div>');
