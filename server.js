@@ -985,6 +985,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-28","SEO V2: performans, görsel kalite ve ölçüm","Hero ışık efekti transform animasyonuna geçirildi; kritik görsele preload ve yüksek öncelik verildi. 90×128 piksellik üç haber görseli orijinalleri korunarak 600×800 piksellik gerçek proje fotoğraflarıyla değiştirildi. EN/DE HTML sunucu tarafında hazırlanır; dil geçişleri korunur. Mevcut GA4 için yalnız açık analitik izniyle yüklenen etiket ve geri alınabilir tercih arayüzü eklendi."],
 ["2026-10-28","SEO ve galeri erişimi","Dil bazlı canonical, karşılıklı hreflang, Open Graph/Twitter metadata, index.html kalıcı yönlendirmesi ve güvenlik başlıkları eklendi. Galeriler dağıtımla gelen yerel dosya listesine geçirildi; eğitim verileri korundu. Büyük zirve görseli WebP olarak optimize edildi; yerel görsellere boyutlar, ana içerik alanına main işareti ve veritabanı filtrelerine erişilebilir adlar eklendi."],
 ["2026-10-27","Kayseri yüz yüze eğitimi ve eğitim istatistikleri güncellendi","27 Ekim 2026 tarihinde Kayseri Fen Lisesinde 90 katılımcıyla tamamlanan eğitim haritaya, eğitimler sayfasına ve galeri bağlantılarına eklendi. Güncel toplam: 30 eğitim, 32 il, 1.604 katılımcı. Görseller public/kayseri/ klasöründen yükleniyor."],
 
@@ -1078,6 +1079,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-28","SEO V2: performance, image quality and measurement","Replaced layout-based hero animation with transforms, prioritized the hero image and added high-resolution project photos for news cards. Server-prepared EN/DE HTML preserves language switching. Existing GA4 loads only after explicit analytics consent with a withdrawal control."],
 ["2026-10-28","SEO and gallery access","Added language-aware canonical, reciprocal hreflang, Open Graph/Twitter metadata, permanent index.html redirect and security headers. Galleries now use a local media manifest; training data preserved."],
 ["2026-10-27","Kayseri face-to-face training and statistics updated","The 27 October 2026 training at Kayseri Science High School with 90 participants was added to the province map, training records and gallery links. Updated totals: 30 trainings, 32 provinces and 1,604 participants. Media is loaded from public/kayseri/."],
 
