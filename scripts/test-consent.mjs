@@ -5,3 +5,13 @@ w.document.querySelector('#analytics-consent button').click();assert.equal(w.doc
 w.document.querySelector('#analytics-preferences').click();w.document.querySelector('#analytics-consent button').click();assert.equal(w.document.querySelectorAll('#enetcom-google-tag').length,1);
 assert.equal(w.dataLayer.filter(x=>x[0]==='config').length,1);assert.equal(w.dataLayer.filter(x=>x[0]==='event'&&x[1]==='enetcom_v2_test').length,1);
 w.document.querySelector('#analytics-preferences').click();w.document.querySelectorAll('#analytics-consent button')[1].click();assert.equal(w['ga-disable-G-9WNRHMJ93G'],true);console.log('PASS: no tag before consent; one config and one test event; withdrawal disables GA');w.close();
+const cycle=new JSDOM('<html lang="tr"><body></body></html>',{url:'https://enetcomproject.com/',runScripts:'dangerously'});const c=cycle.window;c.eval(fs.readFileSync('public/consent.js','utf8'));
+const open=()=>c.document.querySelector('#analytics-preferences').click();const choose=i=>c.document.querySelectorAll('#analytics-consent button')[i].click();
+choose(1);assert.equal(c.document.querySelectorAll('#enetcom-google-tag').length,0);
+open();choose(0);open();choose(1);
+assert.equal(c['ga-disable-G-9WNRHMJ93G'],true);
+assert.equal(c.dataLayer.filter(x=>x[0]==='consent'&&x[1]==='update').at(-1)[2].analytics_storage,'denied');
+open();choose(0);assert.equal(c['ga-disable-G-9WNRHMJ93G'],false);
+assert.equal(c.dataLayer.filter(x=>x[0]==='consent'&&x[1]==='update').at(-1)[2].analytics_storage,'granted');
+assert.equal(c.document.querySelectorAll('#enetcom-google-tag').length,1);assert.equal(c.dataLayer.filter(x=>x[0]==='config').length,1);
+cycle.window.close();console.log('PASS: deny, grant, withdraw and regrant without duplicate config or tag');

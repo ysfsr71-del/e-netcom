@@ -14,6 +14,13 @@ const titles={
 const desc={en:'Explore e-NetCoM environmental communication, youth leadership, sustainability training and project resources.',de:'Entdecken Sie Umweltkommunikation, Jugendführung, Nachhaltigkeitsschulungen und Projektmaterialien von e-NetCoM.'};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function installSeo(app,dir){
+ // The verification key stays in Render configuration, outside Git history.
+ app.get('/indexnow-key.txt',(req,res)=>{
+  const key=process.env.INDEXNOW_KEY?.trim();
+  res.set('X-Robots-Tag','noindex');
+  if(!key||! /^[a-zA-Z0-9-]{8,128}$/.test(key))return res.sendStatus(404);
+  res.type('text/plain').send(key);
+ });
  app.use((req,res,next)=>{
   res.set({'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','X-Frame-Options':'SAMEORIGIN','Permissions-Policy':'camera=(), microphone=(), geolocation=()'});
   if(req.path.startsWith('/qa/')||req.path.startsWith('/api/admin/')||['/yonetim','/yonetim.html'].includes(req.path))res.set('X-Robots-Tag','noindex, nofollow');
