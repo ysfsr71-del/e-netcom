@@ -1355,7 +1355,24 @@ img{decoding:async}
 .shared-training-images small{display:block;padding:7px;font-size:11px}
 @media(max-width:500px){.shared-training-images{grid-template-columns:1fr}.shared-training-images img{height:155px}}
 </style><link rel="preload" as="image" href="/assets/optimized/hero-800.webp" media="(max-width:650px)" fetchpriority="high"><link rel="preload" as="image" href="/assets/optimized/hero-1600.webp" media="(min-width:651px)" fetchpriority="high">
-<style id="performance-v2">.hero-v18-image picture,.hero-v18-image img{display:block;width:100%;height:100%}.hero-v18-image img{object-fit:cover;object-position:center}.hero-v18-light{will-change:transform,opacity}.hero-v18-real-bg{contain:layout paint}.hero-v17 .hero-v2-copy{animation:none}.partners-bar img,.partner-logo img{object-fit:contain}#localDbResults{min-height:180px}.story-v3-news-card img{object-fit:cover}select{max-width:100%}@media(prefers-reduced-motion:reduce){.hero-v18-light{animation:none!important}}</style><style id="responsive-v2">.eu-support-logo{max-width:100%;height:auto}.eu-support-logos{flex-wrap:wrap;min-width:0}@media(max-width:650px){.eu-support-logo.funding{max-width:min(180px,100%)}.eu-support{max-width:100%;overflow:hidden}}</style></head><body>
+<style id="performance-v2">.hero-v18-image picture,.hero-v18-image img{display:block;width:100%;height:100%}.hero-v18-image img{object-fit:cover;object-position:center}.hero-v18-light{will-change:transform,opacity}.hero-v18-real-bg{contain:layout paint}.hero-v17 .hero-v2-copy{animation:none}.partners-bar img,.partner-logo img{object-fit:contain}#localDbResults{min-height:180px}.story-v3-news-card img{object-fit:cover}select{max-width:100%}@media(prefers-reduced-motion:reduce){.hero-v18-light{animation:none!important}}</style><style id="responsive-v2">.eu-support-logo{max-width:100%;height:auto}.eu-support-logos{flex-wrap:wrap;min-width:0}@media(max-width:650px){.eu-support-logo.funding{max-width:min(180px,100%)}.eu-support{max-width:100%;overflow:hidden}}</style><style id="enetcom-footer-layout-fix">
+footer{padding:48px 20px 28px;overflow:hidden}
+footer .footer-grid{width:min(1180px,100%);margin:0 auto;display:grid;grid-template-columns:1.2fr repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,42px);align-items:start}
+footer .footer-grid>div{min-width:0}
+footer .footer-grid b{display:block;margin-bottom:16px;color:#fff}
+footer .footer-grid a{display:block;margin:0 0 10px;line-height:1.55;overflow-wrap:anywhere}
+footer .footer-grid .brand{display:flex;align-items:center;gap:10px}
+footer .eu-support{width:min(1180px,100%);margin:36px auto 0;padding:28px 16px 8px;border-top:1px solid rgba(255,255,255,.18);text-align:center}
+footer .eu-support-logos{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(14px,2.5vw,30px)}
+footer .eu-support-logos img{display:block;flex:0 1 auto;width:auto;height:auto;object-fit:contain;max-height:95px;max-width:min(100%,260px);border-radius:4px}
+footer .eu-support-logos img[data-eu-logo="partnership"]{max-height:100px;max-width:190px}
+footer .eu-support-logos img[data-eu-logo="agency"]{max-height:76px;max-width:150px}
+footer .eu-support-logos img[data-eu-logo="funding"]{max-height:74px;max-width:310px}
+footer .footer-page-nav{width:min(1180px,100%);margin:24px auto 0;padding-top:18px;border-top:1px solid rgba(255,255,255,.14);display:flex;flex-wrap:wrap;justify-content:center;gap:10px 22px}
+footer .footer-page-nav a{display:inline-block;margin:0;color:#d7f2e7;font-size:14px}
+@media(max-width:900px){footer .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px}}
+@media(max-width:560px){footer{padding:36px 16px 24px}footer .footer-grid{grid-template-columns:1fr 1fr;gap:24px 18px}footer .footer-grid>div:first-child{grid-column:1/-1}footer .eu-support{margin-top:26px}footer .eu-support-logos img[data-eu-logo="partnership"]{max-width:130px;max-height:75px}footer .eu-support-logos img[data-eu-logo="agency"]{max-width:110px;max-height:62px}footer .eu-support-logos img[data-eu-logo="funding"]{max-width:230px;max-height:66px}}
+</style></head><body>
 
 <a class="a11y-skip" href="#main-content" id="a11ySkip">Ana içeriğe geç</a>
 <button class="a11y-fab" id="a11yFab" type="button" aria-label="Erişilebilirlik araçlarını aç" aria-expanded="false" aria-controls="a11yPanel" title="Erişilebilirlik">♿</button>
@@ -4076,7 +4093,8 @@ document.addEventListener('keydown', function(e){
   function end(){clearInterval(hb);send('session_end',{meta:String(Math.round((Date.now()-started)/1000))},true)}
   window.addEventListener('pagehide',end,{once:true});
 })();
-</script>\n<script id="tv-public-spot-link-script">
+</script>
+<script id="tv-public-spot-link-script">
 document.querySelectorAll('[data-tv-public-spots="1"]').forEach(a=>a.addEventListener('click',()=>{setTimeout(()=>{const frame=document.getElementById('publicSpotFrame');const card=frame&&frame.closest('.media-archive');if(card)card.scrollIntoView({behavior:'smooth',block:'center'});},180);}));
 </script>
 
