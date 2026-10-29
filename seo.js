@@ -52,9 +52,7 @@ export function installSeo(app,dir){
    html=html.replace(/<div class="loading" id="loading">[^<]*<\/div>/,'<div class="notice">'+cities.map(c=>'<p><a href="/gallery.html?city='+encodeURIComponent(c)+'&amp;lang='+lang+'">'+esc(c)+'</a></p>').join('')+'</div>');
   }
 
-  // Remove escaped newline artifacts from prerendered/localized HTML at tag boundaries.
-  html=html.replace(/(<\\/script>|<\\/footer>)[ \\t\\r\\n]*(?:\\\\n[ \\t\\r\\n]*)+(?=<)/gi,'$1\\n');
-  html=html.replace(/(?:\\\\n[ \\t\\r\\n]*)+(?=<\\/body>)/gi,'');
+  // Keep HTML rendering stable; do not apply malformed regex cleanup here.
   res.type('html').send(html);
  });
 }
