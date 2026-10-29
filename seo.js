@@ -51,7 +51,7 @@ export function installSeo(app,dir){
    const cities=['Kayseri','Ankara','İstanbul','İzmir','Balıkesir','Tunceli','Viyana'];
    html=html.replace(/<div class="loading" id="loading">[^<]*<\/div>/,'<div class="notice">'+cities.map(c=>'<p><a href="/gallery.html?city='+encodeURIComponent(c)+'&amp;lang='+lang+'">'+esc(c)+'</a></p>').join('')+'</div>');
   }
-  if(req.path==='/'){const labels={tr:['Proje bilgileri','Eğitimler','Uluslararası faaliyetler','e-Merkez','Proje çıktıları'],en:['Project information','Training','International activities','e-Centre','Project outputs'],de:['Projektinformationen','Schulungen','Internationale Aktivitäten','e-Zentrum','Projektergebnisse']}[lang];const links=pages.slice(1,6).map((p,i)=>'<a style="margin:8px;display:inline-block" href="'+p+(lang==='tr'?'':'?lang='+lang)+'">'+labels[i]+'</a>').join('');html=html.replace('</footer>','<nav aria-label="'+({tr:'Proje sayfaları',en:'Project pages',de:'Projektseiten'}[lang])+'">'+links+'</nav></footer>');}
+  if(req.path==='/'){const labels={tr:['Proje bilgileri','Eğitimler','Uluslararası faaliyetler','e-Merkez','Proje çıktıları'],en:['Project information','Training','International activities','e-Centre','Project outputs'],de:['Projektinformationen','Schulungen','Internationale Aktivitäten','e-Zentrum','Projektergebnisse']}[lang];const links=pages.slice(1,6).map((p,i)=>'<a href="'+p+(lang==='tr'?'':'?lang='+lang)+'">'+labels[i]+'</a>').join('');html=html.replace('</footer>','<nav class="footer-page-nav" aria-label="'+({tr:'Proje sayfaları',en:'Project pages',de:'Projektseiten'}[lang])+'">'+links+'</nav></footer>');}
   res.type('html').send(html);
  });
 }
