@@ -1373,33 +1373,53 @@ footer .footer-page-nav a{display:inline-block;margin:0;color:#d7f2e7;font-size:
 @media(max-width:900px){footer .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px}}
 @media(max-width:560px){footer{padding:36px 16px 24px}footer .footer-grid{grid-template-columns:1fr 1fr;gap:24px 18px}footer .footer-grid>div:first-child{grid-column:1/-1}footer .eu-support{margin-top:26px}footer .eu-support-logos img[data-eu-logo="partnership"]{max-width:130px;max-height:75px}footer .eu-support-logos img[data-eu-logo="agency"]{max-width:110px;max-height:62px}footer .eu-support-logos img[data-eu-logo="funding"]{max-width:230px;max-height:66px}}
 </style><style id="enetcom-project-bento-v2">
-.enet-bento-section{background:#f3faf6;padding:clamp(52px,6vw,84px) 0}
+/* Editorial bento: unequal modules, one feature hero, no faux buttons */
+.enet-bento-section{background:radial-gradient(circle at 90% 0%,#e6f6eb 0%,transparent 42%),#f4faf6;padding:clamp(56px,6vw,90px) 0}
 .enet-bento-section .enet-bento-heading{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:32px}
-.enet-bento-section .enet-bento-heading h2{font-size:clamp(34px,4.3vw,60px);line-height:1.08;letter-spacing:-.045em;margin:9px 0 12px}
-.enet-bento-subtitle{font-size:clamp(15px,1.5vw,19px);line-height:1.5;color:#496d5e;max-width:650px}
-.enet-bento-program{display:flex;flex-direction:column;align-items:flex-end;gap:9px;white-space:nowrap;color:#527b66}
-.enet-bento-program strong{padding:12px 18px;background:#e0f3e7;border-radius:40px;color:#0d7449}
-.enet-actual-bento{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;align-items:stretch}
-.enet-tile{position:relative;overflow:hidden;border:1px solid #c7e3d3;background:#fff;border-radius:24px;padding:25px;box-shadow:0 15px 40px rgba(15,76,49,.065);min-width:0}
-.enet-tile-1{grid-column:span 6;min-height:410px;background:linear-gradient(90deg,rgba(255,255,255,.98) 0%,rgba(255,255,255,.92) 54%,rgba(255,255,255,.1) 100%),url('/assets/optimized/hero-1600.webp') right center/cover}
-.enet-tile-2,.enet-tile-3{grid-column:span 3}
-.enet-tile-4{grid-column:span 6;background:#fdfefd}
-.enet-tile-5,.enet-tile-6{grid-column:span 3}
-.enet-tile-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
-.enet-kicker{background:#e6f6ec;border-radius:30px;padding:7px 12px;color:#097448;font-size:10px;font-weight:900;letter-spacing:.07em}
-.enet-tile-icon{display:grid;place-items:center;background:#e6f6ec;border-radius:50%;width:38px;height:38px;color:#0b8b53;font-size:19px}
-.enet-tile h3{font-size:clamp(21px,2vw,29px);line-height:1.18;letter-spacing:-.025em;color:#063c2d;margin:0 0 13px}
-.enet-tile-lead{color:#577267;font-size:13px;line-height:1.6;margin:0 0 20px}
-.enet-hero-text{max-width:59%;font-size:14px;line-height:1.85;color:#234e3f;font-weight:500}
-.enet-hero-bottom{position:absolute;left:25px;bottom:24px;right:25px;display:flex;justify-content:space-between;align-items:center;color:#0c7849;font-size:11px;font-weight:900;letter-spacing:.08em}
-.enet-goals ul{margin:0;padding-left:18px;color:#245e45;font-size:13px;line-height:1.65}.enet-goals li{margin-bottom:12px}
-.enet-partner-list{display:flex;flex-wrap:wrap;gap:9px}.enet-partner-list span{border:1px solid #d3e9dc;background:#f1faf4;padding:10px 12px;border-radius:12px;font-weight:800;font-size:12px;color:#14593b}.enet-partner-list small{display:block;font-size:10px;font-weight:500;color:#577b65;margin-top:4px}
-.enet-original-detail{font-size:11px;line-height:1.7;color:#688477;margin-top:15px}
-.enet-wp-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.enet-wp-grid>div{background:#eaf7ef;border-radius:16px;padding:17px 15px}.enet-wp-grid b{font-size:18px;color:#087344}.enet-wp-grid p{font-size:12px;line-height:1.7;color:#315a48;margin:9px 0 0}
-.enet-year-rail{display:flex;justify-content:space-between;gap:4px;border-top:9px solid #a9dfbf;margin:28px 0 17px;padding-top:13px}.enet-year-rail>div{flex:1;min-width:0}.enet-year-rail b,.enet-year-rail span{display:block}.enet-year-rail b{color:#086c43;font-size:13px}.enet-year-rail span{font-size:11px;color:#587b68;margin-top:5px}.enet-tile-footnote{font-size:12px;line-height:1.65;color:#466e59}
-.enet-contact-block{background:#eaf7ef;border-radius:17px;padding:18px;display:flex;flex-direction:column;gap:7px;overflow-wrap:anywhere}.enet-contact-block span{font-size:10px;letter-spacing:.08em;font-weight:900;color:#567969;margin-top:8px}.enet-contact-block a{font-size:13px;font-weight:800;color:#086d45;text-decoration:none}
-@media(max-width:1000px){.enet-tile-1,.enet-tile-4{grid-column:span 12}.enet-tile-2,.enet-tile-3,.enet-tile-5,.enet-tile-6{grid-column:span 6}.enet-hero-text{max-width:65%}}
-@media(max-width:650px){.enet-bento-section .enet-bento-heading{display:block}.enet-bento-program{align-items:flex-start;margin-top:16px}.enet-actual-bento{gap:14px}.enet-tile{grid-column:span 12!important;padding:21px}.enet-tile-1{min-height:410px;background:linear-gradient(90deg,rgba(255,255,255,.96),rgba(255,255,255,.75)),url('/assets/optimized/hero-1600.webp') center/cover}.enet-hero-text{max-width:100%}.enet-wp-grid{grid-template-columns:1fr}.enet-hero-bottom{left:21px;right:21px}}
+.enet-bento-section .enet-bento-heading h2{font-size:clamp(36px,4.6vw,64px);line-height:1.05;letter-spacing:-.055em;margin:10px 0 14px}
+.enet-bento-subtitle{font-size:clamp(16px,1.6vw,20px);line-height:1.55;color:#476d5d;max-width:620px}
+.enet-bento-program{display:flex;flex-direction:column;align-items:flex-end;gap:10px;white-space:nowrap;color:#527b66}
+.enet-bento-program strong{padding:12px 18px;background:#dff4e8;border-radius:40px;color:#0b7044}
+.enet-actual-bento{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-areas:"hero hero hero hero hero hero hero goals goals goals goals goals" "partners partners partners partners management management management management management timeline timeline timeline" "contact contact contact contact contact contact contact contact contact contact contact contact";gap:18px;align-items:stretch}
+.enet-tile{position:relative;overflow:hidden;border:1px solid #cce5d7;background:#fff;border-radius:25px;padding:clamp(22px,2.3vw,32px);box-shadow:0 15px 40px rgba(15,76,49,.065);min-width:0}
+.enet-tile-1{grid-area:hero;min-height:440px;background:linear-gradient(90deg,rgba(255,255,255,.99) 0%,rgba(255,255,255,.95) 42%,rgba(255,255,255,.12) 80%),url('/assets/optimized/hero-1600.webp') right center/cover no-repeat}
+.enet-tile-2{grid-area:goals;min-height:440px;background:#fff}
+.enet-tile-3{grid-area:partners;background:#f8fcf9}
+.enet-tile-4{grid-area:management;background:#fff}
+.enet-tile-5{grid-area:timeline;background:#e3f4e9}
+.enet-tile-6{grid-area:contact;background:#073e31;color:#fff;display:grid;grid-template-columns:minmax(190px,1fr) minmax(230px,2fr);column-gap:24px;align-items:center;min-height:145px}
+.enet-tile-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.enet-kicker{background:#e4f5eb;border-radius:30px;padding:7px 12px;color:#096b42;font-size:10px;font-weight:900;letter-spacing:.07em}
+.enet-tile-icon{display:grid;place-items:center;background:#e6f6ec;border-radius:50%;width:36px;height:36px;color:#0b8b53;font-size:18px}
+.enet-tile h3{font-size:clamp(22px,2.2vw,30px);line-height:1.15;letter-spacing:-.03em;color:#063c2d;margin:0 0 14px}
+.enet-tile-lead{color:#557365;font-size:14px;line-height:1.6;margin:0 0 20px}
+.enet-hero-text{max-width:56%;font-size:15px;line-height:1.9;color:#234e3f;font-weight:500}
+.enet-hero-bottom{position:absolute;left:30px;bottom:27px;right:30px;display:flex;justify-content:space-between;align-items:center;color:#0c7849;font-size:11px;font-weight:900;letter-spacing:.08em}
+.enet-goals ul{margin:0;padding:0;list-style:none;counter-reset:goal}
+.enet-goals li{counter-increment:goal;display:flex;align-items:flex-start;gap:14px;padding:12px 0;border-top:1px solid #e4eee8;color:#245e45;font-size:14px;line-height:1.55}
+.enet-goals li:before{content:counter(goal,decimal-leading-zero);color:#0a9057;font-weight:900;font-size:13px;min-width:26px}
+.enet-partner-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.enet-partner-list span{border:1px solid #d3e9dc;background:#fff;padding:13px 12px;border-radius:12px;font-weight:800;font-size:13px;color:#14593b}
+.enet-partner-list span:first-child{grid-column:span 2;background:#e5f5eb}
+.enet-partner-list small{display:block;font-size:11px;font-weight:500;color:#577b65;margin-top:4px}
+.enet-original-detail{font-size:11px;line-height:1.7;color:#688477;margin-top:16px}
+.enet-wp-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.enet-wp-grid>div{background:#eaf7ef;border-radius:16px;padding:19px 16px;border-top:4px solid #4fb888}
+.enet-wp-grid b{font-size:22px;color:#087344}
+.enet-wp-grid p{font-size:13px;line-height:1.7;color:#315a48;margin:10px 0 0}
+.enet-year-rail{display:flex;flex-direction:column;gap:0;margin:25px 0 15px;border-left:3px solid #9dd8b6;padding-left:20px}
+.enet-year-rail>div{position:relative;padding:0 0 22px}
+.enet-year-rail>div:before{content:"";position:absolute;left:-27px;top:3px;width:11px;height:11px;border-radius:50%;background:#128953;box-shadow:0 0 0 4px #d7f0e0}
+.enet-year-rail b,.enet-year-rail span{display:block}.enet-year-rail b{color:#086c43;font-size:17px}.enet-year-rail span{font-size:12px;color:#587b68;margin-top:4px}
+.enet-tile-footnote{font-size:12px;line-height:1.65;color:#466e59}
+.enet-tile-6 .enet-tile-top{grid-column:1;grid-row:1;margin:0 0 5px}.enet-tile-6 h3{grid-column:1;grid-row:2;color:#fff;margin:0}.enet-tile-6>.enet-tile-lead{grid-column:1;grid-row:3;color:#c2e5d4;margin:0}
+.enet-tile-6 .enet-kicker{background:#176349;color:#fff}.enet-tile-6 .enet-tile-icon{background:#176349;color:#fff}
+.enet-contact-block{grid-column:2;grid-row:1/span 3;background:#185841;border-radius:16px;padding:18px 22px;display:grid;grid-template-columns:1fr 1fr;gap:5px 20px;overflow-wrap:anywhere}
+.enet-contact-block span{font-size:10px;letter-spacing:.08em;font-weight:900;color:#a9d9c0;margin-top:8px}
+.enet-contact-block a{font-size:14px;font-weight:800;color:#fff;text-decoration:none}
+.enet-contact-block a:first-of-type{grid-column:1}
+@media(max-width:1100px){.enet-actual-bento{grid-template-areas:"hero hero hero hero hero hero goals goals goals goals goals goals" "partners partners partners partners partners partners management management management management management management" "timeline timeline timeline timeline contact contact contact contact contact contact contact contact"}.enet-tile-5{min-height:300px}.enet-tile-6{display:block}.enet-contact-block{margin-top:18px}.enet-hero-text{max-width:65%}}
+@media(max-width:700px){.enet-bento-section .enet-bento-heading{display:block}.enet-bento-program{align-items:flex-start;margin-top:18px}.enet-actual-bento{grid-template-columns:minmax(0,1fr);grid-template-areas:"hero" "goals" "partners" "management" "timeline" "contact";gap:14px}.enet-tile{padding:22px}.enet-tile-1{min-height:440px;background:linear-gradient(90deg,rgba(255,255,255,.96),rgba(255,255,255,.78)),url('/assets/optimized/hero-1600.webp') center/cover}.enet-hero-text{max-width:100%}.enet-hero-bottom{left:22px;right:22px}.enet-wp-grid{grid-template-columns:1fr}.enet-tile-2{min-height:0}.enet-tile-5{min-height:0}.enet-contact-block{display:flex;flex-direction:column;gap:8px}}
 </style></head><body>
 
 <a class="a11y-skip" href="#main-content" id="a11ySkip">Ana içeriğe geç</a>
