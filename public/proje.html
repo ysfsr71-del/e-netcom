@@ -98,6 +98,16 @@ section:not(.hero){position:relative}
 .project-hero .lead{max-width:720px}
 .project-hero .facts{position:relative}
 @media(max-width:760px){.project-hero:before{background:linear-gradient(90deg,rgba(239,249,242,.93),rgba(239,249,242,.72)),url('/assets/optimized/proje-hero.webp') 55% center/cover no-repeat!important}}
+</style><style id="enetcom-hero-overlap-repair-v5">
+/* The approved artwork includes rasterized words/cards. Mask that upper region and reveal only its landscape/people at the bottom; HTML remains the sole text source. */
+.project-hero{background:#edf8f1!important;isolation:isolate;overflow:hidden}
+.project-hero:before{inset:0!important;z-index:-1!important;background-image:linear-gradient(to bottom,#edf8f1 0%,#edf8f1 53%,rgba(237,248,241,.98) 62%,rgba(237,248,241,.62) 79%,rgba(237,248,241,.12) 100%),url('/assets/optimized/proje-hero.webp')!important;background-position:center,center bottom!important;background-size:100% 100%,cover!important;background-repeat:no-repeat!important;animation:enetYouthPan 32s ease-in-out infinite alternate!important;transform:scale(1.025)!important}
+.project-hero:after{opacity:.24;pointer-events:none}
+.project-hero .wrap{z-index:2}
+.project-hero .facts{position:relative;z-index:3}
+.project-hero .fact{background:rgba(255,255,255,.95)!important}
+@media(max-width:760px){.project-hero:before{background-image:linear-gradient(to bottom,#edf8f1 0%,#edf8f1 57%,rgba(237,248,241,.95) 73%,rgba(237,248,241,.48) 100%),url('/assets/optimized/proje-hero.webp')!important;background-position:center,58% bottom!important;background-size:100% 100%,auto 100%!important}.project-hero .wrap{padding-bottom:36px}}
+@media(prefers-reduced-motion:reduce){.project-hero:before{animation:none!important;transform:none!important}}
 </style></head>
 <body>
 <header class="top"><div class="wrap"><a class="brand" href="/">e-NetCoM</a><div class="page-tools"><div class="lang-switch" role="group" aria-label="Language"><button type="button" data-lang-switch="tr">TR</button><button type="button" data-lang-switch="en">EN</button><button type="button" data-lang-switch="de">DE</button></div><a class="back" href="/">← Ana siteye dön</a></div></div></header>
