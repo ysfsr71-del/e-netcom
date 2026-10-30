@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 const origin='https://enetcomproject.com';
-const pages=['/','/proje.html','/egitimler.html','/uluslararasi.html','/veritabani.html','/ciktilar.html','/gallery.html'];
+const pages=['/','/proje.html','/egitimler.html','/uluslararasi.html','/veritabani.html','/ciktilar.html','/gallery.html','/cop31.html'];
 const titles={
  '/':['e-NetCoM | Doğanın Enerjileri Bizimle','e-NetCoM | Environmental Communication and Youth Leadership','e-NetCoM | Umweltkommunikation und Jugendführung'],
  '/proje.html':['e-NetCoM Projesi | Çevresel İletişim ve Genç Liderlik','e-NetCoM Project | Environmental Communication and Youth Leadership','e-NetCoM Projekt | Umweltkommunikation und Jugendführung'],
@@ -9,7 +9,8 @@ const titles={
  '/uluslararasi.html':['e-NetCoM Uluslararası Faaliyetler','e-NetCoM International Activities','e-NetCoM Internationale Aktivitäten'],
  '/veritabani.html':['e-NetCoM e-Merkez | Çevre ve Sürdürülebilirlik Kaynakları','e-NetCoM e-Centre | Environment and Sustainability Resources','e-NetCoM e-Zentrum | Umwelt und Nachhaltigkeit'],
  '/ciktilar.html':['e-NetCoM Proje Çıktıları | İçerik, Materyal ve Kaynak Merkezi','e-NetCoM Project Outputs | Content, Materials and Resources','e-NetCoM Projektergebnisse | Inhalte, Materialien und Ressourcen'],
- '/gallery.html':['e-NetCoM Etkinlik Galerileri','e-NetCoM Event Galleries','e-NetCoM Veranstaltungsgalerien']
+ '/gallery.html':['e-NetCoM Etkinlik Galerileri','e-NetCoM Event Galleries','e-NetCoM Veranstaltungsgalerien'],
+ '/cop31.html':['COP31 Antalya 2026 | İklim Zirvesi ve Gençlik Rehberi – e-NetCoM','COP31 Antalya 2026 | Climate Summit and Youth Guide – e-NetCoM','COP31 Antalya 2026 | Klimagipfel und Jugendleitfaden – e-NetCoM']
 };
 const desc={en:'Explore e-NetCoM environmental communication, youth leadership, sustainability training and project resources.',de:'Entdecken Sie Umweltkommunikation, Jugendführung, Nachhaltigkeitsschulungen und Projektmaterialien von e-NetCoM.'};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -41,10 +42,14 @@ export function installSeo(app,dir){
   html=html.replace(/<link\b(?=[^>]*rel=["']canonical["'])[^>]*>/gi,'');
   html=html.replace(/<meta\b(?=[^>]*(?:property|name)=["'](?:og:[^"']+|twitter:[^"']+)["'])[^>]*>/gi,'');
   // Localized documents retain their page-specific translated descriptions.
-  const description=html.match(/<meta name="description" content="([^"]*)"/i)?.[1]||'';
+  let description=html.match(/<meta name="description" content="([^"]*)"/i)?.[1]||'';
+  if(req.path==='/cop31.html'&&lang==='en')description='An independent e-NetCoM guide to COP31 Antalya 2026, climate negotiations, thematic events and youth climate awareness.';
+  if(req.path==='/cop31.html'&&lang==='de')description='Ein unabhängiger e-NetCoM-Leitfaden zur COP31 Antalya 2026, Klimaverhandlungen, Thementagen und Klimabildung für Jugendliche.';
+  html=html.replace(/<meta\\s+name="description"\\s+content="[^"]*"\\s*\\/?>/i,'<meta name="description" content="'+esc(description)+'">');
+  html=html.replace(/<html\\b[^>]*>/i,tag=>tag.replace(/lang=["'][^"']*["']/i,'lang="'+lang+'"'));
   let tags='<link rel="canonical" href="'+esc(canonical.href)+'">';
   for(const l of ['tr','en','de','x-default']){const u=new URL(canonical);u.searchParams.delete('lang');if(l==='en'||l==='de')u.searchParams.set('lang',l);tags+='<link rel="alternate" hreflang="'+l+'" href="'+esc(u.href)+'">';}
-  for(const [k,v] of Object.entries({'og:type':'website','og:site_name':'e-NetCoM','og:title':title,'og:description':description,'og:url':canonical.href,'og:locale':{tr:'tr_TR',en:'en_GB',de:'de_DE'}[lang],'og:image':origin+'/thumbs/01.jpg','twitter:card':'summary_large_image','twitter:title':title,'twitter:description':description,'twitter:image':origin+'/thumbs/01.jpg'}))tags+='<meta '+(k.startsWith('twitter:')?'name':'property')+'="'+k+'" content="'+esc(v)+'">';
+  for(const [k,v] of Object.entries({'og:type':'website','og:site_name':'e-NetCoM','og:title':title,'og:description':description,'og:url':canonical.href,'og:locale':{tr:'tr_TR',en:'en_GB',de:'de_DE'}[lang],'og:image':origin+(req.path==='/cop31.html'?'/assets/optimized/hero-1600.webp':'/thumbs/01.jpg'),'twitter:card':'summary_large_image','twitter:title':title,'twitter:description':description,'twitter:image':origin+(req.path==='/cop31.html'?'/assets/optimized/hero-1600.webp':'/thumbs/01.jpg')}))tags+='<meta '+(k.startsWith('twitter:')?'name':'property')+'="'+k+'" content="'+esc(v)+'">';
   html=html.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g,(tag,raw)=>{try{const data=JSON.parse(raw);if(data.url===origin+req.path){data.url=canonical.href;data.inLanguage=lang;if(data['@id'])data['@id']=canonical.href+'#page';}return '<script type="application/ld+json">'+JSON.stringify(data).replace(/</g,'\\u003c')+'</script>';}catch{return tag;}});
   html=html.replace('</head>',tags+'<script src="/seo.js" defer></script><script src="/consent.js" defer></script></head>');
   if(req.path==='/gallery.html'&&!req.query.city){
