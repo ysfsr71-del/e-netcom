@@ -1567,6 +1567,8 @@ footer .footer-page-nav a{display:inline-block;margin:0;color:#d7f2e7;font-size:
 .enet-reference-grid .enet-tile-3 .enet-partner-logo img{max-height:46px!important}
 .enet-reference-grid .enet-tile-3 .enet-partner-copy{align-items:center}
 @media(max-width:400px){.enet-reference-grid .enet-tile-3 .enet-partner-links{gap:6px!important}.enet-reference-grid .enet-tile-3 .enet-partner-link{padding:7px 3px!important}.enet-reference-grid .enet-tile-3 .enet-partner-copy strong{font-size:10px}}
+</style><style id="cop31-hero-cta-style">
+.hero-actions{align-items:center;gap:10px!important}.cop31-hero-cta{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;padding:5px 14px 5px 7px;border-radius:13px;background:#fff;color:#064b40;text-decoration:none!important;border:1px solid #d7f3e9;box-shadow:0 8px 25px #001e1b42;transition:transform .22s,box-shadow .22s;white-space:nowrap;font-size:13px;font-weight:850;line-height:1.1}.cop31-hero-cta:hover{transform:translateY(-3px);box-shadow:0 14px 30px #001e1b55}.cop31-logo-frame{display:flex;align-items:center;justify-content:center;width:77px;height:34px;overflow:hidden;border-radius:7px;background:#fff}.cop31-logo-frame img{width:100%;height:100%;object-fit:contain}.cop31-cta-label{display:inline-flex;gap:6px;align-items:center}.cop31-cta-label span{font-size:18px}.cop31-hero-cta:focus-visible{outline:3px solid #c7ff7c;outline-offset:3px}@media(max-width:1100px){.cop31-hero-cta{min-height:44px;padding-right:10px}.cop31-logo-frame{width:68px}}@media(max-width:640px){.hero-actions{gap:9px!important}.cop31-hero-cta{width:100%;max-width:260px;justify-content:flex-start}.cop31-logo-frame{width:80px}}
 </style></head><body>
 
 <a class="a11y-skip" href="#main-content" id="a11ySkip">Ana içeriğe geç</a>
@@ -1671,6 +1673,7 @@ footer .footer-page-nav a{display:inline-block;margin:0;color:#d7f2e7;font-size:
       <div class="hero-actions">
         <a class="btn lime" href="#proje" data-hero="discover">Projeyi keşfet →</a>
         <a class="btn primary workshop-hero-btn" href="#atolye" data-hero="workshop">✦ Yeşil Zekâ Atölyesi</a>
+        <a class="cop31-hero-cta" href="/cop31.html?lang=tr" aria-label="COP31 Antalya 2026 özel sayfasını keşfet"><span class="cop31-logo-frame"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/COP31-Turkiye-Yatay-Logo.png?width=420" alt="COP31 Türkiye Antalya resmî logosu" loading="lazy" decoding="async"/></span><span class="cop31-cta-label" data-cop31-cta>COP31’i keşfet <span aria-hidden="true">↗</span></span></a>
       </div>
     </div>
 
@@ -4307,4 +4310,4 @@ document.addEventListener('click',function(event){
 });
 </script>
 <style>#network{scroll-margin-top:90px}</style>
-</body></html>
+<script id="cop31-hero-cta-lang">(function(){const btn=document.querySelector('.cop31-hero-cta');if(!btn)return;const sync=()=>{const l=(document.documentElement.lang||'tr').slice(0,2);const lang=['tr','en','de'].includes(l)?l:'tr';btn.href='/cop31.html?lang='+lang;const el=btn.querySelector('[data-cop31-cta]');el.innerHTML=({tr:'COP31’i keşfet',en:'Explore COP31',de:'COP31 entdecken'}[lang])+' <span aria-hidden="true">↗</span>'};new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});sync()})();</script></body></html>
