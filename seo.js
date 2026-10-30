@@ -36,17 +36,19 @@ export function installSeo(app,dir){
   const file=req.path==='/'?'index.html':req.path.slice(1);
   const localized=path.join(dir,'.cache','localized',lang,file);
   let html=fs.readFileSync(lang!=='tr'&&fs.existsSync(localized)?localized:path.join(dir,'public',file),'utf8');
-  let title=html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]||titles[req.path][li];
+  let title=req.path==='/cop31.html'?titles[req.path][li]:(html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]||titles[req.path][li]);
   if(req.path==='/gallery.html'&&req.query.city)title=String(req.query.city).slice(0,100)+' | '+title;
   html=html.replace(/<title>[\s\S]*?<\/title>/i,'<title>'+esc(title)+'</title>');
   html=html.replace(/<link\b(?=[^>]*rel=["']canonical["'])[^>]*>/gi,'');
+  html=html.replace(/<link\b(?=[^>]*rel=["']alternate["'])(?=[^>]*hreflang=)[^>]*>/gi,'');
+  html=html.replace(/<script\b[^>]*id=["']enetcom-seo-language-canonical["'][^>]*>[\s\S]*?<\/script>/gi,'');
   html=html.replace(/<meta\b(?=[^>]*(?:property|name)=["'](?:og:[^"']+|twitter:[^"']+)["'])[^>]*>/gi,'');
   // Localized documents retain their page-specific translated descriptions.
   let description=html.match(/<meta name="description" content="([^"]*)"/i)?.[1]||'';
   if(req.path==='/cop31.html'&&lang==='en')description='An independent e-NetCoM guide to COP31 Antalya 2026, climate negotiations, thematic events and youth climate awareness.';
   if(req.path==='/cop31.html'&&lang==='de')description='Ein unabhängiger e-NetCoM-Leitfaden zur COP31 Antalya 2026, Klimaverhandlungen, Thementagen und Klimabildung für Jugendliche.';
-  html=html.replace(/<meta\\s+name="description"\\s+content="[^"]*"\\s*\\/?>/i,'<meta name="description" content="'+esc(description)+'">');
-  html=html.replace(/<html\\b[^>]*>/i,tag=>tag.replace(/lang=["'][^"']*["']/i,'lang="'+lang+'"'));
+  html=html.replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i,'<meta name="description" content="'+esc(description)+'">');
+  html=html.replace(/<html\b[^>]*>/i,tag=>tag.replace(/lang=["'][^"']*["']/i,'lang="'+lang+'"'));
   let tags='<link rel="canonical" href="'+esc(canonical.href)+'">';
   for(const l of ['tr','en','de','x-default']){const u=new URL(canonical);u.searchParams.delete('lang');if(l==='en'||l==='de')u.searchParams.set('lang',l);tags+='<link rel="alternate" hreflang="'+l+'" href="'+esc(u.href)+'">';}
   for(const [k,v] of Object.entries({'og:type':'website','og:site_name':'e-NetCoM','og:title':title,'og:description':description,'og:url':canonical.href,'og:locale':{tr:'tr_TR',en:'en_GB',de:'de_DE'}[lang],'og:image':origin+(req.path==='/cop31.html'?'/assets/optimized/hero-1600.webp':'/thumbs/01.jpg'),'twitter:card':'summary_large_image','twitter:title':title,'twitter:description':description,'twitter:image':origin+(req.path==='/cop31.html'?'/assets/optimized/hero-1600.webp':'/thumbs/01.jpg')}))tags+='<meta '+(k.startsWith('twitter:')?'name':'property')+'="'+k+'" content="'+esc(v)+'">';
