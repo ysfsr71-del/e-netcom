@@ -167,19 +167,36 @@ const stats=document.createElement('div');stats.className='enetcom-stats';const 
 </script><style id="cop31-city-photo-fix">.story-art{background-color:#0b534d!important}.story-art.is-loading{background-image:linear-gradient(120deg,#073b41,#0c7465)!important}.story-art.is-loading:before{content:"GÖRSEL HAZIRLANIYOR";position:absolute;top:45%;left:20px;color:#d8ffbd;letter-spacing:.14em;font-size:13px}.story-photo-credit{display:none!important}.story-art .city-credit{position:absolute;bottom:8px;right:10px;z-index:5;color:#fff9;font-size:10px;text-decoration:none;background:#003c3ba8;padding:3px 7px;border-radius:5px}.media-hub a:last-child strong{font-size:17px}</style>
 <script id="cop31-city-photo-fix-script">
 (function(){
-const cities={"1992":"Rio de Janeiro","1995":"Berlin","1997":"Kyoto","2001":"Marrakech","2007":"Bali","2009":"Copenhagen","2010":"Cancun","2011":"Durban","2013":"Warsaw","2015":"Paris","2018":"Katowice","2021":"Glasgow","2022":"Sharm el Sheikh","2023":"Dubai","2024":"Baku","2025":"Belem Para Brazil","2026":"Antalya"};
-const art=document.querySelector('.story-art');const year=document.getElementById('storyYear');const cache=new Map();let token=0;
-async function loadCity(){
-const y=year.textContent.trim(),city=cities[y];if(!city)return;const id=++token;art.classList.add('is-loading');art.style.setProperty('--story-image','none');art.style.backgroundImage='linear-gradient(120deg,#073b41,#0c7465)';art.dataset.place=city.toUpperCase();
-try{
-let photo=cache.get(y);
-if(!photo){
-const q='https://commons.wikimedia.org/w/api.php?origin=*&action=query&generator=search&gsrsearch='+encodeURIComponent('intitle:"'+city.split(' ')[0]+'" photograph')+'&gsrnamespace=6&gsrlimit=12&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=1200&format=json';
-const response=await fetch(q);if(!response.ok)throw Error('Commons unavailable');const data=await response.json();const results=Object.values(data.query?.pages||{}).filter(p=>p.imageinfo?.[0]?.thumburl&&/\.(jpg|jpeg|png|webp)$/i.test(p.title)&&p.title.toLowerCase().includes(city.split(' ')[0].toLowerCase()));if(!results.length)throw Error('No verified city title');const pick=results.find(p=>/skyline|city|view|panorama|landscape|center|centre|aerial/i.test(p.title))||results[0];photo={url:pick.imageinfo[0].thumburl,page:pick.imageinfo[0].descriptionurl,title:pick.title};cache.set(y,photo)}
-if(id!==token)return;const check=new Image();check.onload=()=>{if(id!==token)return;art.style.setProperty('--story-image','url("'+photo.url+'")');art.style.backgroundImage='linear-gradient(0deg,#052c34b3,transparent 60%),url("'+photo.url+'")';art.style.backgroundSize='cover';art.style.backgroundPosition='center';art.classList.remove('is-loading');let credit=art.querySelector('.city-credit');if(!credit){credit=document.createElement('a');credit.className='city-credit';credit.target='_blank';credit.rel='noopener';art.appendChild(credit)}credit.href=photo.page;credit.textContent='Wikimedia Commons · Fotoğraf bilgisi'};check.onerror=()=>{if(id===token)art.classList.remove('is-loading')};check.src=photo.url;
-}catch(e){if(id!==token)return;art.classList.remove('is-loading');art.style.backgroundImage='linear-gradient(120deg,#073b41,#0c7465)';}
+const landmarks={
+"1992":{city:"RIO DE JANEIRO",q:"Rio de Janeiro Christ the Redeemer Corcovado",words:["corcovado","cristo redentor","christ the redeemer"]},
+"1995":{city:"BERLIN",q:"Brandenburg Gate Berlin",words:["brandenburg","brandenburger"]},
+"1997":{city:"KYOTO",q:"Kiyomizu dera Kyoto",words:["kiyomizu"]},
+"2001":{city:"MARAKESH",q:"Koutoubia Mosque Marrakech",words:["koutoubia","kutubiyya"]},
+"2007":{city:"BALI",q:"Tanah Lot Bali",words:["tanah lot"]},
+"2009":{city:"COPENHAGEN",q:"Nyhavn Copenhagen",words:["nyhavn"]},
+"2010":{city:"CANCÚN",q:"Cancun hotel zone beach aerial",words:["cancun","cancún"]},
+"2011":{city:"DURBAN",q:"Durban beachfront skyline",words:["durban"]},
+"2013":{city:"WARSAW",q:"Warsaw Royal Castle Square",words:["warsaw","warszawa","zamek królewski"]},
+"2015":{city:"PARIS",q:"Eiffel Tower Paris panorama",words:["eiffel","tour eiffel"]},
+"2018":{city:"KATOWICE",q:"Katowice Spodek arena",words:["spodek"]},
+"2021":{city:"GLASGOW",q:"Glasgow Clyde Arc bridge",words:["clyde arc","squinty bridge"]},
+"2022":{city:"ŞARM EŞ-ŞEYH",q:"Sharm el Sheikh Naama Bay Red Sea",words:["naama bay","na'ama bay","sharm el"]},
+"2023":{city:"DUBAI",q:"Burj Khalifa Dubai skyline",words:["burj khalifa"]},
+"2024":{city:"BAKÜ",q:"Baku Flame Towers skyline",words:["flame towers","flame tower"]},
+"2025":{city:"BELÉM",q:"Belem Para Ver o Peso market",words:["ver-o-peso","ver o peso"]},
+"2026":{city:"ANTALYA",q:"Antalya Kaleici Hadrian Gate",words:["hadrian","hadrianus","üçkapılar"]}
+};
+const art=document.querySelector('.story-art'),year=document.getElementById('storyYear');const cache=new Map();let generation=0;
+async function getImage(y){
+const cfg=landmarks[y],url='https://commons.wikimedia.org/w/api.php?origin=*&action=query&generator=search&gsrsearch='+encodeURIComponent(cfg.q)+'&gsrnamespace=6&gsrlimit=30&prop=imageinfo&iiprop=url|size&iiurlwidth=1200&format=json';
+const response=await fetch(url);if(!response.ok)throw Error('Search unavailable');const data=await response.json();const candidates=Object.values(data.query?.pages||{}).filter(p=>{const t=p.title.toLowerCase();return p.imageinfo?.[0]?.thumburl&&/\\.(jpe?g|png|webp)$/i.test(t)&&cfg.words.some(w=>t.includes(w))&&!/portrait|selfie|people|person|interior|inside|nightclub|signboard|logo|flag/i.test(t)}).sort((a,b)=>{const score=p=>{const t=p.title.toLowerCase();return (/panorama|skyline|aerial|view|landscape|sunset|wide/i.test(t)?10:0)+(p.imageinfo[0].width>p.imageinfo[0].height?5:0)};return score(b)-score(a)});if(!candidates.length)throw Error('No landmark image');const p=candidates[0];return {url:p.imageinfo[0].thumburl,page:p.imageinfo[0].descriptionurl};
 }
-new MutationObserver(()=>{requestAnimationFrame(loadCity)}).observe(year,{childList:true,characterData:true,subtree:true});loadCity();
+async function showLandmark(){
+const y=year.textContent.trim(),cfg=landmarks[y];if(!cfg)return;const id=++generation;art.classList.add('is-loading');art.style.setProperty('--story-image','none');art.style.backgroundImage='linear-gradient(120deg,#073b41,#0c7465)';art.dataset.place=cfg.city;
+try{let photo=cache.get(y);if(!photo){photo=await getImage(y);cache.set(y,photo)}if(id!==generation)return;const image=new Image();image.onload=()=>{if(id!==generation)return;art.style.setProperty('--story-image','url("'+photo.url+'")');art.style.backgroundImage='linear-gradient(0deg,#052c34b3,transparent 60%),url("'+photo.url+'")';art.style.backgroundSize='cover';art.style.backgroundPosition='center';art.classList.remove('is-loading');let a=art.querySelector('.city-credit');if(!a){a=document.createElement('a');a.className='city-credit';a.target='_blank';a.rel='noopener';art.appendChild(a)}a.href=photo.page;a.textContent='Fotoğraf kaynağı'};image.onerror=()=>{if(id===generation)art.classList.remove('is-loading')};image.src=photo.url;
+}catch(e){if(id===generation){art.classList.remove('is-loading');art.style.backgroundImage='linear-gradient(120deg,#073b41,#0c7465)';}}
+}
+new MutationObserver(()=>requestAnimationFrame(showLandmark)).observe(year,{childList:true,characterData:true,subtree:true});showLandmark();
 const media=document.querySelector('.media-lab .media-hub');if(media){const last=media.querySelector('a:last-child');if(last){last.href='https://www.youtube.com/@e-NeTCoMProje';last.target='_blank';const strong=last.querySelector('strong');const small=last.querySelector('span');if(strong)strong.textContent='▶ e-NetCoM · YouTube Kanalımız';if(small)small.textContent='Projemizin eğitim, etkinlik ve medya videolarını izleyin'}}
 })();
 </script></body></html>
