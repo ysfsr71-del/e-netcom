@@ -196,6 +196,7 @@ const fixedCommons={
 "2026":"View of Konyaaltı Beach and Beydağları Mountains, Antalya.jpg"
 };
 async function getImage(y){
+ if(y==='2026')return {url:'https://ctstransfer.com/upload/blog/20261818395.jpg',page:'https://ctstur.com/blog/antalya-nerede-blog'};
  if(fixedCommons[y]){
   const filename=fixedCommons[y];
   const url='https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(filename)+'?width=1280';
