@@ -385,7 +385,8 @@ const ANALYTICS_DIR = process.env.ANALYTICS_DATA_DIR?.trim() || "/var/data";
 const ANALYTICS_FILE = path.join(ANALYTICS_DIR, "analytics.json");
 const ADMIN_COOKIE = "enetcom_admin";
 const ADMIN_SESSION_MS = 8 * 60 * 60 * 1000;
-const ANALYTICS_MAX_EVENTS = 50000;
+const ANALYTICS_MAX_EVENTS = Math.max(50000, Number(process.env.ANALYTICS_MAX_EVENTS) || 250000);
+const ANALYTICS_RETENTION_DAYS = Math.max(90, Number(process.env.ANALYTICS_RETENTION_DAYS) || 730);
 
 let analyticsEvents = [];
 let analyticsWriteTimer = null;
@@ -424,7 +425,7 @@ function scheduleAnalyticsWrite() {
 }
 
 function pruneAnalytics() {
-  const cutoff = Date.now() - 1000 * 60 * 60 * 24 * 90;
+  const cutoff = Date.now() - 1000 * 60 * 60 * 24 * ANALYTICS_RETENTION_DAYS;
   analyticsEvents = analyticsEvents
     .filter(event => Number(event.ts) >= cutoff)
     .slice(-ANALYTICS_MAX_EVENTS);
@@ -703,10 +704,64 @@ function buildAnalyticsStats(range = "30d", fromDate = "", toDate = "") {
 
   const eventCounts = countBy(events, "type");
 
+  // Additional metrics derived from already collected anonymous events.
+  const pageEvents = events.filter(e => e.type === "pageview");
+  const pageviews = pageEvents.length;
+  const pages = countBy(pageEvents, "path");
+  const sessionPages = new Map();
+  for (const e of pageEvents) {
+    if (!e.sessionId) continue;
+    if (!sessionPages.has(e.sessionId)) sessionPages.set(e.sessionId, new Set());
+    sessionPages.get(e.sessionId).add(e.path);
+  }
+  const singlePageSessions = [...sessionPages.values()].filter(s => s.size === 1).length;
+  const sessionCounts = new Map();
+  for (const e of sessionStarts) if (e.visitorId) sessionCounts.set(e.visitorId, (sessionCounts.get(e.visitorId) || 0) + 1);
+  const returningVisitors = [...sessionCounts.values()].filter(n => n > 1).length;
+  const entryPages = countBy(sessionStarts, "path");
+  const interactions = countBy(events.filter(e => ["click","map_click","section_view","video_open","download"].includes(e.type)), "type");
+  const earliestStoredAt = analyticsEvents.length ? new Date(Math.min(...analyticsEvents.map(e => Number(e.ts)))).toISOString() : null;
+  const latestStoredAt = analyticsEvents.length ? new Date(Math.max(...analyticsEvents.map(e => Number(e.ts)))).toISOString() : null;
+  const sourceCategories = (() => {
+    const map = new Map();
+    for (const e of referrerEvents) {
+      const host = String(e._referrer || "").toLowerCase();
+      const name = host === "doğrudan" ? "Doğrudan / bilinmiyor"
+        : /google|bing|yahoo|yandex|duckduckgo/.test(host) ? "Arama motoru"
+        : /instagram|facebook|tiktok|youtube|twitter|t.co|x.com|linkedin/.test(host) ? "Sosyal medya"
+        : host === "site içi geçiş" ? "Site içi yönlendirme" : "Diğer yönlendirmeler";
+      map.set(name, (map.get(name) || 0) + 1);
+    }
+    return [...map.entries()].map(([name,count])=>({name,count})).sort((a,b)=>b.count-a.count);
+  })();
+  const projectInteractions = (() => {
+    const groups = [
+      ["COP31", /cop31/i], ["Eğitimler", /egitim|training|gallery|galeri/i],
+      ["Proje çıktıları", /ciktilar|çıktılar|output|pdf/i],
+      ["Yeşil Zekâ Atölyesi", /atolye|atölye|workshop/i],
+      ["Videolar", /video|youtube/i], ["E-Merkez", /veritabani|veritabanı|e-merkez/i]
+    ];
+    return groups.map(([name,regex])=>({name,count:events.filter(e=>["click","section_view","map_click","video_open","download"].includes(e.type)&&regex.test([e.path,e.section,e.target,e.meta].join(" "))).length}));
+  })();
+
   return {
     generatedAt: new Date().toISOString(),
     range,
     totalEvents: events.length,
+    retentionDays: ANALYTICS_RETENTION_DAYS,
+    maxStoredEvents: ANALYTICS_MAX_EVENTS,
+    earliestStoredAt,
+    latestStoredAt,
+    pageviews,
+    pages,
+    entryPages,
+    pagesPerSession: visits ? Math.round(pageviews / visits * 100) / 100 : 0,
+    sessionsPerVisitor: visitors.size ? Math.round(visits / visitors.size * 100) / 100 : 0,
+    returningVisitorsWithinRange: returningVisitors,
+    singlePageSessionShare: sessionPages.size ? Math.round(singlePageSessions / sessionPages.size * 1000) / 10 : null,
+    sourceCategories,
+    interactions,
+    projectInteractions,
     visits,
     uniqueVisitors: visitors.size,
     activeVisitors: activeSessions.size,
@@ -985,6 +1040,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-31","Yönetim analitiği genişletildi","Yalnızca yönetim paneli ve sunucu istatistikleri geliştirildi. Sayfa görüntüleme, ziyaret başına sayfa, giriş sayfaları, trafik kaynağı grupları, etkileşimler ve proje içeriklerine erişim eklendi. Veri saklama varsayılanı 730 gün ve 250.000 olay olarak ayarlandı; geçmişte silinen kayıtlar geri getirilemez. Ana site dosyaları değiştirilmedi."],
 ["2026-10-31","Eğitim kartlarının görünümü standartlaştırıldı","Eğitimler sayfasındaki 31 kartta ortak bilgi sıralaması uygulandı: il/oturum adı, eğitim türü, tarih, katılımcı sayısı ve mevcut medya bağlantıları. Yalnızca bazı kayıtlarda bulunan okul adı, saat ve ortak oturum açıklamaları kart görünümünden kaldırıldı; eğitim kayıtları ve katılımcı sayıları değiştirilmedi. Kart yüksekliği ve bağlantı hizaları eşitlendi."],
 ["2026-10-31","Eğitim arşivindeki tüm kartlara medya bağlantıları eklendi","Eğitimler sayfasındaki 31 oturum kartı, GitHub galeri dosyalarına göre kontrol edildi. Mevcut fotoğraflar için Fotoğraf Arşivi, afişler için Program Akışı bağlantıları eklendi; fotoğrafı bulunmayan kartlarda yalnızca mevcut program bağlantısı gösteriliyor. Ortak eğitimlerde tek oturum sayımı korunuyor."],
 ["2026-10-31","İl galerilerindeki geri dönüş bağlantısı düzeltildi","Ortak eğitim görsellerinin Sivas klasöründen paylaşılması nedeniyle Bingöl, Çankırı, Edirne ve Muş galerilerinde yanlışlıkla Uluslararası Buluşmalara Dön bağlantısı görünüyordu. Galeri kaynak klasörü ile etkinlik türü ayrıştırıldı; Türkiye illeri Haritaya Dön, uluslararası etkinlikler Uluslararası Buluşmalara Dön bağlantısını kullanır."],
@@ -1086,6 +1142,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-31","Expanded administration analytics","Admin-only analytics now include page views, pages per session, entry pages, traffic source groups, interactions and project content usage. Default event retention is 730 days and 250,000 events; previously purged events cannot be recovered. Public site files were not modified."],
 ["2026-10-31","Training archive cards standardized","All 31 training cards now use a consistent field order: location/session, training type, date, participant count and available media links. Inconsistently available venue and time details were removed from card display without changing training records or counts. Card heights and media links were aligned."],
 ["2026-10-31","Media links added to all training archive cards","All 31 training cards were checked against the GitHub gallery manifest. Photo Archive and Programme links are now shown only when the corresponding files exist; shared multi-province sessions remain counted once."],
 ["2026-10-31","Corrected back navigation in province galleries","Shared media folders no longer cause Turkish province galleries to be classified as international events. Turkish provinces return to the training map, while international events return to International Activities."],
