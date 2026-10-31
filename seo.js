@@ -95,7 +95,7 @@ export function installSeo(app,dir){
   let tags='<link rel="canonical" href="'+esc(canonical.href)+'">';
   for(const l of ['tr','en','de','x-default']){const u=new URL(canonical);u.searchParams.delete('lang');if(l==='en'||l==='de')u.searchParams.set('lang',l);tags+='<link rel="alternate" hreflang="'+l+'" href="'+esc(u.href)+'">';}
   for(const [k,v] of Object.entries({'og:type':'website','og:site_name':'e-NetCoM','og:title':title,'og:description':description,'og:url':canonical.href,'og:locale':{tr:'tr_TR',en:'en_GB',de:'de_DE'}[lang],'og:image':origin+(req.path==='/cop31.html'?'/assets/optimized/hero-1600.webp':'/thumbs/01.jpg'),'twitter:card':'summary_large_image','twitter:title':title,'twitter:description':description,'twitter:image':origin+(req.path==='/cop31.html'?'/assets/optimized/hero-1600.webp':'/thumbs/01.jpg')}))tags+='<meta '+(k.startsWith('twitter:')?'name':'property')+'="'+k+'" content="'+esc(v)+'">';
-  html=html.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g,(tag,raw)=>{try{const data=JSON.parse(raw);if(data.url===origin+req.path){data.url=canonical.href;data.inLanguage=lang;if(data['@id'])data['@id']=canonical.href+'#page';}return '<script type="application/ld+json">'+JSON.stringify(data).replace(/</g,'\\u003c')+'</script>';}catch{return tag;}});
+  html=html.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g,(tag,raw)=>{try{const data=JSON.parse(raw);if(data.url===origin+req.path){data.url=canonical.href;data.inLanguage=lang;if(data['@id'] && ['WebPage','CollectionPage'].includes(data['@type']))data['@id']=canonical.href+'#webpage';}return '<script type="application/ld+json">'+JSON.stringify(data).replace(/</g,'\\u003c')+'</script>';}catch{return tag;}});
   // Page-level structured data: language-aware WebPage and breadcrumb trail.
   // Does not replace existing Project, WebSite or event structured data.
   const homeUrl=new URL('/',origin);
@@ -118,7 +118,7 @@ export function installSeo(app,dir){
       ...(req.path==='/'?[]:[{'@type':'ListItem',position:2,name:title,item:canonical.href}])
     ]
   };
-  const schemaTags=[webpage,breadcrumbs].map(obj=>'<script type="application/ld+json">'+JSON.stringify(obj).replace(/</g,'\\u003c')+'</script>').join('');
+  const schemaTags=(req.path==='/'?[webpage]:[webpage,breadcrumbs]).map(obj=>'<script type="application/ld+json">'+JSON.stringify(obj).replace(/</g,'\\u003c')+'</script>').join('');
   html=html.replace('</head>',tags+schemaTags+'<script src="/seo.js" defer></script><script src="/consent.js" defer></script></head>');
   if(req.path==='/gallery.html'&&!req.query.city){
    const cities=['Kayseri','Ankara','İstanbul','İzmir','Balıkesir','Tunceli','Viyana'];
