@@ -55,6 +55,20 @@ const descriptions={
  }
 };
 const desc={en:'Explore e-NetCoM environmental communication, youth leadership, sustainability training and project resources.',de:'Entdecken Sie Umweltkommunikation, Jugendführung, Nachhaltigkeitsschulungen und Projektmaterialien von e-NetCoM.'};
+// Training records are read from the existing archive; no duplicate SEO data is maintained.
+function trainingGalleryDetails(dir,city){
+  if(!city)return null;
+  try{
+    const source=fs.readFileSync(path.join(dir,'public','egitimler.html'),'utf8');
+    const norm=v=>String(v).replace(/&amp;/g,'&').replace(/\s+/g,' ').trim().toLocaleLowerCase('tr-TR');
+    for(const match of source.matchAll(/<article class="record (face|online)"[^>]*>([\s\S]*?)<\/article>/g)){
+      const body=match[2],name=body.match(/<h3>([^<]+)<\/h3>/)?.[1];
+      if(!name || norm(name)!==norm(city))continue;
+      return {type:match[1],date:body.match(/<p>([^<]*2026)<\/p>/)?.[1]||'',people:body.match(/<div class="people">([^<]*)<\/div>/)?.[1]||''};
+    }
+  }catch{}
+  return null;
+}
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function installSeo(app,dir){
  // The verification key stays in Render configuration, outside Git history.
@@ -79,14 +93,24 @@ export function installSeo(app,dir){
   const localized=path.join(dir,'.cache','localized',lang,file);
   let html=fs.readFileSync(lang!=='tr'&&fs.existsSync(localized)?localized:path.join(dir,'public',file),'utf8');
   let title=titles[req.path]?.[li] || (html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]||'e-NetCoM');
-  if(req.path==='/gallery.html'&&req.query.city)title=String(req.query.city).slice(0,100)+' | '+title;
+  const galleryCity=req.path==='/gallery.html'&&typeof req.query.city==='string'?req.query.city.slice(0,100).trim():null;
+  const galleryDetails=galleryCity?trainingGalleryDetails(dir,galleryCity):null;
+  if(galleryCity)title=galleryCity+' | '+title;
   html=html.replace(/<title>[\s\S]*?<\/title>/i,'<title>'+esc(title)+'</title>');
   html=html.replace(/<link\b(?=[^>]*rel=["']canonical["'])[^>]*>/gi,'');
   html=html.replace(/<link\b(?=[^>]*rel=["']alternate["'])(?=[^>]*hreflang=)[^>]*>/gi,'');
   html=html.replace(/<script\b[^>]*id=["']enetcom-seo-language-canonical["'][^>]*>[\s\S]*?<\/script>/gi,'');
   html=html.replace(/<meta\b(?=[^>]*(?:property|name)=["'](?:og:[^"']+|twitter:[^"']+)["'])[^>]*>/gi,'');
   // Localized documents retain their page-specific translated descriptions.
-  const description=descriptions[req.path]?.[lang] || desc[lang] || descriptions['/'].tr;
+  let description=descriptions[req.path]?.[lang] || desc[lang] || descriptions['/'].tr;
+  if(galleryDetails){
+    const mode=galleryDetails.type==='face'?{tr:'yüz yüze',en:'in-person',de:'Präsenz'}:{tr:'çevrimiçi',en:'online',de:'Online'};
+    description=lang==='en'
+      ?'e-NetCoM '+galleryCity+' '+mode.en+' training on '+galleryDetails.date+' ('+galleryDetails.people+'). Explore event photos and programme materials.'
+      :lang==='de'
+      ?'e-NetCoM '+galleryCity+': '+mode.de+'-Schulung am '+galleryDetails.date+' ('+galleryDetails.people+'). Fotos und Programmmaterialien.'
+      :'e-NetCoM '+galleryCity+' '+mode.tr+' eğitimi: '+galleryDetails.date+', '+galleryDetails.people+'. Etkinlik fotoğrafları ve program akışı.';
+  }
   // Replace existing meta description or insert it when absent.
   html=html.replace(/<meta\s+name=["']description["'][^>]*>/gi,'');
   html=html.replace('</head>','<meta name="description" content="'+esc(description)+'"></head>');
