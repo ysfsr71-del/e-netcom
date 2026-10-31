@@ -141,7 +141,26 @@ body{background:radial-gradient(circle at 80% -10%,rgba(100,224,167,.13),transpa
     <div class="card"><div class="kpi-icon">◷</div><div class="label">Ort. oturum</div><div class="num" id="duration">—</div><div class="small">Kapanış verilerine göre</div></div>
   </section>
 
-  <section class="card report-box" style="margin-top:14px">
+  <section class="card" id="expandedAnalytics" style="margin-top:14px">
+<h2>📈 Ayrıntılı ziyaretçi ve proje etki analizi</h2>
+<div class="small" id="dataCoverage">Veri kapsamı yükleniyor…</div>
+<div class="grid" style="margin:16px 0">
+<div class="card"><div class="label">Sayfa görüntüleme</div><div class="num" id="extraPageviews">—</div><div class="small">Kaydedilen pageview olayları</div></div>
+<div class="card"><div class="label">Ziyaret başına sayfa</div><div class="num" id="extraPagesPerVisit">—</div><div class="small">Sayfa görüntüleme / oturum</div></div>
+<div class="card"><div class="label">Ziyaretçi başına oturum</div><div class="num" id="extraSessionsPerVisitor">—</div><div class="small">Anonim kimlik bazlı</div></div>
+<div class="card"><div class="label">Aynı dönemde tekrar gelen</div><div class="num" id="extraReturning">—</div><div class="small">Birden fazla oturumu kaydedilen anonim kimlik</div></div>
+</div>
+<div class="small">Not: Tek sayfalı oturum payı, gerçek hemen çıkma oranı değildir. Arama sorguları, şehir ve ülke bilgisi veya Core Web Vitals geçmiş olaylardan türetilemez; bu alanlar ayrı veri kaynağı gerektirir.</div>
+<div class="grid" style="margin-top:15px">
+<div class="card"><h3>En çok görüntülenen sayfalar</h3><div id="extraPages"></div></div>
+<div class="card"><h3>Oturumların giriş sayfaları</h3><div id="extraEntryPages"></div></div>
+<div class="card"><h3>Trafik kaynakları (tahmini gruplar)</h3><div id="extraSources"></div></div>
+<div class="card"><h3>Kaydedilen etkileşim türleri</h3><div id="extraInteractions"></div></div>
+<div class="card"><h3>Proje içerikleriyle etkileşim</h3><div id="extraProjects"></div></div>
+<div class="card"><h3>Tek sayfa oturum payı</h3><div class="num" id="extraSinglePage">—</div><div class="small">Sayfa görüntülemesi olan oturumlar içinde; hemen çıkma oranı değildir</div></div>
+</div>
+</section>
+<section class="card report-box" style="margin-top:14px">
     <div>
       <h2 style="margin-bottom:6px">📊 Raporlama</h2>
       <div class="small">Rapor türünü seçin; düzenlenebilir Word, paylaşılabilir PDF veya ham Excel verisini indirin.</div>
@@ -358,6 +377,19 @@ function renderYouTube(y){
     ["Kamu spotları",y.publicSpots]
   ].map(([a,b])=>`<div class="row"><span>${a}</span><b>${fmt(b)}</b></div>`).join("");
 }
+function renderExpandedAnalytics(d){
+ const num=id=>$(id);
+ num("extraPageviews").textContent=fmt(d.pageviews);
+ num("extraPagesPerVisit").textContent=Number(d.pagesPerSession||0).toLocaleString("tr-TR",{maximumFractionDigits:2});
+ num("extraSessionsPerVisitor").textContent=Number(d.sessionsPerVisitor||0).toLocaleString("tr-TR",{maximumFractionDigits:2});
+ num("extraReturning").textContent=fmt(d.returningVisitorsWithinRange);
+ num("extraSinglePage").textContent=d.singlePageSessionShare==null?"Veri yok":("%"+String(d.singlePageSessionShare).replace(".",","));
+ const dt=v=>v?new Date(v).toLocaleString("tr-TR"):"Kayıt yok";
+ num("dataCoverage").textContent="Saklanan kayıt aralığı: "+dt(d.earliestStoredAt)+" – "+dt(d.latestStoredAt)+" · "+fmt(d.totalEvents)+" olay (seçili dönem) · Saklama politikası: "+fmt(d.retentionDays)+" gün / "+fmt(d.maxStoredEvents)+" olay. 'Tümü' yalnızca mevcut kayıtları kapsar.";
+ renderList("extraPages",d.pages);renderList("extraEntryPages",d.entryPages);
+ renderList("extraSources",d.sourceCategories);renderList("extraInteractions",d.interactions);
+ renderList("extraProjects",d.projectInteractions);
+}
 async function load(){
   document.body.classList.add("loading");
   try{
@@ -369,6 +401,7 @@ async function load(){
     $("active").textContent=fmt(d.activeVisitors);
     $("duration").textContent=duration(d.averageSessionSeconds);
     $("snapVisits").textContent=fmt(d.visits);$("snapUnique").textContent=fmt(d.uniqueVisitors);$("snapActive").textContent=fmt(d.activeVisitors);$("snapDuration").textContent=duration(d.averageSessionSeconds);
+    renderExpandedAnalytics(d);
     renderChart(d.daily);
     renderList("sections",d.sections);
     renderList("languages",d.languages);
