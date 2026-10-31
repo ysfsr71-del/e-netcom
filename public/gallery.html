@@ -87,7 +87,7 @@ function applyGallerySeo(){
 function backUrl(){
   /* International events always return to International Activities,
      while Turkish provinces always return to the 81-province map. */
-  const isInternational = !!folderOverrides[citySlug] || citySlug==='viyana' || citySlug==='bükreş' || params.get('back')==='international';
+  const isInternational = citySlug==='viyana' || citySlug==='bükreş' || citySlug==='bucharest';
   return isInternational ? '/#uluslararasi' : '/#iller';
 }
 
