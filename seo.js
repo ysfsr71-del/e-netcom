@@ -88,7 +88,7 @@ export function installSeo(app,dir){
   // Localized documents retain their page-specific translated descriptions.
   const description=descriptions[req.path]?.[lang] || desc[lang] || descriptions['/'].tr;
   // Replace existing meta description or insert it when absent.
-  html=html.replace(/<meta\\s+name=["']description["'][^>]*>/gi,'');
+  html=html.replace(/<meta\s+name=["']description["'][^>]*>/gi,'');
   html=html.replace('</head>','<meta name="description" content="'+esc(description)+'"></head>');
 
   html=html.replace(/<html\b[^>]*>/i,tag=>tag.replace(/lang=["'][^"']*["']/i,'lang="'+lang+'"'));
