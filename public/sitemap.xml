@@ -1,27 +1,171 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://enetcomproject.com/</loc></url>
-  <url><loc>https://enetcomproject.com/?lang=en</loc></url>
-  <url><loc>https://enetcomproject.com/?lang=de</loc></url>
-  <url><loc>https://enetcomproject.com/gallery.html</loc></url>
-  <url><loc>https://enetcomproject.com/gallery.html?lang=en</loc></url>
-  <url><loc>https://enetcomproject.com/gallery.html?lang=de</loc></url>
-  <url><loc>https://enetcomproject.com/ciktilar.html</loc></url>
-  <url><loc>https://enetcomproject.com/ciktilar.html?lang=en</loc></url>
-  <url><loc>https://enetcomproject.com/ciktilar.html?lang=de</loc></url>
-  <url><loc>https://enetcomproject.com/proje.html</loc></url>
-  <url><loc>https://enetcomproject.com/proje.html?lang=en</loc></url>
-  <url><loc>https://enetcomproject.com/proje.html?lang=de</loc></url>
-  <url><loc>https://enetcomproject.com/egitimler.html</loc></url>
-  <url><loc>https://enetcomproject.com/egitimler.html?lang=en</loc></url>
-  <url><loc>https://enetcomproject.com/egitimler.html?lang=de</loc></url>
-  <url><loc>https://enetcomproject.com/uluslararasi.html</loc></url>
-  <url><loc>https://enetcomproject.com/uluslararasi.html?lang=en</loc></url>
-  <url><loc>https://enetcomproject.com/uluslararasi.html?lang=de</loc></url>
-  <url><loc>https://enetcomproject.com/veritabani.html</loc></url>
-  <url><loc>https://enetcomproject.com/veritabani.html?lang=en</loc></url>
-  <url><loc>https://enetcomproject.com/veritabani.html?lang=de</loc></url>
-  <url><loc>https://enetcomproject.com/cop31.html</loc></url>
-  <url><loc>https://enetcomproject.com/cop31.html?lang=en</loc></url>
-  <url><loc>https://enetcomproject.com/cop31.html?lang=de</loc></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://enetcomproject.com/</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/?lang=de</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/proje.html</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/proje.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/proje.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/proje.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/proje.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/proje.html?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/proje.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/proje.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/proje.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/proje.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/proje.html?lang=de</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/proje.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/proje.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/proje.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/proje.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/egitimler.html</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/egitimler.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/egitimler.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/egitimler.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/egitimler.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/egitimler.html?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/egitimler.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/egitimler.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/egitimler.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/egitimler.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/egitimler.html?lang=de</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/egitimler.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/egitimler.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/egitimler.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/egitimler.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/uluslararasi.html</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/uluslararasi.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/uluslararasi.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/uluslararasi.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/uluslararasi.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/uluslararasi.html?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/uluslararasi.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/uluslararasi.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/uluslararasi.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/uluslararasi.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/uluslararasi.html?lang=de</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/uluslararasi.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/uluslararasi.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/uluslararasi.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/uluslararasi.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/veritabani.html</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/veritabani.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/veritabani.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/veritabani.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/veritabani.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/veritabani.html?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/veritabani.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/veritabani.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/veritabani.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/veritabani.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/veritabani.html?lang=de</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/veritabani.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/veritabani.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/veritabani.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/veritabani.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/ciktilar.html</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/ciktilar.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/ciktilar.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/ciktilar.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/ciktilar.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/ciktilar.html?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/ciktilar.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/ciktilar.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/ciktilar.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/ciktilar.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/ciktilar.html?lang=de</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/ciktilar.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/ciktilar.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/ciktilar.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/ciktilar.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/gallery.html</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/gallery.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/gallery.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/gallery.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/gallery.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/gallery.html?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/gallery.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/gallery.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/gallery.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/gallery.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/gallery.html?lang=de</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/gallery.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/gallery.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/gallery.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/gallery.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/cop31.html</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/cop31.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/cop31.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/cop31.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/cop31.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/cop31.html?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/cop31.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/cop31.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/cop31.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/cop31.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/cop31.html?lang=de</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/cop31.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/cop31.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/cop31.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/cop31.html"/>
+  </url>
 </urlset>
