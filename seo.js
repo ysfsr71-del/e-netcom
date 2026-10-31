@@ -12,6 +12,48 @@ const titles={
  '/gallery.html':['e-NetCoM Etkinlik Galerileri','e-NetCoM Event Galleries','e-NetCoM Veranstaltungsgalerien'],
  '/cop31.html':['COP31 Antalya 2026 | İklim Zirvesi ve Gençlik Rehberi – e-NetCoM','COP31 Antalya 2026 | Climate Summit and Youth Guide – e-NetCoM','COP31 Antalya 2026 | Klimagipfel und Jugendleitfaden – e-NetCoM']
 };
+const descriptions={
+ '/':{
+  tr:'e-NetCoM çevresel iletişim, gençlik liderliği, sürdürülebilirlik eğitimleri ve proje çalışmalarını keşfedin.',
+  en:'Discover e-NetCoM environmental communication, youth leadership, sustainability training and project activities.',
+  de:'Entdecken Sie e-NetCoM: Umweltkommunikation, Jugendführung, Nachhaltigkeitsbildung und Projektaktivitäten.'
+ },
+ '/proje.html':{
+  tr:'e-NetCoM projesinin amaçlarını, ortaklarını ve çevresel iletişim ile gençlik liderliği çalışmalarını inceleyin.',
+  en:'Learn about the e-NetCoM project, its partners, environmental communication goals and youth leadership activities.',
+  de:'Erfahren Sie mehr über das e-NetCoM-Projekt, seine Partner, Umweltkommunikation und Jugendführung.'
+ },
+ '/egitimler.html':{
+  tr:'e-NetCoM yüz yüze ve çevrimiçi sürdürülebilirlik eğitimlerini, katılımcı bilgilerini ve etkinlik arşivlerini keşfedin.',
+  en:'Explore e-NetCoM in-person and online sustainability training, participation figures and event archives.',
+  de:'Entdecken Sie e-NetCoM-Präsenz- und Online-Schulungen zu Nachhaltigkeit, Teilnahmezahlen und Veranstaltungsarchive.'
+ },
+ '/uluslararasi.html':{
+  tr:'e-NetCoM uluslararası faaliyetlerini, iş birliklerini ve gençlik odaklı çevresel iletişim çalışmalarını inceleyin.',
+  en:'Explore e-NetCoM international activities, partnerships and youth-focused environmental communication.',
+  de:'Entdecken Sie internationale e-NetCoM-Aktivitäten, Partnerschaften und jugendorientierte Umweltkommunikation.'
+ },
+ '/veritabani.html':{
+  tr:'e-NetCoM e-Merkez çevre, sürdürülebilirlik ve çevresel iletişim konularında kaynak ve materyaller sunar.',
+  en:'Browse e-NetCoM e-Centre resources and materials on the environment, sustainability and environmental communication.',
+  de:'Finden Sie im e-NetCoM e-Zentrum Materialien zu Umwelt, Nachhaltigkeit und Umweltkommunikation.'
+ },
+ '/ciktilar.html':{
+  tr:'e-NetCoM proje çıktılarını, eğitim materyallerini, dijital içerikleri ve sürdürülebilirlik kaynaklarını inceleyin.',
+  en:'Discover e-NetCoM project outputs, training materials, digital content and sustainability resources.',
+  de:'Entdecken Sie e-NetCoM-Projektergebnisse, Schulungsmaterialien, digitale Inhalte und Nachhaltigkeitsressourcen.'
+ },
+ '/gallery.html':{
+  tr:'e-NetCoM eğitim ve etkinlik fotoğraf arşivlerini, program afişlerini ve il bazlı galerileri görüntüleyin.',
+  en:'Browse e-NetCoM training and event photo archives, programme posters and galleries by province.',
+  de:'Sehen Sie e-NetCoM-Fotoarchive, Programmplakate und Veranstaltungsgalerien nach Provinz.'
+ },
+ '/cop31.html':{
+  tr:'COP31 Antalya 2026 iklim zirvesi hakkında e-NetCoM rehberi, iklim farkındalığı ve gençlik odaklı içerikler.',
+  en:'An independent e-NetCoM guide to COP31 Antalya 2026, climate negotiations and youth climate awareness.',
+  de:'Ein unabhängiger e-NetCoM-Leitfaden zur COP31 Antalya 2026 und zum Klimabewusstsein junger Menschen.'
+ }
+};
 const desc={en:'Explore e-NetCoM environmental communication, youth leadership, sustainability training and project resources.',de:'Entdecken Sie Umweltkommunikation, Jugendführung, Nachhaltigkeitsschulungen und Projektmaterialien von e-NetCoM.'};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function installSeo(app,dir){
@@ -44,10 +86,11 @@ export function installSeo(app,dir){
   html=html.replace(/<script\b[^>]*id=["']enetcom-seo-language-canonical["'][^>]*>[\s\S]*?<\/script>/gi,'');
   html=html.replace(/<meta\b(?=[^>]*(?:property|name)=["'](?:og:[^"']+|twitter:[^"']+)["'])[^>]*>/gi,'');
   // Localized documents retain their page-specific translated descriptions.
-  let description=html.match(/<meta name="description" content="([^"]*)"/i)?.[1]||'';
-  if(req.path==='/cop31.html'&&lang==='en')description='An independent e-NetCoM guide to COP31 Antalya 2026, climate negotiations, thematic events and youth climate awareness.';
-  if(req.path==='/cop31.html'&&lang==='de')description='Ein unabhängiger e-NetCoM-Leitfaden zur COP31 Antalya 2026, Klimaverhandlungen, Thementagen und Klimabildung für Jugendliche.';
-  html=html.replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i,'<meta name="description" content="'+esc(description)+'">');
+  const description=descriptions[req.path]?.[lang] || desc[lang] || descriptions['/'].tr;
+  // Replace existing meta description or insert it when absent.
+  html=html.replace(/<meta\\s+name=["']description["'][^>]*>/gi,'');
+  html=html.replace('</head>','<meta name="description" content="'+esc(description)+'"></head>');
+
   html=html.replace(/<html\b[^>]*>/i,tag=>tag.replace(/lang=["'][^"']*["']/i,'lang="'+lang+'"'));
   let tags='<link rel="canonical" href="'+esc(canonical.href)+'">';
   for(const l of ['tr','en','de','x-default']){const u=new URL(canonical);u.searchParams.delete('lang');if(l==='en'||l==='de')u.searchParams.set('lang',l);tags+='<link rel="alternate" hreflang="'+l+'" href="'+esc(u.href)+'">';}
