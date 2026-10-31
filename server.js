@@ -506,7 +506,7 @@ function normalizeAnalyticsEvent(body) {
 function getRangeBounds(range, fromDate, toDate) {
   const now = Date.now();
   if (range === "all") {
-    return { start: analyticsEvents.length ? Math.min(...analyticsEvents.map(e => Number(e.ts) || now)) : now, end: now };
+    return { start: analyticsEvents.length ? analyticsEvents.reduce((min,e)=>Math.min(min,Number(e.ts)||now),now) : now, end: now };
   }
   if (range === "custom") {
     const from = /^\d{4}-\d{2}-\d{2}$/.test(String(fromDate || "")) ? Date.parse(`${fromDate}T00:00:00`) : NaN;
@@ -720,8 +720,8 @@ function buildAnalyticsStats(range = "30d", fromDate = "", toDate = "") {
   const returningVisitors = [...sessionCounts.values()].filter(n => n > 1).length;
   const entryPages = countBy(sessionStarts, "path");
   const interactions = countBy(events.filter(e => ["click","map_click","section_view","video_open","download"].includes(e.type)), "type");
-  const earliestStoredAt = analyticsEvents.length ? new Date(Math.min(...analyticsEvents.map(e => Number(e.ts)))).toISOString() : null;
-  const latestStoredAt = analyticsEvents.length ? new Date(Math.max(...analyticsEvents.map(e => Number(e.ts)))).toISOString() : null;
+  const earliestStoredAt = analyticsEvents.length ? new Date(analyticsEvents.reduce((min,e)=>Math.min(min,Number(e.ts)||Date.now()),Date.now())).toISOString() : null;
+  const latestStoredAt = analyticsEvents.length ? new Date(analyticsEvents.reduce((max,e)=>Math.max(max,Number(e.ts)||0),0)).toISOString() : null;
   const sourceCategories = (() => {
     const map = new Map();
     for (const e of referrerEvents) {
