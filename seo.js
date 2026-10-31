@@ -5,7 +5,7 @@ const pages=['/','/proje.html','/egitimler.html','/uluslararasi.html','/veritaba
 const titles={
  '/':['e-NetCoM | Doğanın Enerjileri Bizimle','e-NetCoM | Environmental Communication and Youth Leadership','e-NetCoM | Umweltkommunikation und Jugendführung'],
  '/proje.html':['e-NetCoM Projesi | Çevresel İletişim ve Genç Liderlik','e-NetCoM Project | Environmental Communication and Youth Leadership','e-NetCoM Projekt | Umweltkommunikation und Jugendführung'],
- '/egitimler.html':['e-NetCoM Eğitimleri | 32 İl ve 1.604 Katılımcı','e-NetCoM Training | 30 Sessions, 32 Provinces, 1,604 Participants','e-NetCoM Schulungen | 30 Schulungen, 32 Provinzen, 1.604 Teilnehmende'],
+ '/egitimler.html':['e-NetCoM Eğitimleri | Yüz Yüze ve Çevrimiçi Eğitimler','e-NetCoM Training | In-Person and Online Sustainability Education','e-NetCoM Schulungen | Präsenz- und Online-Bildung'],
  '/uluslararasi.html':['e-NetCoM Uluslararası Faaliyetler','e-NetCoM International Activities','e-NetCoM Internationale Aktivitäten'],
  '/veritabani.html':['e-NetCoM e-Merkez | Çevre ve Sürdürülebilirlik Kaynakları','e-NetCoM e-Centre | Environment and Sustainability Resources','e-NetCoM e-Zentrum | Umwelt und Nachhaltigkeit'],
  '/ciktilar.html':['e-NetCoM Proje Çıktıları | İçerik, Materyal ve Kaynak Merkezi','e-NetCoM Project Outputs | Content, Materials and Resources','e-NetCoM Projektergebnisse | Inhalte, Materialien und Ressourcen'],
