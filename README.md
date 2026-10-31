@@ -44,3 +44,9 @@ Site, gerçek Türkiye il haritasını ve 81 il listesini kullanır. Harita üze
 - Kayseri Fen Lisesi'nde 14.00–16.00 saatlerinde 90 katılımcıyla tamamlandı.
 - Görseller ve program afişi `public/kayseri/` klasöründe; galeri bu klasörü otomatik okur.
 - Ana sayfa eğitim verilerine Kayseri eklendi. Güncel toplam: **30 eğitim, 32 il, 1.604 katılımcı** (19 yüz yüze, 11 çevrimiçi eğitim).
+
+
+## 31 Ekim 2026 — Beş il ortak çevrimiçi eğitim
+- Bingöl, Çankırı, Edirne, Muş ve Sivas illerini kapsayan 12.00–14.00 saatleri arasında **tek çevrimiçi oturum**, **176 katılımcı**.
+- İl haritasında 5 il, eğitim ve katılımcı toplamında 1 oturum ve 176 kişi sayılır.
+- Güncel toplam: **31 eğitim, 37 il, 1.780 katılımcı**; 19 yüz yüze (1.145), 12 çevrimiçi (635).
