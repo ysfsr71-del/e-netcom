@@ -1,1 +1,778 @@
-{"burdur": [{"name": "afis.jpg", "type": "file"}, {"name": "burdur01.png", "type": "file"}], "samsun": [{"name": "samsun03.jpeg", "type": "file"}, {"name": "afis.jpg", "type": "file"}, {"name": "samsun01.jpeg", "type": "file"}, {"name": "samsun04.jpeg", "type": "file"}, {"name": "samsun02.jpeg", "type": "file"}], "sakarya": [{"name": "afis.jpg", "type": "file"}], "thumbs": [{"name": "02.jpg", "type": "file"}, {"name": "07.jpg", "type": "file"}, {"name": "06.jpg", "type": "file"}, {"name": "09.jpg", "type": "file"}, {"name": "16.jpg", "type": "file"}, {"name": "04.jpg", "type": "file"}, {"name": "11.jpg", "type": "file"}, {"name": "10.jpg", "type": "file"}, {"name": "05.jpg", "type": "file"}, {"name": "03.jpg", "type": "file"}, {"name": "13.jpg", "type": "file"}, {"name": "12.jpg", "type": "file"}, {"name": "14.jpg", "type": "file"}, {"name": "15.jpg", "type": "file"}, {"name": "08.jpg", "type": "file"}, {"name": "01.jpg", "type": "file"}], "kahramanmaras": [{"name": "afis.jpg", "type": "file"}, {"name": "kahramanmaras02.jpeg", "type": "file"}, {"name": "kahramanmaras01.jpeg", "type": "file"}, {"name": "kahramanmaras03.jpeg", "type": "file"}], "bilecik": [{"name": "afis.jpg", "type": "file"}, {"name": "bilecik01.png", "type": "file"}], "tunceli": [{"name": "afis.jpg", "type": "file"}, {"name": "tunceli01.jpg", "type": "file"}], "bartin": [{"name": "afis.pdf", "type": "file"}, {"name": "bartin.jpeg", "type": "file"}], "gaziantep": [{"name": "02.jpg", "type": "file"}, {"name": "afis.jpg", "type": "file"}, {"name": "04.jpg", "type": "file"}, {"name": "05.jpg", "type": "file"}, {"name": "03.jpg", "type": "file"}, {"name": "01.jpg", "type": "file"}], "adana": [{"name": "afis.jpg", "type": "file"}, {"name": "adana01.jpeg", "type": "file"}, {"name": "adana02.jpeg", "type": "file"}], "kirklareli": [{"name": "01.png", "type": "file"}, {"name": "afis.png", "type": "file"}], "afyonkarahisar": [{"name": "afis.jpg", "type": "file"}, {"name": "afyonkarahisar01.png", "type": "file"}], "ordu": [{"name": "ordu04.jpeg", "type": "file"}, {"name": "afis.jpg", "type": "file"}, {"name": "ordu03.jpeg", "type": "file"}, {"name": "ordu01.jpeg", "type": "file"}, {"name": "ordu02.jpeg", "type": "file"}], "assets": [{"name": "story-research.webp", "type": "file"}, {"name": "story-training.webp", "type": "file"}, {"name": "story-erasmus.webp", "type": "file"}], "bursa": [{"name": "afis.jpg", "type": "file"}, {"name": "bursa01.jpeg", "type": "file"}, {"name": "bursa04.jpeg", "type": "file"}, {"name": "bursa03.jpeg", "type": "file"}, {"name": "bursa02.jpeg", "type": "file"}], "kayseri": [{"name": "kayseri01.jpeg", "type": "file"}, {"name": "kayseri04.jpeg", "type": "file"}, {"name": "kayseri03.jpeg", "type": "file"}, {"name": "afis01.jpg", "type": "file"}, {"name": "kayseri02.jpeg", "type": "file"}], "kutahya": [{"name": "afis.jpg", "type": "file"}, {"name": "kutayha01.jpg", "type": "file"}], "ankara": [{"name": "afis.jpg", "type": "file"}, {"name": "02.jpeg", "type": "file"}, {"name": "01.jpg", "type": "file"}], "sanliurfa": [{"name": "afis.jpg", "type": "file"}, {"name": "sanliurfa02.jpeg", "type": "file"}, {"name": "sanliurfa01.jpeg", "type": "file"}], "denizli": [{"name": "afis.jpg", "type": "file"}, {"name": "denizli01.jpeg", "type": "file"}, {"name": "denizli02.jpeg", "type": "file"}, {"name": "denizli03.jpeg", "type": "file"}, {"name": "denizli04.jpeg", "type": "file"}], "balikesir": [{"name": "balikesir03.jpeg", "type": "file"}, {"name": "balikesir04.jpeg", "type": "file"}, {"name": "balikesir02.jpeg", "type": "file"}, {"name": "afis.jpg", "type": "file"}, {"name": "balikesir01.jpeg", "type": "file"}], "sirnak": [{"name": "sirnak01.jpeg", "type": "file"}, {"name": "afis.jpg", "type": "file"}], "konya": [{"name": "02.jpg", "type": "file"}, {"name": "afis.jpg", "type": "file"}, {"name": "03.jpg", "type": "file"}, {"name": "01.jpg", "type": "file"}], "mersin": [{"name": "mersin03.jpeg", "type": "file"}, {"name": "afis.jpg", "type": "file"}, {"name": "mersin01.jpeg", "type": "file"}, {"name": "mersin04.jpeg", "type": "file"}, {"name": "mersin02.jpeg", "type": "file"}], "karaman": [{"name": "afis.jpg", "type": "file"}, {"name": "karaman01.jpg.png", "type": "file"}], "istanbul": [{"name": "afis.jpg", "type": "file"}, {"name": "01.jpg", "type": "file"}], "isparta": [{"name": "afis.jpg", "type": "file"}, {"name": "isparta01.png", "type": "file"}], "mugla": [{"name": "afis.jpg", "type": "file"}, {"name": "Mugla01.jpeg", "type": "file"}, {"name": "Mugla02.jpeg", "type": "file"}], "gumushane": [{"name": "afis.jpg", "type": "file"}, {"name": "gumushane01.jpeg", "type": "file"}], "izmir": [{"name": "izmir02.jpg", "type": "file"}, {"name": "afis.jpg", "type": "file"}, {"name": "izmir01.jpg", "type": "file"}, {"name": "izmir05.jpg", "type": "file"}, {"name": "izmir04.jpg", "type": "file"}, {"name": "izmir03.jpg", "type": "file"}], "usak": [{"name": "afis.jpg", "type": "file"}, {"name": "usak.jpg", "type": "file"}], "manisa": [{"name": "afis.jpg", "type": "file"}, {"name": "manisa04.JPG", "type": "file"}, {"name": "manisa01.JPG", "type": "file"}, {"name": "manisa02.JPG", "type": "file"}], "zonguldak": [{"name": "zonguldak.jpeg", "type": "file"}, {"name": "afis.pdf", "type": "file"}], "aydin": [{"name": "02.jpg", "type": "file"}, {"name": "afis.jpg", "type": "file"}, {"name": "04.jpg", "type": "file"}, {"name": "03.jpg", "type": "file"}, {"name": "01.jpg", "type": "file"}], "youtube_playlists": [{"name": "02.jpg", "type": "file"}, {"name": "07.jpg", "type": "file"}, {"name": "06.jpg", "type": "file"}, {"name": "09.jpg", "type": "file"}, {"name": "04.jpg", "type": "file"}, {"name": "11.jpg", "type": "file"}, {"name": "10.jpg", "type": "file"}, {"name": "05.jpg", "type": "file"}, {"name": "03.jpg", "type": "file"}, {"name": "08.jpg", "type": "file"}, {"name": "01.jpg", "type": "file"}], "assets/network-pdfs": [{"name": "02_ICETOL_2025.pdf", "type": "file"}, {"name": "07_Cukurova_Uluslararasi_Temel_ve_Uygulamali_Bilimler_Kongresi_2026.pdf", "type": "file"}, {"name": "03_UEDFOR_6_2025.pdf", "type": "file"}, {"name": "08_26_Mart_2026_Genclik_Iklim_Medya_Zirvesi.pdf", "type": "file"}, {"name": "10_Kisa_Filmlerle_Cevre_ve_Surdurulebilirlik_2026.pdf", "type": "file"}, {"name": "01_Cevresel_Surdurulebilirlik_Zirvesi_17_Nisan_2025.pdf", "type": "file"}, {"name": "04_UKAY_2025.pdf", "type": "file"}, {"name": "09_15_Uluslararasi_Sosyal_Bilimler_Konferansi_2026.pdf", "type": "file"}, {"name": "06_Ege_14_Uluslararasi_Sosyal_Bilimler_Kongresi_2025.pdf", "type": "file"}, {"name": "05_International_Education_Congress_2025.pdf", "type": "file"}], "assets/outputs": [{"name": "WP2-Dijital-Aktivizm-ve-Farkindalik-Tasarimlari.pdf", "type": "file"}], "assets/site-images": [{"name": "00f57f8d9996f2e0.webp", "type": "file"}, {"name": "a6d2bd10ba406d43.webp", "type": "file"}, {"name": "5ae8214ad3860ae5.webp", "type": "file"}, {"name": "941d74c3d4444db4.webp", "type": "file"}, {"name": "11ac511cb78200a8.webp", "type": "file"}, {"name": "568c9e78e1f947e9.webp", "type": "file"}, {"name": "1f0f96a6bd350f40.webp", "type": "file"}, {"name": "7c57dfbef65927ea.webp", "type": "file"}, {"name": "176126ef50136efa.webp", "type": "file"}, {"name": "1d684ad01a2e98bb.webp", "type": "file"}, {"name": "c3b5f907fcc895fd.webp", "type": "file"}, {"name": "2e52305e13385005.webp", "type": "file"}, {"name": "62a30fbc7e77d5d4.webp", "type": "file"}, {"name": "8ed944c271782a99.webp", "type": "file"}, {"name": "89bdb2bb8e3998cd.webp", "type": "file"}, {"name": "izmir-zirve.jpg", "type": "file"}, {"name": "fd1d06ea0d4c35b4.webp", "type": "file"}, {"name": "ab0cc1e85d880073.webp", "type": "file"}], "assets/international/vienna": [{"name": "poster-01.jpg", "type": "file"}, {"name": "IMG_2634.jpg", "type": "file"}, {"name": "IMG_2628.jpg", "type": "file"}, {"name": "IMG_2641.jpg", "type": "file"}, {"name": "IMG_2645.jpg", "type": "file"}, {"name": "IMG_2621.jpg", "type": "file"}, {"name": "IMG_2637.jpg", "type": "file"}, {"name": "IMG_2624.jpg", "type": "file"}]}
+{
+  "burdur": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "burdur01.png",
+      "type": "file"
+    }
+  ],
+  "samsun": [
+    {
+      "name": "samsun03.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "samsun01.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "samsun04.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "samsun02.jpeg",
+      "type": "file"
+    }
+  ],
+  "sakarya": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    }
+  ],
+  "thumbs": [
+    {
+      "name": "02.jpg",
+      "type": "file"
+    },
+    {
+      "name": "07.jpg",
+      "type": "file"
+    },
+    {
+      "name": "06.jpg",
+      "type": "file"
+    },
+    {
+      "name": "09.jpg",
+      "type": "file"
+    },
+    {
+      "name": "16.jpg",
+      "type": "file"
+    },
+    {
+      "name": "04.jpg",
+      "type": "file"
+    },
+    {
+      "name": "11.jpg",
+      "type": "file"
+    },
+    {
+      "name": "10.jpg",
+      "type": "file"
+    },
+    {
+      "name": "05.jpg",
+      "type": "file"
+    },
+    {
+      "name": "03.jpg",
+      "type": "file"
+    },
+    {
+      "name": "13.jpg",
+      "type": "file"
+    },
+    {
+      "name": "12.jpg",
+      "type": "file"
+    },
+    {
+      "name": "14.jpg",
+      "type": "file"
+    },
+    {
+      "name": "15.jpg",
+      "type": "file"
+    },
+    {
+      "name": "08.jpg",
+      "type": "file"
+    },
+    {
+      "name": "01.jpg",
+      "type": "file"
+    }
+  ],
+  "kahramanmaras": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "kahramanmaras02.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "kahramanmaras01.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "kahramanmaras03.jpeg",
+      "type": "file"
+    }
+  ],
+  "bilecik": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "bilecik01.png",
+      "type": "file"
+    }
+  ],
+  "tunceli": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "tunceli01.jpg",
+      "type": "file"
+    }
+  ],
+  "bartin": [
+    {
+      "name": "afis.pdf",
+      "type": "file"
+    },
+    {
+      "name": "bartin.jpeg",
+      "type": "file"
+    }
+  ],
+  "gaziantep": [
+    {
+      "name": "02.jpg",
+      "type": "file"
+    },
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "04.jpg",
+      "type": "file"
+    },
+    {
+      "name": "05.jpg",
+      "type": "file"
+    },
+    {
+      "name": "03.jpg",
+      "type": "file"
+    },
+    {
+      "name": "01.jpg",
+      "type": "file"
+    }
+  ],
+  "adana": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "adana01.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "adana02.jpeg",
+      "type": "file"
+    }
+  ],
+  "kirklareli": [
+    {
+      "name": "01.png",
+      "type": "file"
+    },
+    {
+      "name": "afis.png",
+      "type": "file"
+    }
+  ],
+  "afyonkarahisar": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "afyonkarahisar01.png",
+      "type": "file"
+    }
+  ],
+  "ordu": [
+    {
+      "name": "ordu04.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "ordu03.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "ordu01.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "ordu02.jpeg",
+      "type": "file"
+    }
+  ],
+  "assets": [
+    {
+      "name": "story-research.webp",
+      "type": "file"
+    },
+    {
+      "name": "story-training.webp",
+      "type": "file"
+    },
+    {
+      "name": "story-erasmus.webp",
+      "type": "file"
+    }
+  ],
+  "bursa": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "bursa01.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "bursa04.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "bursa03.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "bursa02.jpeg",
+      "type": "file"
+    }
+  ],
+  "kayseri": [
+    {
+      "name": "kayseri01.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "kayseri04.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "kayseri03.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "afis01.jpg",
+      "type": "file"
+    },
+    {
+      "name": "kayseri02.jpeg",
+      "type": "file"
+    }
+  ],
+  "kutahya": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "kutayha01.jpg",
+      "type": "file"
+    }
+  ],
+  "ankara": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "02.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "01.jpg",
+      "type": "file"
+    }
+  ],
+  "sanliurfa": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "sanliurfa02.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "sanliurfa01.jpeg",
+      "type": "file"
+    }
+  ],
+  "denizli": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "denizli01.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "denizli02.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "denizli03.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "denizli04.jpeg",
+      "type": "file"
+    }
+  ],
+  "balikesir": [
+    {
+      "name": "balikesir03.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "balikesir04.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "balikesir02.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "balikesir01.jpeg",
+      "type": "file"
+    }
+  ],
+  "sirnak": [
+    {
+      "name": "sirnak01.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    }
+  ],
+  "konya": [
+    {
+      "name": "02.jpg",
+      "type": "file"
+    },
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "03.jpg",
+      "type": "file"
+    },
+    {
+      "name": "01.jpg",
+      "type": "file"
+    }
+  ],
+  "mersin": [
+    {
+      "name": "mersin03.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "mersin01.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "mersin04.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "mersin02.jpeg",
+      "type": "file"
+    }
+  ],
+  "karaman": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "karaman01.jpg.png",
+      "type": "file"
+    }
+  ],
+  "istanbul": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "01.jpg",
+      "type": "file"
+    }
+  ],
+  "isparta": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "isparta01.png",
+      "type": "file"
+    }
+  ],
+  "mugla": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "Mugla01.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "Mugla02.jpeg",
+      "type": "file"
+    }
+  ],
+  "gumushane": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "gumushane01.jpeg",
+      "type": "file"
+    }
+  ],
+  "izmir": [
+    {
+      "name": "izmir02.jpg",
+      "type": "file"
+    },
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "izmir01.jpg",
+      "type": "file"
+    },
+    {
+      "name": "izmir05.jpg",
+      "type": "file"
+    },
+    {
+      "name": "izmir04.jpg",
+      "type": "file"
+    },
+    {
+      "name": "izmir03.jpg",
+      "type": "file"
+    }
+  ],
+  "usak": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "usak.jpg",
+      "type": "file"
+    }
+  ],
+  "manisa": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "manisa04.JPG",
+      "type": "file"
+    },
+    {
+      "name": "manisa01.JPG",
+      "type": "file"
+    },
+    {
+      "name": "manisa02.JPG",
+      "type": "file"
+    }
+  ],
+  "zonguldak": [
+    {
+      "name": "zonguldak.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "afis.pdf",
+      "type": "file"
+    }
+  ],
+  "aydin": [
+    {
+      "name": "02.jpg",
+      "type": "file"
+    },
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "04.jpg",
+      "type": "file"
+    },
+    {
+      "name": "03.jpg",
+      "type": "file"
+    },
+    {
+      "name": "01.jpg",
+      "type": "file"
+    }
+  ],
+  "youtube_playlists": [
+    {
+      "name": "02.jpg",
+      "type": "file"
+    },
+    {
+      "name": "07.jpg",
+      "type": "file"
+    },
+    {
+      "name": "06.jpg",
+      "type": "file"
+    },
+    {
+      "name": "09.jpg",
+      "type": "file"
+    },
+    {
+      "name": "04.jpg",
+      "type": "file"
+    },
+    {
+      "name": "11.jpg",
+      "type": "file"
+    },
+    {
+      "name": "10.jpg",
+      "type": "file"
+    },
+    {
+      "name": "05.jpg",
+      "type": "file"
+    },
+    {
+      "name": "03.jpg",
+      "type": "file"
+    },
+    {
+      "name": "08.jpg",
+      "type": "file"
+    },
+    {
+      "name": "01.jpg",
+      "type": "file"
+    }
+  ],
+  "assets/network-pdfs": [
+    {
+      "name": "02_ICETOL_2025.pdf",
+      "type": "file"
+    },
+    {
+      "name": "07_Cukurova_Uluslararasi_Temel_ve_Uygulamali_Bilimler_Kongresi_2026.pdf",
+      "type": "file"
+    },
+    {
+      "name": "03_UEDFOR_6_2025.pdf",
+      "type": "file"
+    },
+    {
+      "name": "08_26_Mart_2026_Genclik_Iklim_Medya_Zirvesi.pdf",
+      "type": "file"
+    },
+    {
+      "name": "10_Kisa_Filmlerle_Cevre_ve_Surdurulebilirlik_2026.pdf",
+      "type": "file"
+    },
+    {
+      "name": "01_Cevresel_Surdurulebilirlik_Zirvesi_17_Nisan_2025.pdf",
+      "type": "file"
+    },
+    {
+      "name": "04_UKAY_2025.pdf",
+      "type": "file"
+    },
+    {
+      "name": "09_15_Uluslararasi_Sosyal_Bilimler_Konferansi_2026.pdf",
+      "type": "file"
+    },
+    {
+      "name": "06_Ege_14_Uluslararasi_Sosyal_Bilimler_Kongresi_2025.pdf",
+      "type": "file"
+    },
+    {
+      "name": "05_International_Education_Congress_2025.pdf",
+      "type": "file"
+    }
+  ],
+  "assets/outputs": [
+    {
+      "name": "WP2-Dijital-Aktivizm-ve-Farkindalik-Tasarimlari.pdf",
+      "type": "file"
+    }
+  ],
+  "assets/site-images": [
+    {
+      "name": "00f57f8d9996f2e0.webp",
+      "type": "file"
+    },
+    {
+      "name": "a6d2bd10ba406d43.webp",
+      "type": "file"
+    },
+    {
+      "name": "5ae8214ad3860ae5.webp",
+      "type": "file"
+    },
+    {
+      "name": "941d74c3d4444db4.webp",
+      "type": "file"
+    },
+    {
+      "name": "11ac511cb78200a8.webp",
+      "type": "file"
+    },
+    {
+      "name": "568c9e78e1f947e9.webp",
+      "type": "file"
+    },
+    {
+      "name": "1f0f96a6bd350f40.webp",
+      "type": "file"
+    },
+    {
+      "name": "7c57dfbef65927ea.webp",
+      "type": "file"
+    },
+    {
+      "name": "176126ef50136efa.webp",
+      "type": "file"
+    },
+    {
+      "name": "1d684ad01a2e98bb.webp",
+      "type": "file"
+    },
+    {
+      "name": "c3b5f907fcc895fd.webp",
+      "type": "file"
+    },
+    {
+      "name": "2e52305e13385005.webp",
+      "type": "file"
+    },
+    {
+      "name": "62a30fbc7e77d5d4.webp",
+      "type": "file"
+    },
+    {
+      "name": "8ed944c271782a99.webp",
+      "type": "file"
+    },
+    {
+      "name": "89bdb2bb8e3998cd.webp",
+      "type": "file"
+    },
+    {
+      "name": "izmir-zirve.jpg",
+      "type": "file"
+    },
+    {
+      "name": "fd1d06ea0d4c35b4.webp",
+      "type": "file"
+    },
+    {
+      "name": "ab0cc1e85d880073.webp",
+      "type": "file"
+    }
+  ],
+  "assets/international/vienna": [
+    {
+      "name": "poster-01.jpg",
+      "type": "file"
+    },
+    {
+      "name": "IMG_2634.jpg",
+      "type": "file"
+    },
+    {
+      "name": "IMG_2628.jpg",
+      "type": "file"
+    },
+    {
+      "name": "IMG_2641.jpg",
+      "type": "file"
+    },
+    {
+      "name": "IMG_2645.jpg",
+      "type": "file"
+    },
+    {
+      "name": "IMG_2621.jpg",
+      "type": "file"
+    },
+    {
+      "name": "IMG_2637.jpg",
+      "type": "file"
+    },
+    {
+      "name": "IMG_2624.jpg",
+      "type": "file"
+    }
+  ],
+  "sivas": [
+    {
+      "name": "afis01.jpg",
+      "type": "file"
+    },
+    {
+      "name": "gorsel01.jpeg",
+      "type": "file"
+    }
+  ]
+}
