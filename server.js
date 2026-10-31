@@ -1040,6 +1040,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-10-31","SEO yapılandırılmış verileri geliştirildi","Sekiz ana sayfanın üç dil sürümü için WebPage ve BreadcrumbList JSON-LD verileri eklendi. Mevcut Project/WebSite şemaları korundu. Canlı indeksleme ve mobil hız sonuçları ayrıca doğrulanmalıdır; ana sayfaların görsel tasarımı değiştirilmedi."],
 ["2026-10-31","Yönetim analitiği genişletildi","Yalnızca yönetim paneli ve sunucu istatistikleri geliştirildi. Sayfa görüntüleme, ziyaret başına sayfa, giriş sayfaları, trafik kaynağı grupları, etkileşimler ve proje içeriklerine erişim eklendi. Veri saklama varsayılanı 730 gün ve 250.000 olay olarak ayarlandı; geçmişte silinen kayıtlar geri getirilemez. Ana site dosyaları değiştirilmedi."],
 ["2026-10-31","Eğitim kartlarının görünümü standartlaştırıldı","Eğitimler sayfasındaki 31 kartta ortak bilgi sıralaması uygulandı: il/oturum adı, eğitim türü, tarih, katılımcı sayısı ve mevcut medya bağlantıları. Yalnızca bazı kayıtlarda bulunan okul adı, saat ve ortak oturum açıklamaları kart görünümünden kaldırıldı; eğitim kayıtları ve katılımcı sayıları değiştirilmedi. Kart yüksekliği ve bağlantı hizaları eşitlendi."],
 ["2026-10-31","Eğitim arşivindeki tüm kartlara medya bağlantıları eklendi","Eğitimler sayfasındaki 31 oturum kartı, GitHub galeri dosyalarına göre kontrol edildi. Mevcut fotoğraflar için Fotoğraf Arşivi, afişler için Program Akışı bağlantıları eklendi; fotoğrafı bulunmayan kartlarda yalnızca mevcut program bağlantısı gösteriliyor. Ortak eğitimlerde tek oturum sayımı korunuyor."],
@@ -1142,6 +1143,7 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-10-31","Improved structured SEO data","Added language-aware WebPage and BreadcrumbList JSON-LD for eight main pages in three languages while retaining existing Project/WebSite schemas. Live indexing and mobile speed still require verification. Public page layouts were unchanged."],
 ["2026-10-31","Expanded administration analytics","Admin-only analytics now include page views, pages per session, entry pages, traffic source groups, interactions and project content usage. Default event retention is 730 days and 250,000 events; previously purged events cannot be recovered. Public site files were not modified."],
 ["2026-10-31","Training archive cards standardized","All 31 training cards now use a consistent field order: location/session, training type, date, participant count and available media links. Inconsistently available venue and time details were removed from card display without changing training records or counts. Card heights and media links were aligned."],
 ["2026-10-31","Media links added to all training archive cards","All 31 training cards were checked against the GitHub gallery manifest. Photo Archive and Programme links are now shown only when the corresponding files exist; shared multi-province sessions remain counted once."],
