@@ -45,8 +45,6 @@ export function installSeo(app,dir){
   html=html.replace(/<meta\b(?=[^>]*(?:property|name)=["'](?:og:[^"']+|twitter:[^"']+)["'])[^>]*>/gi,'');
   // Localized documents retain their page-specific translated descriptions.
   let description=html.match(/<meta name="description" content="([^"]*)"/i)?.[1]||'';
-  if(lang==='en'&&req.path!=='/cop31.html')description=desc.en;
-  if(lang==='de'&&req.path!=='/cop31.html')description=desc.de;
   if(req.path==='/cop31.html'&&lang==='en')description='An independent e-NetCoM guide to COP31 Antalya 2026, climate negotiations, thematic events and youth climate awareness.';
   if(req.path==='/cop31.html'&&lang==='de')description='Ein unabhängiger e-NetCoM-Leitfaden zur COP31 Antalya 2026, Klimaverhandlungen, Thementagen und Klimabildung für Jugendliche.';
   html=html.replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i,'<meta name="description" content="'+esc(description)+'">');
