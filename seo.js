@@ -169,7 +169,7 @@ export function installSeo(app,dir){
  app.get('/kaynaklar.html',(req,res)=>{
   const lang=['en','de'].includes(req.query.lang)?req.query.lang:'tr';
   const raw=req.query.page;
-  if(raw!==undefined&&(typeof raw!=='string'||!/^\\d+$/.test(raw)))return res.sendStatus(404);
+  if(raw!==undefined&&(typeof raw!=='string'||!/^\d+$/.test(raw)))return res.sendStatus(404);
   const page=raw===undefined?1:Number(raw);
   if(!Number.isSafeInteger(page)||page<1)return res.sendStatus(404);
   const html=resourceCatalogueHtml(dir,lang,page);
