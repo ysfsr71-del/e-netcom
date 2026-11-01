@@ -123,6 +123,10 @@ export function installSeo(app,dir){
       ?'e-NetCoM '+galleryCity+': '+mode.de+'-Schulung am '+galleryDetails.date+' ('+galleryDetails.people+'). Fotos und Programmmaterialien.'
       :'e-NetCoM '+galleryCity+' '+mode.tr+' eğitimi: '+galleryDetails.date+', '+galleryDetails.people+'. Etkinlik fotoğrafları ve program akışı.';
   }
+  // Unknown gallery filters should not create arbitrary indexable URL variants.
+  if(req.path==='/gallery.html' && galleryCity && !galleryDetails){
+    res.set('X-Robots-Tag','noindex, follow');
+  }
   // Replace existing meta description or insert it when absent.
   html=html.replace(/<meta\s+name=["']description["'][^>]*>/gi,'');
   html=html.replace('</head>','<meta name="description" content="'+esc(description)+'"></head>');
