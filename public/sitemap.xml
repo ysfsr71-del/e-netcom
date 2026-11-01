@@ -945,4 +945,46 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/gallery.html?city=Sivas&amp;lang=de"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/gallery.html?city=Sivas"/>
   </url>
+  <url>
+    <loc>https://enetcomproject.com/gallery.html?city=Viyana</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/gallery.html?city=Viyana"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/gallery.html?city=Viyana&amp;lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/gallery.html?city=Viyana&amp;lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/gallery.html?city=Viyana"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/gallery.html?city=Viyana&amp;lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/gallery.html?city=Viyana"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/gallery.html?city=Viyana&amp;lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/gallery.html?city=Viyana&amp;lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/gallery.html?city=Viyana"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/gallery.html?city=Viyana&amp;lang=de</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/gallery.html?city=Viyana"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/gallery.html?city=Viyana&amp;lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/gallery.html?city=Viyana&amp;lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/gallery.html?city=Viyana"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/gallery.html?city=B%C3%BCkre%C5%9F</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/gallery.html?city=B%C3%BCkre%C5%9F"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/gallery.html?city=B%C3%BCkre%C5%9F&amp;lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/gallery.html?city=B%C3%BCkre%C5%9F&amp;lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/gallery.html?city=B%C3%BCkre%C5%9F"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/gallery.html?city=B%C3%BCkre%C5%9F&amp;lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/gallery.html?city=B%C3%BCkre%C5%9F"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/gallery.html?city=B%C3%BCkre%C5%9F&amp;lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/gallery.html?city=B%C3%BCkre%C5%9F&amp;lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/gallery.html?city=B%C3%BCkre%C5%9F"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/gallery.html?city=B%C3%BCkre%C5%9F&amp;lang=de</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/gallery.html?city=B%C3%BCkre%C5%9F"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/gallery.html?city=B%C3%BCkre%C5%9F&amp;lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/gallery.html?city=B%C3%BCkre%C5%9F&amp;lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/gallery.html?city=B%C3%BCkre%C5%9F"/>
+  </url>
 </urlset>
