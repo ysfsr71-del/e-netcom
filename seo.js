@@ -143,7 +143,7 @@ export function installSeo(app,dir){
     ]
   };
   const schemaTags=(req.path==='/'?[webpage]:[webpage,breadcrumbs]).map(obj=>'<script type="application/ld+json">'+JSON.stringify(obj).replace(/</g,'\\u003c')+'</script>').join('');
-  html=html.replace('</head>',tags+schemaTags+'<script src="/seo.js" defer></script><script src="/consent.js" defer></script>${req.path==='/'?'<script src="/province-participation.js" defer></script>':''}</head>');
+  html=html.replace('</head>',tags+schemaTags+'<script src="/seo.js" defer></script><script src="/consent.js" defer></script>' + (req.path==='/'?'<script src="/province-participation.js" defer></script>':'') + '</head>');
   if(req.path==='/gallery.html'&&!req.query.city){
    const cities=['Kayseri','Ankara','İstanbul','İzmir','Balıkesir','Tunceli','Viyana'];
    html=html.replace(/<div class="loading" id="loading">[^<]*<\/div>/,'<div class="notice">'+cities.map(c=>'<p><a href="/gallery.html?city='+encodeURIComponent(c)+'&amp;lang='+lang+'">'+esc(c)+'</a></p>').join('')+'</div>');
