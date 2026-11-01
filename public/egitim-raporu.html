@@ -1,0 +1,20 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>e-NetCoM Eğitim Raporu</title><style>body{font:15px system-ui;background:#f4f8f5;color:#173b31;margin:0;padding:24px}main{max-width:1150px;margin:auto}h1{font-size:26px}button{background:#087b5b;color:white;border:0;border-radius:9px;padding:12px;margin:5px;cursor:pointer}table{border-collapse:collapse;width:100%;background:white}th,td{border:1px solid #d7e5de;padding:9px;text-align:left}th{background:#e7f5ee}.scroll{overflow:auto}p{line-height:1.6}.note{color:#586d65}@media print{button{display:none}body{padding:0;background:white}}</style></head><body><main><h1>e-NetCoM — Eğitim ve İl Katılım Raporu</h1><p>Ortak eğitimler tek oturum sayılır. İl katılımı ile oturum toplamı ayrı gösterilir.</p><div><button id="csv">Excel uyumlu CSV indir</button><button onclick="print()">PDF / Yazdır</button></div><p id="status">Kayıtlar yükleniyor…</p><div class="scroll"><table><thead><tr><th>İl</th><th>Tarih</th><th>Eğitim türü</th><th>Yer / oturum</th><th>İl katılımı</th><th>Oturum toplamı</th><th>Ortak oturum kimliği</th></tr></thead><tbody id="rows"></tbody></table></div><p class="note">İl bazlı dağılımı henüz girilmemiş ortak oturumlarda il katılımı boş bırakılır; toplam sayı tekrar edilmez.</p></main><script>
+(async()=>{
+ const [page,data]=await Promise.all([fetch('/index.html',{cache:'no-store'}).then(r=>r.text()),fetch('/shared-training-participation.json',{cache:'no-store'}).then(r=>r.json())]);
+ const block=page.match(/const trainingData=\[([\s\S]*?)\];/),extra=page.match(/const additionalActivities=\[([\s\S]*?)\];/);
+ if(!block||!extra)throw Error('Kaynak bulunamadı');
+ const records=[];
+ for(const m of block[1].matchAll(/\['([^']+)','([^']+)','(Yüz yüze|Çevrimiçi)','([^']*)',(\d+)\]/g))records.push([m[2],m[1],m[3],m[4],m[5],m[5],'']);
+ for(const session of data.sessions){for(const [city,count] of Object.entries(session.provinces))records.push([city,session.date,session.mode,'Ortak çevrimiçi eğitim',count,session.total,session.id]);}
+ const sharedIds=new Set(data.sessions.map(x=>x.id));
+ for(const m of extra[1].matchAll(/\['([^']+)','([^']+)','[^']+','(Yüz yüze|Çevrimiçi)',[^\n]*?,(\d+),'completed','([^']+)'\]/g)){
+ if(sharedIds.has(m[5]))continue;
+ if(records.some(x=>x[6]===m[5]&&x[0]===m[2]))continue;
+ records.push([m[2],m[1],m[3],'Ortak eğitim','',m[4],m[5]]);
+ }
+ const tbody=document.getElementById('rows');
+ for(const record of records){const tr=document.createElement('tr');for(const v of record){const td=document.createElement('td');td.textContent=v;tr.append(td)}tbody.append(tr)}
+ document.getElementById('status').textContent=records.length+' il/oturum satırı listelendi. İl katılımı boş olan kayıtlar doğrulama bekliyor.';
+ document.getElementById('csv').onclick=()=>{const csv='\uFEFF'+[['İl','Tarih','Tür','Yer / oturum','İl katılımı','Oturum toplamı','Oturum kimliği'],...records].map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='enetcom-egitim-il-raporu.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+})().catch(e=>document.getElementById('status').textContent='Rapor yüklenemedi: '+e.message);
+</script></body></html>
