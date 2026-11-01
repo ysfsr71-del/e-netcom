@@ -17,6 +17,13 @@ const __dirname = path.dirname(__filename);
 app.disable("x-powered-by");
 app.use(express.json({limit:"512kb"}));
 installSeo(app, __dirname);
+// Detailed reports are only available to authenticated administrators.
+app.get("/egitim-raporu.html", (req,res,next) => {
+  if (!isAdminAuthenticated(req)) return res.status(401).type("text/plain").send("Yönetici oturumu gerekli.");
+  res.setHeader("Cache-Control","private, no-store");
+  res.setHeader("X-Robots-Tag","noindex, nofollow");
+  next();
+});
 app.use(express.static(path.join(__dirname, "public")));
 
 const apiKey = process.env.OPENAI_API_KEY?.trim();
