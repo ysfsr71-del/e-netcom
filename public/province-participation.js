@@ -5,7 +5,7 @@ let sessions=[];
 fetch(dataUrl,{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{
  sessions=d.sessions||[];
  const title=document.getElementById('cityTitle');
- const root=title?.closest('.map-info')||title?.parentElement?.parentElement;
+ const root=document.getElementById('cityInfo');
  if(!title||!root)return;
  const update=()=>{
   const city=title.textContent.trim();
@@ -29,8 +29,8 @@ fetch(dataUrl,{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(d
    if(rows.length)rows[0].after(line);else card.append(line);
   }
  };
- const observer=new MutationObserver(()=>{observer.disconnect();update();observer.observe(root,{childList:true,subtree:true,characterData:true});});
- observer.observe(root,{childList:true,subtree:true,characterData:true});
+ const observer=new MutationObserver(()=>{observer.disconnect();update();observer.observe(root,{childList:true});});
+ observer.observe(root,{childList:true});
  update();
 }).catch(()=>{});
 })();
