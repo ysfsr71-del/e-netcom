@@ -75,8 +75,13 @@ function trainingGalleryDetails(dir,city){
     const norm=v=>String(v).replace(/&amp;/g,'&').replace(/\s+/g,' ').trim().toLocaleLowerCase('tr-TR');
     for(const match of source.matchAll(/<article class="record (face|online)"[^>]*>([\s\S]*?)<\/article>/g)){
       const body=match[2],name=body.match(/<h3>([^<]+)<\/h3>/)?.[1];
-      if(!name || norm(name)!==norm(city))continue;
-      return {type:match[1],date:body.match(/<p>([^<]*2026)<\/p>/)?.[1]||'',people:body.match(/<div class="people">([^<]*)<\/div>/)?.[1]||''};
+      if(!name)continue;
+      // A joint training record covers multiple cities; do not miss its
+      // participants merely because the heading lists several provinces.
+      const members=name.replace(/&amp;/g,'&').split(' · ')[0]
+        .replace(/\\s+ve\\s+/gi,',').split(/\\s*[&,]\\s*/).map(norm);
+      if(!members.includes(norm(city)))continue;
+      return {type:match[1],shared:members.length>1,date:body.match(/<p>([^<]*2026)<\\/p>/)?.[1]||'',people:body.match(/<div class="people">([^<]*)<\\/div>/)?.[1]||''};
     }
   }catch{}
   return null;
@@ -123,11 +128,20 @@ export function installSeo(app,dir){
   let description=descriptions[req.path]?.[lang] || desc[lang] || descriptions['/'].tr;
   if(galleryDetails){
     const mode=galleryDetails.type==='face'?{tr:'yüz yüze',en:'in-person',de:'Präsenz'}:{tr:'çevrimiçi',en:'online',de:'Online'};
-    description=lang==='en'
-      ?'e-NetCoM '+galleryCity+' '+mode.en+' training on '+galleryDetails.date+' ('+galleryDetails.people+'). Explore event photos and programme materials.'
-      :lang==='de'
-      ?'e-NetCoM '+galleryCity+': '+mode.de+'-Schulung am '+galleryDetails.date+' ('+galleryDetails.people+'). Fotos und Programmmaterialien.'
-      :'e-NetCoM '+galleryCity+' '+mode.tr+' eğitimi: '+galleryDetails.date+', '+galleryDetails.people+'. Etkinlik fotoğrafları ve program akışı.';
+    const participants=galleryDetails.people;
+    if(galleryDetails.shared){
+      description=lang==='en'
+        ?'e-NetCoM joint '+mode.en+' training including '+galleryCity+' on '+galleryDetails.date+' ('+participants+' across the joint session). Photos and programme.'
+        :lang==='de'
+        ?'e-NetCoM: Gemeinsame '+mode.de+'-Schulung mit '+galleryCity+' am '+galleryDetails.date+' ('+participants+' insgesamt). Fotos und Programm.'
+        :'e-NetCoM '+galleryCity+' ilini de kapsayan '+galleryDetails.date+' tarihli ortak '+mode.tr+' eğitim ('+participants+' toplam katılımcı). Fotoğraflar ve program.';
+    }else{
+      description=lang==='en'
+        ?'e-NetCoM '+galleryCity+' '+mode.en+' training on '+galleryDetails.date+' ('+participants+'). Explore event photos and programme materials.'
+        :lang==='de'
+        ?'e-NetCoM '+galleryCity+': '+mode.de+'-Schulung am '+galleryDetails.date+' ('+participants+'). Fotos und Programmmaterialien.'
+        :'e-NetCoM '+galleryCity+' '+mode.tr+' eğitimi: '+galleryDetails.date+', '+participants+'. Etkinlik fotoğrafları ve program akışı.';
+    }
   }
   // Replace existing meta description or insert it when absent.
   html=html.replace(/<meta\s+name=["']description["'][^>]*>/gi,'');
