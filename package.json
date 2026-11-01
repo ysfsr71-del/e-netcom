@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "prestart": "node scripts/prerender.mjs"
+    "prestart": "node scripts/prerender.mjs",
+    "audit:guide": "node scripts/audit-guide-seo.mjs",
+    "audit:guide:strict": "node scripts/audit-guide-seo.mjs --strict"
   },
   "engines": {
     "node": ">=20"
