@@ -420,13 +420,14 @@ async function loadSeoHealth(){
       robotsReferencesSitemap:"Robots → sitemap",
       sitemapLanguageAlternates:"Dil alternatifleri",
       cop31StructuredData:"COP31 yapılandırılmış veri",
+      resourceIndexInSitemap:"E-Merkez kaynak dizini (3 dil)",
       galleryFoldersInManifest:"Galeri klasörleri"
     };
     const results=Object.entries(d.checks||{}).map(([key,ok])=>
       (ok?"✓ ":"⚠ ")+(labels[key]||key));
     status.textContent=results.join(" · ")+(d.missingGalleries?.length?" · Eksik: "+d.missingGalleries.join(", "):"");
     $("seoLimit").textContent="Kontrol: "+new Date(d.checkedAt).toLocaleString("tr-TR")+
-      " · Kaynak: sunucu dosyaları. Search Console gösterimleri, indeks durumu ve LCP/INP/CLS ölçümleri bu rapora dahil değildir.";
+      " · Kaynak dizini: "+fmt(d.resourceIndexPages||0)+" sayfa · Kaynak: sunucu dosyaları. Search Console gösterimleri, indeks durumu ve LCP/INP/CLS ölçümleri bu rapora dahil değildir.";
   }catch(e){status.textContent="Teknik SEO kontrolü alınamadı: "+e.message;}
 }
 async function load(){
