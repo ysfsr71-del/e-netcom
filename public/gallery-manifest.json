@@ -774,5 +774,45 @@
       "name": "gorsel01.jpeg",
       "type": "file"
     }
+  ],
+  "bingol": [
+    {
+      "name": "afis01.jpg",
+      "type": "file"
+    },
+    {
+      "name": "gorsel01.jpeg",
+      "type": "file"
+    }
+  ],
+  "cankiri": [
+    {
+      "name": "afis01.jpg",
+      "type": "file"
+    },
+    {
+      "name": "gorsel01.jpeg",
+      "type": "file"
+    }
+  ],
+  "edirne": [
+    {
+      "name": "afis01.jpg",
+      "type": "file"
+    },
+    {
+      "name": "gorsel01.jpeg",
+      "type": "file"
+    }
+  ],
+  "mus": [
+    {
+      "name": "afis01.jpg",
+      "type": "file"
+    },
+    {
+      "name": "gorsel01.jpeg",
+      "type": "file"
+    }
   ]
 }
