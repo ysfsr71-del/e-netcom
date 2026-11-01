@@ -87,6 +87,31 @@ function trainingGalleryDetails(dir,city){
   return null;
 }
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// Render a small, factual preview of the existing e-Centre catalogue in the
+// initial HTML. The interactive browser search replaces this after JSON loads.
+let databasePreviewCache=null;
+function databasePreview(dir,lang){
+  if(databasePreviewCache===null){
+    try{
+      const data=JSON.parse(readSeoFile(path.join(dir,'public','assets','database','database.json')));
+      const items=Array.isArray(data)?data:(Array.isArray(data.items)?data.items:[]);
+      databasePreviewCache=items.slice(0,10);
+    }catch{
+      databasePreviewCache=[];
+    }
+  }
+  const sourceLabel=lang==='en'?'Open original source':lang==='de'?'Originalquelle öffnen':'Özgün kaynağı aç';
+  return databasePreviewCache.map(item=>{
+    const title=esc(item.title||'e-NetCoM');
+    const author=item.author?'<strong>'+esc(item.author)+'</strong>':'';
+    const description=item.description?'<p>'+esc(String(item.description).slice(0,320))+'</p>':'';
+    const tags=[item.content_type,item.topic,item.lang,item.year].filter(Boolean)
+      .map(value=>'<span class="tag">'+esc(value)+'</span>').join('');
+    const link=typeof item.url==='string' && /^https?:\/\//i.test(item.url)
+      ?'<a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer">'+sourceLabel+' ↗</a>':'';
+    return '<article class="item"><div class="tags">'+tags+'</div><h2>'+title+'</h2>'+author+description+link+'</article>';
+  }).join('');
+}
 export function installSeo(app,dir){
  // The verification key stays in Render configuration, outside Git history.
  app.get('/indexnow-key.txt',(req,res)=>{
@@ -109,6 +134,10 @@ export function installSeo(app,dir){
   const file=req.path==='/'?'index.html':req.path.slice(1);
   const localized=path.join(dir,'.cache','localized',lang,file);
   let html=readSeoFile(lang!=='tr'&&fs.existsSync(localized)?localized:path.join(dir,'public',file));
+  if(req.path==='/veritabani.html'){
+    const preview=databasePreview(dir,lang);
+    if(preview)html=html.replace('<div id="results"></div>','<div id="results">'+preview+'</div>');
+  }
   let title=titles[req.path]?.[li] || (html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]||'e-NetCoM');
   const galleryCity=req.path==='/gallery.html'&&typeof req.query.city==='string'?req.query.city.slice(0,100).trim():null;
   const galleryDetails=galleryCity?trainingGalleryDetails(dir,galleryCity):null;
