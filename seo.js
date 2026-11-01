@@ -55,11 +55,23 @@ const descriptions={
  }
 };
 const desc={en:'Explore e-NetCoM environmental communication, youth leadership, sustainability training and project resources.',de:'Entdecken Sie Umweltkommunikation, Jugendführung, Nachhaltigkeitsschulungen und Projektmaterialien von e-NetCoM.'};
+// Cache file contents between requests while picking up changed files automatically.
+// This avoids repeatedly reading the large home page and training archive.
+const seoFileCache=new Map();
+function readSeoFile(file){
+ const stat=fs.statSync(file);
+ const existing=seoFileCache.get(file);
+ if(existing&&existing.mtimeMs===stat.mtimeMs&&existing.size===stat.size)return existing.text;
+ const value=fs.readFileSync(file,'utf8');
+ if(seoFileCache.size>=24)seoFileCache.clear();
+ seoFileCache.set(file,{mtimeMs:stat.mtimeMs,size:stat.size,text:value});
+ return value;
+}
 // Training records are read from the existing archive; no duplicate SEO data is maintained.
 function trainingGalleryDetails(dir,city){
   if(!city)return null;
   try{
-    const source=fs.readFileSync(path.join(dir,'public','egitimler.html'),'utf8');
+    const source=readSeoFile(path.join(dir,'public','egitimler.html'));
     const norm=v=>String(v).replace(/&amp;/g,'&').replace(/\s+/g,' ').trim().toLocaleLowerCase('tr-TR');
     for(const match of source.matchAll(/<article class="record (face|online)"[^>]*>([\s\S]*?)<\/article>/g)){
       const body=match[2],name=body.match(/<h3>([^<]+)<\/h3>/)?.[1];
@@ -91,7 +103,7 @@ export function installSeo(app,dir){
   if(lang!=='tr')canonical.searchParams.set('lang',lang);
   const file=req.path==='/'?'index.html':req.path.slice(1);
   const localized=path.join(dir,'.cache','localized',lang,file);
-  let html=fs.readFileSync(lang!=='tr'&&fs.existsSync(localized)?localized:path.join(dir,'public',file),'utf8');
+  let html=readSeoFile(lang!=='tr'&&fs.existsSync(localized)?localized:path.join(dir,'public',file));
   let title=titles[req.path]?.[li] || (html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]||'e-NetCoM');
   const galleryCity=req.path==='/gallery.html'&&typeof req.query.city==='string'?req.query.city.slice(0,100).trim():null;
   const galleryDetails=galleryCity?trainingGalleryDetails(dir,galleryCity):null;
