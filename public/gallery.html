@@ -122,7 +122,7 @@ function renderSlides(list){
     '</div>'+
     '<div class="thumbs">'+
       list.map((p,i)=>
-        '<button class="thumb" data-i="'+i+'"><img src="'+p.src+'" alt="'+esc(city)+' · '+(i+1)+'"></button>'
+        '<button class="thumb" data-i="'+i+'"><img loading="lazy" decoding="async" src="'+p.src+'" alt="'+esc(city)+' · '+(i+1)+'"></button>'
       ).join('')+
     '</div>';
 
