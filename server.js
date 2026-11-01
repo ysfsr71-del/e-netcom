@@ -1474,6 +1474,54 @@ app.get("/api/admin/report.xlsx", requireAdmin, (req, res) => {
   res.send(workbook);
 });
 
+// Technical SEO inventory only: this is not Google Search Console traffic
+// or a Core Web Vitals measurement.
+app.get("/api/admin/seo-health", requireAdmin, (req, res) => {
+  try {
+    const publicDir = path.join(__dirname, "public");
+    const read = name => fs.readFileSync(path.join(publicDir, name), "utf8");
+    const sitemap = read("sitemap.xml");
+    const robots = read("robots.txt");
+    const cop31 = read("cop31.html");
+    const manifest = JSON.parse(read("gallery-manifest.json"));
+    const catalogue = JSON.parse(read("assets/database/database.json"));
+    const resources = Array.isArray(catalogue) ? catalogue : (catalogue.items || []);
+    const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1].replace(/&amp;/g, "&"));
+    const cities = [...new Set(urls.filter(u => u.includes("/gallery.html?city=")).map(u => {
+      const encoded = (u.match(/[?&]city=([^&]+)/) || [])[1] || "";
+      try { return decodeURIComponent(encoded); } catch { return encoded; }
+    }))];
+    const slug = value => String(value).toLocaleLowerCase("tr-TR")
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/ı/g, "i").replace(/ğ/g, "g").replace(/ü/g, "u")
+      .replace(/ş/g, "s").replace(/ö/g, "o").replace(/ç/g, "c")
+      .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    const missingGalleries = cities.filter(city => !Array.isArray(manifest[slug(city)]));
+    const checks = {
+      robotsReferencesSitemap: robots.includes("https://enetcomproject.com/sitemap.xml"),
+      sitemapLanguageAlternates: sitemap.includes('hreflang="tr"') &&
+        sitemap.includes('hreflang="en"') && sitemap.includes('hreflang="de"'),
+      cop31StructuredData: cop31.includes('application/ld+json'),
+      galleryFoldersInManifest: missingGalleries.length === 0
+    };
+    res.set("Cache-Control", "private, no-store").json({
+      checkedAt: new Date().toISOString(),
+      source: "deployed files",
+      sitemapUrls: urls.length,
+      galleryCities: cities.length,
+      resourceCount: resources.length,
+      languages: ["tr", "en", "de"],
+      missingGalleries,
+      checks,
+      searchConsole: "not_connected",
+      coreWebVitals: "not_measured"
+    });
+  } catch (error) {
+    console.error("SEO inventory failed:", error.message);
+    res.status(500).json({ error: "Teknik SEO dosya denetimi yapılamadı." });
+  }
+});
+
 app.get("/api/admin/stats", requireAdmin, async (req, res) => {
   const range = ["24h", "7d", "30d", "90d", "1y", "all", "custom"].includes(req.query.range)
     ? req.query.range
