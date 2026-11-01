@@ -208,6 +208,22 @@ body{background:radial-gradient(circle at 80% -10%,rgba(100,224,167,.13),transpa
 
   <section class="content-performance"><div class="card"><h2>En çok açılan videolar</h2><div class="small" style="margin-top:-8px;margin-bottom:12px">Video ve oynatma kontrolleri.</div><div class="list" id="videoOpens"></div></div><div class="card"><h2>İndirilen içerikler</h2><div class="small" style="margin-top:-8px;margin-bottom:12px">PDF, program ve indirilebilir içerik etkileşimleri.</div><div class="list" id="downloads"></div></div><div class="card ecenter-card"><div class="kpi-icon">⌕</div><h2>e-Merkez kullanımı</h2><div class="num" id="eCenterInteractions">—</div><div class="small">e-Merkez alanındaki toplam etkileşim</div></div></section>
 
+  <section class="card" id="seoHealth" style="margin-top:14px">
+    <div class="education-head">
+      <div><div class="section-title"><span class="ico">🔎</span><h2>SEO ve teknik erişilebilirlik</h2></div>
+      <div class="small">Sunucudaki sitemap, galeri arşivi ve e-Merkez dosyalarından doğrulanan bilgiler</div></div>
+      <button class="ghost" id="seoRefresh" type="button">↻ Kontrol et</button>
+    </div>
+    <div class="education-stats">
+      <div class="education-stat"><div class="label">Sitemap adresi</div><div class="num" id="seoUrls">—</div><div class="small">Dil varyantları dahil</div></div>
+      <div class="education-stat"><div class="label">İl galerisi</div><div class="num" id="seoGalleries">—</div><div class="small">Sitemap üzerinde</div></div>
+      <div class="education-stat"><div class="label">e-Merkez kaynağı</div><div class="num" id="seoResources">—</div><div class="small">Veri dosyasındaki kayıtlar</div></div>
+      <div class="education-stat"><div class="label">Dil</div><div class="num" id="seoLanguages">—</div><div class="small">TR / EN / DE</div></div>
+    </div>
+    <p class="small" id="seoChecks" style="margin-top:12px">Teknik kontrol henüz yüklenmedi.</p>
+    <p class="small" id="seoLimit" style="margin-top:8px">Bu bölüm arama gösterimleri veya Core Web Vitals puanları değildir. Google Search Console ve saha hız ölçümleri ayrıca bağlanmalıdır.</p>
+  </section>
+
   <div class="note">Bu panel anonim site etkileşimleri üzerinden çalışır. IP adresi kaydedilmez. Tekil ziyaretçi ölçümü tarayıcıdaki anonim ziyaretçi kimliğine dayanır ve yaklaşık bir metriktir.</div>
 </main>
 
@@ -391,6 +407,28 @@ function renderExpandedAnalytics(d){
  renderList("extraSources",d.sourceCategories);renderList("extraInteractions",d.interactions);
  renderList("extraProjects",d.projectInteractions);
 }
+async function loadSeoHealth(){
+  const status=$("seoChecks");
+  status.textContent="Teknik SEO dosyaları kontrol ediliyor…";
+  try{
+    const d=await api("/api/admin/seo-health");
+    $("seoUrls").textContent=fmt(d.sitemapUrls);
+    $("seoGalleries").textContent=fmt(d.galleryCities);
+    $("seoResources").textContent=fmt(d.resourceCount);
+    $("seoLanguages").textContent=(d.languages||[]).length;
+    const labels={
+      robotsReferencesSitemap:"Robots → sitemap",
+      sitemapLanguageAlternates:"Dil alternatifleri",
+      cop31StructuredData:"COP31 yapılandırılmış veri",
+      galleryFoldersInManifest:"Galeri klasörleri"
+    };
+    const results=Object.entries(d.checks||{}).map(([key,ok])=>
+      (ok?"✓ ":"⚠ ")+(labels[key]||key));
+    status.textContent=results.join(" · ")+(d.missingGalleries?.length?" · Eksik: "+d.missingGalleries.join(", "):"");
+    $("seoLimit").textContent="Kontrol: "+new Date(d.checkedAt).toLocaleString("tr-TR")+
+      " · Kaynak: sunucu dosyaları. Search Console gösterimleri, indeks durumu ve LCP/INP/CLS ölçümleri bu rapora dahil değildir.";
+  }catch(e){status.textContent="Teknik SEO kontrolü alınamadı: "+e.message;}
+}
 async function load(){
   document.body.classList.add("loading");
   try{
@@ -414,10 +452,12 @@ async function load(){
     $("eCenterInteractions").textContent=fmt(d.eCenterInteractions);
     renderYouTube(d.youtube);
     showApp();
+    loadSeoHealth();
   }catch(e){
     if(e.message!=="Oturum sona erdi.") console.error(e);
   }finally{document.body.classList.remove("loading");}
 }
+$("seoRefresh").addEventListener("click",loadSeoHealth);
 $("loginForm").addEventListener("submit",async e=>{
   e.preventDefault();$("loginError").textContent="";
   try{await api("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:$("password").value})});$("password").value="";load();}
