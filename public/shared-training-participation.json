@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "sessions": [
+    {
+      "id": "gumushane-sirnak-2026-10-24",
+      "date": "2026-10-24",
+      "mode": "Çevrimiçi",
+      "total": 51,
+      "provinces": {
+        "Gümüşhane": 28,
+        "Şırnak": 23
+      }
+    },
+    {
+      "id": "bingol-cankiri-edirne-mus-sivas-2026-10-31",
+      "date": "2026-10-31",
+      "mode": "Çevrimiçi",
+      "total": 178,
+      "provinces": {
+        "Bingöl": 47,
+        "Çankırı": 13,
+        "Edirne": 36,
+        "Muş": 38,
+        "Sivas": 44
+      }
+    }
+  ]
+}
