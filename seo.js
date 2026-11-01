@@ -108,17 +108,11 @@ export function installSeo(app,dir){
   const galleryCity=req.path==='/gallery.html'&&typeof req.query.city==='string'?req.query.city.slice(0,100).trim():null;
   const galleryDetails=galleryCity?trainingGalleryDetails(dir,galleryCity):null;
   if(galleryCity)title=galleryCity+' | '+title;
-  // Render the gallery's heading and descriptive content on the server so
-  // search engines do not need to execute client-side JavaScript to see it.
+  // Include a crawlable city heading without altering the client-side gallery controls.
   if(galleryCity){
-    const galleryLabel=lang==='en'?'Event Gallery':lang==='de'?'Veranstaltungsgalerie':'Etkinlik Galerisi';
-    const summary=lang==='en'
-      ?'e-NetCoM '+galleryCity+' event photo archive and programme materials.'
-      :lang==='de'
-      ?'e-NetCoM '+galleryCity+': Fotoarchiv und Programmmaterialien.'
-      :'e-NetCoM '+galleryCity+' etkinliği fotoğraf arşivi ve program materyalleri.';
-    html=html.replace(/(<h1\\b[^>]*\\bid=["']title["'][^>]*>)[\\s\\S]*?(<\\/h1>)/i,(_all,open,close)=>open+esc(galleryCity+' · '+galleryLabel)+close);
-    html=html.replace(/(<div\\b[^>]*\\bid=["']content["'][^>]*>)/i,(_all,open)=>open+'<p class="gallery-seo-intro">'+esc(summary)+'</p>');
+    const label=lang==='en'?'Event Gallery':lang==='de'?'Veranstaltungsgalerie':'Etkinlik Galerisi';
+    const marker='<h1 id="title">Eğitim Programı</h1>';
+    html=html.replace(marker,'<h1 id="title">'+esc(galleryCity+' · '+label)+'</h1>');
   }
   html=html.replace(/<title>[\s\S]*?<\/title>/i,'<title>'+esc(title)+'</title>');
   html=html.replace(/<link\b(?=[^>]*rel=["']canonical["'])[^>]*>/gi,'');
