@@ -785,6 +785,15 @@ html[data-lang="de"] .hero-network-head p{font-size:14px}
 
 /* Three editorial update cards inspired by approved concept */
 .story-v4-cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.story-v4-cards .story-v3-card{grid-template-columns:minmax(0,40%) minmax(0,1fr);gap:17px;min-height:252px;padding:13px;border-radius:20px;box-shadow:0 2px 16px rgba(4,67,46,.035)}.story-v4-media{position:relative;min-width:0;overflow:hidden;border-radius:14px;background:#d8eee1}.story-v4-media img{display:block;width:100%;height:100%;max-height:none;min-height:224px;object-fit:cover;border-radius:14px}.story-v4-erasmus{position:absolute;bottom:0;left:0;right:0;padding:11px 8px;color:white;font-size:18px;font-weight:800;letter-spacing:-.5px;background:linear-gradient(0deg,rgba(2,22,31,.92),transparent)}.story-v4-copy{min-width:0;display:flex;flex-direction:column;padding:8px 0}.story-v4-copy .news-meta{gap:9px;font-size:12px}.story-v4-copy h4{font-size:17px;line-height:1.28;margin:15px 0 10px}.story-v4-copy p{font-size:13px;line-height:1.48;margin:0 0 16px}.story-v4-copy .arrow{font-size:14px;margin-top:auto;font-weight:800}.story-v4-cards .tag{background:#e9f8ef;color:#086744}@media(max-width:1120px){.story-v4-cards{grid-template-columns:1fr}.story-v4-cards .story-v3-card{grid-template-columns:200px 1fr;min-height:220px}.story-v4-media img{min-height:194px}}@media(max-width:700px){.story-v4-cards .story-v3-card{grid-template-columns:125px 1fr;min-height:200px;gap:12px;padding:10px}.story-v4-media img{min-height:180px}.story-v4-copy h4{font-size:14px;margin:8px 0}.story-v4-copy p{font-size:12px;margin-bottom:9px}.story-v4-copy .arrow{font-size:12px}.story-v4-erasmus{font-size:12px}}
+
+/* E-Merkez primary navigation and lightweight hero discovery link */
+.nav-em-center{font-weight:900;color:#087b5b!important}
+.hero-em-center{display:flex;align-items:center;gap:10px;margin-top:10px;padding:10px 13px;border:1px solid rgba(211,255,229,.45);border-radius:13px;background:rgba(0,40,29,.22);color:#fff;text-decoration:none;transition:background .15s}
+.hero-em-center:hover,.hero-em-center:focus-visible{background:rgba(0,40,29,.42)}
+.hero-em-center .hero-em-icon{font-size:23px;line-height:1}
+.hero-em-center strong{display:block;font-size:13px;line-height:1.25}
+.hero-em-center small{display:block;font-size:10px;line-height:1.45;opacity:.9}
+.hero-em-center>span:last-child{margin-left:auto;font-size:18px}
 </style><meta content="e-NetCoM – Doğanın Enerjileri Bizimle: genç liderler, çevresel iletişim ve medya ağı." name="description"/>
 <style id="enetcom-i18n-css">
 .lang-switch{display:flex;align-items:center;gap:3px;padding:4px;border:1px solid var(--line);border-radius:12px;background:#fff;margin-left:8px}.lang-switch button{border:0;background:transparent;color:var(--muted);font:900 10px/1 inherit;padding:7px 8px;border-radius:8px;cursor:pointer}.lang-switch button.active{background:var(--deep);color:#fff}.lang-switch button:hover{color:var(--deep)}@media(max-width:1050px){.lang-switch{margin-left:2px}.lang-switch button{padding:7px 6px}}@media(max-width:760px){.lang-switch{display:none}}
@@ -1630,8 +1639,9 @@ footer .footer-page-nav a{display:inline-block;margin:0;color:#d7f2e7;font-size:
 </div>
 </details>
 <a href="#medya">Medya</a>
+<a class="nav-em-center" href="/veritabani.html">E-Merkez</a>
 <details class="nav-more"><summary>Daha Fazla</summary><div class="nav-dropdown">
-<a href="#network">Network</a><a href="#akademi">Akademi</a><a href="#iyi">İyi Uygulamalar</a><a href="#ortaklar">Ortaklar</a><a href="#veritabani">Veritabanı</a><a href="#iletisim">İletişim</a>
+<a href="#network">Network</a><a href="#akademi">Akademi</a><a href="#iyi">İyi Uygulamalar</a><a href="#ortaklar">Ortaklar</a><a href="#iletisim">İletişim</a>
 </div></details>
 <a class="nav-workshop" href="#atolye">✦ Atölye</a>
 </div>
@@ -1655,13 +1665,13 @@ footer .footer-page-nav a{display:inline-block;margin:0;color:#d7f2e7;font-size:
       <a href="#ciktilar" class="mobile-sub">Proje Çıktıları</a>
       <a href="#faaliyetler">Faaliyetler</a>
       <a href="#medya">Medya</a>
+      <a href="/veritabani.html">E-Merkez</a>
       <div class="mobile-nav-group-label" data-mobile-label="more">Daha Fazla</div>
       <a href="#network" class="mobile-sub">Network</a>
       <a href="#akademi" class="mobile-sub">Akademi</a>
       <a href="#iyi" class="mobile-sub">İyi Uygulamalar</a>
       <a href="#ortaklar" class="mobile-sub">Ortaklar</a>
-      <a href="#veritabani" class="mobile-sub">Veritabanı</a>
-      <a href="#iletisim" class="mobile-sub">İletişim</a>
+            <a href="#iletisim" class="mobile-sub">İletişim</a>
       <a href="#atolye" class="mobile-workshop">✦ Atölye</a>
     </nav>
   </div>
@@ -1755,6 +1765,7 @@ footer .footer-page-nav a{display:inline-block;margin:0;color:#d7f2e7;font-size:
         <span><i class="none"></i><b data-hero="legend-none">Henüz faaliyet yok</b></span>
       </div>
       <a class="hero-map-link" href="#iller" data-hero="map-link">81 İl haritasını incele <span>→</span></a>
+      <a class="hero-em-center" href="/veritabani.html" aria-label="e-NetCoM E-Merkez bilgi ve kaynak veritabanını keşfet"><span class="hero-em-icon" aria-hidden="true">▤</span><span><strong>E-Merkez</strong><small>Çevre ve sürdürülebilirlik bilgi kaynaklarını keşfet</small></span><span aria-hidden="true">↗</span></a>
     </div>
   </div>
 </header>
