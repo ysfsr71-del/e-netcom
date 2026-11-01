@@ -966,4 +966,25 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/gallery.html?city=Viyana&amp;lang=de"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/gallery.html?city=Viyana"/>
   </url>
+  <url>
+    <loc>https://enetcomproject.com/kaynaklar.html</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/kaynaklar.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/kaynaklar.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/kaynaklar.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/kaynaklar.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/kaynaklar.html?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/kaynaklar.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/kaynaklar.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/kaynaklar.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/kaynaklar.html"/>
+  </url>
+  <url>
+    <loc>https://enetcomproject.com/kaynaklar.html?lang=de</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/kaynaklar.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/kaynaklar.html?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/kaynaklar.html?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/kaynaklar.html"/>
+  </url>
 </urlset>
