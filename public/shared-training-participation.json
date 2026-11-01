@@ -23,6 +23,16 @@
         "Muş": 38,
         "Sivas": 44
       }
+    },
+    {
+      "id": "bartin-zonguldak-2026-10-17",
+      "date": "2026-10-17",
+      "mode": "Çevrimiçi",
+      "total": 48,
+      "provinces": {
+        "Bartın": 24,
+        "Zonguldak": 24
+      }
     }
   ]
 }
