@@ -34,9 +34,9 @@ const descriptions={
   de:'Entdecken Sie internationale e-NetCoM-Aktivitäten, Partnerschaften und jugendorientierte Umweltkommunikation.'
  },
  '/veritabani.html':{
-  tr:'e-NetCoM e-Merkez çevre, sürdürülebilirlik ve çevresel iletişim konularında kaynak ve materyaller sunar.',
-  en:'Browse e-NetCoM e-Centre resources and materials on the environment, sustainability and environmental communication.',
-  de:'Finden Sie im e-NetCoM e-Zentrum Materialien zu Umwelt, Nachhaltigkeit und Umweltkommunikation.'
+  tr:'e-NetCoM e-Merkez veritabanında 2.449 çevre ve sürdürülebilirlik kaynağını başlık, yazar, konu, tür ve dile göre arayın.',
+  en:'Search 2,449 environment and sustainability resources in the e-NetCoM e-Centre database by title, author, topic, type and language.',
+  de:'Durchsuchen Sie 2.449 Umwelt- und Nachhaltigkeitsquellen im e-NetCoM e-Zentrum nach Titel, Autor, Thema, Typ und Sprache.'
  },
  '/ciktilar.html':{
   tr:'e-NetCoM proje çıktılarını, eğitim materyallerini, dijital içerikleri ve sürdürülebilirlik kaynaklarını inceleyin.',
