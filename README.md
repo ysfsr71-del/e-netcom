@@ -47,6 +47,6 @@ Site, gerçek Türkiye il haritasını ve 81 il listesini kullanır. Harita üze
 
 
 ## 31 Ekim 2026 — Beş il ortak çevrimiçi eğitim
-- Bingöl, Çankırı, Edirne, Muş ve Sivas illerini kapsayan 12.00–14.00 saatleri arasında **tek çevrimiçi oturum**, **176 katılımcı**.
-- İl haritasında 5 il, eğitim ve katılımcı toplamında 1 oturum ve 176 kişi sayılır.
-- Güncel toplam: **31 eğitim, 37 il, 1.780 katılımcı**; 19 yüz yüze (1.145), 12 çevrimiçi (635).
+- Bingöl, Çankırı, Edirne, Muş ve Sivas illerini kapsayan 12.00–14.00 saatleri arasında **tek çevrimiçi oturum**, **178 katılımcı**.
+- İl haritasında 5 il, eğitim ve katılımcı toplamında 1 oturum ve 178 kişi sayılır.
+- Güncel toplam: **31 eğitim, 37 il, 1.782 katılımcı**; 19 yüz yüze (1.145), 12 çevrimiçi (637).
