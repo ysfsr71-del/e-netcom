@@ -1507,6 +1507,7 @@ app.get("/api/admin/seo-health", requireAdmin, (req, res) => {
       sitemapLanguageAlternates: sitemap.includes('hreflang="tr"') &&
         sitemap.includes('hreflang="en"') && sitemap.includes('hreflang="de"'),
       cop31StructuredData: cop31.includes('application/ld+json'),
+      resourceIndexInSitemap: urls.filter(u => u.includes("/kaynaklar.html")).length === 3,
       galleryFoldersInManifest: missingGalleries.length === 0 && missingInternational.length === 0
     };
     res.set("Cache-Control", "private, no-store").json({
@@ -1516,6 +1517,7 @@ app.get("/api/admin/seo-health", requireAdmin, (req, res) => {
       galleryCities: provinceCities.length,
       internationalGalleryCities: cities.length - provinceCities.length,
       resourceCount: resources.length,
+      resourceIndexPages: Math.ceil(resources.length / 60),
       languages: ["tr", "en", "de"],
       missingGalleries: [...missingGalleries, ...missingInternational],
       checks,
