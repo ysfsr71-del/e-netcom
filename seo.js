@@ -126,10 +126,23 @@ export function installSeo(app,dir){
   if(req.path==='/index.html')return res.redirect(301,'/'+req.url.slice('/index.html'.length));
   next();
  });
+ // Only published gallery locations should create indexable SEO URLs.
+ // This list is derived from the sitemap to avoid maintaining a second city registry.
+ const knownGalleryCities=new Map();
+ try{
+  const sitemap=readSeoFile(path.join(dir,'public','sitemap.xml'));
+  for(const m of sitemap.matchAll(/<loc>([^<]*\/gallery\.html\?city=[^<]+)<\/loc>/g)){
+   const c=new URL(m[1].replace(/&amp;/g,'&')).searchParams.get('city');
+   if(c&&!knownGalleryCities.has(c.toLocaleLowerCase('tr-TR')))knownGalleryCities.set(c.toLocaleLowerCase('tr-TR'),c);
+  }
+ }catch{}
  app.get(pages,(req,res)=>{
   const lang=['en','de'].includes(req.query.lang)?req.query.lang:'tr', li=['tr','en','de'].indexOf(lang);
   const canonical=new URL(req.path,origin);
-  if(req.path==='/gallery.html' && typeof req.query.city==='string')canonical.searchParams.set('city',req.query.city.slice(0,100));
+  const requestedGalleryCity=req.path==='/gallery.html'&&typeof req.query.city==='string'?req.query.city.slice(0,100).trim():null;
+  const galleryCity=requestedGalleryCity?(knownGalleryCities.size?knownGalleryCities.get(requestedGalleryCity.toLocaleLowerCase('tr-TR')):requestedGalleryCity):null;
+  if(requestedGalleryCity&&knownGalleryCities.size&&!galleryCity)res.set('X-Robots-Tag','noindex, follow');
+  if(galleryCity)canonical.searchParams.set('city',galleryCity);
   if(lang!=='tr')canonical.searchParams.set('lang',lang);
   const file=req.path==='/'?'index.html':req.path.slice(1);
   const localized=path.join(dir,'.cache','localized',lang,file);
@@ -139,7 +152,6 @@ export function installSeo(app,dir){
     if(preview)html=html.replace('<div id="results"></div>','<div id="results">'+preview+'</div>');
   }
   let title=titles[req.path]?.[li] || (html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]||'e-NetCoM');
-  const galleryCity=req.path==='/gallery.html'&&typeof req.query.city==='string'?req.query.city.slice(0,100).trim():null;
   const galleryDetails=galleryCity?trainingGalleryDetails(dir,galleryCity):null;
   if(galleryCity)title=galleryCity+' | '+title;
   // Include a crawlable city heading without altering the client-side gallery controls.
