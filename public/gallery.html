@@ -87,7 +87,7 @@ function applyGallerySeo(){
 function backUrl(){
   /* International events always return to International Activities,
      while Turkish provinces always return to the 81-province map. */
-  const isInternational = citySlug==='viyana' || citySlug==='bükreş' || citySlug==='bucharest';
+  const isInternational = citySlug==='viyana' || citySlug==='bukres' || citySlug==='bucharest';
   return isInternational ? '/#uluslararasi' : '/#iller';
 }
 
@@ -174,13 +174,13 @@ function renderPoster(src){
 const folderOverrides = {
   'viyana':'assets/international/vienna',
   'bucharest':'assets/international/bucharest',
-  'bükreş':'assets/international/bucharest',
-  'bingöl':'sivas','çankırı':'sivas','edirne':'sivas','muş':'sivas'
+  'bukres':'assets/international/bucharest',
+  'bingol':'sivas','cankiri':'sivas','edirne':'sivas','mus':'sivas'
 };
 
 const titleOverrides = {
   'viyana':{tr:'Viyana · University of Vienna',en:'Vienna · University of Vienna',de:'Wien · Universität Wien'},
-  'bükreş':{tr:'Bükreş · SNSPA',en:'Bucharest · SNSPA',de:'Bukarest · SNSPA'}
+  'bukres':{tr:'Bükreş · SNSPA',en:'Bucharest · SNSPA',de:'Bukarest · SNSPA'}
 };
 
 function sourceFolder(){
