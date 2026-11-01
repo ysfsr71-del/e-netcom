@@ -114,7 +114,7 @@ function renderSlides(list){
   content.innerHTML =
     '<div class="stage">'+
       list.map((p,i)=>
-        '<img class="slide" data-i="'+i+'" src="'+p.src+'" alt="'+esc(city)+' · '+esc(L.photos)+' '+(i+1)+'">'
+        '<img class="slide" data-i="'+i+'" loading="'+(i===0?'eager':'lazy')+'" decoding="async" src="'+p.src+'" alt="'+esc(city)+' · '+esc(L.photos)+' '+(i+1)+'">'
       ).join('')+
       '<button class="nav prev" aria-label="'+esc(L.previous)+'">‹</button>'+
       '<button class="nav next" aria-label="'+esc(L.next)+'">›</button>'+
@@ -133,7 +133,7 @@ function renderSlides(list){
 
   function show(k){
     i=(k+slides.length)%slides.length;
-    slides.forEach((x,j)=>x.classList.toggle('active',j===i));
+    slides.forEach((x,j)=>{if(j===i)x.loading='eager';x.classList.toggle('active',j===i)});
     thumbs.forEach((x,j)=>x.classList.toggle('active',j===i));
     counter.textContent=(i+1)+' / '+slides.length;
   }
