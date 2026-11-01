@@ -1496,22 +1496,28 @@ app.get("/api/admin/seo-health", requireAdmin, (req, res) => {
       .replace(/ı/g, "i").replace(/ğ/g, "g").replace(/ü/g, "u")
       .replace(/ş/g, "s").replace(/ö/g, "o").replace(/ç/g, "c")
       .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-    const missingGalleries = cities.filter(city => !Array.isArray(manifest[slug(city)]));
+    // International galleries have different asset paths and are not training provinces.
+    const internationalFolders = { Viyana: "assets/international/vienna" };
+    const provinceCities = cities.filter(city => !Object.hasOwn(internationalFolders, city));
+    const missingGalleries = provinceCities.filter(city => !Array.isArray(manifest[slug(city)]));
+    const missingInternational = cities.filter(city => Object.hasOwn(internationalFolders, city) &&
+      !Array.isArray(manifest[internationalFolders[city]]));
     const checks = {
       robotsReferencesSitemap: robots.includes("https://enetcomproject.com/sitemap.xml"),
       sitemapLanguageAlternates: sitemap.includes('hreflang="tr"') &&
         sitemap.includes('hreflang="en"') && sitemap.includes('hreflang="de"'),
       cop31StructuredData: cop31.includes('application/ld+json'),
-      galleryFoldersInManifest: missingGalleries.length === 0
+      galleryFoldersInManifest: missingGalleries.length === 0 && missingInternational.length === 0
     };
     res.set("Cache-Control", "private, no-store").json({
       checkedAt: new Date().toISOString(),
       source: "deployed files",
       sitemapUrls: urls.length,
-      galleryCities: cities.length,
+      galleryCities: provinceCities.length,
+      internationalGalleryCities: cities.length - provinceCities.length,
       resourceCount: resources.length,
       languages: ["tr", "en", "de"],
-      missingGalleries,
+      missingGalleries: [...missingGalleries, ...missingInternational],
       checks,
       searchConsole: "not_connected",
       coreWebVitals: "not_measured"
