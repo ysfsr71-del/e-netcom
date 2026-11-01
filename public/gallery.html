@@ -153,7 +153,7 @@ function renderSlides(list){
     '<a class="btn" href="'+backUrl()+'">'+backLabel()+'</a>';
 }
 
-function renderPoster(src){
+function renderPoster(src,hasPhotos=true){
   content.className='poster';
   if(/\.pdf(?:\?|$)/i.test(src)){
     content.innerHTML =
@@ -165,7 +165,7 @@ function renderPoster(src){
 
   actions.classList.remove('hidden');
   actions.innerHTML =
-    '<a class="btn primary" href="/gallery.html?city='+encodeURIComponent(city)+'&back='+encodeURIComponent(params.get('back')||'')+'&lang='+encodeURIComponent(lang)+'">'+L.photo+'</a>'+
+    (hasPhotos?'<a class="btn primary" href="/gallery.html?city='+encodeURIComponent(city)+'&back='+encodeURIComponent(params.get('back')||'')+'&lang='+encodeURIComponent(lang)+'">'+L.photo+'</a>':'')+
     '<a class="btn" href="'+backUrl()+'">'+backLabel()+'</a>';
 }
 
@@ -315,8 +315,13 @@ async function main(){
   }
 
   if(view==='poster'){
-    if(data.poster) renderPoster(data.poster);
+    if(data.poster) renderPoster(data.poster,data.images.length>0);
     else showError(L.noPoster);
+  }else if(data.images.length){
+    renderSlides(data.images);
+  }else if(data.poster){
+    // A poster-only event (e.g. Sakarya) should not open to an empty gallery.
+    renderPoster(data.poster,false);
   }else{
     renderSlides(data.images);
   }
