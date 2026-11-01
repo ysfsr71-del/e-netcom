@@ -112,7 +112,71 @@ function databasePreview(dir,lang){
     return '<article class="item"><div class="tags">'+tags+'</div><h2>'+title+'</h2>'+author+description+link+'</article>';
   }).join('');
 }
+// Read the public e-Centre catalogue once per file revision, sharing the cache
+// between the interactive page's preview and the crawlable source index.
+let resourceIndexCache=null;
+function resourceIndex(dir){
+  try{
+    const file=path.join(dir,'public','assets','database','database.json');
+    const stat=fs.statSync(file);
+    if(!resourceIndexCache||resourceIndexCache.mtimeMs!==stat.mtimeMs||resourceIndexCache.size!==stat.size){
+      const parsed=JSON.parse(readSeoFile(file));
+      resourceIndexCache={mtimeMs:stat.mtimeMs,size:stat.size,items:Array.isArray(parsed)?parsed:(Array.isArray(parsed.items)?parsed.items:[])};
+    }
+    return resourceIndexCache.items;
+  }catch{return [];}
+}
+function resourceCatalogueHtml(dir,lang,page){
+  const items=resourceIndex(dir),perPage=60,totalPages=Math.ceil(items.length/perPage);
+  if(!totalPages||page<1||page>totalPages)return null;
+  const labels={
+    tr:{title:'e-NetCoM E-Merkez Kaynak Dizini',intro:'Çevre ve sürdürülebilirlik araştırma kaynaklarını sayfa sayfa keşfedin. Ayrıntılı filtreleme için E-Merkez aramasını kullanın.',source:'Özgün kaynağı aç',back:'E-Merkez aramasına dön',previous:'Önceki sayfa',next:'Sonraki sayfa',page:'Sayfa',of:'/',count:'kaynak'},
+    en:{title:'e-NetCoM e-Centre Resource Index',intro:'Browse environmental and sustainability research resources. Use the e-Centre search for detailed filtering.',source:'Open original source',back:'Back to e-Centre search',previous:'Previous page',next:'Next page',page:'Page',of:'of',count:'resources'},
+    de:{title:'e-NetCoM e-Zentrum Quellenverzeichnis',intro:'Entdecken Sie Umwelt- und Nachhaltigkeitsquellen. Die detaillierte Suche finden Sie im e-Zentrum.',source:'Originalquelle öffnen',back:'Zurück zur e-Zentrum-Suche',previous:'Vorherige Seite',next:'Nächste Seite',page:'Seite',of:'von',count:'Quellen'}
+  };
+  const L=labels[lang],urlFor=(p,l=lang)=>{
+    const u=new URL('/kaynaklar.html',origin);
+    if(p>1)u.searchParams.set('page',String(p));
+    if(l!=='tr')u.searchParams.set('lang',l);
+    return u.href;
+  };
+  const canonical=urlFor(page),start=(page-1)*perPage;
+  const cards=items.slice(start,start+perPage).map(item=>{
+    const title=esc(item.title||'e-NetCoM');
+    const author=item.author?'<span>'+esc(item.author)+'</span>':'';
+    const summary=item.description?'<p>'+esc(String(item.description).slice(0,350))+'</p>':'';
+    const meta=[item.content_type,item.topic,item.lang,item.year].filter(Boolean).map(esc).join(' · ');
+    const link=typeof item.url==='string'&&/^https?:\/\//i.test(item.url)
+      ?'<a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer">'+L.source+' ↗</a>':'';
+    return '<article><h2>'+title+'</h2><div class="meta">'+meta+'</div>'+author+summary+link+'</article>';
+  }).join('');
+  const nav='<nav aria-label="Pagination">'+(page>1?'<a href="'+esc(urlFor(page-1))+'">← '+L.previous+'</a>':'')+
+    '<span>'+L.page+' '+page+' '+L.of+' '+totalPages+'</span>'+
+    (page<totalPages?'<a href="'+esc(urlFor(page+1))+'">'+L.next+' →</a>':'')+'</nav>';
+  const alternate=['tr','en','de','x-default'].map(l=>'<link rel="alternate" hreflang="'+l+'" href="'+esc(urlFor(page,l==='x-default'?'tr':l))+'">').join('');
+  const title=L.title+' – '+L.page+' '+page;
+  const schema={'@context':'https://schema.org','@type':'CollectionPage','@id':canonical+'#webpage',url:canonical,name:title,inLanguage:lang,isPartOf:{'@id':origin+'/#website'}};
+  const searchUrl='/veritabani.html'+(lang==='tr'?'':'?lang='+lang);
+  return '<!doctype html><html lang="'+lang+'"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'+
+    '<title>'+esc(title)+'</title><meta name="description" content="'+esc(L.intro)+'"><link rel="canonical" href="'+esc(canonical)+'">'+alternate+
+    '<script type="application/ld+json">'+JSON.stringify(schema).replace(/</g,'\\u003c')+'</script>'+
+    '<style>*{box-sizing:border-box}body{margin:0;background:#f5f9f6;color:#153c2f;font:16px/1.6 system-ui,Arial,sans-serif}main{max-width:1040px;margin:auto;padding:28px 20px 64px}h1{font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.2}h2{font-size:1.15rem;line-height:1.35;margin:0 0 8px}article{background:#fff;border:1px solid #dce9df;border-radius:12px;padding:18px;margin:14px 0;overflow-wrap:anywhere}article p{margin:8px 0}a{color:#126c50}a:focus-visible{outline:3px solid #177c5e;outline-offset:3px}.meta{color:#526e60;font-size:.9rem;margin-bottom:8px}nav{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px;margin:26px 0}nav a{background:#e0f2e8;padding:9px 13px;border-radius:8px}header{padding-bottom:12px;border-bottom:2px solid #dce9df}</style>'+
+    '</head><body><main><header><a href="'+esc(searchUrl)+'">← '+L.back+'</a><h1>'+L.title+'</h1><p>'+L.intro+'</p><p><strong>'+items.length.toLocaleString(lang==='tr'?'tr-TR':lang==='de'?'de-DE':'en-US')+' '+L.count+'</strong></p></header>'+
+    nav+cards+nav+'</main></body></html>';
+}
 export function installSeo(app,dir){
+ // Crawlable, paginated source index: no change to homepage layout.
+ app.get('/kaynaklar.html',(req,res)=>{
+  const lang=['en','de'].includes(req.query.lang)?req.query.lang:'tr';
+  const raw=req.query.page;
+  if(raw!==undefined&&(typeof raw!=='string'||!/^\\d+$/.test(raw)))return res.sendStatus(404);
+  const page=raw===undefined?1:Number(raw);
+  if(!Number.isSafeInteger(page)||page<1)return res.sendStatus(404);
+  const html=resourceCatalogueHtml(dir,lang,page);
+  if(!html)return res.sendStatus(404);
+  res.type('html').send(html);
+ });
+
  // The verification key stays in Render configuration, outside Git history.
  app.get('/indexnow-key.txt',(req,res)=>{
   const key=process.env.INDEXNOW_KEY?.trim();
@@ -150,6 +214,9 @@ export function installSeo(app,dir){
   if(req.path==='/veritabani.html'){
     const preview=databasePreview(dir,lang);
     if(preview)html=html.replace('<div id="results"></div>','<div id="results">'+preview+'</div>');
+    const indexLabel=lang==='en'?'Browse all sources (paginated)':lang==='de'?'Alle Quellen im Verzeichnis entdecken':'Tüm kaynakları sayfa sayfa keşfet';
+    const indexHref='/kaynaklar.html'+(lang==='tr'?'':'?lang='+lang);
+    html=html.replace('<div id="results">','<p style="margin:12px 0"><a href="'+indexHref+'">'+indexLabel+' →</a></p><div id="results">');
   }
   let title=titles[req.path]?.[li] || (html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]||'e-NetCoM');
   const galleryDetails=galleryCity?trainingGalleryDetails(dir,galleryCity):null;
