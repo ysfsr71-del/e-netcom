@@ -79,9 +79,9 @@ function trainingGalleryDetails(dir,city){
       // A joint training record covers multiple cities; do not miss its
       // participants merely because the heading lists several provinces.
       const members=name.replace(/&amp;/g,'&').split(' · ')[0]
-        .replace(/\\s+ve\\s+/gi,',').split(/\\s*[&,]\\s*/).map(norm);
+        .replace(/\s+ve\s+/gi,',').split(/\s*[&,]\s*/).map(norm);
       if(!members.includes(norm(city)))continue;
-      return {type:match[1],shared:members.length>1,date:body.match(/<p>([^<]*2026)<\\/p>/)?.[1]||'',people:body.match(/<div class="people">([^<]*)<\\/div>/)?.[1]||''};
+      return {type:match[1],shared:members.length>1,date:body.match(/<p>([^<]*2026)<\/p>/)?.[1]||'',people:body.match(/<div class="people">([^<]*)<\/div>/)?.[1]||''};
     }
   }catch{}
   return null;
