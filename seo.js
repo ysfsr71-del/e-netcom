@@ -218,8 +218,15 @@ export function installSeo(app,dir){
   const schemaTags=(req.path==='/'?[webpage]:[webpage,breadcrumbs]).map(obj=>'<script type="application/ld+json">'+JSON.stringify(obj).replace(/</g,'\\u003c')+'</script>').join('');
   html=html.replace('</head>',tags+schemaTags+'<script src="/seo.js" defer></script><script src="/consent.js" defer></script>' + (req.path==='/'?'<script src="/province-participation.js" defer></script>':'') + '</head>');
   if(req.path==='/gallery.html'&&!req.query.city){
-   const cities=['Kayseri','Ankara','İstanbul','İzmir','Balıkesir','Tunceli','Viyana'];
-   html=html.replace(/<div class="loading" id="loading">[^<]*<\/div>/,'<div class="notice">'+cities.map(c=>'<p><a href="/gallery.html?city='+encodeURIComponent(c)+'&amp;lang='+lang+'">'+esc(c)+'</a></p>').join('')+'</div>');
+    // One registry for sitemap, canonical URLs, and the browsable archive index.
+    const cities=[...knownGalleryCities.values()].sort((a,b)=>a.localeCompare(b,'tr'));
+    const heading=lang==='en'?'Browse event galleries':lang==='de'?'Veranstaltungsgalerien entdecken':'Etkinlik galerilerini keşfedin';
+    const intro=lang==='en'?'Browse published training and international event archives.':lang==='de'?'Entdecken Sie veröffentlichte Schulungs- und internationale Veranstaltungsarchive.':'Yayımlanan eğitim ve uluslararası etkinlik arşivlerine göz atın.';
+    const links=cities.map(c=>'<li><a href="/gallery.html?city='+encodeURIComponent(c)+(lang==='tr'?'':'&amp;lang='+lang)+'">'+esc(c)+'</a></li>').join('');
+    const listing='<div class="notice"><h2>'+heading+'</h2><p>'+intro+'</p><ul style="columns:3;column-width:160px;line-height:2;padding-left:24px">'+links+'</ul></div>';
+    html=html.replace(/<div class="loading" id="loading">[^<]*<\/div>/,listing);
+    const itemList={'@context':'https://schema.org','@type':'ItemList','name':heading,'itemListElement':cities.map((c,i)=>({'@type':'ListItem',position:i+1,name:c,url:origin+'/gallery.html?city='+encodeURIComponent(c)+(lang==='tr'?'':'&lang='+lang)}))};
+    html=html.replace('</head>','<script type="application/ld+json">'+JSON.stringify(itemList).replace(/</g,'\\u003c')+'</script></head>');
   }
 
   // Keep HTML rendering stable; do not apply malformed regex cleanup here.
