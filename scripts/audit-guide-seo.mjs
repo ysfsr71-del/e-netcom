@@ -91,6 +91,15 @@ for (const folder of folders) {
     const src = attrs.match(/\bsrc="([^"]+)"/i)?.[1]?.replaceAll('&amp;', '&');
     if (!src) { note('warning', 'missing-card-image', link, 'Card has no image src'); continue; }
     const identity = src.split('?')[0];
+    // Local assets can be checked without network access; external URLs still need live QA.
+    if (identity.startsWith('/')) {
+      const local = path.resolve(root, '.' + decodeURIComponent(identity));
+      if (!local.startsWith(root + path.sep) || !fs.existsSync(local) || !fs.statSync(local).isFile()) {
+        note('error', 'missing-local-card-image', link, identity);
+      }
+      const alt = attrs.match(/\\balt="([^"]*)"/i)?.[1];
+      if (!alt || !alt.trim()) note('warning', 'missing-local-card-alt', link, identity);
+    }
     if (used.has(identity)) note('warning', 'duplicate-card-photo', link, 'Same image as ' + used.get(identity));
     else used.set(identity, link);
     if (!/\bwidth="\d+"/i.test(attrs) || !/\bheight="\d+"/i.test(attrs)) note('warning', 'missing-card-dimensions', link, 'Width or height missing');
