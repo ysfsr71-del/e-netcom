@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="t d">
+<title id="t">Giysinin ömrünü uzatma döngüsü</title><desc id="d">Üç aşamalı özgün çizim: ihtiyacı sorgula, uzun süre kullan ve onar, uygun şekilde yeniden kullan veya ayrı topla. Kıyafetin ömrünü uzatmak, yalnızca geri dönüşümden önce gelir.</desc>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#103b36"/><stop offset="1" stop-color="#226c59"/></linearGradient><filter id="s"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-opacity=".18"/></filter></defs>
+<rect width="1200" height="675" fill="url(#bg)"/><circle cx="1100" cy="90" r="220" fill="#ffffff" opacity=".035"/><circle cx="60" cy="640" r="280" fill="#ffffff" opacity=".04"/>
+<text x="70" y="95" font-family="Arial,sans-serif" font-size="29" font-weight="700" fill="#c8f075">YEŞİL REHBER · TEKSTİL VE DÖNGÜSELLİK</text>
+<text x="70" y="157" font-family="Arial,sans-serif" font-size="48" font-weight="800" fill="#fff">Bir giysinin daha uzun ömrü</text>
+<text x="70" y="201" font-family="Arial,sans-serif" font-size="24" fill="#e3f1e8">En iyi seçenek her zaman yeni bir ürün almak değildir.</text>
+<g font-family="Arial,sans-serif" filter="url(#s)">
+<rect x="62" y="255" width="335" height="275" rx="24" fill="#fff"/><rect x="433" y="255" width="335" height="275" rx="24" fill="#fff"/><rect x="804" y="255" width="335" height="275" rx="24" fill="#fff"/>
+</g>
+<g fill="none" stroke="#217252" stroke-width="11" stroke-linecap="round" stroke-linejoin="round">
+<path d="M184 343l37-25 34 14 34-14 37 25-20 35-26-12v92h-71v-92l-25 12z"/>
+<path d="M538 359c10-30 43-41 67-28 23-13 56-2 66 28 8 25-5 51-35 70l-31 20-31-20c-30-19-43-45-36-70z"/><path d="M573 385l21 19 42-46"/>
+<path d="M921 349c24-28 69-28 92 0M1006 338l10 13-14 12"/><path d="M1016 422c-24 28-69 28-92 0M932 434l-10-13 14-12"/>
+</g>
+<g font-family="Arial,sans-serif" text-anchor="middle" fill="#153c30"><text x="230" y="479" font-size="24" font-weight="700">1 · İhtiyacı sorgula</text><text x="601" y="479" font-size="24" font-weight="700">2 · Kullan ve onar</text><text x="972" y="479" font-size="22" font-weight="700">3 · Yeniden değerlendir</text></g>
+<g fill="#c9f073"><circle cx="416" cy="393" r="10"/><circle cx="787" cy="393" r="10"/></g>
+<text x="70" y="598" font-family="Arial,sans-serif" font-size="23" fill="#ecf8ee">Az tüketim  →  bakım ve tamir  →  yeniden kullanım  →  uygun toplama</text>
+<text x="70" y="637" font-family="Arial,sans-serif" font-size="16" fill="#d0e5d7">e-NetCoM için hazırlanmış şematik görsel · Sayısal çevresel etki iddiası içermez.</text>
+</svg>
