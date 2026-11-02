@@ -97,7 +97,7 @@ for (const folder of folders) {
       if (!local.startsWith(root + path.sep) || !fs.existsSync(local) || !fs.statSync(local).isFile()) {
         note('error', 'missing-local-card-image', link, identity);
       }
-      const alt = attrs.match(/\\balt="([^"]*)"/i)?.[1];
+      const alt = attrs.match(/\balt="([^"]*)"/i)?.[1];
       if (!alt || !alt.trim()) note('warning', 'missing-local-card-alt', link, identity);
     }
     if (used.has(identity)) note('warning', 'duplicate-card-photo', link, 'Same image as ' + used.get(identity));
