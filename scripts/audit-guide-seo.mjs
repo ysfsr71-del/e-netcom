@@ -52,18 +52,18 @@ for (const folder of folders) {
   if (!fs.existsSync(file)) continue;
   const html = fs.readFileSync(file, 'utf8');
   const used = new Map();
-  const cards = [...html.matchAll(/<a class="story[^"]*" href="([^"]+)"[^>]*>\\s*<div class="visual">\\s*<img\\b([^>]*)>/gi)];
+  const cards = [...html.matchAll(/<a class="story[^"]*" href="([^"]+)"[^>]*>\s*<div class="visual">\s*<img\b([^>]*)>/gi)];
   for (const [, link, attrs] of cards) {
-    const src = attrs.match(/\\bsrc="([^"]+)"/i)?.[1]?.replaceAll('&amp;', '&');
+    const src = attrs.match(/\bsrc="([^"]+)"/i)?.[1]?.replaceAll('&amp;', '&');
     if (!src) { note('warning', 'missing-card-image', link, 'Card has no image src'); continue; }
     const identity = src.split('?')[0];
     if (used.has(identity)) note('warning', 'duplicate-card-photo', link, 'Same image as ' + used.get(identity));
     else used.set(identity, link);
-    if (!/\\bwidth="\\d+"/i.test(attrs) || !/\\bheight="\\d+"/i.test(attrs)) note('warning', 'missing-card-dimensions', link, 'Width or height missing');
-    const fallback = attrs.match(/onerror="[^"]*this\\.src='([^']+)'/i)?.[1]?.replaceAll('&amp;', '&');
+    if (!/\bwidth="\d+"/i.test(attrs) || !/\bheight="\d+"/i.test(attrs)) note('warning', 'missing-card-dimensions', link, 'Width or height missing');
+    const fallback = attrs.match(/onerror="[^"]*this\.src='([^']+)'/i)?.[1]?.replaceAll('&amp;', '&');
     if (fallback && fallback.split('?')[0] === identity) note('warning', 'ineffective-image-fallback', link, 'Fallback uses the same image identity');
   }
-  if (cards.some(([, , attrs]) => /\\bsrc="https?:\\/\\//i.test(attrs))) {
+  if (cards.some(([, , attrs]) => /\bsrc="https?:\/\//i.test(attrs))) {
     note('info', 'external-card-images-unverified', '/' + folder + '/', 'HTTP status, subject relevance and licensing require separate live checks');
   }
 }
