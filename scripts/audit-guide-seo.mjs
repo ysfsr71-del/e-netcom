@@ -16,7 +16,7 @@ for (const folder of folders) {
   const base = path.join(root, folder);
   if (!fs.existsSync(base)) { note('error', 'missing-directory', folder, 'Guide directory missing'); continue; }
   for (const item of fs.readdirSync(base, { withFileTypes: true })) {
-    if (!item.isDirectory()) continue;
+    if (!item.isDirectory() || item.name === 'assets') continue; // asset folders are not articles
     const page = '/' + folder + '/' + item.name + '/';
     const file = path.join(base, item.name, 'index.html');
     if (!fs.existsSync(file)) { note('error', 'missing-index', page, 'index.html missing'); continue; }
@@ -44,6 +44,27 @@ for (const folder of folders) {
       const target = link.split(/[?#]/)[0];
       if (!fs.existsSync(path.join(root, target.slice(1), 'index.html'))) note('error', 'broken-guide-link', page, target);
     }
+  }
+}
+// Source-only card image checks: duplicates are verifiable, HTTP availability is not.
+for (const folder of folders) {
+  const file = path.join(root, folder, 'index.html');
+  if (!fs.existsSync(file)) continue;
+  const html = fs.readFileSync(file, 'utf8');
+  const used = new Map();
+  const cards = [...html.matchAll(/<a class="story[^"]*" href="([^"]+)"[^>]*>\\s*<div class="visual">\\s*<img\\b([^>]*)>/gi)];
+  for (const [, link, attrs] of cards) {
+    const src = attrs.match(/\\bsrc="([^"]+)"/i)?.[1]?.replaceAll('&amp;', '&');
+    if (!src) { note('warning', 'missing-card-image', link, 'Card has no image src'); continue; }
+    const identity = src.split('?')[0];
+    if (used.has(identity)) note('warning', 'duplicate-card-photo', link, 'Same image as ' + used.get(identity));
+    else used.set(identity, link);
+    if (!/\\bwidth="\\d+"/i.test(attrs) || !/\\bheight="\\d+"/i.test(attrs)) note('warning', 'missing-card-dimensions', link, 'Width or height missing');
+    const fallback = attrs.match(/onerror="[^"]*this\\.src='([^']+)'/i)?.[1]?.replaceAll('&amp;', '&');
+    if (fallback && fallback.split('?')[0] === identity) note('warning', 'ineffective-image-fallback', link, 'Fallback uses the same image identity');
+  }
+  if (cards.some(([, , attrs]) => /\\bsrc="https?:\\/\\//i.test(attrs))) {
+    note('info', 'external-card-images-unverified', '/' + folder + '/', 'HTTP status, subject relevance and licensing require separate live checks');
   }
 }
 const sitemap = path.join(root, 'sitemap.xml');
