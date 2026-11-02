@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+<title id="title">İstilacı yabancı türlerin yayılma yolları ve koruma zinciri</title>
+<desc id="desc">Solda saksı bitkisi, akvaryum ve seyahat bagajından doğaya geçişi temsil eden üç ok; sağda yerli bitki, kelebek ve su canlıları; altta önleme, erken bildirim ve uzman yönetimi adımları gösterilir. Sayısal veri içermez.</desc>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#103a35"/><stop offset="1" stop-color="#27776b"/></linearGradient></defs>
+<rect width="1200" height="675" fill="url(#bg)"/>
+<text x="52" y="68" font-family="system-ui,sans-serif" font-size="42" font-weight="800" fill="#fff">İSTİLACI YABANCI TÜRLER</text>
+<text x="54" y="105" font-family="system-ui,sans-serif" font-size="23" fill="#d5f4dd">Bir tür nasıl taşınır, doğa nasıl korunur?</text>
+<rect x="48" y="140" width="1104" height="402" rx="28" fill="#f5faf5"/>
+<g font-family="system-ui,sans-serif" font-weight="700" font-size="25" fill="#214d42"><text x="100" y="194">TAŞINMA YOLLARI</text><text x="690" y="194">ALICI EKOSİSTEM</text></g>
+<g fill="#e3f1e8" stroke="#9ecab6" stroke-width="3"><rect x="88" y="220" width="470" height="244" rx="18"/><rect x="651" y="220" width="451" height="244" rx="18"/></g>
+<g stroke="#276d55" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none">
+<path d="M157 348h90v65h-90z"/><path d="M200 347v-80m0 38q-48-40-55-10 22 36 55 32m0-28q48-39 58-7-23 35-58 36"/>
+<path d="M312 302h99v100h-99z"/><path d="M313 325h96"/><path d="M338 367q19-28 43 0-23 25-43 0z"/><circle cx="385" cy="361" r="4" fill="#276d55"/>
+<rect x="453" y="310" width="63" height="90" rx="8"/><path d="M466 309v-14h36v14"/>
+<path d="M728 417v-105m0 57q-49-51-61-14 23 42 61 34m0-41q50-46 63-13-24 44-63 39"/>
+<path d="M876 413v-92m0 37q-32-39-44-9 12 27 44 27m0-24q37-32 44-5-18 29-44 27"/>
+<path d="M978 378q32-37 66 0-34 40-66 0z"/><path d="M978 378l-24-21v42z"/>
+</g>
+<g stroke="#e09a42" stroke-width="9" fill="none" stroke-linecap="round"><path d="M565 343h70"/><path d="M615 326l20 17-20 17"/></g>
+<g font-family="system-ui,sans-serif" font-size="20" fill="#2c6150"><text x="112" y="439">Bitki</text><text x="318" y="439">Akvaryum</text><text x="446" y="439">Eşya</text><text x="675" y="439">Yerli bitki</text><text x="826" y="439">Böcek</text><text x="953" y="439">Su yaşamı</text></g>
+<rect x="75" y="485" width="1050" height="41" rx="20" fill="#c9ead5"/>
+<text x="107" y="513" font-family="system-ui,sans-serif" font-size="22" font-weight="700" fill="#215a42">ÖNLE  →  ERKEN FARK ET  →  UZMANLARA BİLDİR  →  BİLİMSEL YÖNET</text>
+<text x="52" y="601" font-family="system-ui,sans-serif" font-size="21" fill="#e5f8ed">e-NetCoM Yeşil Rehber • Özgün kavramsal şema</text>
+<text x="52" y="632" font-family="system-ui,sans-serif" font-size="17" fill="#c6e9d6">Tür teşhisi, yayılım haritası veya ölçüm sonucu değildir.</text>
+</svg>
