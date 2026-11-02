@@ -38,12 +38,12 @@ for (const folder of folders) {
 
     // Check the actual alternate targets and reciprocity, not merely a hreflang token.
     // A single-language article may legitimately declare only tr + x-default.
-    const altTags = [...html.matchAll(/<link\\b[^>]*>/gi)].map(m => m[0])
-      .filter(tag => /\\brel="alternate"/i.test(tag) && /\\bhreflang=/i.test(tag));
+    const altTags = [...html.matchAll(/<link\b[^>]*>/gi)].map(m => m[0])
+      .filter(tag => /\brel="alternate"/i.test(tag) && /\bhreflang=/i.test(tag));
     const alts = new Map();
     for (const tag of altTags) {
-      const language = tag.match(/\\bhreflang="([^"]+)"/i)?.[1];
-      const href = tag.match(/\\bhref="([^"]+)"/i)?.[1]?.replaceAll('&amp;', '&');
+      const language = tag.match(/\bhreflang="([^"]+)"/i)?.[1];
+      const href = tag.match(/\bhref="([^"]+)"/i)?.[1]?.replaceAll('&amp;', '&');
       if (!language || !href) { note('warning', 'malformed-hreflang', page, tag.slice(0, 150)); continue; }
       if (alts.has(language)) note('warning', 'duplicate-hreflang', page, language);
       alts.set(language, href);
@@ -51,17 +51,17 @@ for (const folder of folders) {
       try { url = new URL(href); } catch { note('error', 'invalid-hreflang-url', page, href); continue; }
       if (url.origin !== host) { note('warning', 'offsite-hreflang', page, href); continue; }
       const targetPath = url.pathname;
-      if (!/^\\/(rehber|en\\/guide|de\\/ratgeber)\\//.test(targetPath)) {
+      if (!/^\/(rehber|en\/guide|de\/ratgeber)\//.test(targetPath)) {
         note('warning', 'unexpected-hreflang-path', page, href); continue;
       }
       const targetFile = path.join(root, targetPath.slice(1), 'index.html');
       if (!fs.existsSync(targetFile)) { note('error', 'missing-hreflang-target', page, href); continue; }
       if (language === 'x-default') continue;
-      const targetLang = fs.readFileSync(targetFile, 'utf8').match(/<html\\b[^>]*\\blang="([^"]+)"/i)?.[1];
+      const targetLang = fs.readFileSync(targetFile, 'utf8').match(/<html\b[^>]*\blang="([^"]+)"/i)?.[1];
       if (targetLang && targetLang !== language) note('error', 'hreflang-language-mismatch', page, language + ' points to ' + targetLang);
       if (targetPath !== page) {
-        const reverse = [...fs.readFileSync(targetFile, 'utf8').matchAll(/<link\\b[^>]*>/gi)]
-          .map(m => m[0]).some(tag => /\\brel="alternate"/i.test(tag) &&
+        const reverse = [...fs.readFileSync(targetFile, 'utf8').matchAll(/<link\b[^>]*>/gi)]
+          .map(m => m[0]).some(tag => /\brel="alternate"/i.test(tag) &&
             tag.includes('hreflang="' + (folder === 'rehber' ? 'tr' : folder === 'en/guide' ? 'en' : 'de') + '"') &&
             tag.includes('href="' + expected + '"'));
         if (!reverse) note('warning', 'nonreciprocal-hreflang', page, language + ' target lacks reverse link: ' + href);
