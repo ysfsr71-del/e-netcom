@@ -12,9 +12,9 @@ const guides=[
 let failed=false;
 for(const g of guides){
  const file=path.join(root,g.file);const source=fs.readFileSync(file,'utf8');
- const cards=[...source.matchAll(/<a\b[^>]*class="story[^"]*"[^>]*href="([^"]+)"[^>]*>/g)];
+ const cards=[...source.matchAll(/<a\b[^>]*>/gi)].map(m=>m[0]).filter(tag=>/\bclass\s*=\s*["\x27][^"\x27]*\bstory\b/i.test(tag)).map(tag=>{const href=tag.match(/\bhref\s*=\s*["\x27]([^"\x27]+)["\x27]/i);if(!href)throw Error(`Guide card without href: ${g.file}`);return href[1];});
  const unique=new Set();let n=0;
- for(const [,href] of cards){
+ for(const href of cards){
   if(unique.has(href))throw Error(`Duplicate guide card: ${g.file}: ${href}`);
   unique.add(href);
   if(!href.startsWith(g.prefix)||!/^\/[a-z0-9/-]+\/$/.test(href)||href.includes('..'))throw Error(`Unexpected guide URL: ${href}`);
