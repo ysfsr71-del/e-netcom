@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "prestart": "node scripts/prerender.mjs",
+    "prestart": "node scripts/sync-guide-counts.mjs && node scripts/prerender.mjs",
     "audit:guide": "node scripts/audit-guide-seo.mjs",
-    "audit:guide:strict": "node scripts/audit-guide-seo.mjs --strict"
+    "audit:guide:strict": "node scripts/audit-guide-seo.mjs --strict",
+    "sync:guide-counts": "node scripts/sync-guide-counts.mjs",
+    "check:guide-counts": "node scripts/sync-guide-counts.mjs --check"
   },
   "engines": {
     "node": ">=20"
