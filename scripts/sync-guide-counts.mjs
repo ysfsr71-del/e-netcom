@@ -17,11 +17,13 @@ for(const g of guides){
  for(const [,href] of cards){
   if(unique.has(href))throw Error(`Duplicate guide card: ${g.file}: ${href}`);
   unique.add(href);
-  if(!href.startsWith(g.prefix))throw Error(`Unexpected guide URL: ${href}`);
+  if(!href.startsWith(g.prefix)||!/^\/[a-z0-9/-]+\/$/.test(href)||href.includes('..'))throw Error(`Unexpected guide URL: ${href}`);
   const target=path.join(root,decodeURIComponent(href).replace(/^\//,''),'index.html');
   if(!fs.existsSync(target))throw Error(`Missing article for card: ${href}`);
   const html=fs.readFileSync(target,'utf8');
-  if(/<meta\s+name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(html))continue;
+  const robotsTags=[...html.matchAll(/<meta\b[^>]*>/gi)].map(m=>m[0]);
+  const isDraft=robotsTags.some(tag=>/\bname\s*=\s*["']robots["']/i.test(tag)&&/\bcontent\s*=\s*["'][^"']*\bnoindex\b/i.test(tag));
+  if(isDraft)continue;
   n++;
  }
  // Cards for unpublished drafts must never count as published.
