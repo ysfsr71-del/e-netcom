@@ -21,7 +21,7 @@ try {
     const cards = slugs.map(slug =>
       '<a class="story" href="' + prefix + slug + '/">Article</a>').join('');
     fs.writeFileSync(path.join(base, 'index.html'),
-      '<html><head><meta property="og:description" content="old"></head><body>' +
+      '<html><head><meta name="description" content="999 topics on environmental literacy"><meta property="og:description" content="old"></head><body>' +
       '<div class="toolbar"><div><h2>Articles</h2><p>old count</p></div></div>' +
       cards + '</body></html>');
     for (const slug of slugs) {
@@ -39,6 +39,7 @@ try {
     const html = fs.readFileSync(path.join(root, 'public', dir, 'index.html'), 'utf8');
     assert.ok(html.includes(expected), dir + ': language-specific published count');
     assert.ok(html.includes('<meta property="og:description" content="' + published + ' '), dir + ': OG count');
+    if (dir === 'en/guide') assert.ok(html.includes('content="1 topics on environmental literacy"'), 'numeric HTML meta description must be updated');
   }
   assert.equal(run('--check').status, 0, 'synchronized counters must pass CI');
   const tr = path.join(root, 'public/rehber/index.html');
