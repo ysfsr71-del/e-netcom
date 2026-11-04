@@ -1,0 +1,26 @@
+name: School library publication gate
+on:
+  pull_request:
+    paths:
+      - 'public/rehber/okul-esya-kutuphanesi/**'
+      - 'public/en/guide/school-library-of-things/**'
+      - 'public/de/ratgeber/schulische-leihbibliothek/**'
+      - 'public/rehber/index.html'
+      - 'public/en/guide/index.html'
+      - 'public/de/ratgeber/index.html'
+      - 'public/sitemap.xml'
+      - 'scripts/check-school-library-publication.mjs'
+      - '.github/workflows/school-library-publication.yml'
+  workflow_dispatch:
+jobs:
+  publication-gate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify TR/EN/DE indexability, cards, sitemap and metadata
+        run: node scripts/check-school-library-publication.mjs
