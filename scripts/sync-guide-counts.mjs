@@ -33,6 +33,10 @@ for(const g of guides){
  const og=/<meta property="og:description" content="[^"]*">/;
  if(og.test(output))output=output.replace(og,`<meta property="og:description" content="${g.og(n)}">`);
  else output=output.replace('</head>',`<meta property="og:description" content="${g.og(n)}"></head>`);
+ // Keep the HTML meta description in sync if it explicitly contains an old topic count.
+ // Other descriptions are editorial copy and must not be overwritten.
+ output=output.replace(/(<meta\\s+name=["']description["']\\s+content=["'][^"']*?)(\\d+)(\\s+(?:konuda|konu|topics?|Themen)\\b[^"']*["'])/i,
+   (_full,before,_old,after)=>before+n+after);
  if(check){
   if(output!==source){console.error(`OUT OF SYNC ${g.file}: published=${n}, cards=${cards.length}`);failed=true;}
   else console.log(`OK ${g.file}: published=${n}, cards=${cards.length}`);
