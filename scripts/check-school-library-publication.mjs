@@ -27,6 +27,12 @@ for (const [lang,slug,listing] of pages) {
   if (!/name=["']twitter:image["']/i.test(html)) errors.push(lang+': Twitter image missing');
   if (!/<a\b[^>]*href=["']https:\/\//i.test(html)) errors.push(lang+': external source link missing');
   if (!sitemap.includes('<loc>'+url+'</loc>')) errors.push(lang+': sitemap URL missing');
+  // A sitemap URL alone is insufficient: the language cluster must be reciprocal.
+  const sitemapBlock = sitemap.split('<url>').find(block => block.includes('<loc>'+url+'</loc>'))?.split('</url>')[0] || '';
+  for (const [other,otherSlug] of pages) {
+    const expected = 'hreflang="'+other+'" href="'+origin+'/'+otherSlug+'"';
+    if (!sitemapBlock.includes(expected)) errors.push(lang+': sitemap alternate missing '+other);
+  }
   for (const [other,otherSlug] of pages) {
     if (!html.includes('hreflang="'+other+'" href="'+origin+'/'+otherSlug+'"')) errors.push(lang+': missing reciprocal hreflang '+other);
   }
