@@ -18,7 +18,14 @@ for (const [lang,slug,listing] of pages) {
   const url = origin+'/'+slug;
   if (/<meta\s+name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(html)) errors.push(lang+': article is noindex');
   if (!html.includes('rel="canonical" href="'+url+'"')) errors.push(lang+': canonical missing');
-  if (!index.includes('/'+slug)) errors.push(lang+': listing card missing');
+  const cardLinks = [...index.matchAll(/href=["']([^"']+)["']/g)].map(m=>m[1]);
+  if (!cardLinks.includes('/'+slug) && !cardLinks.includes(url)) errors.push(lang+': listing card missing');
+  const image = html.match(/<img\b[^>]*>/i)?.[0] || '';
+  if (!/\balt=["'][^"']+["']/i.test(image)) errors.push(lang+': descriptive image alt missing');
+  if (!/<meta\s+name=["']description["']/i.test(html)) errors.push(lang+': meta description missing');
+  if (!/property=["']og:description["']/i.test(html)) errors.push(lang+': OG description missing');
+  if (!/name=["']twitter:image["']/i.test(html)) errors.push(lang+': Twitter image missing');
+  if (!/<a\b[^>]*href=["']https:\/\//i.test(html)) errors.push(lang+': external source link missing');
   if (!sitemap.includes('<loc>'+url+'</loc>')) errors.push(lang+': sitemap URL missing');
   for (const [other,otherSlug] of pages) {
     if (!html.includes('hreflang="'+other+'" href="'+origin+'/'+otherSlug+'"')) errors.push(lang+': missing reciprocal hreflang '+other);
