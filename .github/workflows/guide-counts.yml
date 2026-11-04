@@ -14,5 +14,7 @@ jobs:
           node-version: '20'
       - name: Validate counter script syntax
         run: node --check scripts/sync-guide-counts.mjs
+      - name: Regression-test language counts, noindex and duplicate cards
+        run: node scripts/test-guide-counts.mjs
       - name: Verify published article counts in all three languages
         run: npm run check:guide-counts
