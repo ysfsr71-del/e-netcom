@@ -50,3 +50,7 @@ Site, gerçek Türkiye il haritasını ve 81 il listesini kullanır. Harita üze
 - Bingöl, Çankırı, Edirne, Muş ve Sivas illerini kapsayan 12.00–14.00 saatleri arasında **tek çevrimiçi oturum**, **194 katılımcı**.
 - İl haritasında 5 il, eğitim ve katılımcı toplamında 1 oturum ve 194 kişi sayılır.
 - Güncel toplam: **31 eğitim, 37 il, 1.798 katılımcı**; 19 yüz yüze (1.145), 12 çevrimiçi (653).
+
+## 4 Kasım 2026 — Diyarbakır yüz yüze eğitimi
+- Diyarbakır Ali Emiri Anadolu Lisesi, 13.30–15.30, 91 katılımcı.
+- Güncel toplam: 32 eğitim, 38 il, 1.889 katılımcı; 20 yüz yüze ve 12 çevrimiçi eğitim.
