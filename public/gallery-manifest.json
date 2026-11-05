@@ -814,5 +814,23 @@
       "name": "gorsel01.jpeg",
       "type": "file"
     }
+  ],
+  "diyarbakir": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "diyarbakir01.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "diyarbakir02.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "diyarbakir03.jpeg",
+      "type": "file"
+    }
   ]
 }
