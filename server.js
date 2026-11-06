@@ -1047,6 +1047,7 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-11-06","Kamu spotu yayın tespiti 130 oldu","VİA yayın takibinde tespit edilen toplam televizyon yayını 101’den 130’a yükseldi. Ana sayfa, Çıktılar ve yönetim paneli güncellendi. Kanal sayısı 7 olarak korundu."],
 ["2026-10-31","SEO yapılandırılmış verileri geliştirildi","Sekiz ana sayfanın üç dil sürümü için WebPage ve BreadcrumbList JSON-LD verileri eklendi. Mevcut Project/WebSite şemaları korundu. Canlı indeksleme ve mobil hız sonuçları ayrıca doğrulanmalıdır; ana sayfaların görsel tasarımı değiştirilmedi."],
 ["2026-10-31","Yönetim analitiği genişletildi","Yalnızca yönetim paneli ve sunucu istatistikleri geliştirildi. Sayfa görüntüleme, ziyaret başına sayfa, giriş sayfaları, trafik kaynağı grupları, etkileşimler ve proje içeriklerine erişim eklendi. Veri saklama varsayılanı 730 gün ve 250.000 olay olarak ayarlandı; geçmişte silinen kayıtlar geri getirilemez. Ana site dosyaları değiştirilmedi."],
 ["2026-10-31","Eğitim kartlarının görünümü standartlaştırıldı","Eğitimler sayfasındaki 31 kartta ortak bilgi sıralaması uygulandı: il/oturum adı, eğitim türü, tarih, katılımcı sayısı ve mevcut medya bağlantıları. Yalnızca bazı kayıtlarda bulunan okul adı, saat ve ortak oturum açıklamaları kart görünümünden kaldırıldı; eğitim kayıtları ve katılımcı sayıları değiştirilmedi. Kart yüksekliği ve bağlantı hizaları eşitlendi."],
