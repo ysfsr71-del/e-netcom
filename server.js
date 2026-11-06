@@ -1047,6 +1047,8 @@ function buildReportWorkbook(range, fromDate, toDate) {
 
 
 const RELEASE_NOTES = [
+["2026-11-06","Mardin eğitimi ve güncel eğitim istatistikleri","6 Kasım 2026 Mardin Prof. Dr. Necmettin Erbakan Anadolu Lisesinde 47 katılımcılı yüz yüze eğitim tamamlandı. Güncel toplam 33 eğitim, 39 il ve 1.936 katılımcı. Eğitimler sayfası, harita ve fotoğraf arşivi güncellendi."],
+["2026-11-04","Diyarbakır yüz yüze eğitimi","4 Kasım 2026 Diyarbakır Ali Emiri Anadolu Lisesinde 91 katılımcıyla yüz yüze eğitim tamamlandı; eğitim haritası ve fotoğraf arşivine eklendi."],
 ["2026-11-06","Kamu spotu yayın tespiti 130 oldu","VİA yayın takibinde tespit edilen toplam televizyon yayını 101’den 130’a yükseldi. Ana sayfa, Çıktılar ve yönetim paneli güncellendi. Kanal sayısı 7 olarak korundu."],
 ["2026-10-31","SEO yapılandırılmış verileri geliştirildi","Sekiz ana sayfanın üç dil sürümü için WebPage ve BreadcrumbList JSON-LD verileri eklendi. Mevcut Project/WebSite şemaları korundu. Canlı indeksleme ve mobil hız sonuçları ayrıca doğrulanmalıdır; ana sayfaların görsel tasarımı değiştirilmedi."],
 ["2026-10-31","Yönetim analitiği genişletildi","Yalnızca yönetim paneli ve sunucu istatistikleri geliştirildi. Sayfa görüntüleme, ziyaret başına sayfa, giriş sayfaları, trafik kaynağı grupları, etkileşimler ve proje içeriklerine erişim eklendi. Veri saklama varsayılanı 730 gün ve 250.000 olay olarak ayarlandı; geçmişte silinen kayıtlar geri getirilemez. Ana site dosyaları değiştirilmedi."],
@@ -1151,6 +1153,9 @@ const RELEASE_NOTES = [
 ];
 
 const RELEASE_NOTES_EN = [
+["2026-11-06","Public service spot broadcasts reach 130","VİA monitoring now records 130 television broadcasts of two e-NetCoM public service spots, up from 101. The homepage, Outputs page and admin dashboard were updated; the seven-channel count remains unchanged."],
+["2026-11-06","Mardin training and education statistics updated","Added the 6 November face-to-face training at Prof. Dr. Necmettin Erbakan Anatolian High School in Mardin with 47 participants. Current totals: 33 training sessions, 39 provinces and 1,936 participants."],
+["2026-11-04","Diyarbakır training added","Recorded the 4 November face-to-face training at Ali Emiri Anatolian High School with 91 participants."],
 ["2026-10-31","Improved structured SEO data","Added language-aware WebPage and BreadcrumbList JSON-LD for eight main pages in three languages while retaining existing Project/WebSite schemas. Live indexing and mobile speed still require verification. Public page layouts were unchanged."],
 ["2026-10-31","Expanded administration analytics","Admin-only analytics now include page views, pages per session, entry pages, traffic source groups, interactions and project content usage. Default event retention is 730 days and 250,000 events; previously purged events cannot be recovered. Public site files were not modified."],
 ["2026-10-31","Training archive cards standardized","All 31 training cards now use a consistent field order: location/session, training type, date, participant count and available media links. Inconsistently available venue and time details were removed from card display without changing training records or counts. Card heights and media links were aligned."],
