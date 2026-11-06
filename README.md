@@ -54,3 +54,8 @@ Site, gerçek Türkiye il haritasını ve 81 il listesini kullanır. Harita üze
 ## 4 Kasım 2026 — Diyarbakır yüz yüze eğitimi
 - Diyarbakır Ali Emiri Anadolu Lisesi, 13.30–15.30, 91 katılımcı.
 - Güncel toplam: 32 eğitim, 38 il, 1.889 katılımcı; 20 yüz yüze ve 12 çevrimiçi eğitim.
+
+## 6 Kasım 2026 — Mardin yüz yüze eğitimi
+- Prof. Dr. Necmettin Erbakan Anadolu Lisesi, 13.30–15.30, 47 katılımcı.
+- Güncel toplam: 33 eğitim, 39 il, 1.936 katılımcı; 21 yüz yüze ve 12 çevrimiçi eğitim.
+- Galeri: public/mardin/afis.PNG ve mardin01–03.jpeg.
