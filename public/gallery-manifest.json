@@ -832,5 +832,23 @@
       "name": "diyarbakir03.jpeg",
       "type": "file"
     }
+  ],
+  "mardin": [
+    {
+      "name": "afis.PNG",
+      "type": "file"
+    },
+    {
+      "name": "mardin01.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "mardin02.jpeg",
+      "type": "file"
+    },
+    {
+      "name": "mardin03.jpeg",
+      "type": "file"
+    }
   ]
 }
