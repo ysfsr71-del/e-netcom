@@ -16,7 +16,7 @@ fetch(dataUrl,{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(d
   if(!Number.isInteger(n))return;
   const cards=root.querySelectorAll('.map-activity-card');
   for(const card of cards){
-   if(!card.textContent.includes(String(match.total)))continue;
+   if(!card.textContent.includes(match.date.slice(0,4))&&!card.textContent.includes(String(match.total)))continue;
    const line=document.createElement('div');
    line.className='info-row province-participation-detail';
    const lang=document.documentElement.lang||'tr';
