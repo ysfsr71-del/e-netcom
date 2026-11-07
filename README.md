@@ -59,3 +59,8 @@ Site, gerçek Türkiye il haritasını ve 81 il listesini kullanır. Harita üze
 - Prof. Dr. Necmettin Erbakan Anadolu Lisesi, 13.30–15.30, 47 katılımcı.
 - Güncel toplam: 33 eğitim, 39 il, 1.936 katılımcı; 21 yüz yüze ve 12 çevrimiçi eğitim.
 - Galeri: public/mardin/afis.PNG ve mardin01–03.jpeg.
+
+## 7 Kasım 2026 — 31 Ekim ortak eğitim katılımcı düzeltmesi
+- Bingöl 47, Çankırı 13, Edirne 36, Muş 38, Sivas 44; toplam 178 katılımcı, tek çevrimiçi oturum.
+- 6 Kasım Mardin dahil güncel toplam: 33 eğitim, 39 il, 1.920 katılımcı; yüz yüze 1.283, çevrimiçi 637.
+- Önceki 194 sayısı 16 kişi fazla olduğundan tarihsel sürüm notları eski durumu gösterir.
