@@ -1615,7 +1615,7 @@ app.get("/api/public/education-summary", (req, res) => {
     if (!trainings.length) throw new Error("Eğitim verisi ayrıştırılamadı");
     const seen = new Set();
     const uniqueShared = shared.filter(x => {if(seen.has(x.sharedId)) return false; seen.add(x.sharedId); return true;});
-    const sessions = [...trainings,...uniqueShared];
+    const sessions = [...trainings,...uniqueShared.map(x=>({...x,participants:x.sharedId==='bingol-cankiri-edirne-mus-sivas-2026-10-31'?shared.filter(y=>y.sharedId===x.sharedId).reduce((n,y)=>n+y.participants,0):x.participants}))];
     const face = sessions.filter(x=>x.mode==="Yüz yüze"), online=sessions.filter(x=>x.mode==="Çevrimiçi");
     const cities = [...new Set([...trainings,...shared].map(x=>x.city))];
     const faceCities = [...new Set([...trainings,...shared].filter(x=>x.mode==="Yüz yüze").map(x=>x.city))];
