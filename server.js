@@ -1600,6 +1600,35 @@ app.get("/api/admin/stats", requireAdmin, async (req, res) => {
   });
 });
 
+// Ortak eğitim veri servisi: ana sayfadaki gerçekleşen kayıtları tek kez okur.
+// Ortak oturumlarda aynı sharedId yalnızca bir eğitim ve bir katılımcı grubu sayılır.
+app.get("/api/public/education-summary", (req, res) => {
+  try {
+    const html = fs.readFileSync(path.join(__dirname, "public", "index.html"), "utf8");
+    const t = html.match(/const trainingData=\[([\s\S]*?)\];/);
+    const a = html.match(/const additionalActivities=\[([\s\S]*?)\];/);
+    if (!t || !a) throw new Error("Eğitim kaynak blokları bulunamadı");
+    const trainings = [...t[1].matchAll(/\['([^']+)','([^']+)','(Yüz yüze|Çevrimiçi)','([^']*)',(\d+)\]/g)]
+      .map(m => ({date:m[1],city:m[2],mode:m[3],place:m[4],participants:Number(m[5]),status:"completed"}));
+    const shared = [...a[1].matchAll(/\['([^']+)','([^']+)','[^']+','(Yüz yüze|Çevrimiçi)',[^\n]*?,(\d+),'completed','([^']+)'\]/g)]
+      .map(m => ({date:m[1],city:m[2],mode:m[3],participants:Number(m[4]),sharedId:m[5],status:"completed"}));
+    if (!trainings.length) throw new Error("Eğitim verisi ayrıştırılamadı");
+    const seen = new Set();
+    const uniqueShared = shared.filter(x => {if(seen.has(x.sharedId)) return false; seen.add(x.sharedId); return true;});
+    const sessions = [...trainings,...uniqueShared];
+    const face = sessions.filter(x=>x.mode==="Yüz yüze"), online=sessions.filter(x=>x.mode==="Çevrimiçi");
+    const cities = [...new Set([...trainings,...shared].map(x=>x.city))];
+    const faceCities = [...new Set([...trainings,...shared].filter(x=>x.mode==="Yüz yüze").map(x=>x.city))];
+    const onlineCities = [...new Set([...trainings,...shared].filter(x=>x.mode==="Çevrimiçi").map(x=>x.city))];
+    const sum = arr=>arr.reduce((n,x)=>n+x.participants,0);
+    res.set("Cache-Control","no-store").json({updatedAt:new Date().toISOString(),
+      total:{sessions:sessions.length,provinces:cities.length,participants:sum(sessions)},
+      face:{sessions:face.length,provinces:faceCities.length,participants:sum(face)},
+      online:{sessions:online.length,provinces:onlineCities.length,participants:sum(online)},
+      trainings,shared,uniqueShared});
+  } catch(e) {console.error("Education summary:",e.message);res.status(500).json({error:"Eğitim verileri okunamadı"});}
+});
+
 app.get("/yonetim", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "yonetim.html"));
 });
