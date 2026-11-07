@@ -2230,6 +2230,13 @@ function updateComputedStats(lang){
   const onlineProvinceCount=new Set([...online.map(x=>x.city),...additionalActivities.filter(x=>x[7]==='completed'&&x[3]==='Çevrimiçi').map(x=>x[1])]).size;
   const fmt=n=>Number(n).toLocaleString('tr-TR');
   const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
+  // Harita kartları: oturum sayısı ve kapsanan benzersiz il sayısı birlikte, güncel veriden hesaplanır.
+  set('mapFaceCount',face.length);
+  set('mapOnlineCount',online.length);
+  const faceMapLabel=document.querySelector('.map-summary-card [data-map-label="face"]');
+  const onlineMapLabel=document.querySelector('.map-summary-card [data-map-label="online"]');
+  if(faceMapLabel) faceMapLabel.textContent=lang==='en'?`In-person trainings (${faceProvinceCount} provinces)`:lang==='de'?`Präsenzschulungen (${faceProvinceCount} Provinzen)`:`Yüz yüze eğitim (${faceProvinceCount} il)`;
+  if(onlineMapLabel) onlineMapLabel.textContent=lang==='en'?`Online trainings (${onlineProvinceCount} provinces)`:lang==='de'?`Online-Schulungen (${onlineProvinceCount} Provinzen)`:`Çevrimiçi eğitim (${onlineProvinceCount} il)`;
   set('heroTrainingCount',completed.length);
   set('heroParticipantCount',fmt(totalParticipants));
   set('impactFaceParticipants',fmt(faceParticipants));
