@@ -1,7 +1,7 @@
 // Run: node scripts/check-education-consistency.js
 import fs from 'node:fs';
 const html=fs.readFileSync('public/index.html','utf8');
-const json=JSON.parse(fs.readFileSync('public/shared-training-participation.json','utf8'));
+const json=JSON.parse(fs.readFileSync('public/shared-training-participation.json','utf8').replace(/^\uFEFF/,''));
 const training=html.match(/const trainingData=\[([\s\S]*?)\];/);
 const extras=html.match(/const additionalActivities=\[([\s\S]*?)\];/);
 if(!training||!extras)throw Error('Education source blocks missing');
@@ -14,17 +14,25 @@ const errors=[];const sums=[];
 for(const [id,arr] of groups){
  const ref=json.sessions.find(x=>x.id===id);
  if(!ref){errors.push('Missing shared session '+id);continue}
- const unique=[...new Set(arr.map(x=>x.participants))];
- const total=unique.length===1?unique[0]:arr.reduce((n,x)=>n+x.participants,0);
- if(total!==ref.total)errors.push(id+' total '+total+' vs JSON '+ref.total);
- if(unique.length!==1)for(const x of arr)if(ref.provinces[x.city]!==x.participants)errors.push(id+' province '+x.city+' '+x.participants+' vs '+ref.provinces[x.city]);
- if(unique.length===1&&Object.keys(ref.provinces).length!==arr.length)errors.push(id+' province count mismatch');
+ const total=ref.total;
+ if(ref.date!==arr[0].date)errors.push(id+' date mismatch');
+ if(ref.mode!==arr[0].mode)errors.push(id+' mode mismatch');
+ const provinces=Object.keys(ref.provinces);
+ if(provinces.length!==arr.length)errors.push(id+' province count mismatch');
+ for(const x of arr){
+   if(!Object.hasOwn(ref.provinces,x.city))errors.push(id+' unknown province '+x.city);
+   else if(ref.provinces[x.city]!==x.participants)errors.push(id+' province '+x.city+' '+x.participants+' vs '+ref.provinces[x.city]);
+ }
  if(Object.values(ref.provinces).reduce((a,b)=>a+b,0)!==ref.total)errors.push(id+' province sum differs from total');
  sums.push({id,total,mode:arr[0].mode,cities:arr.map(x=>x.city)});
 }
 const all=[...base,...sums.map(x=>({mode:x.mode,participants:x.total}))];
 const sum=x=>x.reduce((n,a)=>n+a.participants,0);
 const result={sessions:all.length,provinces:new Set([...base.map(x=>x.city),...shared.map(x=>x.city)]).size,participants:sum(all),face:sum(all.filter(x=>x.mode==='Yüz yüze')),online:sum(all.filter(x=>x.mode==='Çevrimiçi')),onlineProvinces:new Set([...base.filter(x=>x.mode==='Çevrimiçi').map(x=>x.city),...shared.filter(x=>x.mode==='Çevrimiçi').map(x=>x.city)]).size};
+const expected={sessions:34,provinces:45,participants:2122,face:1283,online:839,onlineProvinces:24};
+for(const [key,value] of Object.entries(expected))if(result[key]!==value)errors.push('Expected '+key+'='+value+', got '+result[key]);
+const oct31=json.sessions.find(x=>x.id==='bingol-cankiri-edirne-mus-sivas-2026-10-31');
+if(!oct31||oct31.total!==178)errors.push('31 October 2026 must remain 178 participants');
 const archive=fs.readFileSync('public/egitimler.html','utf8');
 const fmt=n=>n.toLocaleString('tr-TR');
 if(!archive.includes('<b>'+fmt(result.participants)+'</b>'))errors.push('Archive total participant count stale');
