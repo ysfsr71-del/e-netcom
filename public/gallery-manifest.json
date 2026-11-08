@@ -850,5 +850,65 @@
       "name": "mardin03.jpeg",
       "type": "file"
     }
+  ],
+  "agri": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "gorsel01.jpeg",
+      "type": "file"
+    }
+  ],
+  "hakkari": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "gorsel01.jpeg",
+      "type": "file"
+    }
+  ],
+  "osmaniye": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "gorsel01.jpeg",
+      "type": "file"
+    }
+  ],
+  "rize": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "gorsel01.jpeg",
+      "type": "file"
+    }
+  ],
+  "siirt": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "gorsel01.jpeg",
+      "type": "file"
+    }
+  ],
+  "sinop": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "gorsel01.jpeg",
+      "type": "file"
+    }
   ]
 }
