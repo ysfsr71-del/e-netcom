@@ -120,7 +120,7 @@ function resourceIndex(dir){
     const file=path.join(dir,'public','assets','database','database.json');
     const stat=fs.statSync(file);
     if(!resourceIndexCache||resourceIndexCache.mtimeMs!==stat.mtimeMs||resourceIndexCache.size!==stat.size){
-      const parsed=JSON.parse(readSeoFile(file));
+      const parsed=JSON.parse(readSeoFile(file).replace(/^\uFEFF/,''));
       resourceIndexCache={mtimeMs:stat.mtimeMs,size:stat.size,items:Array.isArray(parsed)?parsed:(Array.isArray(parsed.items)?parsed.items:[])};
     }
     return resourceIndexCache.items;
