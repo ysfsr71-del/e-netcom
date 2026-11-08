@@ -1,5 +1,5 @@
 // Run: node scripts/check-education-consistency.js
-const fs=require('node:fs');
+import fs from 'node:fs';
 const html=fs.readFileSync('public/index.html','utf8');
 const json=JSON.parse(fs.readFileSync('public/shared-training-participation.json','utf8'));
 const training=html.match(/const trainingData=\[([\s\S]*?)\];/);
