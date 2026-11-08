@@ -1613,9 +1613,22 @@ app.get("/api/public/education-summary", (req, res) => {
     const shared = [...a[1].matchAll(/\['([^']+)','([^']+)','[^']+','(Yüz yüze|Çevrimiçi)',[^\n]*?,(\d+),'completed','([^']+)'\]/g)]
       .map(m => ({date:m[1],city:m[2],mode:m[3],participants:Number(m[4]),sharedId:m[5],status:"completed"}));
     if (!trainings.length) throw new Error("Eğitim verisi ayrıştırılamadı");
+    // Shared session totals and per-province attendance have distinct meanings.
+    const sharedSource = JSON.parse(fs.readFileSync(path.join(__dirname, "public", "shared-training-participation.json"), "utf8").replace(/^\uFEFF/, ""));
+    const sourceGroups = new Map(sharedSource.sessions.map(group => [group.id, group]));
     const seen = new Set();
-    const uniqueShared = shared.filter(x => {if(seen.has(x.sharedId)) return false; seen.add(x.sharedId); return true;});
-    const sessions = [...trainings,...uniqueShared.map(x=>({...x,participants:shared.filter(y=>y.sharedId===x.sharedId).some(y=>y.participants!==x.participants)?shared.filter(y=>y.sharedId===x.sharedId).reduce((n,y)=>n+y.participants,0):x.participants}))];
+    const uniqueShared = shared.filter(x => {
+      if (seen.has(x.sharedId)) return false;
+      seen.add(x.sharedId);
+      return true;
+    }).map(x => {
+      const group = sourceGroups.get(x.sharedId);
+      if (!group) throw new Error("Ortak eğitim kaynağı eksik: " + x.sharedId);
+      const sum = Object.values(group.provinces).reduce((n, v) => n + Number(v), 0);
+      if (sum !== group.total) throw new Error("Ortak eğitim il toplamı uyuşmuyor: " + x.sharedId);
+      return {...x, participants:group.total, provinceParticipants:group.provinces};
+    });
+    const sessions = [...trainings, ...uniqueShared];
     const face = sessions.filter(x=>x.mode==="Yüz yüze"), online=sessions.filter(x=>x.mode==="Çevrimiçi");
     const cities = [...new Set([...trainings,...shared].map(x=>x.city))];
     const faceCities = [...new Set([...trainings,...shared].filter(x=>x.mode==="Yüz yüze").map(x=>x.city))];
