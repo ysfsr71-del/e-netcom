@@ -33,6 +33,20 @@
         "Bartın": 24,
         "Zonguldak": 24
       }
+    },
+    {
+      "id": "agri-hakkari-osmaniye-rize-siirt-sinop-2026-11-07",
+      "date": "2026-11-07",
+      "mode": "Çevrimiçi",
+      "total": 202,
+      "provinces": {
+        "Ağrı": 38,
+        "Hakkari": 49,
+        "Osmaniye": 27,
+        "Rize": 27,
+        "Siirt": 23,
+        "Sinop": 38
+      }
     }
   ]
 }
