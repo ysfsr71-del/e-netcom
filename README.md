@@ -64,3 +64,8 @@ Site, gerçek Türkiye il haritasını ve 81 il listesini kullanır. Harita üze
 - Bingöl 47, Çankırı 13, Edirne 36, Muş 38, Sivas 44; toplam 178 katılımcı, tek çevrimiçi oturum.
 - 6 Kasım Mardin dahil güncel toplam: 33 eğitim, 39 il, 1.920 katılımcı; yüz yüze 1.283, çevrimiçi 637.
 - Önceki 194 sayısı 16 kişi fazla olduğundan tarihsel sürüm notları eski durumu gösterir.
+
+## 7 Kasım 2026 — Altı il tek çevrimiçi eğitim
+- Ağrı 38, Hakkari 49, Osmaniye 27, Rize 27, Siirt 23, Sinop 38; toplam **202 kişi**, **tek oturum**.
+- 7 Kasım itibarıyla: **34 eğitim**, **45 il**, **2.122 katılımcı**. Yüz yüze 21 eğitim / 1.283 kişi; çevrimiçi 13 eğitim / 839 kişi / 24 il.
+- Afiş ve görseller `public/{agri,hakkari,osmaniye,rize,siirt,sinop}/` klasörlerindedir.
