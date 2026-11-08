@@ -94,11 +94,24 @@ const months={en:{Ocak:"January",Şubat:"February",Mart:"March",Nisan:"April",Ma
   const all=[...d.trainings.map(a=>({...a,groupCities:[a.city]})),...d.uniqueShared.map(a=>({...a,groupCities:(groups.get(a.sharedId)||[]).map(x=>x.city),place:'Ortak çevrimiçi eğitim'}))];
   all.sort((a,b)=>String(b.date).localeCompare(String(a.date)));
   const mount=document.getElementById('educationRecords');
-  mount.innerHTML=all.map((a,i)=>{
-    const face=a.mode==='Yüz yüze',name=a.groupCities.join(', '),city=a.groupCities[0];
-    const gallery='/gallery.html?city='+encodeURIComponent(city);
-    return '<article class="record '+(face?'face':'online')+'" data-type="'+(face?'face':'online')+'" data-search="'+esc(name.toLocaleLowerCase('tr-TR')+' '+(a.place||'').toLocaleLowerCase('tr-TR'))+'" data-order="'+i+'"><div class="record-head"><h3>'+esc(name)+(a.groupCities.length>1?' · Ortak eğitim':'')+'</h3><span class="tag">'+esc(a.mode)+'</span></div><p>'+esc(a.date)+(a.place?' · '+esc(a.place):'')+'</p><div class="people">'+fmt(a.participants)+' katılımcı</div><p class="record-media-links"><a href="'+gallery+'">Fotoğraf Arşivi</a> · <a href="'+gallery+'&amp;view=poster">Program Akışı</a></p></article>';
-  }).join('');
+  const labels={
+    tr:{joint:'Ortak eğitim',face:'Yüz yüze',online:'Çevrimiçi',people:'katılımcı',photos:'Fotoğraf Arşivi',poster:'Program Akışı',jointPlace:'Ortak çevrimiçi eğitim'},
+    en:{joint:'Joint training',face:'In-person',online:'Online',people:'participants',photos:'Photo archive',poster:'Programme',jointPlace:'Joint online training'},
+    de:{joint:'Gemeinsame Schulung',face:'Präsenz',online:'Online',people:'Teilnehmende',photos:'Fotoarchiv',poster:'Programm',jointPlace:'Gemeinsame Online-Schulung'}
+  };
+  function renderRecords(){
+    const lang=document.documentElement.dataset.lang||document.documentElement.lang||'tr';
+    const L=labels[lang]||labels.tr;
+    mount.innerHTML=all.map((a,i)=>{
+      const face=a.mode==='Yüz yüze',name=a.groupCities.join(', '),city=a.groupCities[0];
+      const gallery='/gallery.html?city='+encodeURIComponent(city);
+      const place=a.sharedId?L.jointPlace:(a.place||'');
+      return '<article class="record '+(face?'face':'online')+'" data-type="'+(face?'face':'online')+'" data-search="'+esc(name.toLocaleLowerCase('tr-TR')+' '+(a.place||'').toLocaleLowerCase('tr-TR'))+'" data-order="'+i+'"><div class="record-head"><h3>'+esc(name)+(a.groupCities.length>1?' · '+L.joint:'')+'</h3><span class="tag">'+(face?L.face:L.online)+'</span></div><p>'+esc(a.date)+(place?' · '+esc(place):'')+'</p><div class="people">'+fmt(a.participants)+' '+L.people+'</div><p class="record-media-links"><a href="'+gallery+'">'+L.photos+'</a> · <a href="'+gallery+'&amp;view=poster">'+L.poster+'</a></p></article>';
+    }).join('');
+    document.dispatchEvent(new Event('enetcom-education-updated'));
+  }
+  renderRecords();
+  window.addEventListener('enetcom-language-change',renderRecords);
   document.dispatchEvent(new Event('enetcom-education-updated'));
  }catch(err){console.warn('Education live sync:',err);}
 })();
