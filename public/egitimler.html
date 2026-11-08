@@ -91,7 +91,8 @@ const months={en:{Ocak:"January",Şubat:"February",Mart:"March",Nisan:"April",Ma
   const esc=s=>String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   const groups=new Map();
   for(const a of d.shared){if(!groups.has(a.sharedId))groups.set(a.sharedId,[]);groups.get(a.sharedId).push(a);}
-  const all=[...d.trainings.map(a=>({...a,groupCities:[a.city]})),...[...groups.values()].map(arr=>({...arr[0],participants:arr.some(x=>x.participants!==arr[0].participants)?arr.reduce((n,x)=>n+x.participants,0):arr[0].participants,groupCities:arr.map(x=>x.city),place:'Ortak çevrimiçi eğitim'}))];
+  const all=[...d.trainings.map(a=>({...a,groupCities:[a.city]})),...d.uniqueShared.map(a=>({...a,groupCities:(groups.get(a.sharedId)||[]).map(x=>x.city),place:'Ortak çevrimiçi eğitim'}))];
+  all.sort((a,b)=>String(b.date).localeCompare(String(a.date)));
   const mount=document.getElementById('educationRecords');
   mount.innerHTML=all.map((a,i)=>{
     const face=a.mode==='Yüz yüze',name=a.groupCities.join(', '),city=a.groupCities[0];
