@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "prestart": "node scripts/prerender.mjs",
+    "audit:education": "node scripts/check-education-consistency.js",
     "audit:guide": "node scripts/audit-guide-seo.mjs",
     "audit:guide:strict": "node scripts/audit-guide-seo.mjs --strict"
   },
