@@ -74,7 +74,15 @@ app.get("/api/health", (req,res) => {
 });
 
 app.post("/api/chat", async (req,res) => {
-  const message = String(req.body?.message || "").trim();
+  const workshopTypes = new Set(["hashtag kampanyası","sosyal medya paketi","kısa video senaryosu","eğitim tasarımı","haber metni","30 günlük içerik takvimi"]);
+  const workshopType = String(req.body?.workshopType || "").trim();
+  const workshopLanguage = ["tr","en","de"].includes(req.body?.language) ? req.body.language : "tr";
+  const workshopTopic = String(req.body?.workshopTopic || "").trim();
+  const isWorkshop = workshopTypes.has(workshopType);
+  const languageInstruction = {tr:"Yanıtı Türkçe üret.",en:"Respond entirely in English.",de:"Antworte vollständig auf Deutsch."};
+  const workshopInstruction = isWorkshop ? "You are preparing a practical environmental communication workshop resource. Include concrete steps, an editable example, source-checking guidance, and a youth participation or peer-review step. Do not invent project outcomes or claim that a draft is fact-checked. " + languageInstruction[workshopLanguage] : "";
+
+  const message = isWorkshop ? (workshopType + " hazırla. Konu: " + workshopTopic + ". e-NetCoM sürdürülebilirlik bağlamında uygulanabilir, somut taslak üret.") : String(req.body?.message || "").trim();
   if (!message) return res.status(400).json({error:"Mesaj boş olamaz."});
   if (message.length > 12000) return res.status(413).json({error:"Mesaj çok uzun."});
 
@@ -108,7 +116,7 @@ app.post("/api/chat", async (req,res) => {
 
     const response = await client.responses.create({
       model,
-      instructions: SYSTEM,
+      instructions: isWorkshop ? SYSTEM + "\\n" + workshopInstruction : SYSTEM,
       reasoning: { effort: "low" },
       max_output_tokens: 1800,
       tools,

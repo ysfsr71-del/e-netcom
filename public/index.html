@@ -2399,7 +2399,25 @@ function closeModal(){document.getElementById('modal').classList.remove('open')}
 document.querySelectorAll('[data-video-filter]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-video-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderVideos(b.dataset.videoFilter)}));
 renderVideos('all');
 
-async function workshop(btn,type){const area=btn.parentElement.querySelector('textarea'),prompt=area.value.trim()||'e-NetCoM için çevresel sürdürülebilirlik';const out=document.getElementById('workout');out.innerHTML='<div class="workout">Atölye içeriği hazırlıyor…</div>';try{const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:`${type} hazırla. Konu: ${prompt}. e-NetCoM projesinin amacı ve çevresel sürdürülebilirlik bağlamıyla uyumlu, yayınlanabilir ve somut bir çıktı üret.`,history:[]})});const d=await r.json();out.innerHTML=`<div class="workout"><b>ATÖLYE ÇIKTISI · ${esc(type.toUpperCase())}</b><br><br>${esc(d.reply||'Çıktı üretilemedi.')}</div>`}catch(e){out.innerHTML='<div class="workout">Astra şu anda çevrimdışı. Lütfen birkaç saniye sonra tekrar deneyin.</div>'}}
+async function workshop(btn,type){
+  const lang=(new URLSearchParams(location.search).get('lang')||document.documentElement.lang||'tr').slice(0,2).toLowerCase();
+  const selected=['tr','en','de'].includes(lang)?lang:'tr';
+  const texts={
+    tr:{defaultPrompt:'e-NetCoM için çevresel sürdürülebilirlik',loading:'Atölye içeriği hazırlıyor…',heading:'ATÖLYE ÇIKTISI',empty:'Çıktı üretilemedi.',error:'İçerik şu anda üretilemiyor. Lütfen daha sonra tekrar deneyin.'},
+    en:{defaultPrompt:'environmental sustainability for e-NetCoM',loading:'Preparing workshop content…',heading:'WORKSHOP OUTPUT',empty:'Could not generate output.',error:'Content is temporarily unavailable. Please try again later.'},
+    de:{defaultPrompt:'ökologische Nachhaltigkeit für e-NetCoM',loading:'Werkstattinhalt wird vorbereitet…',heading:'WERKSTATT-ERGEBNIS',empty:'Ausgabe konnte nicht erstellt werden.',error:'Der Inhalt ist vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut.'}
+  };
+  const t=texts[selected],area=btn.parentElement.querySelector('textarea'),prompt=area.value.trim()||t.defaultPrompt,out=document.getElementById('workout');
+  const previousDisabled=btn.disabled;btn.disabled=true;
+  out.innerHTML='<div class="workout">'+esc(t.loading)+'</div>';
+  try{
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:type+' — '+prompt,workshopType:type,workshopTopic:prompt,language:selected,history:[]})});
+    const d=await r.json();
+    if(!r.ok||!d.reply||!String(d.reply).trim())throw new Error('WORKSHOP_API_'+r.status);
+    out.innerHTML='<div class="workout"><b>'+esc(t.heading+' · '+type.toUpperCase())+'</b><br><br>'+esc(String(d.reply)).replace(/\n/g,'<br>')+'</div>';
+  }catch(e){console.warn('Workshop generation failed:',e.message);out.innerHTML='<div class="workout" role="alert">'+esc(t.error)+'</div>'}
+  finally{btn.disabled=previousDisabled}
+}
 </script>
 <script id="enetcom-i18n">
 (function(){
