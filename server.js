@@ -764,14 +764,14 @@ function buildAnalyticsStats(range = "30d", fromDate = "", toDate = "") {
       const path = String(e.path || "").split("?")[0].toLowerCase();
       const section = String(e.section || "").toLowerCase().replace(/^#/, "");
       const target = String(e.target || "").toLowerCase();
-      if (/^\\/(?:en\\/|de\\/)?cop31(?:\\/|\\.html|$)/.test(path) || section === "cop31") return "cop31";
-      if (/^\\/(?:en\\/|de\\/)?(?:egitimler|training|gallery|galeri)(?:\\.html|\\/|$)/.test(path) || ["egitimler","training","gallery","galeri","iller","education"].includes(section)) return "education";
-      if (["ciktilar","outputs","project-outputs"].includes(section) || /^\\/(?:en\\/|de\\/)?(?:ciktilar|outputs)(?:\\.html|\\/|$)/.test(path)) return "outputs";
-      if (["atolye","workshop","yesil-zeka-atolyesi"].includes(section) || /^\\/(?:en\\/|de\\/)?(?:atolye|workshop)(?:\\.html|\\/|$)/.test(path)) return "workshop";
-      if (["video","videos","medya"].includes(section) || /^\\/(?:en\\/|de\\/)?(?:video|videos)(?:\\.html|\\/|$)/.test(path)) return "videos";
-      if (["veritabani","e-merkez","emerkez","resources"].includes(section) || /^\\/(?:en\\/|de\\/)?(?:veritabani|e-merkez|emerkez)(?:\\.html|\\/|$)/.test(path)) return "ecenter";
+      if (/^\/(?:en\/|de\/)?cop31(?:\/|\.html|$)/.test(path) || section === "cop31") return "cop31";
+      if (/^\/(?:en\/|de\/)?(?:egitimler|training|gallery|galeri)(?:\.html|\/|$)/.test(path) || ["egitimler","training","gallery","galeri","iller","education"].includes(section)) return "education";
+      if (["ciktilar","outputs","project-outputs"].includes(section) || /^\/(?:en\/|de\/)?(?:ciktilar|outputs)(?:\.html|\/|$)/.test(path)) return "outputs";
+      if (["atolye","workshop","yesil-zeka-atolyesi"].includes(section) || /^\/(?:en\/|de\/)?(?:atolye|workshop)(?:\.html|\/|$)/.test(path)) return "workshop";
+      if (["video","videos","medya"].includes(section) || /^\/(?:en\/|de\/)?(?:video|videos)(?:\.html|\/|$)/.test(path)) return "videos";
+      if (["veritabani","e-merkez","emerkez","resources"].includes(section) || /^\/(?:en\/|de\/)?(?:veritabani|e-merkez|emerkez)(?:\.html|\/|$)/.test(path)) return "ecenter";
       // Target URLs are considered only when they unambiguously point to a project page.
-      if (/^\\/?(?:en\\/|de\\/)?cop31(?:\\.html|\\/|$)/.test(target)) return "cop31";
+      if (/^\/?(?:en\/|de\/)?cop31(?:\.html|\/|$)/.test(target)) return "cop31";
       return null;
     };
     return categories.map(([name, id]) => {
