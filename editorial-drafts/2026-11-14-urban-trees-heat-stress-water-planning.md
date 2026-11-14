@@ -51,3 +51,15 @@ These are candidate institutional sources, not a claim that every link or passag
 - Suggested EN alt: “Original diagram of an urban tree providing shade, with slow watering to the root zone and mulch kept away from the trunk.”
 - Suggested DE alt: “Originalgrafik eines schattenspendenden Stadtbaums mit langsamer Bewässerung des Wurzelbereichs und Mulch mit Abstand zum Stamm.”
 - Publication remains blocked on source review, three complete HTML article builds, index cards, sitemap and live deployment verification. This draft is **not** an indexed or published article.
+
+## Verified editorial evidence — 2026-11-15
+The following source pages were checked directly for the statements below; other candidate links remain unverified and should not be presented as checked.
+
+1. **Urban cooling:** US EPA, “Using Trees and Vegetation to Reduce Heat Islands,” https://www.epa.gov/heatislands/using-trees-and-vegetation-reduce-heat-islands — confirms trees and vegetation help cool urban heat islands. Related EPA guidance https://www.epa.gov/green-infrastructure/reduce-heat-islands explains shade and evapotranspiration.
+2. **Root-zone moisture:** Royal Horticultural Society, “Trees and Shrubs: Planting Guide,” https://www.rhs.org.uk/plants/types/trees/planting-trees-shrubs — notes that soil around newly planted roots may be dry even when the surface looks moist and that new trees face drought stress.
+3. **Avoid fixed watering prescriptions:** RHS, “How to grow willows for winter colour,” https://www.rhs.org.uk/plants/willow/winter-colour/growing-guide — describes checking subsurface soil moisture and letting water soak in; this is a species-specific example, NOT a universal prescription for all urban trees.
+4. **Green infrastructure context:** EPA, https://www.epa.gov/green-infrastructure/environmental-benefits-green-infrastructure — describes shading, evapotranspiration and related environmental benefits.
+
+**Fact-check boundaries:** Do not promise a specific cooling temperature for a given street or schoolyard; the effect depends on site conditions. Do not prescribe daily litres, universal irrigation frequency or mulch thickness without local horticultural guidance. Obtain permission before work on public trees. These sources substantiate the draft's main qualitative claims, not a diagnosis of any individual tree.
+
+**Editorial release gate:** Source check completed for cooling and newly planted tree watering. Still required: full TR/EN/DE HTML, editorial language QA, matching index cards and sitemap, link validation, Render deployment and three live URL checks. Status remains UNPUBLISHED.
