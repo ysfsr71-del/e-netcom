@@ -55,3 +55,13 @@ Umgekehrt erklärt ein einzelner heißer Tag nicht alle Ursachen des menschengem
 - [ ] Add one chronological guide card per language, check numbering
 - [ ] Add all three canonical URLs to sitemap; validate robots/indexability
 - [ ] Deploy and independently open all three live URLs
+
+## Classroom exercise and original visual brief — editorial work
+TR: Görselin tarihini, yerini ve veri aralığını doğrulayın. Tek günlük hava olayının uzun dönemli iklim eğilimini kanıtlamadığını tartışın.
+EN: Verify the image date, location and observation period. Discuss why a single weather event cannot establish a long-term climate trend.
+DE: Prüft Datum, Ort und Beobachtungszeitraum des Bildes. Diskutiert, warum ein Wetterereignis keinen langfristigen Klimatrend belegt.
+Original visual: Create a schematic two-panel vector diagram of short-term fluctuations and a long-term trend. Mark it as illustrative, not measured data.
+Alt TR: Günlük sıcaklık dalgalanmaları ve uzun vadeli temsili iklim eğilimi.
+Alt EN: Daily weather variability and a schematic long-term climate trend.
+Alt DE: Taegliche Wetterschwankungen und ein schematischer langfristiger Klimatrend.
+Publication gate: verify IPCC, NASA and WMO sources; create original SVG; prepare three HTML articles, metadata, reciprocal hreflang, cards and sitemap; verify deployment.
