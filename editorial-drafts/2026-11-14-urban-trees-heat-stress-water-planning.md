@@ -1,8 +1,8 @@
 # Editorial draft — Urban trees, heat stress and responsible watering
-Status: THREE-LANGUAGE EDITORIAL DRAFT; NOT PUBLISHED. No guide cards, sitemap entry or live URL.
+Status: THREE-LANGUAGE EDITORIAL DRAFT WITH ORIGINAL SVG; NOT PUBLISHED. No guide cards, sitemap entry or live URL.
 Created: 2026-11-14. Original topic; final source and horticultural review pending.
 Proposed TR: kent-agaclari-sicak-dalgasi-sulama; EN: urban-trees-heatwaves-water-planning; DE: stadtbaeume-hitzewellen-bewaesserung.
-Before publication: verify source details, produce original licensed SVG, complete HTML + metadata + JSON-LD + reciprocal hreflang, insert correctly numbered cards in three guide indexes, update sitemap, verify Render and all three live URLs. Do not claim publication from this draft.
+Before publication: verify source details, review original SVG and complete HTML + metadata + JSON-LD + reciprocal hreflang, insert correctly numbered cards in three guide indexes, update sitemap, verify Render and all three live URLs. Do not claim publication from this draft.
 
 ## TR — Kent ağaçlarını sıcak dalgalarında nasıl koruruz?
 Kent ağaçları gölge sağlayarak sıcak günlerde yürüyüş yollarını, okul bahçelerini ve kamusal alanları daha yaşanabilir hâle getirebilir. Ancak uzun süreli sıcaklık, kuraklık ve sıkışmış toprak, özellikle yeni dikilmiş ağaçlarda su stresini artırır. Bir ağacın çevresini yalnızca ıslatmak, suyun kök bölgesine ulaştığını garanti etmez.
@@ -43,3 +43,11 @@ Stadtbäume spenden Schatten und können Schulhöfe, Straßen und öffentliche P
 - Royal Horticultural Society, Trees: watering — https://www.rhs.org.uk/plants/types/trees/watering
 - FAO, Urban and peri-urban forestry — https://www.fao.org/forestry/urbanforestry/en/
 These are candidate institutional sources, not a claim that every link or passage was independently verified during this run.
+
+
+## Production progress — 2026-11-14
+- Created an original SVG diagram at `/rehber/assets/urban-tree-heat-care.svg` (authored for e-NetCoM; no third-party photograph or unlicensed artwork). It depicts shade, slow watering, mulch clear of the trunk and surface runoff.
+- Suggested TR alt: “Sıcak havada gölge sağlayan kent ağacı, kök bölgesine yavaş sulama ve gövdeden uzak malç uygulamasını gösteren özgün çizim.”
+- Suggested EN alt: “Original diagram of an urban tree providing shade, with slow watering to the root zone and mulch kept away from the trunk.”
+- Suggested DE alt: “Originalgrafik eines schattenspendenden Stadtbaums mit langsamer Bewässerung des Wurzelbereichs und Mulch mit Abstand zum Stamm.”
+- Publication remains blocked on source review, three complete HTML article builds, index cards, sitemap and live deployment verification. This draft is **not** an indexed or published article.
