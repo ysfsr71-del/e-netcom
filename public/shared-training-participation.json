@@ -47,6 +47,17 @@
         "Siirt": 23,
         "Sinop": 38
       }
+    },
+    {
+      "id": "adiyaman-ardahan-yozgat-2026-11-14",
+      "date": "2026-11-14",
+      "mode": "Çevrimiçi",
+      "total": 69,
+      "provinces": {
+        "Adıyaman": 16,
+        "Ardahan": 18,
+        "Yozgat": 35
+      }
     }
   ]
 }
