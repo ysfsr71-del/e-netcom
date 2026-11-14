@@ -156,7 +156,7 @@ body{background:radial-gradient(circle at 80% -10%,rgba(100,224,167,.13),transpa
 <div class="card"><h3>Oturumların giriş sayfaları</h3><div id="extraEntryPages"></div></div>
 <div class="card"><h3>Trafik kaynakları (tahmini gruplar)</h3><div id="extraSources"></div></div>
 <div class="card"><h3>Kaydedilen etkileşim türleri</h3><div id="extraInteractions"></div></div>
-<div class="card"><h3>Proje içerikleriyle etkileşim</h3><div id="extraProjects"></div></div>
+<div class="card"><h3>Proje içerikleriyle etkileşim</h3><div class="small" style="margin-bottom:10px">Seçili dönemde kaydedilen olaylar · görüntüleme, tıklama, indirme ve tekil ziyaretçi ayrı gösterilir. Eski kayıtlar yalnızca açıkça eşleşen bölüm/URL üzerinden sınıflandırılır.</div><div id="extraProjects"></div></div>
 <div class="card"><h3>Tek sayfa oturum payı</h3><div class="num" id="extraSinglePage">—</div><div class="small">Sayfa görüntülemesi olan oturumlar içinde; hemen çıkma oranı değildir</div></div>
 </div>
 </section>
@@ -394,6 +394,12 @@ function renderYouTube(y){
     ["Kamu spotları",y.publicSpots]
   ].map(([a,b])=>`<div class="row"><span>${a}</span><b>${fmt(b)}</b></div>`).join("");
 }
+function renderProjectEngagement(items){
+ const el=$("extraProjects");
+ if(!Array.isArray(items)||!items.length){el.innerHTML='<div class="small">Henüz veri yok.</div>';return;}
+ const columns=[["views","Görüntüleme"],["clicks","Tıklama"],["downloads","İndirme"],["uniqueVisitors","Tekil ziyaretçi"]];
+ el.innerHTML=items.map(x=>'<div style="padding:9px 0;border-bottom:1px solid rgba(130,150,150,.2)"><div class="row"><strong>'+esc(x.name)+'</strong><b>'+fmt(x.count||0)+' olay</b></div><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin-top:7px">'+columns.map(([key,label])=>'<div class="small">'+label+': <b>'+fmt(x[key]||0)+'</b></div>').join('')+'</div></div>').join("");
+}
 function renderExpandedAnalytics(d){
  const num=id=>$(id);
  num("extraPageviews").textContent=fmt(d.pageviews);
@@ -405,7 +411,7 @@ function renderExpandedAnalytics(d){
  num("dataCoverage").textContent="Saklanan kayıt aralığı: "+dt(d.earliestStoredAt)+" – "+dt(d.latestStoredAt)+" · "+fmt(d.totalEvents)+" olay (seçili dönem) · Saklama politikası: "+fmt(d.retentionDays)+" gün / "+fmt(d.maxStoredEvents)+" olay. 'Tümü' yalnızca mevcut kayıtları kapsar.";
  renderList("extraPages",d.pages);renderList("extraEntryPages",d.entryPages);
  renderList("extraSources",d.sourceCategories);renderList("extraInteractions",d.interactions);
- renderList("extraProjects",d.projectInteractions);
+ renderProjectEngagement(d.projectInteractions);
 }
 async function loadSeoHealth(){
   const status=$("seoChecks");
