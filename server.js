@@ -749,14 +749,41 @@ function buildAnalyticsStats(range = "30d", fromDate = "", toDate = "") {
     }
     return [...map.entries()].map(([name,count])=>({name,count})).sort((a,b)=>b.count-a.count);
   })();
+  // Deterministic attribution: do not infer a project from arbitrary link text,
+  // PDF extensions or metadata. Each event belongs to at most one project.
   const projectInteractions = (() => {
-    const groups = [
-      ["COP31", /cop31/i], ["Eğitimler", /egitim|training|gallery|galeri/i],
-      ["Proje çıktıları", /ciktilar|çıktılar|output|pdf/i],
-      ["Yeşil Zekâ Atölyesi", /atolye|atölye|workshop/i],
-      ["Videolar", /video|youtube/i], ["E-Merkez", /veritabani|veritabanı|e-merkez/i]
+    const categories = [
+      ["COP31", "cop31"],
+      ["Eğitimler", "education"],
+      ["Proje çıktıları", "outputs"],
+      ["Yeşil Zekâ Atölyesi", "workshop"],
+      ["Videolar", "videos"],
+      ["E-Merkez", "ecenter"]
     ];
-    return groups.map(([name,regex])=>({name,count:events.filter(e=>["click","section_view","map_click","video_open","download"].includes(e.type)&&regex.test([e.path,e.section,e.target,e.meta].join(" "))).length}));
+    const classify = (e) => {
+      const path = String(e.path || "").split("?")[0].toLowerCase();
+      const section = String(e.section || "").toLowerCase().replace(/^#/, "");
+      const target = String(e.target || "").toLowerCase();
+      if (/^\\/(?:en\\/|de\\/)?cop31(?:\\/|\\.html|$)/.test(path) || section === "cop31") return "cop31";
+      if (/^\\/(?:en\\/|de\\/)?(?:egitimler|training|gallery|galeri)(?:\\.html|\\/|$)/.test(path) || ["egitimler","training","gallery","galeri","iller","education"].includes(section)) return "education";
+      if (["ciktilar","outputs","project-outputs"].includes(section) || /^\\/(?:en\\/|de\\/)?(?:ciktilar|outputs)(?:\\.html|\\/|$)/.test(path)) return "outputs";
+      if (["atolye","workshop","yesil-zeka-atolyesi"].includes(section) || /^\\/(?:en\\/|de\\/)?(?:atolye|workshop)(?:\\.html|\\/|$)/.test(path)) return "workshop";
+      if (["video","videos","medya"].includes(section) || /^\\/(?:en\\/|de\\/)?(?:video|videos)(?:\\.html|\\/|$)/.test(path)) return "videos";
+      if (["veritabani","e-merkez","emerkez","resources"].includes(section) || /^\\/(?:en\\/|de\\/)?(?:veritabani|e-merkez|emerkez)(?:\\.html|\\/|$)/.test(path)) return "ecenter";
+      // Target URLs are considered only when they unambiguously point to a project page.
+      if (/^\\/?(?:en\\/|de\\/)?cop31(?:\\.html|\\/|$)/.test(target)) return "cop31";
+      return null;
+    };
+    return categories.map(([name, id]) => {
+      const relevant = events.filter(e => classify(e) === id);
+      const views = relevant.filter(e => e.type === "pageview" || e.type === "section_view");
+      const clicks = relevant.filter(e => e.type === "click" || e.type === "map_click" || e.type === "video_open");
+      const downloads = relevant.filter(e => e.type === "download");
+      const visitors = new Set(relevant.filter(e => ["pageview","section_view","click","map_click","video_open","download"].includes(e.type)).map(e => e.visitorId).filter(Boolean));
+      return {name, count: views.length + clicks.length + downloads.length,
+        views: views.length, clicks: clicks.length, downloads: downloads.length,
+        uniqueVisitors: visitors.size};
+    });
   })();
 
   return {
