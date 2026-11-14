@@ -122,6 +122,21 @@ body{background:radial-gradient(circle at 80% -10%,rgba(100,224,167,.13),transpa
     </div>
   </header>
 
+<section class="card" id="pressArchiveDashboard" style="margin-top:14px">
+ <div class="section-title"><span class="ico">📰</span><h2>Basın ve bağımsız görünürlük arşivi</h2></div>
+ <p class="small">Kaynak: e-NetCoM ekran görüntülü bağımsız görünürlük raporu (Aralık 2024–12 Kasım 2026) ve sonradan eklenen haberler. Kayıt sayısı, özgün haber sayısı veya doğrulanmış canlı bağlantı sayısı değildir.</p>
+ <div id="pressReportSummary" class="education-stats" style="margin:16px 0"></div>
+ <div class="toolbar" style="margin:12px 0">
+ <label for="pressReportCategory">Kategori</label><select id="pressReportCategory"><option value="all">Tüm kayıtlar</option><option value="ulusal">Ulusal basın</option><option value="yerel">Yerel basın</option><option value="akademik">Akademik</option><option value="kurumsal">Kurumsal</option></select>
+ <label for="pressReportStart">Başlangıç</label><input type="date" id="pressReportStart">
+ <label for="pressReportEnd">Bitiş</label><input type="date" id="pressReportEnd">
+ <button type="button" class="ghost" id="pressExportCsv">CSV indir (Excel)</button>
+ <button type="button" class="ghost" id="pressExportJson">JSON indir (arşiv)</button>
+ <button type="button" class="ghost" id="pressPrint">Yazdır / PDF kaydet</button>
+ <a class="ghost" href="/basinda.html" target="_blank" rel="noopener" style="text-decoration:none;padding:11px 16px;border-radius:12px">Basın sayfası ↗</a>
+ </div>
+ <div class="small" id="pressReportNote">Yayınların canlılığı tek tek doğrulanmadı; rapor kaynaklı envanter.</div>
+</section>
 <section class="card" id="educationDashboard" style="margin-top:14px">
   <div class="education-head"><div><div class="section-title"><span class="ico">🎓</span><h2>Eğitimler</h2></div><div class="small">Gerçekleşen eğitimler · Katılımcı ve yöntem dağılımı</div></div><a class="ghost" href="/egitimler.html" target="_blank" rel="noopener" style="text-decoration:none">Eğitim arşivini aç ↗</a></div>
   <div class="education-stats">
@@ -528,6 +543,10 @@ async function loadEducationStats(){
 }
 document.getElementById('refresh').addEventListener('click',loadEducationStats);
 loadEducationStats();
+</script>
+<script src="/press-data.js"></script>
+<script id="press-report-export">
+(()=>{const data=Array.isArray(window.ENETCOM_PRESS_DATA)?window.ENETCOM_PRESS_DATA:[];const $=id=>document.getElementById(id);const filtered=()=>data.filter(x=>($('pressReportCategory').value==='all'||x.category===$('pressReportCategory').value)&&(!$('pressReportStart').value||x.date>=$('pressReportStart').value)&&(!$('pressReportEnd').value||x.date<=$('pressReportEnd').value));const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));function render(){const a=filtered();const cats=['ulusal','yerel','akademik','kurumsal'];const stats=[['Toplam kayıt',a.length],...cats.map(c=>[({ulusal:'Ulusal basın',yerel:'Yerel basın',akademik:'Akademik',kurumsal:'Kurumsal'})[c],a.filter(x=>x.category===c).length]),['Tekil kaynak',new Set(a.map(x=>x.outlet)).size],['Doğrudan URL bekleyen',a.filter(x=>x.status==='needs-direct-url').length]];$('pressReportSummary').innerHTML=stats.map(([name,num])=>'<div class="education-stat"><div class="label">'+esc(name)+'</div><div class="num">'+num+'</div></div>').join('');$('pressReportNote').textContent=a.length+' kaynak kaydı · '+new Set(a.map(x=>x.group).filter(Boolean)).size+' etiketli yayın grubu · Bağımsız canlı doğrulama henüz tamamlanmadı.';}function download(name,body,mime){const url=URL.createObjectURL(new Blob([body],{type:mime}));const link=document.createElement('a');link.href=url;link.download=name;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)}const fields=['id','date','outlet','category','city','title','url','source','status','group'];$('pressExportCsv').addEventListener('click',()=>{const quote=v=>'"'+String(v??'').replace(/"/g,'""')+'"';const rows=[fields.join(';'),...filtered().map(x=>fields.map(k=>quote(x[k])).join(';'))];download('enetcom-basin-envanteri-'+new Date().toISOString().slice(0,10)+'.csv','\uFEFF'+rows.join('\r\n'),'text/csv;charset=utf-8')});$('pressExportJson').addEventListener('click',()=>download('enetcom-basin-envanteri.json',JSON.stringify({project:'e-NetCoM',generatedAt:new Date().toISOString(),methodology:'Source-listed entries; not independently live-verified. Syndicated stories are distinct placements, not necessarily unique reporting.',filters:{category:$('pressReportCategory').value,from:$('pressReportStart').value,to:$('pressReportEnd').value},records:filtered()},null,2),'application/json;charset=utf-8'));$('pressPrint').addEventListener('click',()=>{const a=filtered();const w=window.open('','_blank');if(!w){alert('Yazdırma penceresi engellendi');return}w.document.write('<!doctype html><html lang="tr"><meta charset="utf-8"><title>e-NetCoM Basın Görünürlük Raporu</title><style>body{font:13px Arial;padding:25px;color:#123}table{border-collapse:collapse;width:100%}td,th{border:1px solid #bbb;padding:7px;overflow-wrap:anywhere}th{background:#e5f6eb}tr{break-inside:avoid}@media print{@page{size:A4 landscape;margin:12mm}}</style><h1>e-NetCoM · Basın ve görünürlük envanteri</h1><p>Rapor tarihi: '+new Date().toLocaleDateString('tr-TR')+' · Kayıt: '+a.length+' · PDF kaynaklı kayıtlar bağımsız canlı doğrulama değildir. Tekrar yayınlar ayrı mecra olarak sayılır.</p><table><thead><tr><th>Tarih</th><th>Mecra</th><th>Kategori</th><th>İl</th><th>Başlık</th><th>Kaynak URL</th><th>Durum</th></tr></thead><tbody>'+a.map(x=>'<tr>'+['date','outlet','category','city','title','url','status'].map(k=>'<td>'+esc(x[k])+'</td>').join('')+'</tr>').join('')+'</tbody></table></html>');w.document.close();w.focus();w.print()});['pressReportCategory','pressReportStart','pressReportEnd'].forEach(id=>$(id).addEventListener('change',render));render()})();
 </script>
 </body>
 </html>
