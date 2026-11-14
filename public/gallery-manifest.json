@@ -910,5 +910,35 @@
       "name": "gorsel01.jpeg",
       "type": "file"
     }
+  ],
+  "adiyaman": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "gorsel.jpeg",
+      "type": "file"
+    }
+  ],
+  "ardahan": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "gorsel.jpeg",
+      "type": "file"
+    }
+  ],
+  "yozgat": [
+    {
+      "name": "afis.jpg",
+      "type": "file"
+    },
+    {
+      "name": "gorsel.jpeg",
+      "type": "file"
+    }
   ]
 }
