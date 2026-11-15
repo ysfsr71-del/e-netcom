@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Wildlife image verification: a four-step evidence trail</title>
+<desc id="desc">An original diagram showing a wildlife image, its publication source, a provenance record, and biodiversity evidence, linked by arrows; a question mark indicates uncertainty rather than a verdict.</desc>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#e9f6ec"/><stop offset="1" stop-color="#e5f0fb"/></linearGradient><filter id="shadow"><feDropShadow dx="0" dy="7" stdDeviation="9" flood-color="#183a31" flood-opacity=".12"/></filter></defs>
+<rect width="1200" height="630" fill="url(#bg)"/>
+<circle cx="1065" cy="94" r="125" fill="#bce6ce" opacity=".65"/><circle cx="94" cy="558" r="150" fill="#c6dff2" opacity=".55"/>
+<g fill="#fff" stroke="#b5d1c6" stroke-width="3" filter="url(#shadow)">
+<rect x="48" y="142" width="255" height="344" rx="22"/><rect x="330" y="142" width="255" height="344" rx="22"/><rect x="612" y="142" width="255" height="344" rx="22"/><rect x="894" y="142" width="255" height="344" rx="22"/>
+</g>
+<g stroke="#307760" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none">
+<path d="M306 311h20m-9-10 10 10-10 10"/><path d="M588 311h20m-9-10 10 10-10 10"/><path d="M870 311h20m-9-10 10 10-10 10"/>
+</g>
+<g fill="none" stroke="#245e51" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+<rect x="100" y="205" width="150" height="125" rx="14"/><path d="M116 309l38-45 29 28 24-34 29 51"/><circle cx="215" cy="230" r="12"/>
+<rect x="391" y="217" width="133" height="113" rx="9"/><path d="M415 245h85m-85 25h70m-70 25h54"/><circle cx="501" cy="299" r="18" fill="#d4ebdf"/>
+<path d="M739 210l65 28v48c0 39-26 64-65 83-39-19-65-44-65-83v-48z"/><path d="m710 281 20 20 39-45"/>
+<path d="M952 315c18-60 70-93 131-76m-109 91c45 14 90-1 114-41"/><path d="M1012 234c5-20 24-33 46-32m-38 129c20 11 41 10 60-1"/>
+</g>
+<g fill="#174f42" font-family="Arial, sans-serif" font-size="23" font-weight="700" text-anchor="middle">
+<text x="175" y="394">1</text><text x="457" y="394">2</text><text x="739" y="394">3</text><text x="1021" y="394">4</text>
+</g>
+<g fill="#4d6e65" font-family="Arial, sans-serif" font-size="19" text-anchor="middle">
+<text x="175" y="428">IMAGE</text><text x="457" y="428">SOURCE</text><text x="739" y="428">PROVENANCE</text><text x="1021" y="428">EVIDENCE</text>
+</g>
+<circle cx="600" cy="80" r="35" fill="#176f5c"/><text x="600" y="94" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="41" font-weight="700">?</text>
+<path d="M270 545h660" stroke="#7ba99b" stroke-width="3" stroke-dasharray="8 12"/>
+<g fill="#2b6153" font-family="Arial, sans-serif" text-anchor="middle"><text x="600" y="581" font-size="22">CHECK THE CLAIM · KEEP UNCERTAINTY VISIBLE</text></g>
+</svg>
