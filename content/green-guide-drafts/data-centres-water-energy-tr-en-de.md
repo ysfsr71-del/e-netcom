@@ -45,3 +45,21 @@ Eine Internetsuche, ein Videostream oder eine KI-Anfrage findet nicht nur auf de
 - Compare slugs, titles and content with current TR/EN/DE article files, not just card titles.
 - Build full localized HTML with meta, OG/Twitter, Article JSON-LD, canonical and reciprocal hreflang.
 - Update three guide indexes and sitemap together; publish only after Render and all three public URLs are verified.
+
+## Primary-source verification — 15 November 2026
+
+Verified direct sources (accessed 15 November 2026):
+
+1. International Energy Agency (IEA), **Energy and AI** (published 10 April 2025): https://www.iea.org/reports/energy-and-ai — documents data-centre electricity demand, forecast scenarios and uncertainties. The 2025 report's baseline estimates approximately 415 TWh in 2024 and projects approximately 945 TWh in 2030; these are **global electricity figures**, not litres per query, and 2030 is a projection rather than observed consumption.
+2. IEA, **Energy supply for AI** (2025): https://www.iea.org/reports/energy-and-ai/energy-supply-for-ai — explains how the electricity generation mix differs by region and scenario. Do not confuse electricity generated to serve data centres with their on-site water withdrawals.
+3. United States Geological Survey (USGS), **Water Use Concepts and Terms**: https://wa.water.usgs.gov/data/wuse/concepts.htm — distinguishes withdrawal, consumptive use, return flows and related water accounting concepts. These definitions support the article's distinction between water withdrawal and water consumption; they do not quantify data-centre water use.
+
+### Ready-to-integrate sourced paragraphs
+
+**TR:** Uluslararası Enerji Ajansının 10 Nisan 2025 tarihli *Energy and AI* raporu, veri merkezlerinin küresel elektrik tüketimini 2024 için yaklaşık 415 TWh olarak tahmin ediyor; temel senaryoda 2030 için yaklaşık 945 TWh öngörüyor. İkinci değer gerçekleşmiş tüketim değil, varsayımlara dayalı bir projeksiyondur. Bu elektrik rakamları tek bir yapay zekâ sorgusunun su tüketimini göstermez. ABD Jeolojik Araştırmalar Kurumunun su kullanımı tanımları da kaynaktan çekilen su ile tüketilen suyun ayrı kavramlar olduğunu ortaya koyar. Kaynaklar: [IEA, 2025](https://www.iea.org/reports/energy-and-ai); [USGS](https://wa.water.usgs.gov/data/wuse/concepts.htm).
+
+**EN:** The International Energy Agency's *Energy and AI* report, published on 10 April 2025, estimates global data-centre electricity use at about 415 TWh in 2024 and projects about 945 TWh in 2030 under its Base Case. The latter is a scenario-based projection, not observed consumption. Neither figure measures water use per AI request. The US Geological Survey's water-use terminology also distinguishes water withdrawn from a source from water consumed. Sources: [IEA, 2025](https://www.iea.org/reports/energy-and-ai); [USGS](https://wa.water.usgs.gov/data/wuse/concepts.htm).
+
+**DE:** Der Bericht *Energy and AI* der Internationalen Energieagentur vom 10. April 2025 schätzt den weltweiten Stromverbrauch von Rechenzentren für 2024 auf rund 415 TWh. Im Basisszenario werden für 2030 etwa 945 TWh prognostiziert. Der zweite Wert ist eine szenariobasierte Prognose und kein gemessener Verbrauch. Beide Angaben sagen nichts über den Wasserverbrauch einer einzelnen KI-Anfrage aus. Die Begriffsdefinitionen des US Geological Survey unterscheiden außerdem zwischen Wasserentnahme und Wasserverbrauch. Quellen: [IEA, 2025](https://www.iea.org/reports/energy-and-ai); [USGS](https://wa.water.usgs.gov/data/wuse/concepts.htm).
+
+**Editorial guardrail:** Do not generalise an exact litres-per-prompt number or present scenario forecasts as observations. Remaining before publication: original SVG illustration, three fully tested HTML files, reciprocal links, guide cards, sitemap, and live deployment verification. Status remains EDITORIAL DRAFT — NOT PUBLISHED.
