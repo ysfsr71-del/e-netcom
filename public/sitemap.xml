@@ -1006,7 +1006,11 @@
   <url>
     <loc>https://enetcomproject.com/rehber/yagmur-bahceleri-gecirgen-kentler/</loc>
     <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/rehber/yagmur-bahceleri-gecirgen-kentler/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/rehber/yagmur-bahceleri-gecirgen-kentler/"/><lastmod>2026-11-02</lastmod></url>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/en/guide/rain-gardens-permeable-cities/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/de/ratgeber/regengaerten-durchlaessige-staedte/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/rehber/yagmur-bahceleri-gecirgen-kentler/"/>
+    
+    <lastmod>2026-11-02</lastmod></url>
   <url>
     <loc>https://enetcomproject.com/rehber/tekstil-atigi-giysi-omru/</loc>
     <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/rehber/tekstil-atigi-giysi-omru/"/>
@@ -1213,4 +1217,14 @@
 <url><loc>https://enetcomproject.com/rehber/gocmen-kuslar-isik-kirliligi/</loc><xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/rehber/gocmen-kuslar-isik-kirliligi/"/><xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/en/guide/migratory-birds-light-pollution/"/><xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/de/ratgeber/zugvoegel-lichtverschmutzung/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/rehber/gocmen-kuslar-isik-kirliligi/"/></url>
 <url><loc>https://enetcomproject.com/en/guide/migratory-birds-light-pollution/</loc><xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/rehber/gocmen-kuslar-isik-kirliligi/"/><xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/en/guide/migratory-birds-light-pollution/"/><xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/de/ratgeber/zugvoegel-lichtverschmutzung/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/rehber/gocmen-kuslar-isik-kirliligi/"/></url>
 <url><loc>https://enetcomproject.com/de/ratgeber/zugvoegel-lichtverschmutzung/</loc><xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/rehber/gocmen-kuslar-isik-kirliligi/"/><xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/en/guide/migratory-birds-light-pollution/"/><xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/de/ratgeber/zugvoegel-lichtverschmutzung/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/rehber/gocmen-kuslar-isik-kirliligi/"/></url>
+  <url><loc>https://enetcomproject.com/en/guide/rain-gardens-permeable-cities/</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/rehber/yagmur-bahceleri-gecirgen-kentler/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/en/guide/rain-gardens-permeable-cities/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/de/ratgeber/regengaerten-durchlaessige-staedte/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/rehber/yagmur-bahceleri-gecirgen-kentler/"/><lastmod>2026-11-16</lastmod></url>
+  <url><loc>https://enetcomproject.com/de/ratgeber/regengaerten-durchlaessige-staedte/</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://enetcomproject.com/rehber/yagmur-bahceleri-gecirgen-kentler/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://enetcomproject.com/en/guide/rain-gardens-permeable-cities/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://enetcomproject.com/de/ratgeber/regengaerten-durchlaessige-staedte/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://enetcomproject.com/rehber/yagmur-bahceleri-gecirgen-kentler/"/><lastmod>2026-11-16</lastmod></url>
 </urlset>
