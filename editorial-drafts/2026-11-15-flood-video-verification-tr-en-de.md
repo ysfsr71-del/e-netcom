@@ -73,3 +73,48 @@ Vergleichen Sie zwei Beiträge zum selben Video. Erfassen Sie Datum, Ort, Origin
 - Check no matching article exists on main; assign next chronological card number only after counting actual cards.
 - Add three cards and sitemap together; change noindex to index only after full language QA.
 - Verify Render deployment and all three live URLs before claiming publication.
+
+## Classroom-ready verification worksheet — 16 November 2026
+
+The following activity is an original, reusable teaching resource. It deliberately uses a **hypothetical** flood clip; it is not evidence of any real event. Students must not enter floodwater or travel to a hazardous location to gather footage.
+
+### TR — Doğrulama çalışma kâğıdı
+
+**Örnek iddia (kurgu):** “Bu video bugün bizim ilçemizde çekildi; haritaya göre bütün mahalle yarın su altında kalacak.”
+
+| İncelenecek iddia | Kanıt arama yöntemi | Sonuç alanı |
+|---|---|---|
+| Video bugün çekildi | İlk yükleme tarihi, eski paylaşımlar, özgün dosya bilgisi | Doğrulandı / Çürütüldü / Belirsiz |
+| Görüntü ilçemize ait | Tabela, köprü, arazi, güvenilir harita ve yerel kaynaklar | Doğrulandı / Çürütüldü / Belirsiz |
+| Harita yarını gösteriyor | Haritanın tarihi, senaryosu, lejandı ve yayıncısı | Doğrulandı / Çürütüldü / Belirsiz |
+| Bütün mahalle kesin su altında kalacak | Resmî güncel uyarı ve haritanın olasılık/ölçek açıklaması | Doğrulandı / Çürütüldü / Belirsiz |
+
+**Örnek sorumlu paylaşım:** “Dolaşımdaki görüntünün çekim yeri ve tarihi henüz belirlenmedi. Harita tek başına yarın kesin taşkın yaşanacağını göstermiyor. Güncel uyarılar için MGM ve AFAD açıklamalarını izleyin.”
+
+### EN — Verification worksheet
+
+**Fictional claim:** “This video was filmed in our district today, and the map proves the whole neighbourhood will flood tomorrow.”
+
+| Claim to test | Evidence to seek | Record |
+|---|---|---|
+| Recorded today | Earliest upload, older copies, original-file metadata | Supported / Contradicted / Unresolved |
+| Filmed locally | Landmarks, terrain, trustworthy maps and local reporting | Supported / Contradicted / Unresolved |
+| Map forecasts tomorrow | Map date, scenario, legend and publisher | Supported / Contradicted / Unresolved |
+| Every home will certainly flood | Current official warning and the map's probability/scale notes | Supported / Contradicted / Unresolved |
+
+**Model responsible caption:** “The recording date and location have not yet been established. The map alone does not prove flooding will occur tomorrow. Follow current official weather and emergency warnings.”
+
+### DE — Arbeitsblatt zur Überprüfung
+
+**Fiktive Behauptung:** „Dieses Video wurde heute in unserem Bezirk aufgenommen; laut Karte steht morgen das ganze Viertel sicher unter Wasser.“
+
+| Zu prüfende Aussage | Mögliche Belege | Ergebnis |
+|---|---|---|
+| Aufnahme von heute | Früheste Veröffentlichung, ältere Kopien, Metadaten der Originaldatei | Bestätigt / Widerlegt / Offen |
+| Aufnahme aus unserem Bezirk | Orientierungspunkte, Gelände, Karten und lokale Berichte | Bestätigt / Widerlegt / Offen |
+| Karte zeigt die Prognose für morgen | Datum, Szenario, Legende und Herausgeber der Karte | Bestätigt / Widerlegt / Offen |
+| Das gesamte Viertel wird sicher überflutet | Aktuelle amtliche Warnung und Angaben zu Wahrscheinlichkeit und Maßstab | Bestätigt / Widerlegt / Offen |
+
+**Beispiel für eine verantwortungsvolle Mitteilung:** „Aufnahmeort und -datum sind noch nicht geklärt. Die Karte allein belegt keine sichere Überflutung für morgen. Bitte beachten Sie aktuelle amtliche Wetter- und Katastrophenwarnungen.“
+
+**Editorial note:** This worksheet adds a complete practical learning component in three languages. External source URLs have **not** been verified during this pass; it is not cleared for publication. Next production step: original illustration, then three complete HTML articles and integrated publication QA.
