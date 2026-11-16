@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+<title id="title">Heat pump energy flow and refrigerant management — educational schematic</title>
+<desc id="desc">A simplified heat pump cycle transfers heat from outdoor air into a building. A closed refrigerant circuit connects evaporator, compressor, condenser and expansion valve. A dashed warning marks a possible leak, not a measured emission.</desc>
+<rect width="1200" height="720" fill="#f5faf8"/>
+<text x="65" y="72" font-family="Arial,sans-serif" font-size="34" font-weight="bold" fill="#153d39">HEAT PUMP · ENERGY &amp; REFRIGERANT</text>
+<text x="65" y="111" font-family="Arial,sans-serif" font-size="19" fill="#365c57">Conceptual diagram · not to scale · no measured emissions</text>
+<rect x="60" y="162" width="315" height="400" rx="24" fill="#d9f0f7" stroke="#43859a" stroke-width="3"/>
+<text x="90" y="209" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#17495a">OUTDOOR AIR</text>
+<text x="90" y="248" font-family="Arial,sans-serif" font-size="20" fill="#17495a">Heat source</text>
+<rect x="825" y="162" width="315" height="400" rx="24" fill="#fbe8d4" stroke="#b87636" stroke-width="3"/>
+<text x="860" y="209" font-family="Arial,sans-serif" font-size="26" font-weight="bold" fill="#754216">BUILDING</text>
+<text x="860" y="248" font-family="Arial,sans-serif" font-size="20" fill="#754216">Useful heating</text>
+<rect x="405" y="176" width="370" height="360" rx="26" fill="white" stroke="#376d64" stroke-width="3"/>
+<text x="445" y="220" font-family="Arial,sans-serif" font-size="23" font-weight="bold" fill="#204b44">CLOSED REFRIGERANT LOOP</text>
+<rect x="438" y="264" width="130" height="74" rx="12" fill="#c6e7ee" stroke="#347c8b" stroke-width="2"/>
+<text x="452" y="307" font-family="Arial,sans-serif" font-size="18" fill="#17495a">Evaporator</text>
+<rect x="608" y="264" width="130" height="74" rx="12" fill="#ffe2bd" stroke="#b87636" stroke-width="2"/>
+<text x="620" y="307" font-family="Arial,sans-serif" font-size="18" fill="#754216">Condenser</text>
+<rect x="438" y="399" width="130" height="74" rx="12" fill="#e7e1fa" stroke="#7d65a8" stroke-width="2"/>
+<text x="449" y="431" font-family="Arial,sans-serif" font-size="17" fill="#48346c">Expansion</text><text x="470" y="454" font-family="Arial,sans-serif" font-size="17" fill="#48346c">valve</text>
+<rect x="608" y="399" width="130" height="74" rx="12" fill="#e0f0df" stroke="#4b8551" stroke-width="2"/>
+<text x="620" y="441" font-family="Arial,sans-serif" font-size="18" fill="#28572e">Compressor</text>
+<path d="M568 301H608 M673 338V399 M608 436H568 M503 399V338" fill="none" stroke="#246b62" stroke-width="7" stroke-linecap="round"/>
+<path d="M596 289L611 301L596 313 M661 386L673 401L685 386 M581 424L566 436L581 448 M491 352L503 337L515 352" fill="none" stroke="#246b62" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M300 352H420" stroke="#3987a5" stroke-width="12" stroke-linecap="round"/>
+<path d="M405 335L428 352L405 369" fill="none" stroke="#3987a5" stroke-width="7"/>
+<path d="M755 352H885" stroke="#d78b3f" stroke-width="12" stroke-linecap="round"/>
+<path d="M869 335L892 352L869 369" fill="none" stroke="#d78b3f" stroke-width="7"/>
+<text x="102" y="400" font-family="Arial,sans-serif" font-size="20" fill="#17495a">Heat absorbed</text>
+<text x="882" y="400" font-family="Arial,sans-serif" font-size="20" fill="#754216">Heat delivered</text>
+<path d="M675 474L745 578" stroke="#b74c4c" stroke-width="3" stroke-dasharray="9 8"/>
+<circle cx="745" cy="578" r="8" fill="#b74c4c"/>
+<text x="775" y="590" font-family="Arial,sans-serif" font-size="18" fill="#8a3535">Potential leak: avoid &amp; recover</text>
+<rect x="60" y="614" width="1080" height="65" rx="13" fill="#e3efea"/>
+<text x="84" y="640" font-family="Arial,sans-serif" font-size="18" fill="#254b43">Climate impact depends on electricity, system efficiency, refrigerant type and leakage.</text>
+<text x="84" y="665" font-family="Arial,sans-serif" font-size="16" fill="#43655e">Educational illustration created for e-NetCoM · no refrigerant release is recommended or depicted as normal operation.</text>
+</svg>
