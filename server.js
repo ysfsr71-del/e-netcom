@@ -312,6 +312,10 @@ app.get("/api/youtube-stats", async (req, res) => {
       ["kamu spot"]
     );
 
+    const greenGuidePlaylist = playlists.find(playlist =>
+      /(?:yeşil|yesil|green)\s*(?:rehber|guide)/i.test(String(playlist.snippet?.title || ""))
+    );
+
     // Stable playlist ID: new campaign videos added to this playlist
     // are included automatically without a code change.
     const hashtagCampaignsPlaylistId = "PLzoT3-KDh6lbt_LVZOZvhzQzqi7M8-X87";
@@ -336,7 +340,8 @@ const [
   oneMinute,
   publicSpots,
   hashtagCampaigns,
-  interactiveViews
+  interactiveViews,
+  greenGuide
 ] = await Promise.all([
   getPlaylistViews(oneMinutePlaylist?.id),
   getPlaylistViews(publicSpotsPlaylist?.id),
@@ -351,7 +356,8 @@ const [
       (total, value) => total + value,
       0
     )
-  )
+  ),
+  greenGuidePlaylist ? getPlaylistViews(greenGuidePlaylist.id) : Promise.resolve(null)
 ]);
 
 const interactive = interactiveViews;
@@ -365,6 +371,7 @@ const interactive = interactiveViews;
       interactive,
       publicSpots,
       hashtagCampaigns,
+      greenGuide,
 
       updatedAt: new Date().toISOString()
     };
