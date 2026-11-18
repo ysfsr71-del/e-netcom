@@ -5,6 +5,8 @@ Proposed slugs (recheck before release): /rehber/cevresel-urun-beyani-nasil-okun
 Distinctive angle: interpreting standardized life-cycle disclosures, not generic greenwashing, carbon offsets or recycling advice.
 
 ## TR — Çevresel Ürün Beyanı nasıl okunur?
+**Standart güncelliği (Kasım 2026):** ISO 14025:2026 yürürlükteki ikinci baskıdır; ISO 14025:2006 geri çekilmiştir. Bir EPD'deki düzenleme ve doğrulama bilgilerini belgeye ait düzenleme tarihi ve geçerli program kurallarıyla birlikte okuyun.
+
 Bir ürünün üzerinde “çevre dostu” yazması, hangi çevresel etkisinin ölçüldüğünü açıklamaz. Çevresel Ürün Beyanı (EPD), belirlenmiş ürün kategorisi kuralları ve yaşam döngüsü değerlendirmesi çerçevesinde hazırlanan, nicel çevresel bilgi sunan bir belgedir. Özellikle yapı malzemelerinde görülebilir. EPD bir ürünün her koşulda daha sürdürülebilir olduğunu kanıtlayan bir ödül veya otomatik üstünlük sertifikası değildir.
 
 **İlk kontrol: Beyan neyi kapsıyor?** Ürün adı, üretim yeri, geçerlilik dönemi, program operatörü, referans standart ve beyan edilen işlevsel ya da beyan birimini okuyun. “1 kg ürün” ile “1 m² kaplama, belirli performans ve ömür” aynı karşılaştırma değildir.
@@ -18,6 +20,8 @@ Bir ürünün üzerinde “çevre dostu” yazması, hangi çevresel etkisinin �
 **Medya okuryazarlığı uygulaması.** Bir reklamda “EPD belgeli, dolayısıyla sıfır emisyonlu” deniyorsa belgeyi açıp göstergeleri, birimi, kapsanan aşamaları ve doğrulama bilgisini kontrol edin. EPD'nin varlığı tek başına sıfır emisyon anlamına gelmez. Öğrenciler aynı kategoriden iki örnek belgenin sistem sınırlarını işaretleyebilir.
 
 ## EN — How to read an Environmental Product Declaration
+**Standards update (November 2026):** ISO 14025:2026 is the published second edition; ISO 14025:2006 has been withdrawn. Check the issue date, programme rules and verification information of each individual EPD.
+
 “Eco-friendly” on a package does not identify what was measured. An Environmental Product Declaration (EPD) presents quantified environmental information under defined product category rules and a life-cycle assessment framework. EPDs are common for construction products. They are disclosures, not automatic awards proving that a product is environmentally superior in every context.
 
 **Check the declared unit.** Read the product identity, manufacturing context, validity period, programme operator, reference standard and functional or declared unit. One kilogram of material is not automatically comparable with one square metre of a product delivering a specified service life.
@@ -31,6 +35,8 @@ Bir ürünün üzerinde “çevre dostu” yazması, hangi çevresel etkisinin �
 **Media-literacy exercise.** When an advertisement says “EPD certified, therefore zero emissions,” open the declaration and inspect the unit, impact indicators, boundaries and verification statement. Having an EPD does not mean zero emissions. Students can highlight the included life-cycle stages in two declarations.
 
 ## DE — Umweltproduktdeklarationen richtig lesen
+**Normenstand (November 2026):** ISO 14025:2026 ist die veröffentlichte zweite Ausgabe; ISO 14025:2006 wurde zurückgezogen. Prüfen Sie bei jeder EPD Ausgabedatum, Programmregeln und Angaben zur Verifizierung.
+
 Die Aufschrift „umweltfreundlich“ sagt noch nicht, welche Umweltwirkungen gemessen wurden. Eine Umweltproduktdeklaration (EPD) stellt quantifizierte Umweltinformationen nach festgelegten Produktkategorieregeln und auf Grundlage einer Ökobilanz bereit. Solche Dokumente sind insbesondere bei Bauprodukten verbreitet. Eine EPD ist keine automatische Auszeichnung für ein in jeder Hinsicht überlegenes Produkt.
 
 **Deklarierte Einheit prüfen.** Achten Sie auf Produktbezeichnung, Herstellungsbedingungen, Gültigkeit, Programmbetreiber, Bezugsnorm sowie funktionelle oder deklarierte Einheit. Ein Kilogramm Material ist nicht ohne Weiteres mit einem Quadratmeter eines Produkts mit bestimmter Nutzungsdauer vergleichbar.
@@ -44,7 +50,8 @@ Die Aufschrift „umweltfreundlich“ sagt noch nicht, welche Umweltwirkungen ge
 **Medienkompetenz-Übung.** Behauptet eine Werbung „EPD-zertifiziert, also emissionsfrei“, prüfen Sie im Originaldokument Einheit, Indikatoren, Bilanzgrenzen und Verifizierungsangaben. Eine EPD bedeutet nicht automatisch Nullemissionen. Lernende können die einbezogenen Lebenszyklusphasen zweier Deklarationen markieren.
 
 ## Primary standards and source verification before publication
-- ISO 14025:2006, Environmental labels and declarations — Type III environmental declarations — Principles and procedures (standard metadata and exact applicability to be verified): https://www.iso.org/standard/38131.html
+- ISO 14025:2026, Environmental statements and programmes for products — Environmental product declarations (EPDs), published June 2026 (current second edition): https://www.iso.org/standard/14025
+- Historical reference only: ISO 14025:2006 was withdrawn on 24 June 2026 and superseded by ISO 14025:2026: https://www.iso.org/standard/38131.html
 - European Commission, Environmental Footprint methods and policy context: https://environment.ec.europa.eu/topics/circular-economy/environmental-footprint-methods_en
 - European Commission, Construction Products Regulation policy context: https://single-market-economy.ec.europa.eu/sectors/construction/construction-products-regulation-cpr_en
 - Check current EN 15804 version and relevant PCR for any construction-product examples; do not claim comparability solely from the presence of EPDs.
