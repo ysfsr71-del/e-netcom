@@ -1,3 +1,5 @@
+> **EDITORIAL STATUS — DUPLICATE / DO NOT PUBLISH (18 November 2026).** The existing published-source article package already covers rain gardens, runoff and permeable urban surfaces at `/rehber/yagmur-bahceleri-gecirgen-kentler/`, `/en/guide/rain-gardens-permeable-cities/`, and `/de/ratgeber/regengaerten-durchlaessige-staedte/`. All three HTML files exist in GitHub main; the TR guide index and sitemap contain the existing TR slug. The original SVG `public/rehber/assets/rain-gardens-runoff-schematic.svg` is an optional unused asset, **not evidence of a new article**. Do not create the proposed alternative slugs or duplicate cards. Live HTTP availability has not been verified. Reuse any genuinely new material only after an editorial comparison with the existing three articles.
+
 # e-NetCoM Green Guide — editorial package (16 November 2026)
 Status: ORIGINAL TR/EN/DE EDITORIAL DRAFT — NOT PUBLISHED. No guide card, sitemap entry, or indexability claim.
 Topic: Rain gardens, impermeable surfaces and urban runoff.
