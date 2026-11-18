@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Repair first: extending product life</title><desc id="desc">Original educational infographic showing a device at the centre of a five-step decision chain: assess safety, check support, find parts, compare repair, and reuse responsibly.</desc>
+<rect width="1200" height="630" fill="#edf5ee"/><rect x="42" y="42" width="1116" height="546" rx="32" fill="#fff" stroke="#c6dfcf" stroke-width="3"/>
+<text x="90" y="118" fill="#174b38" font-family="Arial,sans-serif" font-size="43" font-weight="700">REPAIR FIRST, REPLACE WISELY</text><text x="90" y="163" fill="#4a6b5c" font-family="Arial,sans-serif" font-size="24">Five questions before replacing an electronic device</text>
+<path d="M145 325H1055" stroke="#a4c7b3" stroke-width="8" stroke-linecap="round"/>
+<g fill="#176b4e"><circle cx="150" cy="325" r="49"/><circle cx="375" cy="325" r="49"/><circle cx="600" cy="325" r="49"/><circle cx="825" cy="325" r="49"/><circle cx="1050" cy="325" r="49"/></g>
+<g font-family="Arial,sans-serif" fill="#fff" font-size="32" font-weight="700" text-anchor="middle"><text x="150" y="336">1</text><text x="375" y="336">2</text><text x="600" y="336">3</text><text x="825" y="336">4</text><text x="1050" y="336">5</text></g>
+<g font-family="Arial,sans-serif" fill="#174b38" font-size="23" font-weight="700" text-anchor="middle"><text x="150" y="413">SAFETY</text><text x="375" y="413">SUPPORT</text><text x="600" y="413">PARTS</text><text x="825" y="413">COST</text><text x="1050" y="413">REUSE</text></g>
+<g font-family="Arial,sans-serif" fill="#506e60" font-size="17" text-anchor="middle"><text x="150" y="445">Is it safe?</text><text x="375" y="445">Updates &amp; guides?</text><text x="600" y="445">Available locally?</text><text x="825" y="445">Repair vs new?</text><text x="1050" y="445">Responsible next life?</text></g>
+<text x="90" y="538" fill="#426a54" font-family="Arial,sans-serif" font-size="19">e-NetCoM Green Guide · Educational illustration · Seek qualified help for hazardous repairs.</text>
+</svg>
