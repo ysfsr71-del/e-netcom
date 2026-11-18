@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="t d">
+<title id="t">EPD reading guide: compare like with like</title><desc id="d">An original educational diagram: check declared unit, life-cycle system boundary, impact indicators and verification before comparing environmental product declarations.</desc>
+<rect width="1200" height="630" fill="#eef5ef"/><rect x="34" y="34" width="1132" height="562" rx="28" fill="#fff" stroke="#bdd7c7" stroke-width="3"/>
+<text x="76" y="112" font-family="Arial,sans-serif" font-size="42" font-weight="bold" fill="#154b37">READ THE EPD, NOT JUST THE CLAIM</text>
+<text x="76" y="154" font-family="Arial,sans-serif" font-size="23" fill="#44665a">Four checks before comparing environmental product declarations</text>
+<g font-family="Arial,sans-serif" text-anchor="middle">
+<rect x="70" y="215" width="248" height="235" rx="18" fill="#e0f1e6"/><rect x="340" y="215" width="248" height="235" rx="18" fill="#e8f0fc"/><rect x="610" y="215" width="248" height="235" rx="18" fill="#f4ebd9"/><rect x="880" y="215" width="248" height="235" rx="18" fill="#f1e7f4"/>
+<g font-size="54" font-weight="bold" fill="#174e3b"><text x="194" y="292">01</text><text x="464" y="292">02</text><text x="734" y="292">03</text><text x="1004" y="292">04</text></g>
+<g font-size="23" font-weight="bold" fill="#203c34"><text x="194" y="342">DECLARED UNIT</text><text x="464" y="342">BOUNDARY</text><text x="734" y="342">INDICATORS</text><text x="1004" y="342">VERIFICATION</text></g>
+<g font-size="18" fill="#38574c"><text x="194" y="382">kg, m², service life</text><text x="464" y="382">Which life stages?</text><text x="734" y="382">Beyond carbon</text><text x="1004" y="382">Rules and validity</text></g></g>
+<path d="M90 498H1110" stroke="#b4d0bf" stroke-width="3"/><text x="78" y="549" font-family="Arial,sans-serif" font-size="23" fill="#174e3b" font-weight="bold">An EPD is a disclosure — not a zero-emissions certificate.</text>
+<text x="1120" y="574" text-anchor="end" font-family="Arial,sans-serif" font-size="17" fill="#507568">e-NetCoM · Green Guide</text></svg>
