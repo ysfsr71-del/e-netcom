@@ -634,6 +634,38 @@ function analyticsCanonicalPath(value) {
   }
 }
 
+// Compare equal-duration windows without altering stored anonymous events.
+function analyticsPeriodComparison(bounds) {
+  const span = Math.max(1, bounds.end - bounds.start + 1);
+  const previousEnd = bounds.start - 1;
+  const previousStart = previousEnd - span + 1;
+  const summarize = (from, to) => {
+    const subset = analyticsEvents.filter(e => Number(e.ts) >= from && Number(e.ts) <= to);
+    const sessions = new Set(subset.map(e => e.sessionId).filter(Boolean));
+    const visitors = new Set(subset.map(e => e.visitorId).filter(Boolean));
+    return {
+      sessions: sessions.size,
+      visitors: visitors.size,
+      pageviews: subset.filter(e => e.type === "pageview").length,
+      interactions: subset.filter(e => ["click","map_click","video_open","download"].includes(e.type)).length
+    };
+  };
+  const current = summarize(bounds.start, bounds.end);
+  const previous = summarize(previousStart, previousEnd);
+  const changes = {};
+  for (const key of Object.keys(current)) {
+    changes[key] = previous[key] === 0 ? null : Math.round((current[key] - previous[key]) / previous[key] * 1000) / 10;
+  }
+  return {
+    current, previous, changes,
+    currentFrom: new Date(bounds.start).toISOString(),
+    currentTo: new Date(bounds.end).toISOString(),
+    previousFrom: new Date(previousStart).toISOString(),
+    previousTo: new Date(previousEnd).toISOString(),
+    note: "Eşit süreli dönemler; geçmiş kayıtlar saklama politikası nedeniyle eksik olabilir. Sıfır bazlı değişim yüzde olarak verilmez."
+  };
+}
+
 function buildAnalyticsStats(range = "30d", fromDate = "", toDate = "") {
   const bounds = getRangeBounds(range, fromDate, toDate);
   const start = bounds.start;
@@ -843,6 +875,7 @@ function buildAnalyticsStats(range = "30d", fromDate = "", toDate = "") {
 
   return {
     generatedAt: new Date().toISOString(),
+    periodComparison: range === "all" ? null : analyticsPeriodComparison(bounds),
     range,
     totalEvents: events.length,
     storedEventsTotal: analyticsEvents.length,
