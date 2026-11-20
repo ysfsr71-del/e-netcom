@@ -761,18 +761,49 @@ function buildAnalyticsStats(range = "30d", fromDate = "", toDate = "") {
   const interactions = countBy(events.filter(e => ["click","map_click","section_view","video_open","download"].includes(e.type)), "type");
   const earliestStoredAt = analyticsEvents.length ? new Date(analyticsEvents.reduce((min,e)=>Math.min(min,Number(e.ts)||Date.now()),Date.now())).toISOString() : null;
   const latestStoredAt = analyticsEvents.length ? new Date(analyticsEvents.reduce((max,e)=>Math.max(max,Number(e.ts)||0),0)).toISOString() : null;
-  const sourceCategories = (() => {
+  const sourceDetail = (() => {
     const map = new Map();
-    for (const e of referrerEvents) {
-      const host = String(e._referrer || "").toLowerCase();
-      const name = host === "doğrudan" ? "Doğrudan / bilinmiyor"
-        : /google|bing|yahoo|yandex|duckduckgo/.test(host) ? "Arama motoru"
-        : /instagram|facebook|tiktok|youtube|twitter|t.co|x.com|linkedin/.test(host) ? "Sosyal medya"
-        : host === "site içi geçiş" ? "Site içi yönlendirme" : "Diğer yönlendirmeler";
-      map.set(name, (map.get(name) || 0) + 1);
+    for (const e of sessionStarts) {
+      const ref = String(e.referrer || "").trim();
+      let host = "";
+      try { host = new URL(ref).hostname.toLowerCase().replace(/^www\./, ""); } catch {}
+      const rawPath = String(e.path || "");
+      const query = rawPath.includes("?") ? rawPath.slice(rawPath.indexOf("?") + 1) : "";
+      const params = new URLSearchParams(query);
+      const campaign = String(params.get("utm_source") || "").toLowerCase().slice(0, 60);
+      let name = "Doğrudan / bilinmiyor";
+      let detail = "Doğrudan / bilinmiyor";
+      if (campaign && /^(ig|instagram|fb|facebook|youtube|yt|x|twitter|linkedin|tiktok)$/.test(campaign)) {
+        name = "Sosyal medya";
+        detail = ({ig:"Instagram",instagram:"Instagram",fb:"Facebook",facebook:"Facebook",youtube:"YouTube",yt:"YouTube",x:"X",twitter:"X",linkedin:"LinkedIn",tiktok:"TikTok"})[campaign];
+      } else if (campaign && /^(google|bing|yandex|duckduckgo)$/.test(campaign)) {
+        name = "Arama motoru"; detail = campaign;
+      } else if (/^(instagram\.com|l\.instagram\.com|facebook\.com|l\.facebook\.com|m\.facebook\.com|youtube\.com|youtu\.be|t\.co|x\.com|twitter\.com|linkedin\.com|lnkd\.in|tiktok\.com)$/.test(host)) {
+        name = "Sosyal medya"; detail = /instagram/.test(host) ? "Instagram" : /facebook/.test(host) ? "Facebook" : /youtube|youtu/.test(host) ? "YouTube" : /linkedin|lnkd/.test(host) ? "LinkedIn" : /tiktok/.test(host) ? "TikTok" : "X";
+      } else if (/^(google\.|bing\.|yahoo\.|yandex\.|duckduckgo\.)/.test(host)) {
+        name = "Arama motoru"; detail = host;
+      } else if (host === "enetcomproject.com" || host.endsWith(".enetcomproject.com")) {
+        name = "Site içi yönlendirme"; detail = name;
+      } else if (host) {
+        name = "Diğer yönlendirmeler"; detail = host;
+      }
+      const key = name + "\u0000" + detail;
+      map.set(key, (map.get(key) || 0) + 1);
     }
-    return [...map.entries()].map(([name,count])=>({name,count})).sort((a,b)=>b.count-a.count);
+    const groups = new Map();
+    const social = [];
+    for (const [key, count] of map) {
+      const [name, detail] = key.split("\u0000");
+      groups.set(name, (groups.get(name) || 0) + count);
+      if (name === "Sosyal medya") social.push({ name: detail, count });
+    }
+    return {
+      categories: [...groups].map(([name,count])=>({name,count})).sort((a,b)=>b.count-a.count),
+      social: social.sort((a,b)=>b.count-a.count)
+    };
   })();
+  const sourceCategories = sourceDetail.categories;
+  const socialPlatforms = sourceDetail.social;
   // Deterministic attribution: do not infer a project from arbitrary link text,
   // PDF extensions or metadata. Each event belongs to at most one project.
   const projectInteractions = (() => {
@@ -788,7 +819,7 @@ function buildAnalyticsStats(range = "30d", fromDate = "", toDate = "") {
       const path = String(e.path || "").split("?")[0].toLowerCase();
       const section = String(e.section || "").toLowerCase().replace(/^#/, "");
       const target = String(e.target || "").toLowerCase();
-      if (/^\/(?:en\/|de\/)?cop31(?:\/|\.html|$)/.test(path) || section === "cop31") return "cop31";
+      if (/^\/(?:en\/|de\/)?cop31(?:\/|\.html|$)/.test(path) || section === "cop31" || section === "cop31-panel") return "cop31";
       if (/^\/(?:en\/|de\/)?(?:egitimler|training|gallery|galeri)(?:\.html|\/|$)/.test(path) || ["egitimler","training","gallery","galeri","iller","education"].includes(section)) return "education";
       if (["ciktilar","outputs","project-outputs"].includes(section) || /^\/(?:en\/|de\/)?(?:ciktilar|outputs)(?:\.html|\/|$)/.test(path)) return "outputs";
       if (["atolye","workshop","yesil-zeka-atolyesi"].includes(section) || /^\/(?:en\/|de\/)?(?:atolye|workshop)(?:\.html|\/|$)/.test(path)) return "workshop";
@@ -829,6 +860,7 @@ function buildAnalyticsStats(range = "30d", fromDate = "", toDate = "") {
     returningVisitorsWithinRange: returningVisitors,
     singlePageSessionShare: sessionPages.size ? Math.round(singlePageSessions / sessionPages.size * 1000) / 10 : null,
     sourceCategories,
+    socialPlatforms,
     interactions,
     projectInteractions,
     visits,
