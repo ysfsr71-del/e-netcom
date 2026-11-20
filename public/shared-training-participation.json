@@ -58,6 +58,15 @@
         "Ardahan": 18,
         "Yozgat": 35
       }
+    },
+    {
+      "id": "bayburt-2026-11-20",
+      "date": "2026-11-20",
+      "mode": "Çevrimiçi",
+      "total": 41,
+      "provinces": {
+        "Bayburt": 41
+      }
     }
   ]
 }
