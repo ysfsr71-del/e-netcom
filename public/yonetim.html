@@ -168,8 +168,8 @@ body{background:radial-gradient(circle at 80% -10%,rgba(100,224,167,.13),transpa
 </div>
 <div class="small">Not: Tek sayfalı oturum payı, gerçek hemen çıkma oranı değildir. Arama sorguları, şehir ve ülke bilgisi veya Core Web Vitals geçmiş olaylardan türetilemez; bu alanlar ayrı veri kaynağı gerektirir.</div>
 <div class="grid" style="margin-top:15px">
-<div class="card"><h3>En çok görüntülenen sayfalar</h3><div id="extraPages"></div></div>
-<div class="card"><h3>Oturumların giriş sayfaları</h3><div id="extraEntryPages"></div></div>
+<div class="card"><h3>En çok görüntülenen sayfalar (birleştirilmiş)</h3><div id="extraPages"></div></div>
+<div class="card"><h3>Oturumların giriş sayfaları (birleştirilmiş)</h3><div id="extraEntryPages"></div></div>
 <div class="card"><h3>Trafik kaynakları (tahmini gruplar)</h3><div id="extraSources"></div></div>
 <div class="card"><h3>Kaydedilen etkileşim türleri</h3><div id="extraInteractions"></div></div>
 <div class="card"><h3>Proje içerikleriyle etkileşim</h3><div class="small" style="margin-bottom:10px">Seçili dönemde kaydedilen olaylar · görüntüleme, tıklama, indirme ve tekil ziyaretçi ayrı gösterilir. Eski kayıtlar yalnızca açıkça eşleşen bölüm/URL üzerinden sınıflandırılır.</div><div id="extraProjects"></div></div>
@@ -424,8 +424,8 @@ function renderExpandedAnalytics(d){
  num("extraReturning").textContent=fmt(d.returningVisitorsWithinRange);
  num("extraSinglePage").textContent=d.singlePageSessionShare==null?"Veri yok":("%"+String(d.singlePageSessionShare).replace(".",","));
  const dt=v=>v?new Date(v).toLocaleString("tr-TR"):"Kayıt yok";
- num("dataCoverage").textContent="Saklanan kayıt aralığı: "+dt(d.earliestStoredAt)+" – "+dt(d.latestStoredAt)+" · "+fmt(d.totalEvents)+" olay (seçili dönem) · Saklama politikası: "+fmt(d.retentionDays)+" gün / "+fmt(d.maxStoredEvents)+" olay. 'Tümü' yalnızca mevcut kayıtları kapsar.";
- renderList("extraPages",d.pages);renderList("extraEntryPages",d.entryPages);
+ num("dataCoverage").textContent="Saklanan kayıt aralığı: "+dt(d.earliestStoredAt)+" – "+dt(d.latestStoredAt)+" · "+fmt(d.storedEventsTotal??d.totalEvents)+" saklanan olay · "+fmt(d.totalEvents)+" olay (seçili dönem) · Saklama politikası: "+fmt(d.retentionDays)+" gün / "+fmt(d.maxStoredEvents)+" olay. 'Tümü' yalnızca mevcut kayıtları kapsar.";
+ renderList("extraPages",d.normalizedPages||d.pages);renderList("extraEntryPages",d.normalizedEntryPages||d.entryPages);
  renderList("extraSources",d.sourceCategories);renderList("extraInteractions",d.interactions);
  renderProjectEngagement(d.projectInteractions);
 }
@@ -501,7 +501,7 @@ function openPrintReport(url){if(!sessionStorage.getItem("enetcomPrintHint")){al
 $("exportAnalyticsPdf").addEventListener("click",()=>openPrintReport("/api/admin/analytics-report.print?"+currentReportQuery()));
 $("exportPdfTr").addEventListener("click",()=>openPrintReport("/api/admin/release-notes.print?lang=tr"));
 $("exportPdfEn").addEventListener("click",()=>openPrintReport("/api/admin/release-notes.print?lang=en"));
-async function downloadAnalyticsWord(){const btn=$("exportAnalyticsWord"),old=btn.textContent;btn.disabled=true;btn.textContent="⏳ Analiz hazırlanıyor…";try{const p=new URLSearchParams({range:currentRange});if(currentRange==="custom"){p.set("from",$("from").value);p.set("to",$("to").value);}const r=await fetch("/api/admin/analytics-report.docx?"+p.toString());if(r.status===401){showLogin();throw new Error("Oturum sona erdi.");}if(!r.ok)throw new Error("Analitik değerlendirme raporu oluşturulamadı.");const blob=await r.blob(),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="e-NetCoM_Analitik_Degerlendirme_Raporu.docx";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);}catch(e){if(e.message!=="Oturum sona erdi.")alert(e.message||"Analitik değerlendirme raporu oluşturulamadı.");}finally{btn.disabled=false;btn.textContent=old;}} $("exportAnalyticsWord").addEventListener("click",downloadAnalyticsWord);
+async function downloadAnalyticsWord(){const btn=$("exportAnalyticsWord"),old=btn.textContent;btn.disabled=true;btn.textContent="⏳ Analiz hazırlanıyor…";try{const p=new URLSearchParams({range:currentRange});if(currentRange==="custom"){p.set("from",$("fromDate").value);p.set("to",$("toDate").value);}const r=await fetch("/api/admin/analytics-report.docx?"+p.toString());if(r.status===401){showLogin();throw new Error("Oturum sona erdi.");}if(!r.ok)throw new Error("Analitik değerlendirme raporu oluşturulamadı.");const blob=await r.blob(),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="e-NetCoM_Analitik_Degerlendirme_Raporu.docx";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);}catch(e){if(e.message!=="Oturum sona erdi.")alert(e.message||"Analitik değerlendirme raporu oluşturulamadı.");}finally{btn.disabled=false;btn.textContent=old;}} $("exportAnalyticsWord").addEventListener("click",downloadAnalyticsWord);
 async function downloadWordReport(lang,buttonId){const btn=$(buttonId),old=btn.textContent;btn.disabled=true;btn.textContent="⏳ Word hazırlanıyor…";try{const r=await fetch("/api/admin/release-notes.docx?lang="+lang);if(r.status===401){showLogin();throw new Error("Oturum sona erdi.");}if(!r.ok)throw new Error("Word raporu oluşturulamadı.");const blob=await r.blob(),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=lang==="en"?"e-NetCoM_Development_Release_Report_EN.docx":"e-NetCoM_Gelistirme_Surum_Raporu_TR.docx";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);}catch(e){if(e.message!=="Oturum sona erdi.")alert(e.message||"Word raporu oluşturulamadı.");}finally{btn.disabled=false;btn.textContent=old;}} $("exportWord").addEventListener("click",()=>downloadWordReport("tr","exportWord")); $("exportWordEn").addEventListener("click",()=>downloadWordReport("en","exportWordEn"));
 $("exportExcel").addEventListener("click",async()=>{
   const btn=$("exportExcel");
