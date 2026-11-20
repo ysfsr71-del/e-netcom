@@ -619,6 +619,21 @@ function isEMerkezEvent(event) {
   );
 }
 
+// Reporting-only URL normalization: retain raw paths for attribution and diagnostics.
+function analyticsCanonicalPath(value) {
+  const raw = String(value || "/").trim();
+  try {
+    const url = new URL(raw, "https://enetcomproject.com");
+    let path = url.pathname.replace(/\/+/g, "/");
+    if (path.length > 1) path = path.replace(/\/$/, "");
+    // Query parameters identify campaigns, not separate content pages.
+    // Language parameters remain available in session language reports.
+    return path || "/";
+  } catch {
+    return raw.split(/[?#]/)[0] || "/";
+  }
+}
+
 function buildAnalyticsStats(range = "30d", fromDate = "", toDate = "") {
   const bounds = getRangeBounds(range, fromDate, toDate);
   const start = bounds.start;
@@ -730,17 +745,19 @@ function buildAnalyticsStats(range = "30d", fromDate = "", toDate = "") {
   const pageEvents = events.filter(e => e.type === "pageview");
   const pageviews = pageEvents.length;
   const pages = countBy(pageEvents, "path");
+  const normalizedPages = countBy(pageEvents.map(e => ({ ...e, canonicalPath: analyticsCanonicalPath(e.path) })), "canonicalPath");
   const sessionPages = new Map();
   for (const e of pageEvents) {
     if (!e.sessionId) continue;
     if (!sessionPages.has(e.sessionId)) sessionPages.set(e.sessionId, new Set());
-    sessionPages.get(e.sessionId).add(e.path);
+    sessionPages.get(e.sessionId).add(analyticsCanonicalPath(e.path));
   }
   const singlePageSessions = [...sessionPages.values()].filter(s => s.size === 1).length;
   const sessionCounts = new Map();
   for (const e of sessionStarts) if (e.visitorId) sessionCounts.set(e.visitorId, (sessionCounts.get(e.visitorId) || 0) + 1);
   const returningVisitors = [...sessionCounts.values()].filter(n => n > 1).length;
   const entryPages = countBy(sessionStarts, "path");
+  const normalizedEntryPages = countBy(sessionStarts.map(e => ({ ...e, canonicalPath: analyticsCanonicalPath(e.path) })), "canonicalPath");
   const interactions = countBy(events.filter(e => ["click","map_click","section_view","video_open","download"].includes(e.type)), "type");
   const earliestStoredAt = analyticsEvents.length ? new Date(analyticsEvents.reduce((min,e)=>Math.min(min,Number(e.ts)||Date.now()),Date.now())).toISOString() : null;
   const latestStoredAt = analyticsEvents.length ? new Date(analyticsEvents.reduce((max,e)=>Math.max(max,Number(e.ts)||0),0)).toISOString() : null;
@@ -797,13 +814,16 @@ function buildAnalyticsStats(range = "30d", fromDate = "", toDate = "") {
     generatedAt: new Date().toISOString(),
     range,
     totalEvents: events.length,
+    storedEventsTotal: analyticsEvents.length,
     retentionDays: ANALYTICS_RETENTION_DAYS,
     maxStoredEvents: ANALYTICS_MAX_EVENTS,
     earliestStoredAt,
     latestStoredAt,
     pageviews,
     pages,
+    normalizedPages,
     entryPages,
+    normalizedEntryPages,
     pagesPerSession: visits ? Math.round(pageviews / visits * 100) / 100 : 0,
     sessionsPerVisitor: visitors.size ? Math.round(visits / visitors.size * 100) / 100 : 0,
     returningVisitorsWithinRange: returningVisitors,
