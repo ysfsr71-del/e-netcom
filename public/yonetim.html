@@ -160,6 +160,12 @@ body{background:radial-gradient(circle at 80% -10%,rgba(100,224,167,.13),transpa
   <section class="card" id="expandedAnalytics" style="margin-top:14px">
 <h2>📈 Ayrıntılı ziyaretçi ve proje etki analizi</h2>
 <div class="small" id="dataCoverage">Veri kapsamı yükleniyor…</div>
+<div class="card" style="margin-top:12px" id="comparisonCard">
+<h3>📊 Önceki eşit dönemle karşılaştırma</h3>
+<div class="small" id="comparisonDates">Karşılaştırma yükleniyor…</div>
+<div class="grid" id="comparisonMetrics" style="margin-top:10px"></div>
+<div class="small">Değişim oranları önceki döneme göredir. Eksik geçmiş kayıtları gerçek düşüş olarak yorumlamayın.</div>
+</div>
 <div class="grid" style="margin:16px 0">
 <div class="card"><div class="label">Sayfa görüntüleme</div><div class="num" id="extraPageviews">—</div><div class="small">Kaydedilen pageview olayları</div></div>
 <div class="card"><div class="label">Ziyaret başına sayfa</div><div class="num" id="extraPagesPerVisit">—</div><div class="small">Sayfa görüntüleme / oturum</div></div>
@@ -416,7 +422,19 @@ function renderProjectEngagement(items){
  const columns=[["views","Görüntüleme"],["clicks","Tıklama"],["downloads","İndirme"],["uniqueVisitors","Tekil ziyaretçi"]];
  el.innerHTML=items.map(x=>'<div style="padding:9px 0;border-bottom:1px solid rgba(130,150,150,.2)"><div class="row"><strong>'+esc(x.name)+'</strong><b>'+fmt(x.count||0)+' olay</b></div><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin-top:7px">'+columns.map(([key,label])=>'<div class="small">'+label+': <b>'+fmt(x[key]||0)+'</b></div>').join('')+'</div></div>').join("");
 }
+function renderPeriodComparison(c){
+ const dates=$("comparisonDates"), target=$("comparisonMetrics");
+ if(!c){dates.textContent="Tümü görünümünde eşit süreli karşılaştırma yapılmaz.";target.innerHTML="";return;}
+ const date=x=>new Date(x).toLocaleDateString("tr-TR");
+ dates.textContent="Seçili: "+date(c.currentFrom)+" – "+date(c.currentTo)+" · Önceki: "+date(c.previousFrom)+" – "+date(c.previousTo);
+ const labels=[["sessions","Oturum"],["visitors","Tekil ziyaretçi"],["pageviews","Sayfa görüntüleme"],["interactions","Etkileşim"]];
+ target.innerHTML=labels.map(([key,label])=>{
+  const change=c.changes[key], changeText=change==null?"Baz yok":((change>0?"+":"")+Number(change).toLocaleString("tr-TR")+"%");
+  return '<div class="card"><div class="label">'+label+'</div><div class="num">'+fmt(c.current[key])+'</div><div class="small">Önceki: '+fmt(c.previous[key])+' · '+changeText+'</div></div>';
+ }).join("");
+}
 function renderExpandedAnalytics(d){
+ renderPeriodComparison(d.periodComparison);
  const num=id=>$(id);
  num("extraPageviews").textContent=fmt(d.pageviews);
  num("extraPagesPerVisit").textContent=Number(d.pagesPerSession||0).toLocaleString("tr-TR",{maximumFractionDigits:2});
