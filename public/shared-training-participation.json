@@ -67,6 +67,18 @@
       "provinces": {
         "Bayburt": 41
       }
+    },
+    {
+      "id": "canakkale-yalova-duzce-batman-2026-11-21",
+      "date": "2026-11-21",
+      "mode": "Çevrimiçi",
+      "total": 185,
+      "provinces": {
+        "Çanakkale": 71,
+        "Yalova": 46,
+        "Düzce": 39,
+        "Batman": 29
+      }
     }
   ]
 }
